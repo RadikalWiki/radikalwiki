@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Server",
+      "type": "pwa-node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/next/dist/bin/next",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Client",
+      "type": "firefox",
+      "request": "launch",
+      "profile": "default",
+      "keepProfileChanges": true,
+      "reAttach": true,
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}",
+      "pathMappings": [
+        {
+          "url": "webpack://_n_e",
+          "path": "${workspaceFolder}"
+        }
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Server/Client",
+      "configurations": ["Server", "Client"]
+    }
+  ]
+}
