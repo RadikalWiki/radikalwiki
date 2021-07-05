@@ -1,15 +1,19 @@
 import React, { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink } from "components";
+import {
+  Link as NextLink,
+  AddContentFab,
+  AddContentsFab,
+  LockCategoryFab,
+} from "comps";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import { useStyles } from "hooks";
+import { useStyles, useSession } from "hooks";
 import { CATEGORY_GET } from "gql";
 import { Autocomplete } from "@material-ui/lab";
 import {
   Breadcrumbs,
   Card,
   Divider,
-  Fade,
   Link,
   List,
   ListItem,
@@ -31,16 +35,16 @@ const getCategoryLetter = () => {
 export default function Id() {
   const [state, setState] = useState("");
   const classes = useStyles();
+  const [session] = useSession();
   const router = useRouter();
   const { id } = router.query;
-  const { loading, data } = useQuery(CATEGORY_GET, {
+  const { loading, data, error } = useQuery(CATEGORY_GET, {
     variables: { id },
   });
 
   catLetter = 0;
   const contents =
-    data?.category.contents.map((content: any) => content.name) ||
-    [];
+    data?.category.contents.map((content: any) => content.name) || [];
   const onChange = (_: any, v: any) => {
     if (!data) {
       return;
@@ -67,7 +71,7 @@ export default function Id() {
   };
 
   return (
-    <Fade in={!loading}>
+    <>
       <Card className={classes.card}>
         <Breadcrumbs className={classes.bread}>
           <Link component={NextLink} color="primary" href="/category">
@@ -85,6 +89,8 @@ export default function Id() {
             renderInput={renderInput}
           />
         </Breadcrumbs>
+      </Card>
+      <Card className={classes.card}>
         <List className={classes.list}>
           {data?.category.contents.map(
             (content: { name: any; id: any }) =>
@@ -102,10 +108,22 @@ export default function Id() {
                     />
                   </ListItem>
                 </Fragment>
-              ),
+              )
           )}
         </List>
       </Card>
-    </Fade>
+      {!data?.category.lockContent && (
+        <AddContentFab categoryId={id as string} />
+      )}
+      {session?.roles.includes("admin") && (
+        <AddContentsFab categoryId={id as string} />
+      )}
+      {session?.roles.includes("admin") && (
+        <LockCategoryFab mode="content" category={data?.category} />
+      )}
+      {session?.roles.includes("admin") && (
+        <LockCategoryFab mode="children" category={data?.category} />
+      )}
+    </>
   );
-};
+}

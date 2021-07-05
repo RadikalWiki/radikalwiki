@@ -11,13 +11,14 @@
     {
       "name": "Client",
       "type": "firefox",
-      "request": "launch",
-      "profile": "default",
-      "keepProfileChanges": true,
-      "reAttach": true,
+      "request": "attach",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}",
       "pathMappings": [
+        {
+          "url": "webpack://_n_e/utils",
+          "path": "${workspaceFolder}/utils"
+        },
         {
           "url": "webpack://_n_e",
           "path": "${workspaceFolder}"

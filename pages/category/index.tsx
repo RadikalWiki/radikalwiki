@@ -1,14 +1,12 @@
 import React from "react";
 import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink } from "components";
-import { useQuery } from "@apollo/client";
-import { useStyles } from "hooks";
+import { Link as NextLink } from "comps/common";
+import { useSession, useStyles } from "hooks";
 import { CATEGORIES_GET } from "gql";
 import {
   Breadcrumbs,
   Card,
   Divider,
-  Fade,
   Link,
   List,
   ListItem,
@@ -18,19 +16,24 @@ import {
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import { AddCategoryFab } from "comps";
 
 export default function Index() {
   const [state, setState] = useState("");
   const classes = useStyles();
   const router = useRouter();
-  const { loading, data } = useQuery(CATEGORIES_GET);
+  const [session] = useSession();
+  const { loading, data, error } = useQuery(CATEGORIES_GET, {
+    variables: { eventId: session?.event?.id },
+  });
 
-  const categories = data?.category.map((e: any) => e.name) || [];
+  const categories = data?.categories.map((e: any) => e.name) || [];
   const onChange = (_: any, v: any) => {
     if (!data) {
       return;
     }
-    const filter = data.category.filter((cat: any) =>
+    const filter = data.categories.filter((cat: any) =>
       v.toLowerCase().includes(cat.name.toLowerCase())
     );
     if (filter.length == 1) {
@@ -51,9 +54,9 @@ export default function Index() {
       </div>
     );
   };
-  
+
   return (
-    <Fade in={!loading}>
+    <>
       <Card className={classes.card}>
         <Breadcrumbs className={classes.bread}>
           <Link component={NextLink} color="primary" href="/category">
@@ -66,13 +69,15 @@ export default function Index() {
             renderInput={renderInput}
           />
         </Breadcrumbs>
+      </Card>
+      <Card className={classes.card}>
         <List className={classes.list}>
-          {data?.category.map(
+          <Divider />
+          {data?.categories.map(
             (cat: { name: any; id: any }) =>
               (!state ||
                 cat.name.toLowerCase().includes(state.toLowerCase())) && (
                 <Fragment key={cat.id}>
-                  <Divider />
                   <ListItem
                     button
                     component={NextLink}
@@ -80,11 +85,13 @@ export default function Index() {
                   >
                     <ListItemText primary={cat.name} />
                   </ListItem>
+                  <Divider />
                 </Fragment>
-              ),
+              )
           )}
         </List>
       </Card>
-    </Fade>
+      {session?.roles.includes("admin") && <AddCategoryFab />}
+    </>
   );
-};
+}

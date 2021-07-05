@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { PollAdmin, VoteForm } from "components";
+import { VoteForm } from "comps/vote";
+import { PollAdmin } from "comps/poll";
 import { useQuery } from "@apollo/client";
 import { EVENT_CHECK_VOTE_ACTION } from "gql";
 import { useRouter } from "next/router";

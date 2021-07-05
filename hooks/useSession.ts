@@ -1,17 +1,22 @@
-import { useEffect } from "react";
-import Router from "next/router";
-import useSWR from "swr";
+import { useEffect, createContext, useContext } from "react";
 
-export default function useSession({ redirectTo = "" } = {}) {
-  const { data: session, mutate: mutateSession } = useSWR("/api/session");
+export const SessionContext = createContext<any>(null);
+
+export default function useSession() {
+  const [session, setSession] = useContext(SessionContext);
 
   useEffect(() => {
-    if (!redirectTo || !session) return;
-
-    if (redirectTo && !session?.isLoggedIn) {
-      Router.push(redirectTo);
+    if (!session && localStorage.session) {
+      setSession(JSON.parse(localStorage.session));
     }
-  }, [session, redirectTo]);
+  }, [session]);
 
-  return { session, mutateSession };
+  const mutateSession = (props: any) => {
+    const newSession =
+      !session || props === null ? props : { ...session, ...props };
+    localStorage.session = JSON.stringify(newSession);
+    setSession(newSession);
+  };
+
+  return [session, mutateSession];
 }

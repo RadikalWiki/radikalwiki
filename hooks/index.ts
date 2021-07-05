@@ -1,4 +1,4 @@
-export { query, mutation, useApollo, useApolloSession } from "./useApollo";
+export * from "../utils/apollo";
 export { default as useEnv } from "./useEnv";
 export { default as useSession } from "./useSession";
 export { default as useStyles } from "./useStyles";

@@ -7,15 +7,18 @@ const useStyles = () =>
         margin: theme.spacing(0),
       },
     },
+    flexGrow: {
+      flexGrow: 1,
+    },
     scroll: {
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
-      height: `calc(100vh - 56px)`,
+      height: `calc(100vh - 128px)`,
       [`${theme.breakpoints.up("xs")} and (orientation: landscape)`]: {
         height: `calc(100vh - 48px)`,
       },
       [theme.breakpoints.up("sm")]: {
-        height: `calc(100vh - 64px)`,
+        height: `calc(100vh - 128px)`,
       },
     },
     input: {
@@ -75,6 +78,11 @@ const useStyles = () =>
     subheader: {
       backgroundColor: theme.palette.background.paper,
     },
+    appBarTop: {
+      position: "fixed",
+      top: 0,
+      bottom: "auto",
+    },
     appBar: {
       position: "fixed",
       top: "auto",
@@ -94,7 +102,7 @@ const useStyles = () =>
     fabButton: {
       position: "fixed",
       bottom: theme.spacing(9),
-      right: theme.spacing(3),
+      left: theme.spacing(3),
     },
     extendedIcon: {
       marginRight: theme.spacing(1),
@@ -105,20 +113,36 @@ const useStyles = () =>
     button: {
       margin: theme.spacing(1, 1, 0, 0),
     },
+    speedDial4: {
+      position: "fixed",
+      bottom: theme.spacing(30),
+      right: theme.spacing(3),
+    },
+    speedDial3: {
+      position: "fixed",
+      bottom: theme.spacing(23),
+      right: theme.spacing(3),
+    },
+    speedDial2: {
+      position: "fixed",
+      bottom: theme.spacing(16),
+      right: theme.spacing(3),
+    },
     speedDial: {
       position: "fixed",
       bottom: theme.spacing(9),
-      left: theme.spacing(2),
+      right: theme.spacing(3),
     },
     formControl: {},
-    dataGrid: {
-      margin: theme.spacing(2),
-    },
+    dataGrid: {},
     textChart: {
       padding: theme.spacing(0, 0, 2, 2),
     },
     pad: {
       padding: theme.spacing(2),
+    },
+    padTop: {
+      padding: theme.spacing(4),
     },
     linkHeader: {
       padding: theme.spacing(10, 10, 10, 5),

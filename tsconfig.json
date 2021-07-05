@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es5",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "jsx": "preserve",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
@@ -16,15 +13,10 @@
     "esModuleInterop": true,
     "allowJs": true,
     "paths": {
-      "comps": [
-        "./components"
-      ],
-      "hooks": [
-        "./hooks"
-      ],
-      "gql": [
-        "./graphql"
-      ]
+      "comps": ["./components"],
+      "comps/*": ["./components/*"],
+      "hooks": ["./hooks"],
+      "gql": ["./gql"]
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -33,12 +25,6 @@
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
