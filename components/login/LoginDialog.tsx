@@ -76,7 +76,7 @@ export default function EventDialog({
       });
       setOpen(false);
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       setError(true);
       setErrorMsg(error.response.data.message);
     }
@@ -98,7 +98,7 @@ export default function EventDialog({
       });
       setOpen(false);
       router.push("/");
-    } catch (error) {
+    } catch (error: any) {
       setError(true);
       setErrorMsg(error.response.data.message);
     }

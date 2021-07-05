@@ -29,13 +29,9 @@ export default function SpeakerDial() {
     });
   };
 
-  const bla = () => {
-    return event?.lockSpeak ?? true;
-  };
-
   return (
     <SpeedDial
-      hidden={bla()}
+      hidden={event?.lockSpeak ?? true}
       ariaLabel="Kom på talerliste"
       className={classes.speedDial}
       icon={<SpeedDialIcon />}
