@@ -24,7 +24,7 @@ export default function EventDialog({
   const router = useRouter();
   const classes = useStyles();
   const [session, setSession] = useSession();
-  const [email, setEmail] = useState();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [error, setError] = useState(false);
@@ -62,7 +62,7 @@ export default function EventDialog({
 
   const onLogin = async () => {
     try {
-      const { session } = await auth.login({ email, password });
+      const { session } = await auth.login({ email: email.toLowerCase(), password });
       const { data } = await query(USER_GET_DISPLAY_NAME, {
         id: session?.user.id,
       });
@@ -84,7 +84,7 @@ export default function EventDialog({
 
   const onRegister = async () => {
     try {
-      const { session } = await auth.register({ email, password });
+      const { session } = await auth.register({ email: email.toLowerCase(), password });
       const { data } = await query(USER_GET_DISPLAY_NAME, {
         id: session?.user.id,
       });
