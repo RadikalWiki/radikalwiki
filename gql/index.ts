@@ -601,7 +601,7 @@ export const CATEGORY_GET = gql`
       lockContent
       lockChildren
       contents(
-        order_by: { priority: desc }
+        order_by: { priority: asc }
         where: { parentId: { _is_null: true } }
       ) {
         id
