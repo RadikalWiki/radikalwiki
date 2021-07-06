@@ -137,8 +137,8 @@ export default function Id() {
                   <ListItemText
                     primary={`Ingen ${
                       content.category.childMode == "changes"
-                        ? "Ændringsforslag"
-                        : "Kandidaturer"
+                        ? "ændringsforslag"
+                        : "kandidaturer"
                     }`}
                   />
                 </ListItem>
