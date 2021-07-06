@@ -51,7 +51,7 @@ export default function Id() {
   const editable =
     session?.user.id === content?.creatorId ||
     (content?.authors.some(
-      (a: any) => a.identity?.user.id === session?.user.id
+      (a: any) => a.identity?.user?.id === session?.user.id
     ) &&
       !content?.category.lockContent);
 
