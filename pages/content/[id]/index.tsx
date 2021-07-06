@@ -108,7 +108,7 @@ export default function Id() {
         </CardContent>
       </Card>
       {content?.children &&
-        (!content.parent || content.childMode === "changes") && (
+        (!content.parent || content.category.childMode === "changes") && (
           <Card className={classes.card}>
             <CardHeader
               title={
