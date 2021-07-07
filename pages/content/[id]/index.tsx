@@ -55,11 +55,11 @@ export default function Id() {
   };
 
   const editable =
-    session?.user.id === content?.creatorId ||
+    (session?.user.id === content?.creatorId ||
     (content?.authors.some(
       (a: any) => a.identity?.user?.id === session?.user.id
     ) &&
-      !content?.category.lockContent);
+      !content?.category.lockContent)) || session?.roles.includes("admin");
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
