@@ -8,9 +8,9 @@ import { auth } from "utils/nhost";
 import { LoginDialog } from "comps/login";
 
 const abriviateName = (name: string) =>
-  name.split(" ").length === 1
+  name?.split(" ").length === 1
     ? name
-    : name.split(" ").map((s) => s[0].toUpperCase());
+    : name?.split(" ").map((s) => s[0].toUpperCase());
 
 export default function UserButton() {
   const router = useRouter();
