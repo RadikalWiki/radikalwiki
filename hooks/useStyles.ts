@@ -94,14 +94,6 @@ const useStyles = () =>
     grow: {
       flexGrow: 1,
     },
-    bread: {
-      padding: theme.spacing(0, 2, 0),
-    },
-    breadText: {
-      alignItems: "center",
-      display: "flex",
-      height: 60,
-    },
     fabButton: {
       position: "fixed",
       bottom: theme.spacing(9),

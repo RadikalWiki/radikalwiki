@@ -55,11 +55,12 @@ export default function Id() {
   };
 
   const editable =
-    (session?.user.id === content?.creatorId ||
+    session?.user.id === content?.creatorId ||
     (content?.authors.some(
       (a: any) => a.identity?.user?.id === session?.user.id
     ) &&
-      !content?.category.lockContent)) || session?.roles.includes("admin");
+      !content?.category.lockContent) ||
+    session?.roles.includes("admin");
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
@@ -67,30 +68,32 @@ export default function Id() {
   return (
     <>
       <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/category">
-            <Typography className={classes.breadText}>Indhold</Typography>
-          </Link>
-          <Link
-            component={NextLink}
-            color="primary"
-            href={`/category/${content?.category.id}`}
-          >
-            {content?.category.name}
-          </Link>
-          {content?.parent && (
+        <CardContent>
+          <Breadcrumbs>
+            <Link component={NextLink} color="primary" href="/category">
+              <Typography>Indhold</Typography>
+            </Link>
             <Link
               component={NextLink}
               color="primary"
-              href={`/content/${content?.parent.id}`}
+              href={`/category/${content?.category.id}`}
             >
-              {content?.parent.name}
+              {content?.category.name}
             </Link>
-          )}
-          <Link component={NextLink} color="primary" href={`/content/${id}`}>
-            {content?.name}
-          </Link>
-        </Breadcrumbs>
+            {content?.parent && (
+              <Link
+                component={NextLink}
+                color="primary"
+                href={`/content/${content?.parent.id}`}
+              >
+                {content?.parent.name}
+              </Link>
+            )}
+            <Link component={NextLink} color="primary" href={`/content/${id}`}>
+              {content?.name}
+            </Link>
+          </Breadcrumbs>
+        </CardContent>
       </Card>
       <Card className={classes.card}>
         <CardHeader

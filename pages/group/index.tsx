@@ -13,7 +13,6 @@ import {
   ListItemText,
   TextField,
   Typography,
-  Box,
 } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { useRouter } from "next/router";
@@ -56,10 +55,10 @@ export default function Index() {
   return (
     <>
       <Card className={classes.card}>
-        <Box>
-          <Breadcrumbs className={classes.bread}>
+        <CardContent>
+          <Breadcrumbs>
             <Link component={NextLink} color="primary" href="/group">
-              <Typography className={classes.breadText}>Grupper</Typography>
+              <Typography>Grupper</Typography>
             </Link>
             <Autocomplete
               freeSolo
@@ -68,7 +67,7 @@ export default function Index() {
               renderInput={renderInput}
             />
           </Breadcrumbs>
-        </Box>
+        </CardContent>
       </Card>
       <Card className={classes.card}>
         <List className={classes.list}>
