@@ -22,6 +22,7 @@ import {
   Typography,
   Avatar,
   ListItemAvatar,
+  Fade,
 } from "@material-ui/core";
 
 let catLetter = 0;
@@ -74,54 +75,58 @@ export default function Id() {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/category">
-            <Typography className={classes.breadText}>Indhold</Typography>
-          </Link>
-          <Link component={NextLink} color="primary" href={`/category/${id}`}>
-            <Typography className={classes.breadText}>
-              {data?.category.name}
-            </Typography>
-          </Link>
-          <Autocomplete
-            freeSolo
-            options={contents}
-            onChange={onChange}
-            renderInput={renderInput}
-          />
-        </Breadcrumbs>
-      </Card>
-      <Card className={classes.card}>
-        <List className={classes.list}>
-          {data?.category.contents.map(
-            (content: { name: any; id: any }) =>
-              (!state ||
-                content.name.toLowerCase().includes(state.toLowerCase())) && (
-                <Fragment key={content.id}>
-                  <Divider />
-                  <ListItem
-                    button
-                    component={NextLink}
-                    href={`/content/${content.id}`}
-                  >
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar}>
-                        {getCategoryLetter()}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={content.name} />
-                  </ListItem>
-                </Fragment>
-              )
-          )}
-          {data?.category.contents.length == 0 && (
-            <ListItem button>
-              <ListItemText primary="Intet indhold" />
-            </ListItem>
-          )}
-        </List>
-      </Card>
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <Breadcrumbs className={classes.bread}>
+            <Link component={NextLink} color="primary" href="/category">
+              <Typography className={classes.breadText}>Indhold</Typography>
+            </Link>
+            <Link component={NextLink} color="primary" href={`/category/${id}`}>
+              <Typography className={classes.breadText}>
+                {data?.category.name}
+              </Typography>
+            </Link>
+            <Autocomplete
+              freeSolo
+              options={contents}
+              onChange={onChange}
+              renderInput={renderInput}
+            />
+          </Breadcrumbs>
+        </Card>
+      </Fade>
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <List className={classes.list}>
+            {data?.category.contents.map(
+              (content: { name: any; id: any }) =>
+                (!state ||
+                  content.name.toLowerCase().includes(state.toLowerCase())) && (
+                  <Fragment key={content.id}>
+                    <Divider />
+                    <ListItem
+                      button
+                      component={NextLink}
+                      href={`/content/${content.id}`}
+                    >
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar}>
+                          {getCategoryLetter()}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={content.name} />
+                    </ListItem>
+                  </Fragment>
+                )
+            )}
+            {data?.category.contents.length == 0 && (
+              <ListItem button>
+                <ListItemText primary="Intet indhold" />
+              </ListItem>
+            )}
+          </List>
+        </Card>
+      </Fade>
       {!data?.category.lockContent && (
         <AddContentFab categoryId={id as string} />
       )}

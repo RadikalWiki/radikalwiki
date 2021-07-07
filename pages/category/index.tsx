@@ -15,6 +15,7 @@ import {
   ListItemText,
   TextField,
   Typography,
+  Fade,
 } from "@material-ui/core";
 import { Group, Subject } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
@@ -59,45 +60,49 @@ export default function Index() {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/category">
-            <Typography className={classes.breadText}>Indhold</Typography>
-          </Link>
-          <Autocomplete
-            freeSolo
-            onChange={onChange}
-            options={categories}
-            renderInput={renderInput}
-          />
-        </Breadcrumbs>
-      </Card>
-      <Card className={classes.card}>
-        <List className={classes.list}>
-          <Divider />
-          {data?.categories.map(
-            (cat: { name: any; id: any; childMode: any }) =>
-              (!state ||
-                cat.name.toLowerCase().includes(state.toLowerCase())) && (
-                <Fragment key={cat.id}>
-                  <ListItem
-                    button
-                    component={NextLink}
-                    href={`/category/${cat.id}`}
-                  >
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar}>
-                        {cat.childMode == "changes" ? <Subject /> : <Group />}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText primary={cat.name} />
-                  </ListItem>
-                  <Divider />
-                </Fragment>
-              )
-          )}
-        </List>
-      </Card>
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <Breadcrumbs className={classes.bread}>
+            <Link component={NextLink} color="primary" href="/category">
+              <Typography className={classes.breadText}>Indhold</Typography>
+            </Link>
+            <Autocomplete
+              freeSolo
+              onChange={onChange}
+              options={categories}
+              renderInput={renderInput}
+            />
+          </Breadcrumbs>
+        </Card>
+      </Fade>
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <List className={classes.list}>
+            <Divider />
+            {data?.categories.map(
+              (cat: { name: any; id: any; childMode: any }) =>
+                (!state ||
+                  cat.name.toLowerCase().includes(state.toLowerCase())) && (
+                  <Fragment key={cat.id}>
+                    <ListItem
+                      button
+                      component={NextLink}
+                      href={`/category/${cat.id}`}
+                    >
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar}>
+                          {cat.childMode == "changes" ? <Subject /> : <Group />}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary={cat.name} />
+                    </ListItem>
+                    <Divider />
+                  </Fragment>
+                )
+            )}
+          </List>
+        </Card>
+      </Fade>
       {session?.roles.includes("admin") && <AddCategoryFab />}
     </>
   );

@@ -27,6 +27,7 @@ import {
   ListItemText,
   Tooltip,
   Typography,
+  Fade,
 } from "@material-ui/core";
 
 let changeNumber = 0;
@@ -55,113 +56,124 @@ export default function Id() {
   };
 
   const editable =
-    (session?.user.id === content?.creatorId ||
+    session?.user.id === content?.creatorId ||
     (content?.authors.some(
       (a: any) => a.identity?.user?.id === session?.user.id
     ) &&
-      !content?.category.lockContent)) || session?.roles.includes("admin");
+      !content?.category.lockContent) ||
+    session?.roles.includes("admin");
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
   return (
     <>
-      <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/category">
-            <Typography className={classes.breadText}>Indhold</Typography>
-          </Link>
-          <Link
-            component={NextLink}
-            color="primary"
-            href={`/category/${content?.category.id}`}
-          >
-            {content?.category.name}
-          </Link>
-          {content?.parent && (
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <Breadcrumbs className={classes.bread}>
+            <Link component={NextLink} color="primary" href="/category">
+              <Typography className={classes.breadText}>Indhold</Typography>
+            </Link>
             <Link
               component={NextLink}
               color="primary"
-              href={`/content/${content?.parent.id}`}
+              href={`/category/${content?.category.id}`}
             >
-              {content?.parent.name}
+              {content?.category.name}
             </Link>
-          )}
-          <Link component={NextLink} color="primary" href={`/content/${id}`}>
-            {content?.name}
-          </Link>
-        </Breadcrumbs>
-      </Card>
-      <Card className={classes.card}>
-        <CardHeader
-          title={content?.name}
-          subheader={formatAuthors(content?.authors)}
-          action={
-            editable && (
+            {content?.parent && (
               <Link
                 component={NextLink}
                 color="primary"
-                href={`/content/${content?.id}/edit`}
+                href={`/content/${content?.parent.id}`}
               >
-                <Button variant="contained" color="primary" endIcon={<Edit />}>
-                  Rediger
-                </Button>
+                {content?.parent.name}
               </Link>
-            )
-          }
-        ></CardHeader>
-        <CardContent>
-          <div dangerouslySetInnerHTML={{ __html: content?.data }} />
-        </CardContent>
-      </Card>
+            )}
+            <Link component={NextLink} color="primary" href={`/content/${id}`}>
+              {content?.name}
+            </Link>
+          </Breadcrumbs>
+        </Card>
+      </Fade>
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <CardHeader
+            title={content?.name}
+            subheader={formatAuthors(content?.authors)}
+            action={
+              editable && (
+                <Link
+                  component={NextLink}
+                  color="primary"
+                  href={`/content/${content?.id}/edit`}
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    endIcon={<Edit />}
+                  >
+                    Rediger
+                  </Button>
+                </Link>
+              )
+            }
+          ></CardHeader>
+          <CardContent>
+            <div dangerouslySetInnerHTML={{ __html: content?.data }} />
+          </CardContent>
+        </Card>
+      </Fade>
       {content?.children &&
         (!content.parent || content.category.childMode === "changes") && (
-          <Card className={classes.card}>
-            <CardHeader
-              title={
-                content.category.childMode == "changes"
-                  ? "Ændringsforsalg"
-                  : "Kandidaturer"
-              }
-              action={
-                !content.category.lockChildren && (
-                  <AddChildButton content={content} />
-                )
-              }
-            ></CardHeader>
-            <List>
-              {content?.children.map(
-                (content: { name: any; id: any; authors: any }) => (
-                  <ListItem
-                    button
-                    component={NextLink}
-                    href={`/content/${content.id}`}
-                  >
-                    <ListItemAvatar>
-                      <Avatar className={classes.avatar}>
-                        {getChangeNumber()}
-                      </Avatar>
-                    </ListItemAvatar>
+          <Fade in={!loading}>
+            <Card className={classes.card}>
+              <CardHeader
+                title={
+                  content.category.childMode == "changes"
+                    ? "Ændringsforsalg"
+                    : "Kandidaturer"
+                }
+                action={
+                  !content.category.lockChildren && (
+                    <AddChildButton content={content} />
+                  )
+                }
+              ></CardHeader>
+              <List>
+                {content?.children.map(
+                  (content: { name: any; id: any; authors: any }) => (
+                    <ListItem
+                      button
+                      component={NextLink}
+                      href={`/content/${content.id}`}
+                    >
+                      <ListItemAvatar>
+                        <Avatar className={classes.avatar}>
+                          {getChangeNumber()}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={content.name}
+                        secondary={formatAuthors(content?.authors)}
+                      />
+                    </ListItem>
+                  )
+                )}
+                {content?.children.length == 0 && (
+                  <ListItem button>
                     <ListItemText
-                      primary={content.name}
-                      secondary={formatAuthors(content?.authors)}
+                      primary={`Ingen ${
+                        content.category.childMode == "changes"
+                          ? "ændringsforslag"
+                          : "kandidaturer"
+                      }`}
                     />
                   </ListItem>
-                )
-              )}
-              {content?.children.length == 0 && (
-                <ListItem button>
-                  <ListItemText
-                    primary={`Ingen ${
-                      content.category.childMode == "changes"
-                        ? "ændringsforslag"
-                        : "kandidaturer"
-                    }`}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </Card>
+                )}
+              </List>
+            </Card>
+          </Fade>
         )}
       {content?.polls && content?.polls.length !== 0 && (
         <HeaderCard title="Afstemningsresultater">
