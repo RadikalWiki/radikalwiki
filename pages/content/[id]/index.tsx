@@ -29,6 +29,12 @@ import {
   Typography,
 } from "@material-ui/core";
 
+let changeNumber = 0;
+const getChangeNumber = () => {
+  changeNumber += 1;
+  return changeNumber;
+};
+
 export default function Id() {
   const [session] = useSession();
   const classes = useStyles();
@@ -54,6 +60,9 @@ export default function Id() {
       (a: any) => a.identity?.user?.id === session?.user.id
     ) &&
       !content?.category.lockContent);
+
+  const formatAuthors = (a: any) =>
+    a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
   return (
     <>
@@ -86,9 +95,7 @@ export default function Id() {
       <Card className={classes.card}>
         <CardHeader
           title={content?.name}
-          subheader={content?.authors
-            .map((a: any) => a.identity?.displayName ?? a.name)
-            .join(", ")}
+          subheader={formatAuthors(content?.authors)}
           action={
             editable && (
               <Link
@@ -123,15 +130,25 @@ export default function Id() {
               }
             ></CardHeader>
             <List>
-              {content?.children.map((content: { name: any; id: any }) => (
-                <ListItem
-                  button
-                  component={NextLink}
-                  href={`/content/${content.id}`}
-                >
-                  <ListItemText primary={content.name} />
-                </ListItem>
-              ))}
+              {content?.children.map(
+                (content: { name: any; id: any; authors: any }) => (
+                  <ListItem
+                    button
+                    component={NextLink}
+                    href={`/content/${content.id}`}
+                  >
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar}>
+                        {getChangeNumber()}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={content.name}
+                      secondary={formatAuthors(content?.authors)}
+                    />
+                  </ListItem>
+                )
+              )}
               {content?.children.length == 0 && (
                 <ListItem button>
                   <ListItemText

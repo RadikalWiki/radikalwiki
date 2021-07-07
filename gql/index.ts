@@ -32,6 +32,15 @@ export const CONTENT_GET = gql`
       children {
         name
         id
+        authors {
+          name
+          identity {
+            displayName
+            user {
+              id
+            }
+          }
+        }
       }
       polls {
         id
