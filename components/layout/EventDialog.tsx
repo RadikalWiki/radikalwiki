@@ -30,6 +30,7 @@ export default function EventDialog({
   open: boolean;
   setOpen: any;
 }) {
+  const router = useRouter();
   const classes = useStyles();
   const [session, setSession] = useSession();
   const { loading, data, error } = useQuery(EVENTS_GET);
@@ -47,6 +48,7 @@ export default function EventDialog({
     const roles = getRoles(session.user.id, group);
     setSession({ event, roles });
     setOpen(false);
+    router.push("/category");
   };
 
   return (
