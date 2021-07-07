@@ -1,23 +1,25 @@
 import React from "react";
 import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink } from "comps/common";
+import { Link as NextLink, AddCategoryFab } from "comps";
 import { useSession, useStyles } from "hooks";
 import { CATEGORIES_GET } from "gql";
 import {
+  Avatar,
   Breadcrumbs,
   Card,
   Divider,
   Link,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   TextField,
   Typography,
 } from "@material-ui/core";
+import { Group, Subject } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import { AddCategoryFab } from "comps";
 
 export default function Index() {
   const [state, setState] = useState("");
@@ -74,7 +76,7 @@ export default function Index() {
         <List className={classes.list}>
           <Divider />
           {data?.categories.map(
-            (cat: { name: any; id: any }) =>
+            (cat: { name: any; id: any; childMode: any }) =>
               (!state ||
                 cat.name.toLowerCase().includes(state.toLowerCase())) && (
                 <Fragment key={cat.id}>
@@ -83,6 +85,11 @@ export default function Index() {
                     component={NextLink}
                     href={`/category/${cat.id}`}
                   >
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar}>
+                        {cat.childMode == "changes" ? <Subject /> : <Group />}
+                      </Avatar>
+                    </ListItemAvatar>
                     <ListItemText primary={cat.name} />
                   </ListItem>
                   <Divider />

@@ -626,8 +626,9 @@ export const CATEGORIES_GET = gql`
       order_by: { priority: desc }
       where: { eventId: { _eq: $eventId } }
     ) {
-      name
       id
+      name
+      childMode
     }
   }
 `;
