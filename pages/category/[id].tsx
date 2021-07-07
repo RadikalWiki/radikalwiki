@@ -110,6 +110,13 @@ export default function Id() {
                 </Fragment>
               )
           )}
+          {data?.category.contents.length == 0 && (
+            <ListItem button>
+              <ListItemText
+                primary="Intet indhold"
+              />
+            </ListItem>
+          )}
         </List>
       </Card>
       {!data?.category.lockContent && (
