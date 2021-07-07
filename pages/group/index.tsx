@@ -2,10 +2,11 @@ import React from "react";
 import { Fragment, ReactNode, useState } from "react";
 import { Link as NextLink } from "comps/common";
 import { useStyles } from "hooks";
-import { GROUPS_GET, GROUP_ADD } from "gql";
+import { GROUPS_GET } from "gql";
 import {
   Breadcrumbs,
   Card,
+  CardContent,
   Divider,
   Link,
   List,
