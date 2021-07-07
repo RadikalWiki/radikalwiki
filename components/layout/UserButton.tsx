@@ -18,7 +18,7 @@ export default function UserButton() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loginDialog, setLoginDialog] = useState(false);
   const [mode, setMode] = useState<"login" | "register">("login");
-  const largeScreen = useMediaQuery("(min-width:600px)");
+  const largeScreen = useMediaQuery("(min-width:640px)");
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);

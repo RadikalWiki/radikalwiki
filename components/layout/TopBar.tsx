@@ -20,7 +20,7 @@ export default function TopBar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [eventDialog, setEventDialog] = useState(false);
   const { signedIn } = useAuth();
-  const largeScreen = useMediaQuery("(min-width:600px)");
+  const largeScreen = useMediaQuery("(min-width:640px)");
 
   const name = largeScreen ? session?.event?.name : session?.event?.shortName;
 
