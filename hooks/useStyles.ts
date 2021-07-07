@@ -37,6 +37,9 @@ const useStyles = () =>
       color: "secondary",
       padding: theme.spacing(2, 0, 0, 2),
     },
+    avatar: {
+      backgroundColor: theme.palette.primary.main,
+    },
     cardHeader: {
       backgroundColor: theme.palette.secondary.main,
       color: theme.palette.secondary.contrastText,

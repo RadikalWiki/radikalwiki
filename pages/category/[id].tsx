@@ -20,6 +20,8 @@ import {
   ListItemText,
   TextField,
   Typography,
+  Avatar,
+  ListItemAvatar,
 } from "@material-ui/core";
 
 let catLetter = 0;
@@ -103,18 +105,19 @@ export default function Id() {
                     component={NextLink}
                     href={`/content/${content.id}`}
                   >
-                    <ListItemText
-                      primary={`${getCategoryLetter()}: ${content.name}`}
-                    />
+                    <ListItemAvatar>
+                      <Avatar className={classes.avatar}>
+                        {getCategoryLetter()}
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText primary={content.name} />
                   </ListItem>
                 </Fragment>
               )
           )}
           {data?.category.contents.length == 0 && (
             <ListItem button>
-              <ListItemText
-                primary="Intet indhold"
-              />
+              <ListItemText primary="Intet indhold" />
             </ListItem>
           )}
         </List>
