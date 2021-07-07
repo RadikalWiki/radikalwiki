@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { useRouter } from "next/router";
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Dialog,
   DialogTitle,
@@ -13,7 +12,7 @@ import {
 import { Event } from "@material-ui/icons";
 import { EVENTS_GET, EVENT_GET_ROLE } from "gql";
 import { useQuery, useApolloClient } from "@apollo/client";
-import { useSession } from "hooks";
+import { useSession, useStyles } from "hooks";
 
 const getRoles = (userId: string, group: any) => {
   const roles = new Set();
@@ -23,13 +22,6 @@ const getRoles = (userId: string, group: any) => {
   }
   return [...roles];
 };
-
-const useStyles = makeStyles({
-  avatar: {
-    backgroundColor: "primary",
-    color: "primary",
-  },
-});
 
 export default function EventDialog({
   open,
