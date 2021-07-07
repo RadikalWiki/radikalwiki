@@ -6,7 +6,6 @@ import { CATEGORIES_GET } from "gql";
 import {
   Breadcrumbs,
   Card,
-  CardContent,
   Divider,
   Link,
   List,
@@ -59,19 +58,17 @@ export default function Index() {
   return (
     <>
       <Card className={classes.card}>
-        <CardContent>
-          <Breadcrumbs>
-            <Link component={NextLink} color="primary" href="/category">
-              <Typography>Indhold</Typography>
-            </Link>
-            <Autocomplete
-              freeSolo
-              onChange={onChange}
-              options={categories}
-              renderInput={renderInput}
-            />
-          </Breadcrumbs>
-        </CardContent>
+        <Breadcrumbs className={classes.bread}>
+          <Link component={NextLink} color="primary" href="/category">
+            <Typography className={classes.breadText}>Indhold</Typography>
+          </Link>
+          <Autocomplete
+            freeSolo
+            onChange={onChange}
+            options={categories}
+            renderInput={renderInput}
+          />
+        </Breadcrumbs>
       </Card>
       <Card className={classes.card}>
         <List className={classes.list}>

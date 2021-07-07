@@ -22,7 +22,6 @@ import {
   Typography,
   Avatar,
   ListItemAvatar,
-  CardContent,
 } from "@material-ui/core";
 
 let catLetter = 0;
@@ -76,22 +75,22 @@ export default function Id() {
   return (
     <>
       <Card className={classes.card}>
-        <CardContent>
-          <Breadcrumbs>
-            <Link component={NextLink} color="primary" href="/category">
-              <Typography>Indhold</Typography>
-            </Link>
-            <Link component={NextLink} color="primary" href={`/category/${id}`}>
-              <Typography>{data?.category.name}</Typography>
-            </Link>
-            <Autocomplete
-              freeSolo
-              options={contents}
-              onChange={onChange}
-              renderInput={renderInput}
-            />
-          </Breadcrumbs>
-        </CardContent>
+        <Breadcrumbs className={classes.bread}>
+          <Link component={NextLink} color="primary" href="/category">
+            <Typography className={classes.breadText}>Indhold</Typography>
+          </Link>
+          <Link component={NextLink} color="primary" href={`/category/${id}`}>
+            <Typography className={classes.breadText}>
+              {data?.category.name}
+            </Typography>
+          </Link>
+          <Autocomplete
+            freeSolo
+            options={contents}
+            onChange={onChange}
+            renderInput={renderInput}
+          />
+        </Breadcrumbs>
       </Card>
       <Card className={classes.card}>
         <List className={classes.list}>

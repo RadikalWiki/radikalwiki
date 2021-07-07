@@ -9,7 +9,6 @@ import {
   Link,
   Typography,
   Box,
-  CardContent,
 } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
@@ -28,16 +27,18 @@ export default function Id() {
   return (
     <>
       <Card className={classes.card}>
-        <CardContent>
-          <Breadcrumbs>
+        <Box>
+          <Breadcrumbs className={classes.bread}>
             <Link component={NextLink} color="primary" href="/group">
-              <Typography>Grupper</Typography>
+              <Typography className={classes.breadText}>Grupper</Typography>
             </Link>
             <Link component={NextLink} color="primary" href={`/group/${id}`}>
-              <Typography>{group?.name}</Typography>
+              <Typography className={classes.breadText}>
+                {group?.name}
+              </Typography>
             </Link>
           </Breadcrumbs>
-        </CardContent>
+        </Box>
       </Card>
       <AddMembershipsFab groupId={id as string} />
     </>
