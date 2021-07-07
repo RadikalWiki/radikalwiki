@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Button, Menu, MenuItem } from "@material-ui/core";
+import { Button, Menu, MenuItem, useMediaQuery } from "@material-ui/core";
 import { Link } from "comps";
-
 import { AccountCircle } from "@material-ui/icons";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
@@ -19,6 +18,7 @@ export default function UserButton() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [loginDialog, setLoginDialog] = useState(false);
   const [mode, setMode] = useState<"login" | "register">("login");
+  const largeScreen = useMediaQuery("(min-width:600px)");
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -40,10 +40,14 @@ export default function UserButton() {
     setLoginDialog(true);
   };
 
+  const name = largeScreen
+    ? session?.displayName
+    : abriviateName(session?.displayName);
+
   return (
     <>
       <Button color="inherit" onClick={handleClick} endIcon={<AccountCircle />}>
-        {session?.displayName ? abriviateName(session?.displayName) : "Log ind"}
+        {session?.displayName ? name : "Log ind"}
       </Button>
       <Menu
         anchorOrigin={{

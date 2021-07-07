@@ -6,6 +6,7 @@ import {
   IconButton,
   Typography,
   Tooltip,
+  useMediaQuery,
 } from "@material-ui/core";
 
 import { Menu, ArrowDropDown } from "@material-ui/icons";
@@ -19,6 +20,9 @@ export default function TopBar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [eventDialog, setEventDialog] = useState(false);
   const { signedIn } = useAuth();
+  const largeScreen = useMediaQuery("(min-width:600px)");
+
+  const name = largeScreen ? session?.event?.name : session?.event?.shortName;
 
   return (
     <>
@@ -41,7 +45,7 @@ export default function TopBar() {
                 onClick={() => setEventDialog(true)}
               >
                 <Typography color="inherit" variant="h6">
-                  {session?.event?.shortName || "Vælg begivenhed"}
+                  {name || "Vælg begivenhed"}
                 </Typography>
               </Button>
             </Tooltip>,
