@@ -79,7 +79,7 @@ export default function Id() {
               color="primary"
               href={`/category/${content?.category.id}`}
             >
-              {content?.category.name}
+              {content?.category.name || ""}
             </Link>
             {content?.parent && (
               <Link
@@ -87,11 +87,11 @@ export default function Id() {
                 color="primary"
                 href={`/content/${content?.parent.id}`}
               >
-                {content?.parent.name}
+                {content?.parent.name || ""}
               </Link>
             )}
             <Link component={NextLink} color="primary" href={`/content/${id}`}>
-              {content?.name}
+              {content?.name || ""}
             </Link>
           </Breadcrumbs>
         </Card>
