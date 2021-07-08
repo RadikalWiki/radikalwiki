@@ -98,12 +98,12 @@ export default function Id() {
       <Fade in={!loading}>
         <Card className={classes.card}>
           <List className={classes.list}>
+            <Divider />
             {data?.category.contents.map(
               (content: { name: any; id: any }) =>
                 (!state ||
                   content.name.toLowerCase().includes(state.toLowerCase())) && (
                   <Fragment key={content.id}>
-                    <Divider />
                     <ListItem
                       button
                       component={NextLink}
@@ -116,6 +116,7 @@ export default function Id() {
                       </ListItemAvatar>
                       <ListItemText primary={content.name} />
                     </ListItem>
+                    <Divider />
                   </Fragment>
                 )
             )}
