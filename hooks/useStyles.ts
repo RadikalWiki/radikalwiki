@@ -142,7 +142,7 @@ const useStyles = () =>
       padding: theme.spacing(0, 0, 2, 2),
     },
     pad: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(4),
     },
     padTop: {
       padding: theme.spacing(4),

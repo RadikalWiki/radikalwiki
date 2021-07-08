@@ -30,7 +30,6 @@ export default function NavBar() {
 
   return (
     <>
-      <div className={classes.pad} />
       <AppBar className={classes.appBar}>
         <BottomNavigation
           value={state}
