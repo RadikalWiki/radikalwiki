@@ -119,9 +119,11 @@ export default function Id() {
               )
             }
           ></CardHeader>
-          <CardContent>
-            <div dangerouslySetInnerHTML={{ __html: content?.data }} />
-          </CardContent>
+          {content?.data && (
+            <CardContent>
+              <div dangerouslySetInnerHTML={{ __html: content?.data }} />
+            </CardContent>
+          )}
         </Card>
       </Fade>
       {content?.children &&
