@@ -124,13 +124,13 @@ export default function Id() {
             }
           />
           <Grid container spacing={2}>
-            {content?.data && (
-              <Grid item xs={9}>
+            <Grid item xs={9}>
+              {content?.data && (
                 <CardContent>
                   <div dangerouslySetInnerHTML={{ __html: content?.data }} />
                 </CardContent>
-              </Grid>
-            )}
+              )}
+            </Grid>
             {
               image &&
               <Grid item xs={3}>
