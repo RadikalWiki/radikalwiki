@@ -24,6 +24,10 @@ const useStyles = () =>
     input: {
       display: "none",
     },
+    image: {
+      padding: theme.spacing(1),
+      margin: theme.spacing(1),
+    },
     text: {
       padding: theme.spacing(2, 2, 2, 2),
     },
@@ -69,6 +73,11 @@ const useStyles = () =>
     card: {
       margin: theme.spacing(1),
       elevation: 3,
+    },
+    contentCard: {
+      margin: theme.spacing(1),
+      elevation: 3,
+      display: "flex",
     },
     list: {
       margin: theme.spacing(0),

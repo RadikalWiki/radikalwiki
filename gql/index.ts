@@ -5,6 +5,10 @@ export const CONTENT_GET = gql`
     content: contents_by_pk(id: $id) {
       id
       name
+      file {
+        path
+        token
+      }
       authors {
         name
         identity {
@@ -105,6 +109,16 @@ export const AUTHORSHIPS_ADD = gql`
   mutation ($objects: [authorships_insert_input!]!) {
     insert_authorships(objects: $objects) {
       affected_rows
+    }
+  }
+`;
+
+export const FILES_ADD = gql`
+  mutation ($objects: [files_insert_input!]!) {
+    insert_files(objects: $objects) {
+      returning {
+        id
+      }
     }
   }
 `;

@@ -28,7 +28,10 @@ import {
   Tooltip,
   Typography,
   Fade,
+  Grid,
+  Paper,
 } from "@material-ui/core";
+import Image from "material-ui-image";
 
 let changeNumber = 0;
 const getChangeNumber = () => {
@@ -66,6 +69,7 @@ export default function Id() {
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
+  const image = content?.file ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}` : null;
   return (
     <>
       <Fade in={!loading}>
@@ -118,12 +122,24 @@ export default function Id() {
                 </Link>
               )
             }
-          ></CardHeader>
-          {content?.data && (
-            <CardContent>
-              <div dangerouslySetInnerHTML={{ __html: content?.data }} />
-            </CardContent>
-          )}
+          />
+          <Grid container spacing={2}>
+            {content?.data && (
+              <Grid item xs={9}>
+                <CardContent>
+                  <div dangerouslySetInnerHTML={{ __html: content?.data }} />
+                </CardContent>
+              </Grid>
+            )}
+            {
+              image &&
+              <Grid item xs={3}>
+                <Paper className={classes.image}>
+                  <Image src={image} />
+                </Paper>
+              </Grid>
+            }
+          </Grid>
         </Card>
       </Fade>
       {content?.children &&
@@ -165,11 +181,10 @@ export default function Id() {
                 {content?.children.length == 0 && (
                   <ListItem button>
                     <ListItemText
-                      primary={`Ingen ${
-                        content.category.childMode == "changes"
-                          ? "ændringsforslag"
-                          : "kandidaturer"
-                      }`}
+                      primary={`Ingen ${content.category.childMode == "changes"
+                        ? "ændringsforslag"
+                        : "kandidaturer"
+                        }`}
                     />
                   </ListItem>
                 )}

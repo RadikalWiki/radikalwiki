@@ -93,11 +93,11 @@ export default function Id() {
       </Card>
       <Card className={classes.card}>
         <CardActions>
-          {/*<FileUploader>
+          <FileUploader contentId={content?.id} >
             <Button variant="contained" component="span">
               Upload Billede
             </Button>
-          </FileUploader>*/}
+          </FileUploader>
           <ButtonGroup variant="contained" color="primary">
             <Button endIcon={<Save />} onClick={handleSave(false)}>
               Gem
