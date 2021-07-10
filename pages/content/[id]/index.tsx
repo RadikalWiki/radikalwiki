@@ -33,12 +33,6 @@ import {
 } from "@material-ui/core";
 import Image from "material-ui-image";
 
-let changeNumber = 0;
-const getChangeNumber = () => {
-  changeNumber += 1;
-  return changeNumber;
-};
-
 export default function Id() {
   const [session] = useSession();
   const classes = useStyles();
@@ -51,6 +45,12 @@ export default function Id() {
   } = useQuery(CONTENT_GET, {
     variables: { id },
   });
+
+  let changeNumber = 0;
+  const getChangeNumber = () => {
+    changeNumber += 1;
+    return changeNumber;
+  };
 
   const [deletePoll] = useMutation(POLL_DEL);
 
