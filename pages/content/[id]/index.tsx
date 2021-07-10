@@ -6,10 +6,10 @@ import {
   AddChildButton,
 } from "comps";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation, useSubscription } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
-import { Cancel, HowToVote, Edit } from "@material-ui/icons";
-import { CONTENT_GET, POLL_DEL } from "gql";
+import { Cancel, HowToVote, Edit, Public, Lock } from "@material-ui/icons";
+import { CONTENT_SUB, CONTENT_DELETE, POLL_DEL } from "gql";
 import {
   Avatar,
   Badge,
@@ -42,9 +42,11 @@ export default function Id() {
     loading,
     data: { content } = {},
     error,
-  } = useQuery(CONTENT_GET, {
+  } = useSubscription(CONTENT_SUB, {
     variables: { id },
   });
+  const [deleteContent] = useMutation(CONTENT_DELETE);
+  const [deletePoll] = useMutation(POLL_DEL);
 
   let changeNumber = 0;
   const getChangeNumber = () => {
@@ -52,24 +54,30 @@ export default function Id() {
     return changeNumber;
   };
 
-  const [deletePoll] = useMutation(POLL_DEL);
+  const handleDeleteContent = (value: any) => (_: any) => {
+    deleteContent({ variables: { id: value } });
+  };
 
   const handleDeletePoll = (value: any) => (_: any) => {
     deletePoll({ variables: { id: value } });
   };
 
   const editable =
-    session?.user.id === content?.creatorId ||
-    (content?.authors.some(
-      (a: any) => a.identity?.user?.id === session?.user.id
-    ) &&
-      !content?.category.lockContent) ||
+    ((session?.user.id === content?.creatorId ||
+      (content?.authors.some(
+        (a: any) => a.identity?.user?.id === session?.user.id
+      ) &&
+        ((!content?.parent && !content?.category.lockContent) ||
+          (content?.parent && !content?.category.lockChildren)))) &&
+      !content?.published) ||
     session?.roles.includes("admin");
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
-  const image = content?.file ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}` : null;
+  const image = content?.file
+    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}`
+    : null;
   return (
     <>
       <Fade in={!loading}>
@@ -104,7 +112,11 @@ export default function Id() {
         <Card className={classes.card}>
           <CardHeader
             title={content?.name}
-            subheader={formatAuthors(content?.authors)}
+            subheader={
+              !(content?.parent && content?.category.childMode === "candidates")
+                ? formatAuthors(content?.authors)
+                : ""
+            }
             action={
               editable && (
                 <Link
@@ -131,14 +143,13 @@ export default function Id() {
                 </CardContent>
               )}
             </Grid>
-            {
-              image &&
+            {image && (
               <Grid item xs={3}>
                 <Paper className={classes.image}>
                   <Image src={image} />
                 </Paper>
               </Grid>
-            }
+            )}
           </Grid>
         </Card>
       </Fade>
@@ -160,31 +171,72 @@ export default function Id() {
               ></CardHeader>
               <List>
                 {content?.children.map(
-                  (child: { name: any; id: any; authors: any }) => (
+                  (child: {
+                    name: any;
+                    id: any;
+                    authors: any;
+                    published: boolean;
+                  }) => (
                     <ListItem
                       button
                       component={NextLink}
                       href={`/content/${child.id}`}
                     >
                       <ListItemAvatar>
-                        <Avatar className={classes.avatar}>
-                          {getChangeNumber()}
-                        </Avatar>
+                        <Badge
+                          badgeContent={
+                            child.published ? getChangeNumber() : null
+                          }
+                          color="primary"
+                        >
+                          <Avatar>
+                            {child.published ? (
+                              <Tooltip title="Indsendt">
+                                <Public color="secondary" />
+                              </Tooltip>
+                            ) : (
+                              <Tooltip title="Ikke Indsendt">
+                                <Lock color="primary" />
+                              </Tooltip>
+                            )}
+                          </Avatar>
+                        </Badge>
                       </ListItemAvatar>
                       <ListItemText
                         primary={child.name}
-                        secondary={content.category.childMode == "changes" ? formatAuthors(child?.authors) : ""}
+                        secondary={
+                          content.category.childMode == "changes"
+                            ? formatAuthors(child?.authors)
+                            : !child.published
+                            ? "Ikke indsendt"
+                            : "Indsendt"
+                        }
                       />
+                      {!child?.published && (
+                        <ListItemSecondaryAction>
+                          <Tooltip title="Slet">
+                            <IconButton
+                              onClick={handleDeleteContent(child.id)}
+                              color="primary"
+                              edge="end"
+                              aria-label="Fjern indhold"
+                            >
+                              <Cancel />
+                            </IconButton>
+                          </Tooltip>
+                        </ListItemSecondaryAction>
+                      )}
                     </ListItem>
                   )
                 )}
                 {content?.children.length == 0 && (
                   <ListItem button>
                     <ListItemText
-                      primary={`Ingen ${content.category.childMode == "changes"
-                        ? "ændringsforslag"
-                        : "kandidaturer"
-                        }`}
+                      primary={`Ingen ${
+                        content.category.childMode == "changes"
+                          ? "ændringsforslag"
+                          : "kandidaturer"
+                      }`}
                     />
                   </ListItem>
                 )}

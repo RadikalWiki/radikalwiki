@@ -1,10 +1,12 @@
 import { gql } from "@apollo/client";
 
-export const CONTENT_GET = gql`
-  query ($id: uuid!) {
+export const CONTENT_SUB = gql`
+  subscription ($id: uuid!) {
     content: contents_by_pk(id: $id) {
       id
       name
+      creatorId
+      published
       file {
         id
         path
@@ -34,9 +36,74 @@ export const CONTENT_GET = gql`
           id
         }
       }
-      children {
+      children(order_by: { published: asc, createdAt: asc }) {
         name
         id
+        published
+        authors {
+          name
+          identity {
+            displayName
+            user {
+              id
+            }
+          }
+        }
+      }
+      polls {
+        id
+        createdAt
+        total: votes_aggregate(where: {}) {
+          aggregate {
+            count
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const CONTENT_GET = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      name
+      creatorId
+      published
+      file {
+        id
+        path
+        token
+      }
+      authors {
+        name
+        email
+        identity {
+          displayName
+          user {
+            id
+          }
+        }
+      }
+      data
+      category {
+        name
+        id
+        childMode
+        lockContent
+        lockChildren
+      }
+      parent {
+        name
+        id
+        parent {
+          id
+        }
+      }
+      children(order_by: { published: asc, createdAt: asc }) {
+        name
+        id
+        published
         authors {
           name
           identity {
@@ -101,6 +168,14 @@ export const CONTENT_ADD = gql`
 export const CONTENT_UPDATE = gql`
   mutation ($id: uuid!, $set: contents_set_input!) {
     update_contents_by_pk(pk_columns: { id: $id }, _set: $set) {
+      id
+    }
+  }
+`;
+
+export const CONTENT_DELETE = gql`
+  mutation ($id: uuid!) {
+    delete_contents_by_pk(id: $id) {
       id
     }
   }

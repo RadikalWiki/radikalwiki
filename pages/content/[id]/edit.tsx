@@ -7,6 +7,7 @@ import Image from "material-ui-image";
 import {
   CONTENT_GET,
   CONTENT_UPDATE,
+  CONTENT_DELETE,
   AUTHORSHIPS_ADD,
   CONTENT_DELETE_AUTHORSHIPS,
 } from "gql";
@@ -23,9 +24,12 @@ import {
   ButtonGroup,
   Paper,
 } from "@material-ui/core";
-import { Publish, Save } from "@material-ui/icons";
+import { Publish, Save, Delete } from "@material-ui/icons";
 
-const getFileUrl = (file: any) => file ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file.path}?token=${file.token}` : null;
+const getFileUrl = (file: any) =>
+  file
+    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file.path}?token=${file.token}`
+    : null;
 
 export default function Id() {
   const [session] = useSession();
@@ -40,13 +44,18 @@ export default function Id() {
     variables: { id },
   });
   const [updateContent] = useMutation(CONTENT_UPDATE);
+  const [deleteContent] = useMutation(CONTENT_DELETE);
   const [delAuthors] = useMutation(CONTENT_DELETE_AUTHORSHIPS);
   const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
 
   const [name, setName] = useState("");
   const [authors, setAuthors] = useState([]);
   const [data, setData] = useState("");
-  const [image, setImage] = useState<{ id: string, path: string, token: string } | null>(null);
+  const [image, setImage] = useState<{
+    id: string;
+    path: string;
+    token: string;
+  } | null>(null);
 
   useEffect(() => {
     if (content) {
@@ -58,15 +67,28 @@ export default function Id() {
   }, [content]);
 
   const handleSave = (published: boolean) => async () => {
-    await updateContent({ variables: { id, set: { name, data, published, fileId: image?.id } } });
+    await updateContent({
+      variables: { id, set: { name, data, published, fileId: image?.id } },
+    });
     await delAuthors({ variables: { contentId: id } });
     const objects = authors.map((author: any) =>
-      author.identity?.email
-        ? { contentId: id, email: author.identity.email }
+      author.email || author.identity?.email
+        ? { contentId: id, email: author.email ?? author.identity?.email }
         : { contentId: id, name: author.name }
     );
-    const res = await addAuthors({ variables: { objects } });
+    await addAuthors({ variables: { objects } });
   };
+
+  const handleDelete = async () => {
+    await deleteContent({ variables: { id } });
+
+    if (content.parent) {
+      router.push(`/content/${content.parent.id}`);
+    } else {
+      router.push(`/category/${content.category.id}`);
+    }
+  };
+  console.log(content);
 
   return (
     <>
@@ -98,6 +120,14 @@ export default function Id() {
       </Card>
       <Card className={classes.card}>
         <CardActions>
+          <Button
+            variant="contained"
+            color="primary"
+            endIcon={<Delete />}
+            onClick={handleDelete}
+          >
+            Slet
+          </Button>
           <ButtonGroup variant="contained" color="primary">
             <Button endIcon={<Save />} onClick={handleSave(false)}>
               Gem
@@ -124,26 +154,28 @@ export default function Id() {
             <Grid item xs={12}>
               <Grid container>
                 <Grid item xs={9}>
-                  <FileUploader contentId={content?.id} onNewFile={setImage} >
-                    <Button variant="contained" color="primary" component="span">
+                  <FileUploader contentId={content?.id} onNewFile={setImage}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      component="span"
+                    >
                       Upload Billede
                     </Button>
                   </FileUploader>
                 </Grid>
-                {
-                  image &&
+                {image && (
                   <Grid item xs={3}>
                     <Paper className={classes.image}>
                       <Image src={getFileUrl(image) || ""} />
                     </Paper>
                   </Grid>
-                }
+                )}
               </Grid>
             </Grid>
-
           </Grid>
         </CardContent>
-      </Card >
+      </Card>
       <Editor value={data} onChange={setData} />
     </>
   );
