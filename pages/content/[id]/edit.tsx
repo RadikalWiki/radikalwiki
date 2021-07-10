@@ -3,7 +3,7 @@ import { Link as NextLink, AuthorTextField, FileUploader, Editor } from "comps";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
-
+import Image from "material-ui-image";
 import {
   CONTENT_GET,
   CONTENT_UPDATE,
@@ -21,8 +21,11 @@ import {
   TextField,
   Grid,
   ButtonGroup,
+  Paper,
 } from "@material-ui/core";
 import { Publish, Save } from "@material-ui/icons";
+
+const getFileUrl = (file: any) => file ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file.path}?token=${file.token}` : null;
 
 export default function Id() {
   const [session] = useSession();
@@ -43,17 +46,19 @@ export default function Id() {
   const [name, setName] = useState("");
   const [authors, setAuthors] = useState([]);
   const [data, setData] = useState("");
+  const [image, setImage] = useState<{ id: string, path: string, token: string } | null>(null);
 
   useEffect(() => {
     if (content) {
       setName(content.name);
       setAuthors(content.authors);
       setData(content.data);
+      setImage(content.file);
     }
   }, [content]);
 
   const handleSave = (published: boolean) => async () => {
-    await updateContent({ variables: { id, set: { name, data, published } } });
+    await updateContent({ variables: { id, set: { name, data, published, fileId: image?.id } } });
     await delAuthors({ variables: { contentId: id } });
     const objects = authors.map((author: any) =>
       author.identity?.email
@@ -93,11 +98,6 @@ export default function Id() {
       </Card>
       <Card className={classes.card}>
         <CardActions>
-          <FileUploader contentId={content?.id} >
-            <Button variant="contained" component="span">
-              Upload Billede
-            </Button>
-          </FileUploader>
           <ButtonGroup variant="contained" color="primary">
             <Button endIcon={<Save />} onClick={handleSave(false)}>
               Gem
@@ -121,9 +121,29 @@ export default function Id() {
             <Grid item xs={12}>
               <AuthorTextField value={authors} onChange={setAuthors} />
             </Grid>
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item xs={9}>
+                  <FileUploader contentId={content?.id} onNewFile={setImage} >
+                    <Button variant="contained" color="primary" component="span">
+                      Upload Billede
+                    </Button>
+                  </FileUploader>
+                </Grid>
+                {
+                  image &&
+                  <Grid item xs={3}>
+                    <Paper className={classes.image}>
+                      <Image src={getFileUrl(image)} />
+                    </Paper>
+                  </Grid>
+                }
+              </Grid>
+            </Grid>
+
           </Grid>
         </CardContent>
-      </Card>
+      </Card >
       <Editor value={data} onChange={setData} />
     </>
   );

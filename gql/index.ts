@@ -6,6 +6,7 @@ export const CONTENT_GET = gql`
       id
       name
       file {
+        id
         path
         token
       }
