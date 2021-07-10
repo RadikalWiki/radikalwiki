@@ -20,6 +20,7 @@ export default function Login() {
 
   const user = data?.user;
   const unknown = session?.user.email == session?.displayName;
+  console.log(data)
   return (
     <>
       <HeaderCard title="Profil" avatar={<AccountCircle />}>

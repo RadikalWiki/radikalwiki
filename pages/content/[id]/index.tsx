@@ -54,12 +54,12 @@ export default function Id() {
     return changeNumber;
   };
 
-  const handleDeleteContent = (value: any) => (_: any) => {
-    deleteContent({ variables: { id: value } });
+  const handleDeleteContent = (value: any) => async (_: any) => {
+    await deleteContent({ variables: { id: value } });
   };
 
-  const handleDeletePoll = (value: any) => (_: any) => {
-    deletePoll({ variables: { id: value } });
+  const handleDeletePoll = (value: any) => async (_: any) => {
+    await deletePoll({ variables: { id: value } });
   };
 
   const editable =
@@ -212,7 +212,7 @@ export default function Id() {
                             : "Indsendt"
                         }
                       />
-                      {!child?.published && (
+                      {!child?.published || session?.roles.includes("admin") && (
                         <ListItemSecondaryAction>
                           <Tooltip title="Slet">
                             <IconButton

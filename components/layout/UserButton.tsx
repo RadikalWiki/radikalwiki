@@ -32,6 +32,7 @@ export default function UserButton() {
     await auth.logout();
     setSession(null);
     setAnchorEl(null);
+    router.push("/")
   };
 
   const handleLogin = (mode: "login" | "register") => () => {

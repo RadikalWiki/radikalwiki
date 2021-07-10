@@ -15,24 +15,24 @@ export default function AddChildButton({ content }: { content: any }) {
   const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
 
   const contentType =
-    content.category.childMode == "candidates"
+    content?.category.childMode == "candidates"
       ? "Kandidatur"
       : "Ændringsforslag";
   const name =
-    content.category.childMode == "candidates"
-      ? session.displayName
+    content?.category.childMode == "candidates"
+      ? session?.displayName
       : content?.parent
-      ? `Ændringsforslag ${content.children.length + 1} til "${content.name}"`
-      : `Ændringsforslag ${content.children.length + 1}`;
+      ? `Ændringsforslag ${content?.children.length + 1} til "${content?.name}"`
+      : `Ændringsforslag ${content?.children.length + 1}`;
 
   const handleSubmit = async () => {
     const { data } = await addContent({
       variables: {
         name,
-        categoryId: content.category.id,
+        categoryId: content?.category.id,
         data: "",
-        creatorId: session.user.id,
-        parentId: content.id,
+        creatorId: session?.user.id,
+        parentId: content?.id,
       },
     });
     const objects = [
