@@ -129,6 +129,7 @@ export default function Id() {
           >
             Slet
           </Button>
+          <div className={classes.flexGrow} />
           <ButtonGroup variant="contained" color="primary">
             <Button endIcon={<Save />} onClick={handleSave(false)}>
               Gem

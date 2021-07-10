@@ -8,8 +8,15 @@ import {
 import { useRouter } from "next/router";
 import { useMutation, useSubscription } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
-import { Cancel, HowToVote, Edit, Public, Lock } from "@material-ui/icons";
-import { CONTENT_SUB, CONTENT_DELETE, POLL_DEL } from "gql";
+import {
+  Cancel,
+  HowToVote,
+  Edit,
+  Public,
+  Lock,
+  Publish,
+} from "@material-ui/icons";
+import { CONTENT_SUB, CONTENT_UPDATE, CONTENT_DELETE, POLL_DEL } from "gql";
 import {
   Avatar,
   Badge,
@@ -30,6 +37,7 @@ import {
   Fade,
   Grid,
   Paper,
+  ButtonGroup,
 } from "@material-ui/core";
 import Image from "material-ui-image";
 
@@ -45,6 +53,7 @@ export default function Id() {
   } = useSubscription(CONTENT_SUB, {
     variables: { id },
   });
+  const [updateContent] = useMutation(CONTENT_UPDATE);
   const [deleteContent] = useMutation(CONTENT_DELETE);
   const [deletePoll] = useMutation(POLL_DEL);
 
@@ -60,6 +69,12 @@ export default function Id() {
 
   const handleDeletePoll = (value: any) => async (_: any) => {
     await deletePoll({ variables: { id: value } });
+  };
+
+  const handlePublish = async () => {
+    await updateContent({
+      variables: { id, set: { published: true } },
+    });
   };
 
   const editable =
@@ -118,21 +133,22 @@ export default function Id() {
                 : ""
             }
             action={
-              editable && (
-                <Link
-                  component={NextLink}
-                  color="primary"
-                  href={`/content/${content?.id}/edit`}
-                >
+              <ButtonGroup variant="contained" color="primary">
+                {!content?.published && (
+                  <Button endIcon={<Publish />} onClick={handlePublish}>
+                    Indsend
+                  </Button>
+                )}
+                {editable && (
                   <Button
-                    variant="contained"
-                    color="primary"
+                    component={Link}
                     endIcon={<Edit />}
+                    href={`/content/${content?.id}/edit`}
                   >
                     Rediger
                   </Button>
-                </Link>
-              )
+                )}
+              </ButtonGroup>
             }
           />
           <Grid container spacing={2}>
@@ -212,20 +228,21 @@ export default function Id() {
                             : "Indsendt"
                         }
                       />
-                      {!child?.published || session?.roles.includes("admin") && (
-                        <ListItemSecondaryAction>
-                          <Tooltip title="Slet">
-                            <IconButton
-                              onClick={handleDeleteContent(child.id)}
-                              color="primary"
-                              edge="end"
-                              aria-label="Fjern indhold"
-                            >
-                              <Cancel />
-                            </IconButton>
-                          </Tooltip>
-                        </ListItemSecondaryAction>
-                      )}
+                      {!child?.published ||
+                        (session?.roles.includes("admin") && (
+                          <ListItemSecondaryAction>
+                            <Tooltip title="Slet">
+                              <IconButton
+                                onClick={handleDeleteContent(child.id)}
+                                color="primary"
+                                edge="end"
+                                aria-label="Fjern indhold"
+                              >
+                                <Cancel />
+                              </IconButton>
+                            </Tooltip>
+                          </ListItemSecondaryAction>
+                        ))}
                     </ListItem>
                   )
                 )}
