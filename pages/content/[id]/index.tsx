@@ -77,6 +77,11 @@ export default function Id() {
     });
   };
 
+  // TODO: properly style MUI buttons with next.js
+  const handleEdit = async () => {
+    router.push(`/content/${content?.id}/edit`)
+  };
+
   const editable =
     ((session?.user.id === content?.creatorId ||
       (content?.authors.some(
@@ -134,18 +139,17 @@ export default function Id() {
             }
             action={
               <ButtonGroup variant="contained" color="primary">
+                {editable && (
+                  <Button
+                    endIcon={<Edit />}
+                    onClick={handleEdit}
+                  >
+                    Rediger
+                  </Button>
+                )}
                 {!content?.published && (
                   <Button endIcon={<Publish />} onClick={handlePublish}>
                     Indsend
-                  </Button>
-                )}
-                {editable && (
-                  <Button
-                    component={Link}
-                    endIcon={<Edit />}
-                    href={`/content/${content?.id}/edit`}
-                  >
-                    Rediger
                   </Button>
                 )}
               </ButtonGroup>
