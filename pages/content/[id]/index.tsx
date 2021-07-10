@@ -160,11 +160,11 @@ export default function Id() {
               ></CardHeader>
               <List>
                 {content?.children.map(
-                  (content: { name: any; id: any; authors: any }) => (
+                  (child: { name: any; id: any; authors: any }) => (
                     <ListItem
                       button
                       component={NextLink}
-                      href={`/content/${content.id}`}
+                      href={`/content/${child.id}`}
                     >
                       <ListItemAvatar>
                         <Avatar className={classes.avatar}>
@@ -172,8 +172,8 @@ export default function Id() {
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={content.name}
-                        secondary={formatAuthors(content?.authors)}
+                        primary={child.name}
+                        secondary={content.category.childMode == "changes" ? formatAuthors(child?.authors) : ""}
                       />
                     </ListItem>
                   )
