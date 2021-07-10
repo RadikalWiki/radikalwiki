@@ -134,7 +134,7 @@ export default function Id() {
                   image &&
                   <Grid item xs={3}>
                     <Paper className={classes.image}>
-                      <Image src={getFileUrl(image)} />
+                      <Image src={getFileUrl(image) || ""} />
                     </Paper>
                   </Grid>
                 }
