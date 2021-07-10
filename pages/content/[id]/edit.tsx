@@ -77,6 +77,7 @@ export default function Id() {
         : { contentId: id, name: author.name }
     );
     await addAuthors({ variables: { objects } });
+    router.push(`/content/${id}`);
   };
 
   const handleDelete = async () => {
