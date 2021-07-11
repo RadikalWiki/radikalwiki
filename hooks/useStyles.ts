@@ -31,6 +31,16 @@ const useStyles = () =>
     text: {
       padding: theme.spacing(2, 2, 2, 2),
     },
+    expand: {
+      transform: 'rotate(0deg)',
+      marginLeft: 'auto',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+      }),
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)',
+    },
     creatorText: {
       padding: theme.spacing(0, 0, 0, 4),
     },

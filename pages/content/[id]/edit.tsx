@@ -6,6 +6,7 @@ import {
   Editor,
   AutoButton,
 } from "comps";
+import clsx from "clsx";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
@@ -18,6 +19,8 @@ import {
   CONTENT_DELETE_AUTHORSHIPS,
 } from "gql";
 import {
+  Divider,
+  IconButton,
   Breadcrumbs,
   Button,
   Card,
@@ -27,11 +30,12 @@ import {
   CardContent,
   TextField,
   Grid,
-  ButtonGroup,
   Paper,
   CardHeader,
+  Tooltip,
+  Collapse,
 } from "@material-ui/core";
-import { Publish, Save, Delete } from "@material-ui/icons";
+import { Publish, Save, Delete, ExpandMore } from "@material-ui/icons";
 
 const getFileUrl = (file: any) =>
   file
@@ -55,6 +59,7 @@ export default function Id() {
   const [delAuthors] = useMutation(CONTENT_DELETE_AUTHORSHIPS);
   const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
 
+  const [expand, setExpand] = useState(true);
   const [name, setName] = useState("");
   const [authors, setAuthors] = useState([]);
   const [data, setData] = useState("");
@@ -155,47 +160,62 @@ export default function Id() {
                   onClick={handleSave(true)}
                 />
               )}
+              <Divider orientation="vertical" flexItem />
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expand,
+                })}
+                color="primary"
+                onClick={() => setExpand(!expand)}
+              >
+                <Tooltip title={expand ? "Skjul" : "Vis"}>
+                  <ExpandMore />
+                </Tooltip>
+              </IconButton>
             </CardActions>
           }
         />
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                value={name}
-                onChange={(e: any) => setName(e.target.value)}
-                label="Titel"
-                variant="outlined"
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <AuthorTextField value={authors} onChange={setAuthors} />
-            </Grid>
-            <Grid item xs={12}>
-              <Grid container>
-                <Grid item xs={9}>
-                  <FileUploader contentId={content?.id} onNewFile={setImage}>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      component="span"
-                    >
-                      Upload Billede
-                    </Button>
-                  </FileUploader>
-                </Grid>
-                {image && (
-                  <Grid item xs={3}>
-                    <Paper className={classes.image}>
-                      <Image src={getFileUrl(image) || ""} />
-                    </Paper>
+        <Divider />
+        <Collapse in={expand} timeout="auto">
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  value={name}
+                  onChange={(e: any) => setName(e.target.value)}
+                  label="Titel"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <AuthorTextField value={authors} onChange={setAuthors} />
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container>
+                  <Grid item xs={9}>
+                    <FileUploader contentId={content?.id} onNewFile={setImage}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        component="span"
+                      >
+                        Upload Billede
+                      </Button>
+                    </FileUploader>
                   </Grid>
-                )}
+                  {image && (
+                    <Grid item xs={3}>
+                      <Paper className={classes.image}>
+                        <Image src={getFileUrl(image) || ""} />
+                      </Paper>
+                    </Grid>
+                  )}
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
+          </CardContent>
+        </Collapse>
       </Card>
       <Editor value={data} onChange={setData} />
     </>

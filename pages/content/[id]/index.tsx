@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Link as NextLink,
   HeaderCard,
@@ -6,6 +6,7 @@ import {
   AddChildButton,
   AutoButton,
 } from "comps";
+import clsx from "clsx";
 import { useRouter } from "next/router";
 import { useMutation, useSubscription } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
@@ -17,17 +18,19 @@ import {
   Lock,
   Publish,
   Delete,
+  ExpandMore,
 } from "@material-ui/icons";
 import { CONTENT_SUB, CONTENT_UPDATE, CONTENT_DELETE, POLL_DEL } from "gql";
 import {
   Avatar,
   Badge,
   Breadcrumbs,
-  Button,
+  Collapse,
   Card,
   CardContent,
   CardHeader,
   CardActions,
+  Divider,
   IconButton,
   Link,
   List,
@@ -40,8 +43,6 @@ import {
   Fade,
   Grid,
   Paper,
-  ButtonGroup,
-  useMediaQuery,
 } from "@material-ui/core";
 import Image from "material-ui-image";
 
@@ -57,6 +58,7 @@ export default function Id() {
   } = useSubscription(CONTENT_SUB, {
     variables: { id },
   });
+  const [expand, setExpand] = useState(true);
   const [updateContent] = useMutation(CONTENT_UPDATE);
   const [deleteContent] = useMutation(CONTENT_DELETE);
   const [deletePoll] = useMutation(POLL_DEL);
@@ -153,45 +155,64 @@ export default function Id() {
                 : ""
             }
             action={
-              editable && (
-                <CardActions>
+              <CardActions>
+                {editable && [
                   <AutoButton
+                    key="delete"
                     text="Slet"
                     icon={<Delete />}
                     onClick={handleDelete}
-                  />
+                  />,
                   <AutoButton
+                    key="edit"
                     text="Rediger"
                     icon={<Edit />}
                     onClick={handleEdit}
-                  />
-                  {!content?.published && (
+                  />,
+                  !content?.published && (
                     <AutoButton
+                      key="sent"
                       text="Indsend"
                       icon={<Publish />}
                       onClick={handlePublish}
                     />
-                  )}
-                </CardActions>
-              )
+                  ),
+                  <Divider key="divider" orientation="vertical" flexItem />,
+                ]}
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expand,
+                  })}
+                  color="primary"
+                  onClick={() => setExpand(!expand)}
+                >
+                  <Tooltip title={expand ? "Skjul" : "Vis"}>
+                    <ExpandMore />
+                  </Tooltip>
+                </IconButton>
+              </CardActions>
             }
           />
-          <Grid container spacing={2}>
-            <Grid item xs={9}>
-              {content?.data && (
-                <CardContent>
-                  <div dangerouslySetInnerHTML={{ __html: content?.data }} />
-                </CardContent>
+
+          <Divider />
+          <Collapse in={expand} timeout="auto">
+            <Grid container spacing={2}>
+              <Grid item xs={9}>
+                {content?.data && (
+                  <CardContent>
+                    <div dangerouslySetInnerHTML={{ __html: content?.data }} />
+                  </CardContent>
+                )}
+              </Grid>
+              {image && (
+                <Grid item xs={3}>
+                  <Paper className={classes.image}>
+                    <Image src={image} />
+                  </Paper>
+                </Grid>
               )}
             </Grid>
-            {image && (
-              <Grid item xs={3}>
-                <Paper className={classes.image}>
-                  <Image src={image} />
-                </Paper>
-              </Grid>
-            )}
-          </Grid>
+          </Collapse>
         </Card>
       </Fade>
       {content?.children &&
