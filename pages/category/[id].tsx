@@ -10,6 +10,7 @@ import { useQuery } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
 import { CATEGORY_GET } from "gql";
 import { Autocomplete } from "@material-ui/lab";
+import { Subject } from "@material-ui/icons";
 import {
   Breadcrumbs,
   Card,
@@ -23,6 +24,7 @@ import {
   Avatar,
   ListItemAvatar,
   Fade,
+  Tooltip,
 } from "@material-ui/core";
 
 let catLetter = 0;
@@ -78,8 +80,15 @@ export default function Id() {
       <Fade in={!loading}>
         <Card className={classes.card}>
           <Breadcrumbs className={classes.bread}>
-            <Link component={NextLink} color="primary" href="/category">
-              <Typography className={classes.breadText}>Indhold</Typography>
+            <Link
+              component={NextLink}
+              className={classes.breadText}
+              color="primary"
+              href="/category"
+            >
+              <Tooltip title="Indhold">
+                <Subject />
+              </Tooltip>
             </Link>
             <Link component={NextLink} color="primary" href={`/category/${id}`}>
               <Typography className={classes.breadText}>

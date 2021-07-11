@@ -35,7 +35,7 @@ import {
   Tooltip,
   Collapse,
 } from "@material-ui/core";
-import { Publish, Save, Delete, ExpandMore } from "@material-ui/icons";
+import { Publish, Save, Delete, ExpandMore, Subject } from "@material-ui/icons";
 
 const getFileUrl = (file: any) =>
   file
@@ -109,8 +109,15 @@ export default function Id() {
     <>
       <Card className={classes.card}>
         <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/category">
-            <Typography className={classes.breadText}>Indhold</Typography>
+          <Link
+            component={NextLink}
+            className={classes.breadText}
+            color="primary"
+            href="/category"
+          >
+            <Tooltip title="Indhold">
+              <Subject />
+            </Tooltip>
           </Link>
           <Link
             component={NextLink}

@@ -5,6 +5,7 @@ import { useSession, useStyles } from "hooks";
 import { CATEGORIES_GET } from "gql";
 import {
   Avatar,
+  Tooltip,
   Breadcrumbs,
   Card,
   Divider,
@@ -14,7 +15,6 @@ import {
   ListItemAvatar,
   ListItemText,
   TextField,
-  Typography,
   Fade,
 } from "@material-ui/core";
 import { Group, Subject } from "@material-ui/icons";
@@ -63,8 +63,15 @@ export default function Index() {
       <Fade in={!loading}>
         <Card className={classes.card}>
           <Breadcrumbs className={classes.bread}>
-            <Link component={NextLink} color="primary" href="/category">
-              <Typography className={classes.breadText}>Indhold</Typography>
+            <Link
+              component={NextLink}
+              className={classes.breadText}
+              color="primary"
+              href="/category"
+            >
+              <Tooltip title="Indhold">
+                <Subject />
+              </Tooltip>
             </Link>
             <Autocomplete
               freeSolo
