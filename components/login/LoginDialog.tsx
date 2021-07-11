@@ -62,7 +62,10 @@ export default function EventDialog({
 
   const onLogin = async () => {
     try {
-      const { session } = await auth.login({ email: email.toLowerCase(), password });
+      const { session } = await auth.login({
+        email: email.toLowerCase(),
+        password,
+      });
       const { data } = await query(USER_GET_DISPLAY_NAME, {
         id: session?.user.id,
       });
@@ -78,30 +81,19 @@ export default function EventDialog({
       router.push("/");
     } catch (error: any) {
       setError(true);
-      setErrorMsg(error?.response?.data?.message ?? error);
+      setErrorMsg(error?.response?.data?.message ?? String(error));
     }
   };
 
   const onRegister = async () => {
     try {
-      const { session } = await auth.register({ email: email.toLowerCase(), password });
-      const { data } = await query(USER_GET_DISPLAY_NAME, {
-        id: session?.user.id,
-      });
-      const displayName =
-        data?.user.identity?.displayName || session?.user.email;
-      setSession({
-        ...session,
-        event: null,
-        displayName,
-        roles: [],
-      });
-      setOpen(false);
-      router.push("/");
+      await auth.register({ email: email.toLowerCase(), password });
+      router.push("/unverified");
     } catch (error: any) {
       setError(true);
-      setErrorMsg(error?.response?.data?.message ?? error);
+      setErrorMsg(error?.response?.data?.message ?? String(error));
     }
+    setOpen(false);
   };
 
   return (
