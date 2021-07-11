@@ -4,6 +4,7 @@ import {
   HeaderCard,
   ContentAdmin,
   AddChildButton,
+  AutoButton,
 } from "comps";
 import { useRouter } from "next/router";
 import { useMutation, useSubscription } from "@apollo/client";
@@ -40,6 +41,7 @@ import {
   Grid,
   Paper,
   ButtonGroup,
+  useMediaQuery,
 } from "@material-ui/core";
 import Image from "material-ui-image";
 
@@ -110,6 +112,7 @@ export default function Id() {
   const image = content?.file
     ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}`
     : null;
+
   return (
     <>
       <Fade in={!loading}>
@@ -150,31 +153,25 @@ export default function Id() {
                 : ""
             }
             action={
-              <CardActions>
-                {editable && (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    endIcon={<Delete />}
+              editable && (
+                <CardActions>
+                  <AutoButton
+                    text="Slet"
+                    icon={<Delete />}
                     onClick={handleDelete}
-                  >
-                    Slet
-                  </Button>
-                )}
-
-                <ButtonGroup variant="contained" color="primary">
-                  {editable && (
-                    <Button endIcon={<Edit />} onClick={handleEdit}>
-                      Rediger
-                    </Button>
-                  )}
-                  {!content?.published && (
-                    <Button endIcon={<Publish />} onClick={handlePublish}>
-                      Indsend
-                    </Button>
-                  )}
-                </ButtonGroup>
-              </CardActions>
+                  />
+                  <AutoButton
+                    text="Rediger"
+                    icon={<Edit />}
+                    onClick={handleEdit}
+                  />
+                  <AutoButton
+                    text="Indsend"
+                    icon={<Publish />}
+                    onClick={handlePublish}
+                  />
+                </CardActions>
+              )
             }
           />
           <Grid container spacing={2}>
@@ -210,7 +207,7 @@ export default function Id() {
                     <AddChildButton content={content} />
                   )
                 }
-              ></CardHeader>
+              />
               <List>
                 {content?.children.map(
                   (child: {

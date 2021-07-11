@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Link as NextLink, AuthorTextField, FileUploader, Editor } from "comps";
+import {
+  Link as NextLink,
+  AuthorTextField,
+  FileUploader,
+  Editor,
+  AutoButton,
+} from "comps";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
@@ -13,8 +19,8 @@ import {
 } from "gql";
 import {
   Breadcrumbs,
-  Card,
   Button,
+  Card,
   CardActions,
   Link,
   Typography,
@@ -132,23 +138,21 @@ export default function Id() {
           }
           action={
             <CardActions>
-              <div className={classes.flexGrow} />
-              <Button
-                variant="contained"
-                color="primary"
-                endIcon={<Delete />}
+              <AutoButton
+                text="Slet"
+                icon={<Delete />}
                 onClick={handleDelete}
-              >
-                Slet
-              </Button>
-              <ButtonGroup variant="contained" color="primary">
-                <Button endIcon={<Save />} onClick={handleSave(false)}>
-                  Gem
-                </Button>
-                <Button endIcon={<Publish />} onClick={handleSave(true)}>
-                  Indsend
-                </Button>
-              </ButtonGroup>
+              />
+              <AutoButton
+                text="Gem"
+                icon={<Save />}
+                onClick={handleSave(false)}
+              />
+              <AutoButton
+                text="Indsend"
+                icon={<Publish />}
+                onClick={handleSave(true)}
+              />
             </CardActions>
           }
         />

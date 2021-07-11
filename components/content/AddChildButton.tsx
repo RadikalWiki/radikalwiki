@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Fab } from "@material-ui/core";
+import { AutoButton } from "comps";
 import { PlusOne } from "@material-ui/icons";
 import { useSession } from "hooks";
 import { CONTENT_ADD, AUTHORSHIPS_ADD } from "gql";
@@ -43,13 +43,6 @@ export default function AddChildButton({ content }: { content: any }) {
   };
 
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      endIcon={<PlusOne />}
-      onClick={() => handleSubmit()}
-    >
-      {contentType}
-    </Button>
+    <AutoButton text={contentType} icon={<PlusOne />} onClick={handleSubmit} />
   );
 }
