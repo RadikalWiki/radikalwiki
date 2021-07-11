@@ -23,6 +23,7 @@ import {
   Grid,
   ButtonGroup,
   Paper,
+  CardHeader,
 } from "@material-ui/core";
 import { Publish, Save, Delete } from "@material-ui/icons";
 
@@ -89,7 +90,9 @@ export default function Id() {
       router.push(`/category/${content.category.id}`);
     }
   };
-  console.log(content);
+
+  const formatAuthors = (a: any) =>
+    a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
   return (
     <>
@@ -120,25 +123,35 @@ export default function Id() {
         </Breadcrumbs>
       </Card>
       <Card className={classes.card}>
-        <CardActions>
-          <Button
-            variant="contained"
-            color="primary"
-            endIcon={<Delete />}
-            onClick={handleDelete}
-          >
-            Slet
-          </Button>
-          <div className={classes.flexGrow} />
-          <ButtonGroup variant="contained" color="primary">
-            <Button endIcon={<Save />} onClick={handleSave(false)}>
-              Gem
-            </Button>
-            <Button endIcon={<Publish />} onClick={handleSave(true)}>
-              Indsend
-            </Button>
-          </ButtonGroup>
-        </CardActions>
+        <CardHeader
+          title={`${name} (Redigering)`}
+          subheader={
+            !(content?.parent && content?.category.childMode === "candidates")
+              ? formatAuthors(authors)
+              : ""
+          }
+          action={
+            <CardActions>
+              <div className={classes.flexGrow} />
+              <Button
+                variant="contained"
+                color="primary"
+                endIcon={<Delete />}
+                onClick={handleDelete}
+              >
+                Slet
+              </Button>
+              <ButtonGroup variant="contained" color="primary">
+                <Button endIcon={<Save />} onClick={handleSave(false)}>
+                  Gem
+                </Button>
+                <Button endIcon={<Publish />} onClick={handleSave(true)}>
+                  Indsend
+                </Button>
+              </ButtonGroup>
+            </CardActions>
+          }
+        />
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
