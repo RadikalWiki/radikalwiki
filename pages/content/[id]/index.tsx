@@ -165,11 +165,13 @@ export default function Id() {
                     icon={<Edit />}
                     onClick={handleEdit}
                   />
-                  <AutoButton
-                    text="Indsend"
-                    icon={<Publish />}
-                    onClick={handlePublish}
-                  />
+                  {!content?.published && (
+                    <AutoButton
+                      text="Indsend"
+                      icon={<Publish />}
+                      onClick={handlePublish}
+                    />
+                  )}
                 </CardActions>
               )
             }

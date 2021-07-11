@@ -148,11 +148,13 @@ export default function Id() {
                 icon={<Save />}
                 onClick={handleSave(false)}
               />
-              <AutoButton
-                text="Indsend"
-                icon={<Publish />}
-                onClick={handleSave(true)}
-              />
+              {!content?.published && (
+                <AutoButton
+                  text="Indsend"
+                  icon={<Publish />}
+                  onClick={handleSave(true)}
+                />
+              )}
             </CardActions>
           }
         />
