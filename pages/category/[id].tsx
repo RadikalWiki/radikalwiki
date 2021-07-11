@@ -121,9 +121,12 @@ export default function Id() {
                 )
             )}
             {data?.category.contents.length == 0 && (
-              <ListItem button>
-                <ListItemText primary="Intet indhold" />
-              </ListItem>
+              <Fragment key="none">
+                <ListItem button>
+                  <ListItemText primary="Intet indhold" />
+                </ListItem>
+                <Divider />
+              </Fragment>
             )}
           </List>
         </Card>
