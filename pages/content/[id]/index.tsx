@@ -15,6 +15,7 @@ import {
   Public,
   Lock,
   Publish,
+  Delete,
 } from "@material-ui/icons";
 import { CONTENT_SUB, CONTENT_UPDATE, CONTENT_DELETE, POLL_DEL } from "gql";
 import {
@@ -25,6 +26,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CardActions,
   IconButton,
   Link,
   List,
@@ -63,7 +65,17 @@ export default function Id() {
     return changeNumber;
   };
 
-  const handleDeleteContent = (value: any) => async (_: any) => {
+  const handleDelete = async () => {
+    await deleteContent({ variables: { id } });
+
+    if (content.parent) {
+      router.push(`/content/${content.parent.id}`);
+    } else {
+      router.push(`/category/${content.category.id}`);
+    }
+  };
+
+  const handleDeleteChild = (value: any) => async (_: any) => {
     await deleteContent({ variables: { id: value } });
   };
 
@@ -79,7 +91,7 @@ export default function Id() {
 
   // TODO: properly style MUI buttons with next.js
   const handleEdit = async () => {
-    router.push(`/content/${content?.id}/edit`)
+    router.push(`/content/${content?.id}/edit`);
   };
 
   const editable =
@@ -138,21 +150,31 @@ export default function Id() {
                 : ""
             }
             action={
-              <ButtonGroup variant="contained" color="primary">
+              <CardActions>
                 {editable && (
                   <Button
-                    endIcon={<Edit />}
-                    onClick={handleEdit}
+                    variant="contained"
+                    color="primary"
+                    endIcon={<Delete />}
+                    onClick={handleDelete}
                   >
-                    Rediger
+                    Slet
                   </Button>
                 )}
-                {!content?.published && (
-                  <Button endIcon={<Publish />} onClick={handlePublish}>
-                    Indsend
-                  </Button>
-                )}
-              </ButtonGroup>
+
+                <ButtonGroup variant="contained" color="primary">
+                  {editable && (
+                    <Button endIcon={<Edit />} onClick={handleEdit}>
+                      Rediger
+                    </Button>
+                  )}
+                  {!content?.published && (
+                    <Button endIcon={<Publish />} onClick={handlePublish}>
+                      Indsend
+                    </Button>
+                  )}
+                </ButtonGroup>
+              </CardActions>
             }
           />
           <Grid container spacing={2}>
@@ -237,7 +259,7 @@ export default function Id() {
                           <ListItemSecondaryAction>
                             <Tooltip title="Slet">
                               <IconButton
-                                onClick={handleDeleteContent(child.id)}
+                                onClick={handleDeleteChild(child.id)}
                                 color="primary"
                                 edge="end"
                                 aria-label="Fjern indhold"
