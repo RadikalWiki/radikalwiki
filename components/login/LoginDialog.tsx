@@ -103,75 +103,71 @@ export default function EventDialog({
         <form>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    error={error}
-                    helperText={errorMsg}
-                    label="Email"
-                    name="email"
-                    size="small"
-                    variant="outlined"
-                    onChange={onEmailChange}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    fullWidth
-                    error={errorPassword}
-                    helperText={errorPasswordMsg}
-                    label="Kodeord"
-                    name="password"
-                    size="small"
-                    type="password"
-                    variant="outlined"
-                    onChange={onPasswordChange}
-                  />
-                </Grid>
-
-                {mode === "register" && (
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      error={errorPassword}
-                      helperText={errorPasswordMsg}
-                      label="Gentag Kodeord"
-                      name="password"
-                      size="small"
-                      type="password"
-                      variant="outlined"
-                      onChange={onPasswordRepeatChange}
-                    />
-                  </Grid>
-                )}
-                {mode === "login" ? (
-                  <Grid item xs={12}>
-                    <Button
-                      disabled={errorPassword}
-                      color="primary"
-                      fullWidth
-                      variant="contained"
-                      onClick={onLogin}
-                    >
-                      Log ind
-                    </Button>
-                  </Grid>
-                ) : (
-                  <Grid item xs={12}>
-                    <Button
-                      disabled={errorPassword}
-                      color="primary"
-                      fullWidth
-                      variant="contained"
-                      onClick={onRegister}
-                    >
-                      Registrer
-                    </Button>
-                  </Grid>
-                )}
-              </Grid>
+              <TextField
+                fullWidth
+                error={error}
+                helperText={errorMsg}
+                label="Email"
+                name="email"
+                size="small"
+                variant="outlined"
+                onChange={onEmailChange}
+              />
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                error={errorPassword}
+                helperText={errorPasswordMsg}
+                label="Kodeord"
+                name="password"
+                size="small"
+                type="password"
+                variant="outlined"
+                onChange={onPasswordChange}
+              />
+            </Grid>
+
+            {mode === "register" && (
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  error={errorPassword}
+                  helperText={errorPasswordMsg}
+                  label="Gentag Kodeord"
+                  name="password"
+                  size="small"
+                  type="password"
+                  variant="outlined"
+                  onChange={onPasswordRepeatChange}
+                />
+              </Grid>
+            )}
+            {mode === "login" ? (
+              <Grid item xs={12}>
+                <Button
+                  disabled={errorPassword}
+                  color="primary"
+                  fullWidth
+                  variant="contained"
+                  onClick={onLogin}
+                >
+                  Log ind
+                </Button>
+              </Grid>
+            ) : (
+              <Grid item xs={12}>
+                <Button
+                  disabled={errorPassword}
+                  color="primary"
+                  fullWidth
+                  variant="contained"
+                  onClick={onRegister}
+                >
+                  Registrer
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </form>
       </DialogContent>
