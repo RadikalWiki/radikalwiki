@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink, SetCategoryPriorityFab } from "comps";
+import { Fragment, useState } from "react";
+import { Link as NextLink, CategorySortFab } from "comps";
 import { useSession, useStyles } from "hooks";
 import { CATEGORIES_GET } from "gql";
 import {
@@ -18,15 +18,12 @@ import {
   RootRef,
   Typography,
 } from "@material-ui/core";
-import { Group, Subject, LowPriority } from "@material-ui/icons";
-import { useRouter } from "next/router";
+import { Group, Subject } from "@material-ui/icons";
 import { useQuery } from "@apollo/client";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 export default function Sort() {
-  const [state, setState] = useState("");
   const classes = useStyles();
-  const router = useRouter();
   const [session] = useSession();
   const { loading, data, error } = useQuery(CATEGORIES_GET, {
     variables: { eventId: session?.event?.id },
@@ -40,10 +37,7 @@ export default function Sort() {
     }
   }, [categories]);
 
-  const handleDragEnd = ({
-    source,
-    destination,
-  }: any) => {
+  const handleDragEnd = ({ source, destination }: any) => {
     if (destination === undefined || destination === null) return;
     const start = cats[source.index];
     const end = cats[destination.index];
@@ -67,11 +61,7 @@ export default function Sort() {
                 <Subject />
               </Tooltip>
             </Link>
-            <Link
-              component={NextLink}
-              color="primary"
-              href="/category/sort"
-            >
+            <Link component={NextLink} color="primary" href="/category/sort">
               <Typography className={classes.breadText}>Sorter</Typography>
             </Link>
           </Breadcrumbs>
@@ -127,7 +117,7 @@ export default function Sort() {
           </Droppable>
         </Card>
       </DragDropContext>
-      <SetCategoryPriorityFab categories={cats} />
+      <CategorySortFab categories={cats} />
     </>
   );
 }
