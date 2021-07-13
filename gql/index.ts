@@ -556,12 +556,11 @@ export const TIMER_SUB = gql`
 `;
 
 export const CATEGORY_ADD = gql`
-  mutation ($name: String, $eventId: uuid, $childMode: String) {
-    insert_categories_one(
-      object: { name: $name, eventId: $eventId, childMode: $childMode }
-    ) {
-      id
-      name
+  mutation ($objects: [categories_insert_input!]!) {
+    insert_categories(objects: $objects) {
+      returning {
+        id
+      }
     }
   }
 `;
@@ -622,6 +621,7 @@ export const IDENTITIES_GET = gql`
     }
   }
 `;
+
 export const USERS_GET = gql`
   query {
     users {
@@ -713,7 +713,7 @@ export const CATEGORY_GET = gql`
 export const CATEGORIES_GET = gql`
   query ($eventId: uuid!) {
     categories(
-      order_by: { priority: desc }
+      order_by: { priority: asc }
       where: { eventId: { _eq: $eventId } }
     ) {
       id

@@ -1,6 +1,6 @@
 import React from "react";
 import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink, AddCategoryFab } from "comps";
+import { Link as NextLink, CategoryAdminDial } from "comps";
 import { useSession, useStyles } from "hooks";
 import { CATEGORIES_GET } from "gql";
 import {
@@ -30,8 +30,8 @@ export default function Index() {
   const { loading, data, error } = useQuery(CATEGORIES_GET, {
     variables: { eventId: session?.event?.id },
   });
-
   const categories = data?.categories.map((e: any) => e.name) || [];
+
   const onChange = (_: any, v: any) => {
     if (!data) {
       return;
@@ -110,7 +110,7 @@ export default function Index() {
           </List>
         </Card>
       </Fade>
-      {session?.roles.includes("admin") && <AddCategoryFab />}
+      {session?.roles.includes("admin") && <CategoryAdminDial />}
     </>
   );
 }
