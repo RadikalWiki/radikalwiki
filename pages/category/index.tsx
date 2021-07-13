@@ -87,7 +87,12 @@ export default function Index() {
           <List className={classes.list}>
             <Divider />
             {data?.categories.map(
-              (cat: { name: any; id: any; childMode: any }) =>
+              (cat: {
+                name: string;
+                id: any;
+                subtitle: string;
+                childMode: any;
+              }) =>
                 (!state ||
                   cat.name.toLowerCase().includes(state.toLowerCase())) && (
                   <Fragment key={cat.id}>
@@ -101,7 +106,10 @@ export default function Index() {
                           {cat.childMode == "changes" ? <Subject /> : <Group />}
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary={cat.name} />
+                      <ListItemText
+                        primary={cat.name}
+                        secondary={cat.subtitle}
+                      />
                     </ListItem>
                     <Divider />
                   </Fragment>

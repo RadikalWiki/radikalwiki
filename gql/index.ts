@@ -718,6 +718,7 @@ export const CATEGORIES_GET = gql`
     ) {
       id
       name
+      subtitle
       childMode
     }
   }
