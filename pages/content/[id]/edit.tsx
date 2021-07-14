@@ -4,7 +4,6 @@ import {
   AuthorTextField,
   FileUploader,
   Editor,
-  AutoButton,
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -19,6 +18,7 @@ import {
   CONTENT_DELETE_AUTHORSHIPS,
 } from "gql";
 import {
+  Box,
   Divider,
   IconButton,
   Breadcrumbs,
@@ -26,7 +26,6 @@ import {
   Card,
   CardActions,
   Link,
-  Typography,
   CardContent,
   TextField,
   Grid,
@@ -150,41 +149,51 @@ export default function Id() {
               : ""
           }
           action={
-            <CardActions>
-              <AutoButton
-                text="Slet"
-                icon={<Delete />}
-                onClick={handleDelete}
-              />
-              <AutoButton
-                text="Gem"
-                icon={<Save />}
-                onClick={handleSave(false)}
-              />
-              {!content?.published && (
-                <AutoButton
-                  text="Indsend"
-                  icon={<Publish />}
-                  onClick={handleSave(true)}
-                />
-              )}
-              <Divider orientation="vertical" flexItem />
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expand,
-                })}
-                color="primary"
-                onClick={() => setExpand(!expand)}
-              >
-                <Tooltip title={expand ? "Skjul" : "Vis"}>
-                  <ExpandMore />
-                </Tooltip>
-              </IconButton>
-            </CardActions>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expand,
+              })}
+              color="primary"
+              onClick={() => setExpand(!expand)}
+            >
+              <Tooltip title={expand ? "Skjul" : "Vis"}>
+                <ExpandMore />
+              </Tooltip>
+            </IconButton>
           }
         />
         <Divider />
         <Collapse in={expand} timeout="auto">
+          <CardActions>
+            <Button
+              color="primary"
+              variant="contained"
+              endIcon={<Delete />}
+              onClick={handleDelete}
+            >
+              Slet
+            </Button>
+            <Box className={classes.flexGrow} />
+            <Button
+              color="primary"
+              variant="contained"
+              endIcon={<Save />}
+              onClick={handleSave(false)}
+            >
+              Gem
+            </Button>
+            {!content?.published && (
+              <Button
+                color="primary"
+                variant="contained"
+                endIcon={<Publish />}
+                onClick={handleSave(true)}
+              >
+                Indsend
+              </Button>
+            )}
+          </CardActions>
+          <Divider />
           <CardContent>
             <Grid container spacing={2}>
               <Grid item xs={12}>

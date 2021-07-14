@@ -4,7 +4,6 @@ import {
   HeaderCard,
   ContentAdmin,
   AddChildButton,
-  AutoButton,
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -40,10 +39,11 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Tooltip,
-  Typography,
   Fade,
   Grid,
   Paper,
+  Box,
+  Button,
 } from "@material-ui/core";
 import Image from "material-ui-image";
 
@@ -164,47 +164,51 @@ export default function Id() {
                 : ""
             }
             action={
-              <CardActions>
-                {editable && [
-                  <AutoButton
-                    key="delete"
-                    text="Slet"
-                    icon={<Delete />}
-                    onClick={handleDelete}
-                  />,
-                  <AutoButton
-                    key="edit"
-                    text="Rediger"
-                    icon={<Edit />}
-                    onClick={handleEdit}
-                  />,
-                  !content?.published && (
-                    <AutoButton
-                      key="sent"
-                      text="Indsend"
-                      icon={<Publish />}
-                      onClick={handlePublish}
-                    />
-                  ),
-                  <Divider key="divider" orientation="vertical" flexItem />,
-                ]}
-                <IconButton
-                  className={clsx(classes.expand, {
-                    [classes.expandOpen]: expand,
-                  })}
-                  color="primary"
-                  onClick={() => setExpand(!expand)}
-                >
-                  <Tooltip title={expand ? "Skjul" : "Vis"}>
-                    <ExpandMore />
-                  </Tooltip>
-                </IconButton>
-              </CardActions>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expand,
+                })}
+                color="primary"
+                onClick={() => setExpand(!expand)}
+              >
+                <Tooltip title={expand ? "Skjul" : "Vis"}>
+                  <ExpandMore />
+                </Tooltip>
+              </IconButton>
             }
           />
-
           <Divider />
           <Collapse in={expand} timeout="auto">
+            <CardActions>
+              <Button
+                color="primary"
+                variant="contained"
+                endIcon={<Delete />}
+                onClick={handleDelete}
+              >
+                Slet
+              </Button>
+              <Box className={classes.flexGrow} />
+              <Button
+                color="primary"
+                variant="contained"
+                endIcon={<Edit />}
+                onClick={handleEdit}
+              >
+                Rediger
+              </Button>
+              {!content?.published && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  endIcon={<Publish />}
+                  onClick={handlePublish}
+                >
+                  Indsend
+                </Button>
+              )}
+            </CardActions>
+            <Divider />
             <Grid container spacing={2}>
               <Grid item xs={9}>
                 {content?.data && (
