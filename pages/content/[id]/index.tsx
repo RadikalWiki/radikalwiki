@@ -210,7 +210,7 @@ export default function Id() {
             </CardActions>
             <Divider />
             <Grid container spacing={2}>
-              <Grid item xs={9}>
+              <Grid item xs={12} sm={8}>
                 {content?.data && (
                   <CardContent>
                     <div dangerouslySetInnerHTML={{ __html: content?.data }} />
@@ -218,7 +218,7 @@ export default function Id() {
                 )}
               </Grid>
               {image && (
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={4}>
                   <Paper className={classes.image}>
                     <Image src={image} />
                   </Paper>
