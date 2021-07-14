@@ -178,7 +178,7 @@ export default function Id() {
             }
           />
           <Divider />
-          <Collapse in={expand} timeout="auto">
+          <Collapse in={expand} timeout={500}>
             <CardActions>
               <Button
                 color="primary"
