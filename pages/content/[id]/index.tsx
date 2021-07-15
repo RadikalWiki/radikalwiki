@@ -179,35 +179,37 @@ export default function Id() {
           />
           <Divider />
           <Collapse in={expand} timeout={500}>
-            <CardActions>
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<Delete />}
-                onClick={handleDelete}
-              >
-                Slet
-              </Button>
-              <Box className={classes.flexGrow} />
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<Edit />}
-                onClick={handleEdit}
-              >
-                Rediger
-              </Button>
-              {!content?.published && (
+            {editable && (
+              <CardActions>
                 <Button
                   color="primary"
                   variant="contained"
-                  endIcon={<Publish />}
-                  onClick={handlePublish}
+                  endIcon={<Delete />}
+                  onClick={handleDelete}
                 >
-                  Indsend
+                  Slet
                 </Button>
-              )}
-            </CardActions>
+                <Box className={classes.flexGrow} />
+                <Button
+                  color="primary"
+                  variant="contained"
+                  endIcon={<Edit />}
+                  onClick={handleEdit}
+                >
+                  Rediger
+                </Button>
+                {!content?.published && (
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    endIcon={<Publish />}
+                    onClick={handlePublish}
+                  >
+                    Indsend
+                  </Button>
+                )}
+              </CardActions>
+            )}
             <Divider />
             <Grid container spacing={2}>
               <Grid item xs={12} sm={8}>
