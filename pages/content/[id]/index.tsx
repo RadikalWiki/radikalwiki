@@ -237,7 +237,7 @@ export default function Id() {
               <CardHeader
                 title={
                   content.category.childMode == "changes"
-                    ? "Ændringsforsalg"
+                    ? "Ændringsforslag"
                     : "Kandidaturer"
                 }
                 action={
