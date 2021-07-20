@@ -24,6 +24,12 @@ const useStyles = () =>
     input: {
       display: "none",
     },
+    breadIcon: {
+      width: 20,
+      height: 20,
+      alignItems: "center",
+      display: "flex",
+    },
     image: {
       padding: theme.spacing(1),
       margin: theme.spacing(1),
@@ -32,14 +38,14 @@ const useStyles = () =>
       padding: theme.spacing(2, 2, 2, 2),
     },
     expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
+      transform: "rotate(0deg)",
+      marginLeft: "auto",
+      transition: theme.transitions.create("transform", {
         duration: theme.transitions.duration.shortest,
       }),
     },
     expandOpen: {
-      transform: 'rotate(180deg)',
+      transform: "rotate(180deg)",
     },
     creatorText: {
       padding: theme.spacing(0, 0, 0, 4),

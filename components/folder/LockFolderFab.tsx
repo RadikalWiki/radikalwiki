@@ -1,37 +1,36 @@
 import React from "react";
 import { Fab } from "@material-ui/core";
 import { useStyles } from "hooks";
-import { CATEGORY_UPDATE } from "gql";
+import { FOLDER_UPDATE } from "gql";
 import { useMutation } from "@apollo/client";
 
-export default function AddCategoryFab({
-  category,
+export default function AddFolderFab({
+  folder,
   mode,
 }: {
-  category: any;
+  folder: any;
   mode: any;
 }) {
   const classes = useStyles();
-  const [updateCategory] = useMutation(CATEGORY_UPDATE);
+  const [updateFolder] = useMutation(FOLDER_UPDATE);
 
-  if (!category) return null;
+  if (!folder) return null;
 
   const handleClick = async () => {
     const set =
       mode == "content"
-        ? { lockContent: !category.lockContent }
-        : { lockChildren: !category.lockChildren };
-    await updateCategory({
-      variables: { id: category.id, set },
+        ? { lockContent: !folder.lockContent }
+        : { lockChildren: !folder.lockChildren };
+    await updateFolder({
+      variables: { id: folder.id, set },
     });
   };
 
-  const state =
-    mode == "content" ? category.lockContent : category.lockChildren;
+  const state = mode == "content" ? folder.lockContent : folder.lockChildren;
   const name =
     mode == "content"
       ? "Indhold"
-      : category.childMode == "changes"
+      : folder.mode == "changes"
       ? "Ændringsforslag"
       : "Kandidaturer";
 

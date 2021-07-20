@@ -3,7 +3,7 @@ import { Button } from "@material-ui/core";
 import { useStyles, useSession } from "hooks";
 import { AdminCard } from "components";
 import { useMutation, useSubscription } from "@apollo/client";
-import { EVENT_SET_LOCK_SPEAK, EVENT_SUB, SPEAK_DEL_ALL } from "gql";
+import { EVENT_UPDATE, EVENT_SUB, EVENT_SPEAK_DEL_ALL } from "gql";
 
 export default function SpeakerAdmin() {
   const [session] = useSession();
@@ -15,16 +15,14 @@ export default function SpeakerAdmin() {
     variables: { id: session?.event?.id },
   });
   const classes = useStyles();
-  const [removeSpeakAll] = useMutation(SPEAK_DEL_ALL, {
-    variables: { eventId: session?.event.id, lockSpeak: false },
+  const [removeSpeakAll] = useMutation(EVENT_SPEAK_DEL_ALL, {
+    variables: { id: session?.event.id },
   });
-  const [setLockSpeak] = useMutation(EVENT_SET_LOCK_SPEAK, {
-    variables: { eventId: session?.event.id, lockSpeak: true },
-  });
+  const [setLockSpeak] = useMutation(EVENT_UPDATE);
 
   const handleLockSpeak = async (lockSpeak: boolean) => {
-    const res = await setLockSpeak({
-      variables: { eventId: session.event.id, lockSpeak },
+    await setLockSpeak({
+      variables: { id: session.event.id, set: { lockSpeak } },
     });
   };
 

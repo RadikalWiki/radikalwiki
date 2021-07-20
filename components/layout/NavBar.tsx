@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 const getState = (path: string) =>
   path.includes("poll") || path.includes("vote")
     ? "vote"
-    : path.includes("category") || path.includes("content")
+    : path.includes("folder") || path.includes("content")
     ? "content"
     : path.includes("speak")
     ? "speak"
@@ -47,7 +47,7 @@ export default function NavBar() {
           />
           <BottomNavigationAction
             component={Link}
-            href="/category"
+            href="/folder"
             value="content"
             label="Indhold"
             icon={<Subject />}

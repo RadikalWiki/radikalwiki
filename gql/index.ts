@@ -22,10 +22,11 @@ export const CONTENT_SUB = gql`
         }
       }
       data
-      category {
+      folder {
         name
         id
-        childMode
+        mode
+        parentId
         lockContent
         lockChildren
       }
@@ -86,10 +87,10 @@ export const CONTENT_GET = gql`
         }
       }
       data
-      category {
+      folder {
         name
         id
-        childMode
+        mode
         lockContent
         lockChildren
       }
@@ -143,24 +144,10 @@ export const USER_GET_CONTENTS = gql`
   }
 `;
 
-export const CONTENT_ADD = gql`
-  mutation (
-    $name: String
-    $data: String
-    $categoryId: uuid
-    $creatorId: uuid
-    $parentId: uuid
-  ) {
-    insert_contents_one(
-      object: {
-        name: $name
-        data: $data
-        categoryId: $categoryId
-        creatorId: $creatorId
-        parentId: $parentId
-      }
-    ) {
-      id
+export const CONTENTS_ADD = gql`
+  mutation ($objects: [contents_insert_input!]!) {
+    insert_contents(objects: $objects) {
+      affected_rows
     }
   }
 `;
@@ -200,20 +187,9 @@ export const FILES_ADD = gql`
 `;
 
 export const CONTENT_DELETE_AUTHORSHIPS = gql`
-  mutation ($contentId: uuid!) {
-    delete_authorships(where: { contentId: { _eq: $contentId } }) {
+  mutation ($id: uuid!) {
+    delete_authorships(where: { contentId: { _eq: $id } }) {
       affected_rows
-    }
-  }
-`;
-
-export const CONTENT_SET_PRIORITY = gql`
-  mutation ($id: uuid!, $priority: Int) {
-    update_contents_by_pk(
-      pk_columns: { id: $id }
-      _set: { priority: $priority }
-    ) {
-      id
     }
   }
 `;
@@ -227,8 +203,8 @@ export const TIMER_SET = gql`
 `;
 
 export const POLL_ADD = gql`
-  mutation ($contentId: uuid!) {
-    poll: insert_polls_one(object: { contentId: $contentId, active: true }) {
+  mutation ($object: polls_insert_input!) {
+    poll: insert_polls_one(object: $object) {
       id
     }
   }
@@ -262,8 +238,8 @@ export const POLL_STOP = gql`
 `;
 
 export const POLL_GET_TYPE = gql`
-  query ($pollId: uuid!) {
-    poll: polls_by_pk(id: $pollId) {
+  query ($id: uuid!) {
+    poll: polls_by_pk(id: $id) {
       content {
         pollType {
           id
@@ -325,8 +301,8 @@ export const EVENT_POLL_SUB = gql`
 `;
 
 export const POLL_RESULT_ACTION = gql`
-  query ($pollId: uuid) {
-    getPollResult(pollId: $pollId) {
+  query ($id: uuid) {
+    getPollResult(pollId: $id) {
       id
       name
       count
@@ -337,8 +313,8 @@ export const POLL_RESULT_ACTION = gql`
 `;
 
 export const POLL_RESULT = gql`
-  query ($pollId: uuid!) {
-    poll: polls_by_pk(id: $pollId) {
+  query ($id: uuid!) {
+    poll: polls_by_pk(id: $id) {
       active
       content {
         id
@@ -453,41 +429,17 @@ export const EVENT_GET = gql`
   }
 `;
 
-export const EVENT_SET_CONTENT = gql`
-  mutation ($id: uuid!, $contentId: uuid) {
-    update_events_by_pk(
-      pk_columns: { id: $id }
-      _set: { contentId: $contentId }
-    ) {
-      id
-    }
-  }
-`;
-
-export const EVENT_SET_POLL = gql`
-  mutation ($id: uuid!, $pollId: uuid) {
-    update_events_by_pk(pk_columns: { id: $id }, _set: { pollId: $pollId }) {
-      id
-    }
-  }
-`;
-
-export const EVENT_SET_LOCK_SPEAK = gql`
-  mutation ($id: uuid!, $lockSpeak: Boolean) {
-    update_events_by_pk(
-      pk_columns: { id: $id }
-      _set: { lockSpeak: $lockSpeak }
-    ) {
+export const EVENT_UPDATE = gql`
+  mutation ($id: uuid!, $set: events_set_input!) {
+    update_events_by_pk(pk_columns: { id: $id }, _set: $set) {
       id
     }
   }
 `;
 
 export const VOTE_ADD = gql`
-  mutation ($userId: uuid, $pollId: uuid, $value: _int4) {
-    insert_votes_one(
-      object: { userId: $userId, pollId: $pollId, value: $value }
-    ) {
+  mutation ($object: votes_insert_input!) {
+    insert_votes_one(object: $object) {
       id
     }
   }
@@ -502,10 +454,8 @@ export const VOTE_ACTION = gql`
 `;
 
 export const SPEAK_ADD = gql`
-  mutation ($userId: uuid, $eventId: uuid, $type: Int) {
-    insert_speaks_one(
-      object: { userId: $userId, eventId: $eventId, type: $type }
-    ) {
+  mutation ($object: speaks_insert_input!) {
+    insert_speaks_one(object: $object) {
       id
     }
   }
@@ -519,19 +469,19 @@ export const SPEAK_DEL = gql`
   }
 `;
 
-export const SPEAK_DEL_ALL = gql`
-  mutation ($eventId: uuid) {
-    delete_speaks(where: { eventId: { _eq: $eventId } }) {
+export const EVENT_SPEAK_DEL_ALL = gql`
+  mutation ($id: uuid) {
+    delete_speaks(where: { eventId: { _eq: $id } }) {
       affected_rows
     }
   }
 `;
 
-export const SPEAK_SUB = gql`
-  subscription ($eventId: uuid) {
+export const EVENT_SUB_SPEAK = gql`
+  subscription ($id: uuid) {
     speaks(
       order_by: { type: desc, createdAt: asc }
-      where: { eventId: { _eq: $eventId } }
+      where: { eventId: { _eq: $id } }
     ) {
       id
       createdAt
@@ -555,9 +505,9 @@ export const TIMER_SUB = gql`
   }
 `;
 
-export const CATEGORY_ADD = gql`
-  mutation ($objects: [categories_insert_input!]!) {
-    insert_categories(objects: $objects) {
+export const FOLDERS_ADD = gql`
+  mutation ($objects: [folders_insert_input!]!) {
+    insert_folders(objects: $objects) {
       returning {
         id
       }
@@ -565,9 +515,9 @@ export const CATEGORY_ADD = gql`
   }
 `;
 
-export const CATEGORY_UPDATE = gql`
-  mutation ($id: uuid!, $set: categories_set_input!) {
-    update_categories_by_pk(pk_columns: { id: $id }, _set: $set) {
+export const FOLDER_UPDATE = gql`
+  mutation ($id: uuid!, $set: folders_set_input!) {
+    update_folders_by_pk(pk_columns: { id: $id }, _set: $set) {
       id
     }
   }
@@ -580,17 +530,6 @@ export const IDENTITIES_ADD = gql`
       on_conflict: { constraint: idEmails_pkey, update_columns: displayName }
     ) {
       affected_rows
-    }
-  }
-`;
-
-export const IDENTITY_ADD = gql`
-  mutation ($object: identities_insert_input!) {
-    insert_identities_one(
-      object: $object
-      on_conflict: { constraint: idEmails_pkey, update_columns: displayName }
-    ) {
-      email
     }
   }
 `;
@@ -692,34 +631,79 @@ export const USER_CHECK_TOKEN_ROLE = gql`
   }
 `;
 
-export const CATEGORY_GET = gql`
+export const FOLDER_GET = gql`
   query ($id: uuid!) {
-    category: categories_by_pk(id: $id) {
+    folder: folders_by_pk(id: $id) {
       id
       name
       lockContent
       lockChildren
-      contents(
-        order_by: { priority: asc }
-        where: { parentId: { _is_null: true } }
-      ) {
+      parent {
         id
         name
+        parentId
+      }
+      contents(where: { parentId: { _is_null: true } }) {
+        id
+        name
+        priority
+      }
+      folders {
+        id
+        name
+        priority
       }
     }
   }
 `;
 
-export const CATEGORIES_GET = gql`
-  query ($eventId: uuid!) {
-    categories(
-      order_by: { priority: asc }
-      where: { eventId: { _eq: $eventId } }
-    ) {
+export const FOLDER_GET_EXPORT = gql`
+  query ($id: uuid!) {
+    export: folders_by_pk(id: $id) {
+      contents(
+        order_by: { priority: asc }
+        where: { parentId: { _is_null: true } }
+      ) {
+        name
+        data
+        authors {
+          name
+          identity {
+            displayName
+          }
+        }
+        children(order_by: { createdAt: desc }) {
+          name
+          data
+          authors {
+            name
+            identity {
+              displayName
+            }
+          }
+          children(order_by: { createdAt: desc }) {
+            name
+            data
+            authors {
+              name
+              identity {
+                displayName
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const EVENT_GET_FOLDERS = gql`
+  query ($id: uuid!) {
+    folders(order_by: { priority: asc }, where: { eventId: { _eq: $id } }) {
       id
       name
       subtitle
-      childMode
+      mode
     }
   }
 `;
@@ -746,12 +730,9 @@ export const GROUP_GET_MEMBERS = gql`
 `;
 
 export const GROUP_ADD = gql`
-  mutation ($name: String, $shortName: String, $creatorId: uuid) {
-    insert_groups_one(
-      object: { name: $name, shortName: $shortName, creatorId: $creatorId }
-    ) {
-      id
-      name
+  mutation ($objects: [groups_insert_input!]!) {
+    insert_groups(objects: $objects) {
+      affected_rows
     }
   }
 `;
@@ -762,6 +743,7 @@ export const EVENTS_GET = gql`
       name
       shortName
       id
+      folderId
       group {
         id
         name
@@ -794,6 +776,14 @@ export const EVENT_GET_ROLE = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const EVENT_GET_FOLDER = gql`
+  query ($id: uuid!) {
+    event: events_by_pk(id: $id) {
+      folderId
     }
   }
 `;

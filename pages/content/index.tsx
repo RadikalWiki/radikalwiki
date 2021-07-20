@@ -1,3 +1,3 @@
 import redirect from "nextjs-redirect";
 
-export default redirect("/category");
+export default redirect("/folder");

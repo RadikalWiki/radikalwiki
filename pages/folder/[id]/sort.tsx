@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { Fragment, useState } from "react";
-import { Link as NextLink, CategorySortFab } from "comps";
+import { Link as NextLink, FolderSortFab } from "comps";
 import { useSession, useStyles } from "hooks";
-import { CATEGORIES_GET } from "gql";
+import { EVENT_GET_FOLDERS, FOLDER_GET } from "gql";
 import {
   Avatar,
   Tooltip,
@@ -21,29 +21,45 @@ import {
 import { Group, Subject } from "@material-ui/icons";
 import { useQuery } from "@apollo/client";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useRouter } from "next/router";
 
 export default function Sort() {
   const classes = useStyles();
   const [session] = useSession();
-  const { loading, data, error } = useQuery(CATEGORIES_GET, {
-    variables: { eventId: session?.event?.id },
+  const router = useRouter();
+  const { id } = router.query;
+  const { loading, data, error } = useQuery(FOLDER_GET, {
+    variables: { id },
   });
-  const categories = data?.categories;
-  const [cats, setCats] = useState([]);
+  const [list, setList] = useState([]);
 
   useEffect(() => {
-    if (categories) {
-      setCats(categories);
-    }
-  }, [categories]);
+    const contents =
+      data?.folder.contents.map(({ id, name, priority }: any) => ({
+        id,
+        name,
+        priority,
+        type: "content",
+      })) || [];
+    const folders =
+      data?.folder.folders.map(({ id, name, priority }: any) => ({
+        id,
+        name,
+        priority,
+        type: "folder",
+      })) || [];
+    setList(
+      contents.concat(folders).sort((f: any, s: any) => f.priority - s.priority)
+    );
+  }, [data]);
 
   const handleDragEnd = ({ source, destination }: any) => {
     if (destination === undefined || destination === null) return;
-    const start = cats[source.index];
-    const end = cats[destination.index];
-    const newList = cats.filter((_, idx) => idx !== source.index);
-    newList.splice(destination.index, 0, cats[source.index]);
-    setCats(newList);
+    const start = list[source.index];
+    const end = list[destination.index];
+    const newList = list.filter((_, idx) => idx !== source.index);
+    newList.splice(destination.index, 0, list[source.index]);
+    setList(newList);
   };
 
   return (
@@ -55,13 +71,28 @@ export default function Sort() {
               component={NextLink}
               className={classes.breadText}
               color="primary"
-              href="/category"
+              href="/folder"
             >
               <Tooltip title="Indhold">
                 <Subject />
               </Tooltip>
             </Link>
-            <Link component={NextLink} color="primary" href="/category/sort">
+            {data?.folder.parentId && (
+              <Link
+                component={NextLink}
+                color="primary"
+                href={`/folder/${data?.folder.id}`}
+              >
+                <Typography className={classes.breadText}>
+                  {data?.folder.name}
+                </Typography>
+              </Link>
+            )}
+            <Link
+              component={NextLink}
+              color="primary"
+              href={`/folder/${data?.folder.id}/sort`}
+            >
               <Typography className={classes.breadText}>Sorter</Typography>
             </Link>
           </Breadcrumbs>
@@ -73,14 +104,14 @@ export default function Sort() {
             {(provided, snapshot) => (
               <RootRef rootRef={provided.innerRef}>
                 <List className={classes.list}>
-                  {cats.map(
+                  {list.map(
                     (
-                      cat: { name: any; id: any; childMode: any },
+                      folder: { name: any; id: any; mode: any },
                       index: number
                     ) => (
                       <Draggable
-                        key={cat.id}
-                        draggableId={cat.id}
+                        key={folder.id}
+                        draggableId={folder.id}
                         index={index}
                       >
                         {(provided, snapshot) => (
@@ -94,14 +125,14 @@ export default function Sort() {
                             >
                               <ListItemAvatar>
                                 <Avatar className={classes.avatar}>
-                                  {cat.childMode == "changes" ? (
+                                  {folder.mode == "changes" ? (
                                     <Subject />
                                   ) : (
                                     <Group />
                                   )}
                                 </Avatar>
                               </ListItemAvatar>
-                              <ListItemText primary={cat.name} />
+                              <ListItemText primary={folder.name} />
                             </ListItem>
                           </Fragment>
                         )}
@@ -117,7 +148,7 @@ export default function Sort() {
           </Droppable>
         </Card>
       </DragDropContext>
-      <CategorySortFab categories={cats} />
+      <FolderSortFab folder={data?.folder} elements={list} />
     </>
   );
 }

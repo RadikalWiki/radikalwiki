@@ -10,33 +10,42 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  Box,
   Grid,
 } from "@material-ui/core";
 import { useStyles, useSession } from "hooks";
-import { CATEGORY_ADD } from "gql";
+import { FOLDERS_ADD } from "gql";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 
-export default function AddCategoryFab({ open, setOpen }: any) {
+export default function AddFolderDialog({ folder, open, setOpen }: any) {
   const [session] = useSession();
   const router = useRouter();
   const classes = useStyles();
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
-  const [childMode, setChildMode] = useState("");
-  const [addCategory] = useMutation(CATEGORY_ADD);
+  const [mode, setMode] = useState("");
+  const [addFolders] = useMutation(FOLDERS_ADD);
 
   const handleSubmit = async () => {
-    const { data } = await addCategory({
-      variables: { name, subtitle, eventId: session.event.id, childMode },
+    const { data } = await addFolders({
+      variables: {
+        objects: [
+          {
+            name,
+            subtitle,
+            eventId: session.event.id,
+            mode,
+            parentId: folder.id,
+          },
+        ],
+      },
     });
-    router.push(`/category/${data.insert_categories.id}`);
+    router.push(`/folder/${data.insert_folders.returning[0].id}`);
   };
 
   return (
     <Dialog maxWidth="xs" fullWidth open={open} onClose={() => setOpen(false)}>
-      <DialogTitle>Tilføj kategori</DialogTitle>
+      <DialogTitle>Tilføj mappe</DialogTitle>
       <DialogContent>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -60,9 +69,9 @@ export default function AddCategoryFab({ open, setOpen }: any) {
               <InputLabel>Indholdstype</InputLabel>
               <Select
                 fullWidth
-                value={childMode}
+                value={mode}
                 variant="standard"
-                onChange={(e) => setChildMode(e.target.value as string)}
+                onChange={(e) => setMode(e.target.value as string)}
               >
                 <MenuItem value="changes">Politik</MenuItem>
                 <MenuItem value="candidates">Kandidaturer</MenuItem>

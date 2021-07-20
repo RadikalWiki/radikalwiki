@@ -48,7 +48,7 @@ export default function EventDialog({
     const roles = getRoles(session.user.id, group);
     setSession({ event, roles });
     setOpen(false);
-    router.push("/category");
+    router.push("/folder");
   };
 
   return (

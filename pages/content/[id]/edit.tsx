@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Link as NextLink,
-  AuthorTextField,
-  FileUploader,
-  Editor,
-} from "comps";
+import { Link as NextLink, AuthorTextField, FileUploader, Editor } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
@@ -81,7 +76,7 @@ export default function Id() {
     await updateContent({
       variables: { id, set: { name, data, published, fileId: image?.id } },
     });
-    await delAuthors({ variables: { contentId: id } });
+    await delAuthors({ variables: { id } });
     const objects = authors.map((author: any) =>
       author.email || author.identity?.email
         ? { contentId: id, email: author.email ?? author.identity?.email }
@@ -97,7 +92,7 @@ export default function Id() {
     if (content.parent) {
       router.push(`/content/${content.parent.id}`);
     } else {
-      router.push(`/category/${content.category.id}`);
+      router.push(`/folder/${content.folder.id}`);
     }
   };
 
@@ -112,7 +107,7 @@ export default function Id() {
             component={NextLink}
             className={classes.breadText}
             color="primary"
-            href="/category"
+            href="/folder"
           >
             <Tooltip title="Indhold">
               <Subject />
@@ -130,9 +125,9 @@ export default function Id() {
             <Link
               component={NextLink}
               color="primary"
-              href={`/category/${content?.category.id}`}
+              href={`/folder/${content?.folder.id}`}
             >
-              {content?.category.name}
+              {content?.folder.name}
             </Link>
           )}
           <Link component={NextLink} color="primary" href={`/content/${id}`}>
@@ -144,7 +139,7 @@ export default function Id() {
         <CardHeader
           title={`${name} (Redigering)`}
           subheader={
-            !(content?.parent && content?.category.childMode === "candidates")
+            !(content?.parent && content?.folder.mode === "candidates")
               ? formatAuthors(authors)
               : ""
           }

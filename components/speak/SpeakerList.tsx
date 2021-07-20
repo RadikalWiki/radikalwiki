@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
 import { useMutation, useSubscription } from "@apollo/client";
-import { SPEAK_DEL, SPEAK_SUB } from "gql";
+import { SPEAK_DEL, EVENT_SUB_SPEAK } from "gql";
 import { useSession } from "hooks";
 import { avatars } from "components";
 
@@ -21,7 +21,7 @@ type SpeakerListProps = {
 
 export default function SpeakerList({ interactive }: SpeakerListProps) {
   const [session] = useSession();
-  const { data: { speaks } = {} } = useSubscription(SPEAK_SUB, {
+  const { error, data: { speaks } = {} } = useSubscription(EVENT_SUB_SPEAK, {
     variables: { eventId: session?.event?.id },
   });
   const [removeSpeak] = useMutation(SPEAK_DEL);
@@ -29,6 +29,8 @@ export default function SpeakerList({ interactive }: SpeakerListProps) {
   const handleRemoveSpeak = (value: any) => (_: any) => {
     removeSpeak({ variables: { id: value } });
   };
+
+  console.log(error);
 
   return (
     <List>

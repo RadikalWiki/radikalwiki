@@ -3,13 +3,13 @@ import { Fab } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import { useStyles, useSession } from "hooks";
 import { CSVReader } from "comps";
-import { CONTENT_ADD, AUTHORSHIPS_ADD } from "gql";
+import { CONTENTS_ADD, AUTHORSHIPS_ADD } from "gql";
 import { useMutation } from "@apollo/client";
 
-export default function AddContentFab({ categoryId }: { categoryId: string }) {
+export default function AddContentFab({ folderId }: { folderId: string }) {
   const [session] = useSession();
   const classes = useStyles();
-  const [addContent] = useMutation(CONTENT_ADD);
+  const [addContent] = useMutation(CONTENTS_ADD);
   const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
 
   const handleFile = async (file: any) => {
@@ -41,7 +41,7 @@ export default function AddContentFab({ categoryId }: { categoryId: string }) {
       const res = await addContent({
         variables: {
           name,
-          categoryId,
+          folderId,
           data: data,
           creatorId: session.user.id,
           published: true,
