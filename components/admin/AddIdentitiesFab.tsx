@@ -1,14 +1,14 @@
 import React from "react";
 import { Fab } from "@material-ui/core";
 import { useStyles, useSession } from "hooks";
-import { IDENTITIES_ADD, IDENTITY_ADD } from "gql";
+import { IDENTITIES_ADD } from "gql";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
 import { CSVReader } from "comps";
 
 export default function AddIdentitiesFab() {
   const classes = useStyles();
-  const [addIdentity] = useMutation(IDENTITY_ADD);
+  const [addIdentities] = useMutation(IDENTITIES_ADD);
 
   const handleFile = async (fileData: any) => {
     const ids = fileData.reduce(
@@ -25,9 +25,9 @@ export default function AddIdentitiesFab() {
       []
     );
     ids.forEach(async (id: any) => {
-      await addIdentity({
+      await addIdentities({
         variables: {
-          object: id,
+          objects: [{id}],
         },
       });
     });

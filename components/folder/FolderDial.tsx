@@ -41,7 +41,7 @@ export default function FolderDial({ folder }: { folder: any }) {
     console.log(data.export);
     const html = data.export.contents.map(formatContent).join("");
     console.log(html);
-    const blob = await HTMLtoDOCX(html, null, {
+    const blob = await HTMLtoDOCX(html, "", {
       table: { row: { cantSplit: true } },
     });
 
