@@ -147,7 +147,9 @@ export const USER_GET_CONTENTS = gql`
 export const CONTENTS_ADD = gql`
   mutation ($objects: [contents_insert_input!]!) {
     insert_contents(objects: $objects) {
-      affected_rows
+      returning {
+        id
+      }
     }
   }
 `;

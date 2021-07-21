@@ -37,14 +37,15 @@ export default function AddChildButton({ content }: { content: any }) {
         ],
       },
     });
+    const contentId = data.insert_contents.returning[0].id;
     const objects = [
       {
         email: session.user.email,
-        contentId: data.insert_contents.returned[0].id,
+        contentId,
       },
     ];
     await addAuthors({ variables: { objects } });
-    router.push(`/content/${data.insert_contents.returned[0].id}/edit`);
+    router.push(`/content/${contentId}/edit`);
   };
 
   return (

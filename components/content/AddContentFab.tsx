@@ -29,11 +29,10 @@ export default function AddContentFab({ folderId }: { folderId: string }) {
         objects: [{ name, folderId, data: "", creatorId: session.user.id }],
       },
     });
-    const objects = [
-      { email: session.user.email, contentId: data.insert_contents[0].id },
-    ];
+    const contentId = data.insert_contents.returning[0].id;
+    const objects = [{ email: session.user.email, contentId }];
     await addAuthors({ variables: { objects } });
-    router.push(`/content/${data.insert_contents.id}/edit`);
+    router.push(`/content/${contentId}/edit`);
   };
 
   return (
