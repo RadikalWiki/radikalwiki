@@ -590,10 +590,10 @@ export const USER_GET_PROFILE = gql`
     }
     contents(
       where: {
-        _or: {
-          authors: { identity: { user: { id: { _eq: $id } } } }
-          creatorId: { _eq: $id }
-        }
+        _or: [
+          { authors: { identity: { user: { id: { _eq: $id } } } } }
+          { creatorId: { _eq: $id } }
+        ]
       }
     ) {
       name
