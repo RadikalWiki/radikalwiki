@@ -57,7 +57,7 @@ export default function AuthorTextField({
       multiple
       color="primary"
       options={options}
-      getOptionLabel={(option) => option?.identity?.displayName ?? option.name}
+      getOptionLabel={(option) => option?.identity?.displayName ?? option.name ?? ""}
       defaultValue={options}
       value={value}
       filterSelectedOptions
