@@ -12,7 +12,7 @@ export default function SpeakerDial() {
     data: { event } = {},
     error,
   } = useSubscription(EVENT_SUB, {
-    variables: { id: session?.event.id },
+    variables: { id: session?.event?.id },
   });
   const classes = useStyles();
   const [open, setOpen] = useState(false);

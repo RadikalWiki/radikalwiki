@@ -23,7 +23,7 @@ export default function ContentCard({ id }: { id: string }) {
       variables: { contentId: id },
     });
     await updateEvent({
-      variables: { id: session?.event.id, set: { pollId: poll?.id } },
+      variables: { id: session?.event?.id, set: { pollId: poll?.id } },
     });
     router.push(`/poll/${poll.id}`);
   };
@@ -34,7 +34,7 @@ export default function ContentCard({ id }: { id: string }) {
 
   const handleFocusContent = (id: any) => async (_: any) => {
     await updateEvent({
-      variables: { id: session?.event.id, set: { contentId: id } },
+      variables: { id: session?.event?.id, set: { contentId: id } },
     });
   };
 

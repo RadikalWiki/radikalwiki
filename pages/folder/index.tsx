@@ -8,7 +8,7 @@ export default function Vote() {
   const router = useRouter();
   const [session] = useSession();
   const { data } = useQuery(EVENT_GET_FOLDER, {
-    variables: { id: session?.event.id },
+    variables: { id: session?.event?.id },
   });
 
   useEffect(() => {

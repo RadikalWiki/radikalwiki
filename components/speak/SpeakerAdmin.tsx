@@ -16,7 +16,7 @@ export default function SpeakerAdmin() {
   });
   const classes = useStyles();
   const [removeSpeakAll] = useMutation(EVENT_SPEAK_DEL_ALL, {
-    variables: { id: session?.event.id },
+    variables: { id: session?.event?.id },
   });
   const [setLockSpeak] = useMutation(EVENT_UPDATE);
 

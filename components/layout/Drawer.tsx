@@ -57,7 +57,7 @@ export default function Drawer({
             <ListItem
               button
               component={Link}
-              href={`/event/${session?.event.id}/admin`}
+              href={`/event/${session?.event?.id}/admin`}
             >
               <ListItemIcon>
                 <SupervisorAccount />
