@@ -51,11 +51,31 @@ export default function Login() {
       </HeaderCard>
       <HeaderCard title="Indhold" avatar={<Subject />}>
         <List>
-          {data?.contents?.map(({ name, id }: { name: string; id: string }) => (
-            <ListItem key={id} button component={Link} href={`/content/${id}`}>
-              <ListItemText primary={name} />
-            </ListItem>
-          )) ?? (
+          {data?.contents?.map(
+            ({
+              name,
+              id,
+              parent,
+              folder,
+            }: {
+              name: string;
+              id: string;
+              parent: any;
+              folder: any;
+            }) => (
+              <ListItem
+                key={id}
+                button
+                component={Link}
+                href={`/content/${id}`}
+              >
+                <ListItemText
+                  primary={name}
+                  secondary={parent ? parent.name : folder.name}
+                />
+              </ListItem>
+            )
+          ) ?? (
             <ListItem>
               <ListItemText primary="Intet indhold" />
             </ListItem>

@@ -595,9 +595,16 @@ export const USER_GET_PROFILE = gql`
           { creatorId: { _eq: $id } }
         ]
       }
+      order_by: { createdAt: desc }
     ) {
-      name
       id
+      name
+      parent {
+        name
+      }
+      folder {
+        name
+      }
     }
   }
 `;
