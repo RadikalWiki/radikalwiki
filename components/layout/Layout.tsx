@@ -16,12 +16,12 @@ export default function Layout({ children }: { children?: any }) {
   return (
     <SessionProvider>
       <TopBar />
-      <Container>
-        <Scroll>
+      <Scroll>
+        <Container>
           {signedIn != null && children}
           <div className={classes.pad} />
-        </Scroll>
-      </Container>
+        </Container>
+      </Scroll>
       <NavBar />
     </SessionProvider>
   );
