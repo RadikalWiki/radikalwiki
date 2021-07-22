@@ -94,6 +94,7 @@ export default function Id() {
       <div ref={params.InputProps.ref}>
         <TextField
           label="Søg"
+          autoFocus
           style={{ width: 200, height: 60 }}
           type="text"
           {...params.inputProps}
