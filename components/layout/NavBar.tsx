@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   BottomNavigation,
   BottomNavigationAction,
 } from "@material-ui/core";
 import { HowToVote, RecordVoiceOver, Subject } from "@material-ui/icons";
-import { Link } from "comps/common";
+import { Link } from "comps";
 import { useStyles, useSession } from "hooks";
 import { useRouter } from "next/router";
 
@@ -25,6 +25,10 @@ export default function NavBar() {
   const { pathname } = useRouter();
   const [state, setState] = useState(getState(pathname));
   const classes = useStyles();
+
+  useEffect(() => {
+    setState(getState(pathname));
+  }, [pathname]);
 
   if (!session?.event?.id) return null;
 
