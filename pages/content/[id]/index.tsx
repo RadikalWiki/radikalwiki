@@ -232,12 +232,12 @@ export default function Id() {
           </Collapse>
         </Card>
       </Fade>
-      {content?.children && (!content.parent || content.mode === "changes") && (
+      {content?.children && (!content.parent || content.folder.mode == "changes") && (
         <Fade in={!loading}>
           <Card className={classes.card}>
             <CardHeader
               title={
-                content.mode == "changes" ? "Ændringsforslag" : "Kandidaturer"
+                content.folder.mode == "changes" ? "Ændringsforslag" : "Kandidaturer"
               }
               action={
                 !content.folder.lockChildren && (
