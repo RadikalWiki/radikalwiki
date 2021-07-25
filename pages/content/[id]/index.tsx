@@ -232,95 +232,91 @@ export default function Id() {
           </Collapse>
         </Card>
       </Fade>
-      {content?.children && (!content.parent || content.folder.mode == "changes") && (
-        <Fade in={!loading}>
-          <Card className={classes.card}>
-            <CardHeader
-              title={
-                content.folder.mode == "changes" ? "Ændringsforslag" : "Kandidaturer"
-              }
-              action={
-                !content.folder.lockChildren && (
-                  <AddChildButton content={content} />
-                )
-              }
-            />
-            <List>
-              {content?.children.map(
-                (child: {
-                  name: any;
-                  id: any;
-                  authors: any;
-                  published: boolean;
-                }) => (
-                  <ListItem
-                    button
-                    component={NextLink}
-                    href={`/content/${child.id}`}
-                  >
-                    <ListItemAvatar>
-                      <Badge
-                        badgeContent={
-                          child.published ? getChangeNumber() : null
-                        }
-                        color="primary"
-                      >
-                        <Avatar>
-                          {child.published ? (
-                            <Tooltip title="Indsendt">
-                              <Public color="secondary" />
-                            </Tooltip>
-                          ) : (
-                            <Tooltip title="Ikke Indsendt">
+      {content?.children &&
+        (!content.parent || content.folder.mode == "changes") && (
+          <Fade in={!loading}>
+            <Card className={classes.card}>
+              <CardHeader
+                title={
+                  content.folder.mode == "changes"
+                    ? "Ændringsforslag"
+                    : "Kandidaturer"
+                }
+                action={
+                  !content.folder.lockChildren && (
+                    <AddChildButton content={content} />
+                  )
+                }
+              />
+              <List>
+                {content?.children.map(
+                  (child: {
+                    name: any;
+                    id: any;
+                    authors: any;
+                    published: boolean;
+                  }) => (
+                    <ListItem
+                      button
+                      component={NextLink}
+                      href={`/content/${child.id}`}
+                    >
+                      <ListItemAvatar>
+                        {child.published ? (
+                          <Avatar className={classes.avatar}>
+                            {getChangeNumber()}
+                          </Avatar>
+                        ) : (
+                          <Tooltip title="Ikke indsendt">
+                            <Avatar>
                               <Lock color="primary" />
-                            </Tooltip>
-                          )}
-                        </Avatar>
-                      </Badge>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={child.name}
-                      secondary={
-                        content.folder.mode == "changes"
-                          ? formatAuthors(child?.authors)
-                          : !child.published
-                          ? "Ikke indsendt"
-                          : "Indsendt"
-                      }
-                    />
-                    {!child?.published ||
-                      (session?.roles.includes("admin") && (
-                        <ListItemSecondaryAction>
-                          <Tooltip title="Slet">
-                            <IconButton
-                              onClick={handleDeleteChild(child.id)}
-                              color="primary"
-                              edge="end"
-                              aria-label="Fjern indhold"
-                            >
-                              <Cancel />
-                            </IconButton>
+                            </Avatar>
                           </Tooltip>
-                        </ListItemSecondaryAction>
-                      ))}
+                        )}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={child.name}
+                        secondary={
+                          content.folder.mode == "changes"
+                            ? formatAuthors(child?.authors)
+                            : !child.published
+                            ? "Ikke indsendt"
+                            : "Indsendt"
+                        }
+                      />
+                      {!child?.published ||
+                        (session?.roles.includes("admin") && (
+                          <ListItemSecondaryAction>
+                            <Tooltip title="Slet">
+                              <IconButton
+                                onClick={handleDeleteChild(child.id)}
+                                color="primary"
+                                edge="end"
+                                aria-label="Fjern indhold"
+                              >
+                                <Cancel />
+                              </IconButton>
+                            </Tooltip>
+                          </ListItemSecondaryAction>
+                        ))}
+                    </ListItem>
+                  )
+                )}
+                {content?.children.length == 0 && (
+                  <ListItem button>
+                    <ListItemText
+                      primary={`Ingen ${
+                        content.folder.mode == "changes"
+                          ? "ændringsforslag"
+                          : "kandidaturer"
+                      }`}
+                    />
                   </ListItem>
-                )
-              )}
-              {content?.children.length == 0 && (
-                <ListItem button>
-                  <ListItemText
-                    primary={`Ingen ${
-                      content.folder.mode == "changes"
-                        ? "ændringsforslag"
-                        : "kandidaturer"
-                    }`}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </Card>
-        </Fade>
-      )}
+                )}
+              </List>
+            </Card>
+          </Fade>
+        )}
       {content?.polls && content?.polls.length !== 0 && (
         <HeaderCard title="Afstemningsresultater">
           <List>
