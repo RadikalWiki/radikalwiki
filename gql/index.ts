@@ -661,6 +661,7 @@ export const FOLDER_GET = gql`
         id
         name
         priority
+        subtitle
       }
     }
   }

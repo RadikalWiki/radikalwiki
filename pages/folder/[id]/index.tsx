@@ -53,23 +53,23 @@ export default function Id() {
   const { loading, data, error } = useQuery(FOLDER_GET, {
     variables: { id },
   });
-  console.log(error);
   const [searchOpen, setSearchOpen] = useState(false);
   const searchAnchorRef = useRef(null);
-  data?.folder.parent;
   folderLetter = 0;
   const contents =
     data?.folder.contents.map(({ id, name, priority }: any) => ({
       id,
       name,
       priority,
+      subtitle: null,
       type: "content",
     })) || [];
   const folders =
-    data?.folder.folders.map(({ id, name, priority }: any) => ({
+    data?.folder.folders.map(({ id, name, priority, subtitle }: any) => ({
       id,
       name,
       priority,
+      subtitle,
       type: "folder",
     })) || [];
   const list = contents
@@ -103,7 +103,6 @@ export default function Id() {
     );
   };
   const renderOption = (params: any): ReactNode => {
-    console.log(params);
     return <></>;
   };
 
@@ -188,7 +187,7 @@ export default function Id() {
           <List className={classes.list}>
             <Divider />
             {list.map(
-              (e: { name: any; id: any; type: any }) =>
+              (e: { name: any; id: any; type: any; subtitle: any }) =>
                 (!state ||
                   e.name.toLowerCase().includes(state.toLowerCase())) && (
                   <Fragment key={e.id}>
@@ -202,7 +201,7 @@ export default function Id() {
                           {getFolderLetter()}
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary={e.name} />
+                      <ListItemText primary={e.name} secondary={e.subtitle} />
                     </ListItem>
                     <Divider />
                   </Fragment>
