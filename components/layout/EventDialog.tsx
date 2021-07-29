@@ -53,8 +53,6 @@ export default function EventDialog({
 
   return (
     <Dialog
-      disableBackdropClick
-      disableEscapeKeyDown
       open={open}
       onClose={() => setOpen(false)}
     >
