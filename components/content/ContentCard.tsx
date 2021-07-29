@@ -12,16 +12,24 @@ export default function ContentCard({ id }: { id: any }) {
 
   if (!content) return null;
 
+  const formatAuthors = (a: any) =>
+    a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
+
   return (
     <Card className={classes.card}>
-      <CardHeader title={content.name} className={classes.cardHeader} />
+      <CardHeader
+        title={content.name}
+        subheader={formatAuthors(content.authors)}
+        subheaderTypographyProps={{ color: "inherit" }}
+        className={classes.cardHeader}
+      />
       <>
         <Typography className={classes.creatorTextCard} color="textSecondary">
           {content?.creators}
         </Typography>
 
         <Typography className={classes.text} style={{ whiteSpace: "pre-line" }}>
-          {content?.data}
+          <div dangerouslySetInnerHTML={{ __html: content?.data }} />
         </Typography>
       </>
     </Card>
