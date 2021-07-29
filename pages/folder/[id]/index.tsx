@@ -110,46 +110,46 @@ export default function Id() {
     <>
       <Fade in={!loading}>
         <Card className={classes.card}>
-          <CardContent>
-            <Breadcrumbs>
-              <Link component={NextLink} color="primary" href={`/folder`}>
-                <Tooltip title="Indhold">
-                  <Subject className={classes.breadIcon} />
-                </Tooltip>
-              </Link>
-              {data?.folder.parent && data?.folder.parent.parentId && (
-                <Link
-                  component={NextLink}
-                  color="primary"
-                  href={`/folder/${data?.folder.parent.id}`}
-                >
-                  <Typography>{data?.folder.parent.name}</Typography>
-                </Link>
-              )}
-              {data?.folder.parent && (
-                <Link
-                  component={NextLink}
-                  color="primary"
-                  href={`/folder/${id}`}
-                >
-                  <Typography>{data?.folder.name}</Typography>
-                </Link>
-              )}
+          <Breadcrumbs className={classes.bread}>
+            <Link
+              component={NextLink}
+              color="primary"
+              href={`/folder`}
+              className={classes.breadText}
+            >
+              <Tooltip title="Indhold">
+                <Subject />
+              </Tooltip>
+            </Link>
+            {data?.folder.parent && data?.folder.parent.parentId && (
               <Link
-                ref={searchAnchorRef}
-                href=""
-                onClick={(e: any) => {
-                  e.preventDefault();
-                  setSearchOpen(!searchOpen);
-                }}
+                component={NextLink}
                 color="primary"
+                href={`/folder/${data?.folder.parent.id}`}
               >
-                <Tooltip title="Søg">
-                  <Search className={classes.breadIcon} />
-                </Tooltip>
+                <Typography>{data?.folder.parent.name}</Typography>
               </Link>
-            </Breadcrumbs>
-          </CardContent>
+            )}
+            {data?.folder.parent && (
+              <Link component={NextLink} color="primary" href={`/folder/${id}`}>
+                <Typography>{data?.folder.name}</Typography>
+              </Link>
+            )}
+            <Link
+              ref={searchAnchorRef}
+              href=""
+              className={classes.breadText}
+              onClick={(e: any) => {
+                e.preventDefault();
+                setSearchOpen(!searchOpen);
+              }}
+              color="primary"
+            >
+              <Tooltip title="Søg">
+                <Search />
+              </Tooltip>
+            </Link>
+          </Breadcrumbs>
         </Card>
       </Fade>
       <Popper
