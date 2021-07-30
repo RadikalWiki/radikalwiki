@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   Link as NextLink,
   HeaderCard,
   ContentAdmin,
   AddChildButton,
+  Content,
+  ContentToolbar,
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
@@ -12,24 +14,19 @@ import { useStyles, useSession } from "hooks";
 import {
   Cancel,
   HowToVote,
-  Edit,
-  Public,
   Lock,
-  Publish,
-  Delete,
   ExpandMore,
   Subject,
+  ExpandLess,
 } from "@material-ui/icons";
-import { CONTENT_SUB, CONTENT_UPDATE, CONTENT_DELETE, POLL_DEL } from "gql";
+import { CONTENT_SUB, POLL_DEL } from "gql";
 import {
   Avatar,
   Badge,
   Breadcrumbs,
   Collapse,
   Card,
-  CardContent,
   CardHeader,
-  CardActions,
   Divider,
   IconButton,
   Link,
@@ -40,12 +37,7 @@ import {
   ListItemText,
   Tooltip,
   Fade,
-  Grid,
-  Paper,
-  Box,
-  Button,
 } from "@material-ui/core";
-import Image from "material-ui-image";
 
 export default function Id() {
   const [session] = useSession();
@@ -60,9 +52,8 @@ export default function Id() {
     variables: { id },
   });
   const [expand, setExpand] = useState(true);
-  const [updateContent] = useMutation(CONTENT_UPDATE);
-  const [deleteContent] = useMutation(CONTENT_DELETE);
   const [deletePoll] = useMutation(POLL_DEL);
+  const [open, setOpen] = useState<boolean[]>([]);
 
   let changeNumber = 0;
   const getChangeNumber = () => {
@@ -70,33 +61,8 @@ export default function Id() {
     return changeNumber;
   };
 
-  const handleDelete = async () => {
-    await deleteContent({ variables: { id } });
-
-    if (content.parent) {
-      router.push(`/content/${content.parent.id}`);
-    } else {
-      router.push(`/folder/${content.folder.id}`);
-    }
-  };
-
-  const handleDeleteChild = (value: any) => async (_: any) => {
-    await deleteContent({ variables: { id: value } });
-  };
-
   const handleDeletePoll = (value: any) => async (_: any) => {
     await deletePoll({ variables: { id: value } });
-  };
-
-  const handlePublish = async () => {
-    await updateContent({
-      variables: { id, set: { published: true } },
-    });
-  };
-
-  // TODO: properly style MUI buttons with next.js
-  const handleEdit = async () => {
-    router.push(`/content/${content?.id}/edit`);
   };
 
   const editable =
@@ -111,10 +77,6 @@ export default function Id() {
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
-
-  const image = content?.file
-    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}`
-    : null;
 
   return (
     <>
@@ -181,54 +143,9 @@ export default function Id() {
           />
           <Divider />
           <Collapse in={expand} timeout={500}>
-            {editable && (
-              <CardActions>
-                <Button
-                  color="primary"
-                  variant="contained"
-                  endIcon={<Delete />}
-                  onClick={handleDelete}
-                >
-                  Slet
-                </Button>
-                <Box className={classes.flexGrow} />
-                <Button
-                  color="primary"
-                  variant="contained"
-                  endIcon={<Edit />}
-                  onClick={handleEdit}
-                >
-                  Rediger
-                </Button>
-                {!content?.published && (
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    endIcon={<Publish />}
-                    onClick={handlePublish}
-                  >
-                    Indsend
-                  </Button>
-                )}
-              </CardActions>
-            )}
+            {editable && <ContentToolbar content={content} />}
             <Divider />
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={8}>
-                {content?.data && (
-                  <CardContent>
-                    <div dangerouslySetInnerHTML={{ __html: content?.data }} />
-                  </CardContent>
-                )}
-              </Grid>
-              {image && (
-                <Grid item xs={12} sm={4}>
-                  <Paper className={classes.image}>
-                    <Image src={image} />
-                  </Paper>
-                </Grid>
-              )}
-            </Grid>
+            <Content content={content} />
           </Collapse>
         </Card>
       </Fade>
@@ -248,58 +165,70 @@ export default function Id() {
                   )
                 }
               />
+              <Divider />
               <List>
                 {content?.children.map(
-                  (child: {
-                    name: any;
-                    id: any;
-                    authors: any;
-                    published: boolean;
-                  }) => (
-                    <ListItem
-                      button
-                      component={NextLink}
-                      href={`/content/${child.id}`}
-                    >
-                      <ListItemAvatar>
-                        {child.published ? (
-                          <Avatar className={classes.avatar}>
-                            {getChangeNumber()}
-                          </Avatar>
-                        ) : (
-                          <Tooltip title="Ikke indsendt">
-                            <Avatar>
-                              <Lock color="primary" />
+                  (
+                    child: {
+                      name: string;
+                      id: string;
+                      authors: any;
+                      published: boolean;
+                    },
+                    index: number
+                  ) => (
+                    <Fragment key={child.id}>
+                      <ListItem
+                        button
+                        component={NextLink}
+                        href={`/content/${child.id}`}
+                      >
+                        <ListItemAvatar>
+                          {child.published ? (
+                            <Avatar className={classes.avatar}>
+                              {getChangeNumber()}
                             </Avatar>
-                          </Tooltip>
-                        )}
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={child.name}
-                        secondary={
-                          content.folder.mode == "changes"
-                            ? formatAuthors(child?.authors)
-                            : !child.published
-                            ? "Ikke indsendt"
-                            : "Indsendt"
-                        }
-                      />
-                      {!child?.published ||
-                        (session?.roles.includes("admin") && (
-                          <ListItemSecondaryAction>
-                            <Tooltip title="Slet">
-                              <IconButton
-                                onClick={handleDeleteChild(child.id)}
-                                color="primary"
-                                edge="end"
-                                aria-label="Fjern indhold"
-                              >
-                                <Cancel />
-                              </IconButton>
+                          ) : (
+                            <Tooltip title="Ikke indsendt">
+                              <Avatar>
+                                <Lock color="primary" />
+                              </Avatar>
                             </Tooltip>
-                          </ListItemSecondaryAction>
-                        ))}
-                    </ListItem>
+                          )}
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={child.name}
+                          secondary={
+                            content.folder.mode == "changes"
+                              ? formatAuthors(child?.authors)
+                              : !child.published
+                              ? "Ikke indsendt"
+                              : "Indsendt"
+                          }
+                        />
+                        {!child?.published ||
+                          (session?.roles.includes("admin") && (
+                            <ListItemSecondaryAction>
+                              <IconButton
+                                onClick={() => {
+                                  const copy = [...open];
+                                  copy[index] = !open[index];
+                                  setOpen(copy);
+                                }}
+                              >
+                                {open[index] ? <ExpandLess /> : <ExpandMore />}
+                              </IconButton>
+                            </ListItemSecondaryAction>
+                          ))}
+                      </ListItem>
+                      <Divider />
+                      <Collapse in={open[index]} unmountOnExit>
+                        {editable && <ContentToolbar content={content} />}
+                        <Divider />
+                        <Content content={child} />
+                        <Divider />
+                      </Collapse>
+                    </Fragment>
                   )
                 )}
                 {content?.children.length == 0 && (

@@ -40,6 +40,12 @@ export const CONTENT_SUB = gql`
       children(order_by: { published: asc, createdAt: asc }) {
         name
         id
+        data
+        file {
+          id
+          path
+          token
+        }
         published
         authors {
           name
