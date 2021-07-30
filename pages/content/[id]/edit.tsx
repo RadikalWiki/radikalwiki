@@ -15,6 +15,7 @@ import {
 import {
   Box,
   Divider,
+  Fade,
   IconButton,
   Breadcrumbs,
   Button,
@@ -101,134 +102,142 @@ export default function Id() {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link
-            component={NextLink}
-            className={classes.breadText}
-            color="primary"
-            href="/folder"
-          >
-            <Tooltip title="Indhold">
-              <Subject />
-            </Tooltip>
-          </Link>
-          {content?.parent ? (
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <Breadcrumbs className={classes.bread}>
             <Link
               component={NextLink}
+              className={classes.breadText}
               color="primary"
-              href={`/content/${content?.parent.id}`}
+              href="/folder"
             >
-              {content?.parent.name}
-            </Link>
-          ) : (
-            <Link
-              component={NextLink}
-              color="primary"
-              href={`/folder/${content?.folder.id}`}
-            >
-              {content?.folder.name}
-            </Link>
-          )}
-          <Link component={NextLink} color="primary" href={`/content/${id}`}>
-            {name}
-          </Link>
-        </Breadcrumbs>
-      </Card>
-      <Card className={classes.card}>
-        <CardHeader
-          title={`${name} (Redigering)`}
-          subheader={
-            !(content?.parent && content?.folder.mode === "candidates")
-              ? formatAuthors(authors)
-              : ""
-          }
-          action={
-            <IconButton
-              className={clsx(classes.expand, {
-                [classes.expandOpen]: expand,
-              })}
-              color="primary"
-              onClick={() => setExpand(!expand)}
-            >
-              <Tooltip title={expand ? "Skjul" : "Vis"}>
-                <ExpandMore />
+              <Tooltip title="Indhold">
+                <Subject />
               </Tooltip>
-            </IconButton>
-          }
-        />
-        <Divider />
-        <Collapse in={expand} timeout="auto">
-          <CardActions>
-            <Button
-              color="primary"
-              variant="contained"
-              endIcon={<Delete />}
-              onClick={handleDelete}
-            >
-              Slet
-            </Button>
-            <Box className={classes.flexGrow} />
-            <Button
-              color="primary"
-              variant="contained"
-              endIcon={<Save />}
-              onClick={handleSave(false)}
-            >
-              Gem
-            </Button>
-            {!content?.published && (
+            </Link>
+            {content?.parent ? (
+              <Link
+                component={NextLink}
+                color="primary"
+                href={`/content/${content?.parent.id}`}
+              >
+                {content?.parent.name}
+              </Link>
+            ) : (
+              <Link
+                component={NextLink}
+                color="primary"
+                href={`/folder/${content?.folder.id}`}
+              >
+                {content?.folder.name}
+              </Link>
+            )}
+            <Link component={NextLink} color="primary" href={`/content/${id}`}>
+              {name}
+            </Link>
+          </Breadcrumbs>
+        </Card>
+      </Fade>
+
+      <Fade in={!loading}>
+        <Card className={classes.card}>
+          <CardHeader
+            title={`${name} (Redigering)`}
+            subheader={
+              !(content?.parent && content?.folder.mode === "candidates")
+                ? formatAuthors(authors)
+                : ""
+            }
+            action={
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expand,
+                })}
+                color="primary"
+                onClick={() => setExpand(!expand)}
+              >
+                <Tooltip title={expand ? "Skjul" : "Vis"}>
+                  <ExpandMore />
+                </Tooltip>
+              </IconButton>
+            }
+          />
+          <Divider />
+          <Collapse in={expand} timeout="auto">
+            <CardActions>
               <Button
                 color="primary"
                 variant="contained"
-                endIcon={<Publish />}
-                onClick={handleSave(true)}
+                endIcon={<Delete />}
+                onClick={handleDelete}
               >
-                Indsend
+                Slet
               </Button>
-            )}
-          </CardActions>
-          <Divider />
-          <CardContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  value={name}
-                  onChange={(e: any) => setName(e.target.value)}
-                  label="Titel"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <AuthorTextField value={authors} onChange={setAuthors} />
-              </Grid>
-              <Grid item xs={12}>
-                <Grid container>
-                  <Grid item xs={9}>
-                    <FileUploader contentId={content?.id} onNewFile={setImage}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        component="span"
+              <Box className={classes.flexGrow} />
+              <Button
+                color="primary"
+                variant="contained"
+                endIcon={<Save />}
+                onClick={handleSave(false)}
+              >
+                Gem
+              </Button>
+              {!content?.published && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  endIcon={<Publish />}
+                  onClick={handleSave(true)}
+                >
+                  Indsend
+                </Button>
+              )}
+            </CardActions>
+            <Divider />
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    value={name}
+                    onChange={(e: any) => setName(e.target.value)}
+                    label="Titel"
+                    variant="outlined"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <AuthorTextField value={authors} onChange={setAuthors} />
+                </Grid>
+                <Grid item xs={12}>
+                  <Grid container>
+                    <Grid item xs={9}>
+                      <FileUploader
+                        contentId={content?.id}
+                        onNewFile={setImage}
                       >
-                        Upload Billede
-                      </Button>
-                    </FileUploader>
-                  </Grid>
-                  {image && (
-                    <Grid item xs={3}>
-                      <Paper className={classes.image}>
-                        <Image src={getFileUrl(image) || ""} />
-                      </Paper>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          component="span"
+                        >
+                          Upload Billede
+                        </Button>
+                      </FileUploader>
                     </Grid>
-                  )}
+                    {image && (
+                      <Grid item xs={3}>
+                        <Paper className={classes.image}>
+                          <Image src={getFileUrl(image) || ""} />
+                        </Paper>
+                      </Grid>
+                    )}
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </CardContent>
-        </Collapse>
-      </Card>
+            </CardContent>
+          </Collapse>
+        </Card>
+      </Fade>
       <Editor value={data} onChange={setData} />
     </>
   );
