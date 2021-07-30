@@ -9,7 +9,7 @@ export default function Content({ content }: { content: any }) {
     : null;
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} sm={image ? 8 : 12}>
         {content?.data && (
           <CardContent>
             <div dangerouslySetInnerHTML={{ __html: content?.data }} />
