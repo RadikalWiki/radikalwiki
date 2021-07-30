@@ -542,6 +542,16 @@ export const IDENTITIES_ADD = gql`
   }
 `;
 
+export const ADMISSIONS_ADD = gql`
+  mutation ($objects: [admissions_insert_input!]!) {
+    insert_admissions(objects: $objects) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
 export const MEMBERSHIPS_ADD = gql`
   mutation ($objects: [memberships_insert_input!]!) {
     insert_memberships(objects: $objects) {

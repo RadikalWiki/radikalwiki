@@ -1,19 +1,12 @@
 import React from "react";
-import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink } from "comps/common";
+import { Link as NextLink, AddAdmissionsFab } from "comps";
 import { useStyles } from "hooks";
 import { EVENT_GET } from "gql";
-import {
-  Breadcrumbs,
-  Card,
-  Link,
-  Typography,
-} from "@material-ui/core";
+import { Breadcrumbs, Card, Link, Typography } from "@material-ui/core";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 
 export default function Index() {
-  const [state, setState] = useState("");
   const classes = useStyles();
   const router = useRouter();
   const { id } = router.query;
@@ -34,6 +27,7 @@ export default function Index() {
         </Breadcrumbs>
       </Card>
       <Card className={classes.card}></Card>
+      <AddAdmissionsFab eventId={id as string} />
     </>
   );
 }
