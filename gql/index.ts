@@ -508,6 +508,7 @@ export const EVENT_SUB = gql`
           identity {
             displayName
           }
+          name
         }
         parent {
           name
