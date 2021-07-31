@@ -11,9 +11,6 @@ export default function Vote() {
   const { data, loading, error } = useQuery(EVENT_CHECK_VOTE_ACTION, {
     variables: { id: session?.event.id },
   });
-  console.log(data);
-  console.log(error);
-  console.log(loading);
 
   useEffect(() => {
     if (data?.canVote.canVote === false) {

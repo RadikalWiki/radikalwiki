@@ -12,8 +12,6 @@ export default function Screen() {
     variables: { id: session?.event?.id },
   });
 
-  console.log(error)
-  console.log(event)
   return (
     <Grid container alignItems="stretch" justify="space-evenly">
       <Grid item xs>
