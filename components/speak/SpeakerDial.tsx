@@ -1,19 +1,12 @@
 import React, { useState } from "react";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import { avatars } from "comps/speak";
-import { useMutation, useSubscription } from "@apollo/client";
-import { EVENT_SUB, SPEAK_ADD } from "gql";
+import { useMutation } from "@apollo/client";
+import { SPEAK_ADD } from "gql";
 import { useStyles, useSession } from "hooks";
 
-export default function SpeakerDial() {
+export default function SpeakerDial({ event }: { event: any }) {
   const [session] = useSession();
-  const {
-    loading,
-    data: { event } = {},
-    error,
-  } = useSubscription(EVENT_SUB, {
-    variables: { id: session?.event?.id },
-  });
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [addSpeak] = useMutation(SPEAK_ADD);

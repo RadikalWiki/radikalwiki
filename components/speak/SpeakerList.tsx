@@ -30,8 +30,6 @@ export default function SpeakerList({ interactive }: SpeakerListProps) {
     removeSpeak({ variables: { id: value } });
   };
 
-  console.log(error);
-
   return (
     <List>
       {speaks?.map(

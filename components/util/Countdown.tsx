@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, TextField, Typography } from "@material-ui/core";
 import { useSession, useStyles } from "hooks";
-import { useMutation, useSubscription } from "@apollo/client";
-import { TIMER_SET, TIMER_SUB } from "gql";
+import { useMutation } from "@apollo/client";
+import { TIMER_SET } from "gql";
 
 const timeString = (time: number) => {
   let sec = String(time % 60);
@@ -14,26 +14,27 @@ const timeString = (time: number) => {
 };
 
 export default function Countdown({
-  interactive = true,
+  timer,
+  interactive,
 }: {
+  timer: any;
   interactive?: boolean;
 }) {
   const [session] = useSession();
   const [time, setTime] = useState(0);
   const [timeBox, setTimeBox] = useState(120);
-  const { data } = useSubscription(TIMER_SUB);
   const [setTimer] = useMutation(TIMER_SET);
   const classes = useStyles();
 
   const handleTimerSet = (time: number) => {
-    setTimer({ variables: { time } });
+    setTimer({ variables: { id: timer?.id, time } });
   };
 
   useEffect(() => {
     const now = new Date();
-    const created = new Date(data?.timer?.updated_at);
+    const created = new Date(timer?.updatedAt);
     let sec = Math.floor(
-      data?.timer.time - (now.getTime() - created.getTime()) / 1000
+      timer?.time - (now.getTime() - created.getTime()) / 1000
     );
     sec = sec >= 0 ? sec : 0;
     setTime(sec);
@@ -41,14 +42,14 @@ export default function Countdown({
       setTime((time) => (time > 1 ? time - 1 : 0));
     }, 1000);
     return () => clearInterval(interval);
-  }, [data]);
+  }, [timer]);
 
   return (
     <Card className={classes.countdown}>
       <Typography className={classes.text} variant="h5">
         Taletid: {timeString(time)}
       </Typography>
-      {!interactive && session.role == "admin" && (
+      {interactive && session?.roles.includes("admin") && (
         <>
           <TextField
             id="filled-number"

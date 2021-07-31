@@ -47,8 +47,6 @@ export default function ContentToolbar({ content }: { content: any }) {
     const { data: { poll } = {} } = await addPoll({
       variables: { object: { contentId: content.id } },
     });
-    console.log(poll);
-    console.log(session);
     await updateEvent({
       variables: { id: session?.event?.id, set: { pollId: poll?.id } },
     });

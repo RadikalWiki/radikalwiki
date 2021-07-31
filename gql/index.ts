@@ -426,7 +426,11 @@ export const EVENT_SUB = gql`
       id
       contentId
       pollId
-      timerId
+      timer {
+        id
+        updatedAt
+        time
+      }
       lockSpeak
       poll {
         active

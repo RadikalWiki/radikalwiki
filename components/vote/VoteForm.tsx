@@ -75,7 +75,6 @@ export default function VoteForm() {
         value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
       },
     });
-    console.log(res);
     router.push(`/poll/${poll.id}`);
   };
 

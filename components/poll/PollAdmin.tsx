@@ -26,7 +26,6 @@ export default function PollAdmin({
     router.push(`/poll/${pollId}`);
   };
 
-  console.log(data);
   if (!session?.roles.includes("admin") || !data?.poll.active) return null;
 
   return (

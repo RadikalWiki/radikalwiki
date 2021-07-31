@@ -22,7 +22,7 @@ export default function Screen() {
         ) : null}
       </Grid>
       <Grid item xs={2}>
-        <Countdown />
+        <Countdown timer={event?.timer} />
         <Card className={classes.card}>
           <CardHeader title="Talerliste" className={classes.cardHeader} />
           <SpeakerList />
