@@ -428,6 +428,15 @@ export const EVENT_SUB = gql`
             displayName
           }
         }
+        parent {
+          name
+          data
+          authors {
+            identity {
+              displayName
+            }
+          }
+        }
       }
       pollId
       timer {
