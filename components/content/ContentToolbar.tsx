@@ -59,6 +59,12 @@ export default function ContentToolbar({ content }: { content: any }) {
     });
   };
 
+  const handleHide = (id: any) => async (_: any) => {
+    await updateEvent({
+      variables: { id: session?.event?.id, set: { contentId: id, pollId: id } },
+    });
+  };
+
   return (
     <CardActions>
       <Button
@@ -71,7 +77,7 @@ export default function ContentToolbar({ content }: { content: any }) {
       <Button
         color="primary"
         variant="contained"
-        onClick={handleFocusContent(null)}
+        onClick={handleHide(null)}
       >
         Skjul
       </Button>

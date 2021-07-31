@@ -21,9 +21,8 @@ export default function PollAdmin({
   const [stopPoll] = useMutation(POLL_STOP);
 
   const handleStopPoll = async (_: any) => {
-    const res = await stopPoll({ variables: { id: null } });
-    const pollId = res.data?.update_poll.returning[0].id;
-    router.push(`/poll/${pollId}`);
+    const res = await stopPoll();
+    router.push(`/poll/${id}`);
   };
 
   if (!session?.roles.includes("admin") || !data?.poll.active) return null;

@@ -56,7 +56,6 @@ export default function PollChart({
     <Fade in={!loading} key={uuid()}>
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title={poll?.content.name} />
-        <div className={classes.pad} />
         {chartData?.map((data: any) => (
           <div aria-label={`${data?.option} fik ${data?.count} stemmer`}></div>
         ))}
@@ -77,9 +76,11 @@ export default function PollChart({
           <Animation />
         </Chart>
 
+        {!poll?.active &&
         <Typography className={classes.textChart}>
           Afgivne stemmer: {poll?.total.aggregate.count}
         </Typography>
+        }
       </Card>
     </Fade>
   );

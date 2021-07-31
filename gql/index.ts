@@ -233,18 +233,13 @@ export const POLL_DEL = gql`
 `;
 
 export const POLL_STOP = gql`
-  mutation ($id: uuid, $eventId: uuid) {
+  mutation {
     update_polls(where: { active: { _eq: true } }, _set: { active: false }) {
       returning {
         id
         content {
           id
         }
-      }
-    }
-    update_events(where: { id: { _eq: $eventId } }, _set: { pollId: $id }) {
-      returning {
-        id
       }
     }
   }
@@ -281,9 +276,10 @@ export const EVENT_CHECK_VOTE = gql`
 `;
 
 export const EVENT_CHECK_VOTE_ACTION = gql`
-  query {
-    hasVoted {
+  query ($id: uuid!) {
+    canVote(eventId: $id) {
       pollId
+      canVote
     }
   }
 `;
@@ -424,7 +420,15 @@ export const EVENT_SUB = gql`
   subscription ($id: uuid!) {
     event: events_by_pk(id: $id) {
       id
-      contentId
+      content {
+        name
+        data
+        authors {
+          identity {
+            displayName
+          }
+        }
+      }
       pollId
       timer {
         id

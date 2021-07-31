@@ -6,31 +6,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const userId = req.headers["user-id"];
-  const role = req.headers["user-role"];
-  const token = req.headers["user-token"];
-  if (!(userId && role && token)) {
-    return res.status(400).send({ message: "Missing headers" });
-  }
-
-  // Validate user
-  const { error } = await query(USER_CHECK_TOKEN_ROLE, {
-    token,
-    role,
-  });
-  if (error) {
-    return res.status(400).send({ message: "Invalid id" });
-  }
+  const userId = req.body.session_variables["x-hasura-user-id"];
 
   // Check if voted
+  const eventId: string = req.body.input.eventId;
   const {
     data: { event },
   } = await query(EVENT_CHECK_VOTE, {
+    id: eventId,
     userId,
   });
 
   // Return pollId
   return res.json({
     pollId: event.poll.id,
+    canVote: event.poll.votes.length == 0,
   });
 }
