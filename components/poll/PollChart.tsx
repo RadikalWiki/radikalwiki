@@ -14,12 +14,12 @@ import { POLL_SUB_RESULT } from "gql";
 import { Link as NextLink } from "comps";
 import { v4 as uuid } from "uuid";
 
-const parseData = (poll: any) => {
+const parseData = (poll: any, screen: boolean) => {
   let res: any[] = [];
   if (!poll) {
     return res;
   }
-  if (poll.active) {
+  if (poll.active || screen) {
     return [{ option: "Antal Stemmer", count: poll.total.aggregate.count }];
   }
   if (poll.content.folder.mode === "changes") {
@@ -44,13 +44,15 @@ const parseData = (poll: any) => {
 export default function PollChart({
   loading,
   poll,
+  screen = false,
 }: {
   loading: boolean;
   poll: any;
+  screen?: boolean;
 }) {
   const classes = useStyles();
 
-  const chartData = parseData(poll) || [];
+  const chartData = parseData(poll, screen) || [];
 
   return (
     <Fade in={!loading} key={uuid()}>
@@ -76,7 +78,7 @@ export default function PollChart({
           <Animation />
         </Chart>
 
-        {!poll?.active &&
+        {!(poll?.active || screen) &&
         <Typography className={classes.textChart}>
           Afgivne stemmer: {poll?.total.aggregate.count}
         </Typography>

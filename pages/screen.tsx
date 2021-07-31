@@ -18,7 +18,7 @@ export default function Screen() {
     <Grid container alignItems="stretch" justify="space-evenly">
       <Grid item xs>
         {event?.poll ? (
-          <PollChart poll={event.poll} loading={loading} />
+          <PollChart poll={event.poll} loading={loading} screen />
         ) : event?.content ? (
           <ContentCard content={event.content} />
         ) : null}
