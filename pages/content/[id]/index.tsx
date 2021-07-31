@@ -205,20 +205,17 @@ export default function Id() {
                               : "Indsendt"
                           }
                         />
-                        {!child?.published ||
-                          (session?.roles.includes("admin") && (
-                            <ListItemSecondaryAction>
-                              <IconButton
-                                onClick={() => {
-                                  const copy = [...open];
-                                  copy[index] = !open[index];
-                                  setOpen(copy);
-                                }}
-                              >
-                                {open[index] ? <ExpandLess /> : <ExpandMore />}
-                              </IconButton>
-                            </ListItemSecondaryAction>
-                          ))}
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            onClick={() => {
+                              const copy = [...open];
+                              copy[index] = !open[index];
+                              setOpen(copy);
+                            }}
+                          >
+                            {open[index] ? <ExpandLess /> : <ExpandMore />}
+                          </IconButton>
+                        </ListItemSecondaryAction>
                       </ListItem>
                       <Divider />
                       <Collapse in={open[index]} unmountOnExit>
