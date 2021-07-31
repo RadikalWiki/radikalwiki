@@ -21,34 +21,38 @@ import { useRouter } from "next/router";
 export default function VoteForm() {
   const router = useRouter();
   const classes = useStyles();
-  const { loading, data } = useSubscription(EVENT_POLL_SUB);
+  const [session] = useSession();
+  const { loading, data } = useSubscription(EVENT_POLL_SUB, {
+    variables: { id: session?.event.id },
+  });
   const [addVote] = useMutation(VOTE_ACTION);
   const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);
 
-  const poll = data?.session?.poll;
-  const pollType = poll?.content.pollType;
+  const poll = data?.event?.poll;
+  const opts =
+    poll?.content.folder.mode == "candidates"
+      ? [...poll?.content.children?.map((c: any) => c.name), "Blank"]
+      : ["For", "Imod", "Blank"];
 
-  const [vote, setVote] = useState(
-    new Array(pollType?.options.length).fill(false) || []
-  );
+  const [vote, setVote] = useState(new Array(opts.length).fill(false) || []);
 
   const validate = (vote: any, submit: boolean) => {
     const selected = vote.filter((o: any) => o).length;
-    if (submit && pollType.minVote > selected) {
+    if (submit && poll?.content.minVote > selected) {
       setHelperText(
-        `Vælg venligst mindst ${pollType.minVote} mulighed${
-          pollType.minVote > 1 ? "er" : ""
+        `Vælg venligst mindst ${poll.content.minVote} mulighed${
+          poll?.content.minVote > 1 ? "er" : ""
         }`
       );
       setError(true);
       return false;
     }
 
-    if (pollType.maxVote < selected) {
+    if (poll?.content.maxVote < selected) {
       setHelperText(
-        `Vælg venligst max ${pollType.maxVote} mulighed${
-          pollType.maxVote > 1 ? "er" : ""
+        `Vælg venligst max ${poll.content.maxVote} mulighed${
+          poll?.content.maxVote > 1 ? "er" : ""
         }`
       );
       setError(true);
@@ -65,20 +69,20 @@ export default function VoteForm() {
       return;
     }
 
-    await addVote({
+    const res = await addVote({
       variables: {
-        //userId: session.id,
         pollId: poll.id,
         value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
       },
     });
+    console.log(res);
     router.push(`/poll/${poll.id}`);
   };
 
   const handleChangeVote = (e: any) => {
     let voteOld;
-    if (1 === pollType.maxVote && 1 === pollType.minVote) {
-      voteOld = new Array(pollType?.options.length).fill(false);
+    if (1 === poll?.content.maxVote && 1 === poll?.content.minVote) {
+      voteOld = new Array(opts.length).fill(false);
     } else {
       voteOld = vote;
     }
@@ -105,7 +109,7 @@ export default function VoteForm() {
     );
   }
 
-  const Control = pollType?.maxVote != 1 ? Checkbox : Radio;
+  const Control = poll?.content?.maxVote != 1 ? Checkbox : Radio;
 
   return (
     <Fade in={!loading}>
@@ -115,18 +119,18 @@ export default function VoteForm() {
           <form onSubmit={handleSubmit}>
             <FormControl error={error} className={classes.formControl}>
               <FormGroup>
-                {pollType?.options.map((opt: any) => (
+                {opts.map((opt: any, index: number) => (
                   <FormControlLabel
-                    key={opt.value}
-                    value={opt.value}
+                    key={index}
+                    value={index}
                     //checked={vote[opt.value]}
                     control={
                       <Control
-                        checked={vote[opt.value] || false}
+                        checked={vote[index] || false}
                         onChange={handleChangeVote}
                       />
                     }
-                    label={opt.name}
+                    label={opt}
                   />
                 ))}
               </FormGroup>

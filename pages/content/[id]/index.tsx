@@ -2,7 +2,6 @@ import React, { Fragment, useState } from "react";
 import {
   Link as NextLink,
   HeaderCard,
-  ContentAdmin,
   AddChildButton,
   Content,
   ContentToolbar,
@@ -223,7 +222,7 @@ export default function Id() {
                       </ListItem>
                       <Divider />
                       <Collapse in={open[index]} unmountOnExit>
-                        {editable && <ContentToolbar content={content} />}
+                        {editable && <ContentToolbar content={child} />}
                         <Divider />
                         <Content content={child} />
                         <Divider />
@@ -250,7 +249,7 @@ export default function Id() {
         <HeaderCard title="Afstemningsresultater">
           <List>
             {content?.polls.map(
-              (poll: { id: any; created: any; total: any }) => (
+              (poll: { id: any; created: any; total: any; createdAt: any }) => (
                 <ListItem button component={NextLink} href={`/poll/${poll.id}`}>
                   <Tooltip title="Antal stemmer">
                     <ListItemAvatar>
@@ -266,7 +265,7 @@ export default function Id() {
                     </ListItemAvatar>
                   </Tooltip>
                   <ListItemText
-                    primary={`${new Date(poll.created).toLocaleString(
+                    primary={`${new Date(poll.createdAt).toLocaleString(
                       "da-DK"
                     )}`}
                   />
@@ -287,7 +286,6 @@ export default function Id() {
           </List>
         </HeaderCard>
       )}
-      <ContentAdmin id={id as string} />
     </>
   );
 }

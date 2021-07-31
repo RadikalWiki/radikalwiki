@@ -22,7 +22,7 @@ type SpeakerListProps = {
 export default function SpeakerList({ interactive }: SpeakerListProps) {
   const [session] = useSession();
   const { error, data: { speaks } = {} } = useSubscription(EVENT_SUB_SPEAK, {
-    variables: { eventId: session?.event?.id },
+    variables: { id: session?.event?.id },
   });
   const [removeSpeak] = useMutation(SPEAK_DEL);
 

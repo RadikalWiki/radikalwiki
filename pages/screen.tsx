@@ -8,17 +8,17 @@ import { EVENT_SUB } from "gql";
 export default function Screen() {
   const classes = useStyles();
   const [session] = useSession();
-  const { data: { event } = {} } = useSubscription(EVENT_SUB, {
+  const { data: { event } = {}, loading } = useSubscription(EVENT_SUB, {
     variables: { id: session?.event?.id },
   });
 
   return (
     <Grid container alignItems="stretch" justify="space-evenly">
       <Grid item xs>
-        {event?.pollId ? (
-          <PollChart id={event.pollId} />
-        ) : event?.contentId ? (
-          <ContentCard id={event?.contentId} />
+        {event?.poll ? (
+          <PollChart poll={event.poll} loading={loading} />
+        ) : event?.content ? (
+          <ContentCard id={event.content} />
         ) : null}
       </Grid>
       <Grid item xs={2}>

@@ -46,6 +46,12 @@ export const CONTENT_SUB = gql`
           path
           token
         }
+        parent {
+          id
+        }
+        folder {
+          mode
+        }
         published
         authors {
           name
@@ -227,9 +233,8 @@ export const POLL_DEL = gql`
 `;
 
 export const POLL_STOP = gql`
-  mutation ($id: uuid) {
+  mutation ($id: uuid, $eventId: uuid) {
     update_polls(where: { active: { _eq: true } }, _set: { active: false }) {
-      affected_rows
       returning {
         id
         content {
@@ -237,7 +242,7 @@ export const POLL_STOP = gql`
         }
       }
     }
-    update_events(where: { id: { _eq: 2 } }, _set: { pollId: $id }) {
+    update_events(where: { id: { _eq: $eventId } }, _set: { pollId: $id }) {
       returning {
         id
       }
@@ -249,13 +254,12 @@ export const POLL_GET_TYPE = gql`
   query ($id: uuid!) {
     poll: polls_by_pk(id: $id) {
       content {
-        pollType {
-          id
-          options {
-            value
+        maxVote
+        minVote
+        children_aggregate {
+          aggregate {
+            count
           }
-          maxVote
-          minVote
         }
       }
     }
@@ -293,14 +297,13 @@ export const EVENT_POLL_SUB = gql`
         content {
           id
           name
-          pollType {
-            id
-            options {
-              name
-              value
-            }
-            maxVote
-            minVote
+          maxVote
+          minVote
+          children {
+            name
+          }
+          folder {
+            mode
           }
         }
       }
@@ -353,11 +356,16 @@ export const POLL_SUB_RESULT = gql`
       content {
         id
         name
-        pollType {
+        children {
+          name
+        }
+        parent {
           id
-          options {
-            name
-          }
+        }
+        folder {
+          id
+          name
+          mode
         }
       }
       votes {
@@ -420,6 +428,32 @@ export const EVENT_SUB = gql`
       pollId
       timerId
       lockSpeak
+      poll {
+        active
+        content {
+          id
+          name
+          children {
+            name
+          }
+          parent {
+            id
+          }
+          folder {
+            id
+            name
+            mode
+          }
+        }
+        votes {
+          value
+        }
+        total: votes_aggregate(where: {}) {
+          aggregate {
+            count
+          }
+        }
+      }
     }
   }
 `;
@@ -457,6 +491,7 @@ export const VOTE_ACTION = gql`
   mutation ($pollId: uuid, $value: [Int]) {
     addVote(vote: { pollId: $pollId, value: $value }) {
       pollId
+      headers
     }
   }
 `;

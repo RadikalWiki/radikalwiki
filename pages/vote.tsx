@@ -19,7 +19,6 @@ export default function Vote() {
   return (
     <>
       <VoteForm />
-      <PollAdmin />
     </>
   );
 }

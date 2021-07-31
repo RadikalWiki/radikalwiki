@@ -22,9 +22,11 @@ export default function SpeakerDial() {
     setOpen(false);
     addSpeak({
       variables: {
-        userId: session.user.id,
-        eventId: session.event.id,
-        type: type,
+        object: {
+          userId: session.user.id,
+          eventId: session.event.id,
+          type: type,
+        },
       },
     });
   };

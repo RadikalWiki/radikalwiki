@@ -22,8 +22,15 @@ const parseData = (poll: any) => {
   if (poll.active) {
     return [{ option: "Antal Stemmer", count: poll.total.aggregate.count }];
   }
-  for (const opt of poll.content.pollType.options) {
-    res.push({ option: opt.name, count: 0, key: uuid() });
+  if (poll.content.folder.mode === "changes") {
+    res[0] = { option: "For", count: 0, key: uuid() };
+    res[1] = { option: "Imod", count: 0, key: uuid() };
+    res[2] = { option: "Blank", count: 0, key: uuid() };
+  } else {
+    for (const child of poll.content.children) {
+      res.push({ option: child.name, count: 0, key: uuid() });
+    }
+    res.push({ option: "Blank", count: 0, key: uuid() });
   }
   for (const vote of poll.votes) {
     for (const index of vote.value) {
@@ -35,38 +42,20 @@ const parseData = (poll: any) => {
 };
 
 export default function PollChart({
-  interactive = false,
-  id,
+  loading,
+  poll,
 }: {
-  interactive?: boolean;
-  active?: boolean;
-  id?: string;
+  loading: boolean;
+  poll: any;
 }) {
   const classes = useStyles();
 
-  const { data, loading } = useSubscription(POLL_SUB_RESULT, {
-    variables: { id },
-  });
-
-  const poll = Array.isArray(data?.poll) ? data.poll[0] : data?.poll;
   const chartData = parseData(poll) || [];
 
   return (
     <Fade in={!loading} key={uuid()}>
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title={poll?.content.name} />
-        {interactive && (
-          <Typography className={classes.text} variant="caption">
-            <Link
-              component={NextLink}
-              color="primary"
-              href={`/content/${poll?.content?.id}`}
-            >
-              {`Link til ${poll?.content?.name}`}
-            </Link>
-          </Typography>
-        )}
-
         <div className={classes.pad} />
         {chartData?.map((data: any) => (
           <div aria-label={`${data?.option} fik ${data?.count} stemmer`}></div>
