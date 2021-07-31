@@ -329,6 +329,9 @@ export const POLL_GET_TYPE = gql`
       content {
         maxVote
         minVote
+        folder {
+          mode
+        }
         children_aggregate {
           aggregate {
             count

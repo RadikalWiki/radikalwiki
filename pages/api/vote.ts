@@ -8,7 +8,7 @@ const validateVote = (vote: Set<number>, content: any): Boolean => {
     return false;
   }
   const aggregate = content.children_aggregate.aggregate;
-  const count = aggregate ? aggregate.count + 1 : 3;
+  const count = content.folder.mode == "candidates" ? aggregate.count + 1 : 3;
   const options = [...Array(count).keys()];
   for (const v of vote.values()) {
     if (!options.includes(v)) {
