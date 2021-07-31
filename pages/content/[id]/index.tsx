@@ -8,7 +8,7 @@ import {
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { useMutation, useSubscription } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
 import {
   Cancel,
@@ -18,7 +18,7 @@ import {
   Subject,
   ExpandLess,
 } from "@material-ui/icons";
-import { CONTENT_SUB, POLL_DEL } from "gql";
+import { CONTENT_GET, POLL_DEL } from "gql";
 import {
   Avatar,
   Badge,
@@ -47,7 +47,7 @@ export default function Id() {
     loading,
     data: { content } = {},
     error,
-  } = useSubscription(CONTENT_SUB, {
+  } = useQuery(CONTENT_GET, {
     variables: { id },
   });
   const [expand, setExpand] = useState(true);

@@ -1,5 +1,81 @@
 import { gql } from "@apollo/client";
 
+export const CONTENT_GET = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      name
+      creatorId
+      published
+      file {
+        id
+        path
+        token
+      }
+      authors {
+        name
+        identity {
+          displayName
+          user {
+            id
+          }
+        }
+      }
+      data
+      folder {
+        name
+        id
+        mode
+        parentId
+        lockContent
+        lockChildren
+      }
+      parent {
+        name
+        id
+        parent {
+          id
+        }
+      }
+      children(order_by: { published: asc, createdAt: asc }) {
+        name
+        id
+        data
+        file {
+          id
+          path
+          token
+        }
+        parent {
+          id
+        }
+        folder {
+          mode
+        }
+        published
+        authors {
+          name
+          identity {
+            displayName
+            user {
+              id
+            }
+          }
+        }
+      }
+      polls {
+        id
+        createdAt
+        total: votes_aggregate(where: {}) {
+          aggregate {
+            count
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CONTENT_SUB = gql`
   subscription ($id: uuid!) {
     content: contents_by_pk(id: $id) {
@@ -76,6 +152,7 @@ export const CONTENT_SUB = gql`
   }
 `;
 
+/*
 export const CONTENT_GET = gql`
   query ($id: uuid!) {
     content: contents_by_pk(id: $id) {
@@ -139,6 +216,7 @@ export const CONTENT_GET = gql`
     }
   }
 `;
+*/
 
 export const USER_GET_CONTENTS = gql`
   query ($id: uuid!) {
