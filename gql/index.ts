@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 
+/*
 export const CONTENT_GET = gql`
   query ($id: uuid!) {
     content: contents_by_pk(id: $id) {
@@ -75,20 +76,31 @@ export const CONTENT_GET = gql`
     }
   }
 `;
+*/
 
-export const CONTENT_SUB = gql`
-  subscription ($id: uuid!) {
+export const CONTENT_GET_DATA = gql`
+  query ($id: uuid!) {
     content: contents_by_pk(id: $id) {
       id
-      name
-      creatorId
-      published
       file {
         id
         path
         token
       }
+      data
+    }
+  }
+`;
+
+export const CONTENT_GET = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      name
+      creatorId
+      published
       authors {
+        id
         name
         identity {
           displayName
@@ -97,37 +109,24 @@ export const CONTENT_SUB = gql`
           }
         }
       }
-      data
       folder {
-        name
         id
+        name
         mode
         parentId
         lockContent
         lockChildren
       }
       parent {
-        name
         id
+        name
         parent {
           id
         }
       }
       children(order_by: { published: asc, createdAt: asc }) {
-        name
         id
-        data
-        file {
-          id
-          path
-          token
-        }
-        parent {
-          id
-        }
-        folder {
-          mode
-        }
+        name
         published
         authors {
           name
@@ -139,6 +138,14 @@ export const CONTENT_SUB = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const CONTENT_GET_POLLS = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
       polls {
         id
         createdAt
@@ -147,6 +154,35 @@ export const CONTENT_SUB = gql`
             count
           }
         }
+      }
+    }
+  }
+`;
+
+export const CONTENT_GET_TOOLBAR = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      name
+      creatorId
+      published
+      authors {
+        name
+        identity {
+          displayName
+          user {
+            id
+          }
+        }
+      }
+      folder {
+        id
+        mode
+        lockContent
+        lockChildren
+      }
+      parent {
+        id
       }
     }
   }
@@ -228,8 +264,8 @@ export const USER_GET_CONTENTS = gql`
         }
       }
     ) {
-      name
       id
+      name
     }
   }
 `;
@@ -426,6 +462,37 @@ export const POLL_RESULT = gql`
   }
 `;
 
+export const POLL_GET_CONTENT = gql`
+  query ($id: uuid!) {
+    poll: polls_by_pk(id: $id) {
+      active
+      content {
+        id
+        name
+        children {
+          name
+        }
+        parent {
+          id
+        }
+        folder {
+          id
+          name
+          mode
+        }
+      }
+    }
+  }
+`;
+
+export const POLL_SUB_ADMIN = gql`
+  subscription ($id: uuid!) {
+    poll: polls_by_pk(id: $id) {
+      active
+    }
+  }
+`;
+
 export const POLL_SUB_RESULT = gql`
   subscription ($id: uuid!) {
     poll: polls_by_pk(id: $id) {
@@ -501,58 +568,15 @@ export const EVENT_SUB = gql`
   subscription ($id: uuid!) {
     event: events_by_pk(id: $id) {
       id
+      contentId
       content {
-        name
-        data
-        authors {
-          identity {
-            displayName
-          }
-          name
-        }
         parent {
-          name
-          data
-          authors {
-            identity {
-              displayName
-            }
-          }
+          id
         }
       }
       pollId
-      timer {
-        id
-        updatedAt
-        time
-      }
+      timerId
       lockSpeak
-      poll {
-        active
-        content {
-          id
-          name
-          children {
-            name
-          }
-          parent {
-            id
-          }
-          folder {
-            id
-            name
-            mode
-          }
-        }
-        votes {
-          value
-        }
-        total: votes_aggregate(where: {}) {
-          aggregate {
-            count
-          }
-        }
-      }
     }
   }
 `;
@@ -560,8 +584,8 @@ export const EVENT_SUB = gql`
 export const EVENT_GET = gql`
   query ($id: uuid!) {
     event: events_by_pk(id: $id) {
-      name
       id
+      name
       contentId
       pollId
       timerId

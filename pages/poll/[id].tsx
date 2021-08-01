@@ -3,14 +3,14 @@ import { PollAdmin, PollChart, Link as NextLink } from "components";
 import { useRouter } from "next/router";
 import { Fade, Card, Breadcrumbs, Tooltip, Link } from "@material-ui/core";
 import { Subject, HowToVote } from "@material-ui/icons";
-import { useSubscription } from "@apollo/client";
-import { POLL_SUB_RESULT } from "gql";
+import { useQuery } from "@apollo/client";
+import { POLL_GET_CONTENT } from "gql";
 import { useStyles } from "hooks";
 
 export default function Id() {
   const { query } = useRouter();
   const classes = useStyles();
-  const { data, loading } = useSubscription(POLL_SUB_RESULT, {
+  const { data, loading } = useQuery(POLL_GET_CONTENT, {
     variables: { id: query?.id },
   });
 
@@ -68,8 +68,8 @@ export default function Id() {
           </Breadcrumbs>
         </Card>
       </Fade>
-      <PollAdmin id={query?.id as string} loading={loading} data={data} />
-      <PollChart loading={loading} poll={data?.poll} />
+      <PollAdmin pollId={query?.id as string} />
+      <PollChart pollId={query?.id as string} />
     </>
   );
 }

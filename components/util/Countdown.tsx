@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, TextField, Typography } from "@material-ui/core";
 import { useSession, useStyles } from "hooks";
-import { useMutation } from "@apollo/client";
-import { TIMER_SET } from "gql";
+import { useMutation, useSubscription } from "@apollo/client";
+import { TIMER_SET, TIMER_SUB } from "gql";
 
 const timeString = (time: number) => {
   let sec = String(time % 60);
@@ -14,10 +14,10 @@ const timeString = (time: number) => {
 };
 
 export default function Countdown({
-  timer,
+  timerId,
   interactive,
 }: {
-  timer: any;
+  timerId: string;
   interactive?: boolean;
 }) {
   const [session] = useSession();
@@ -25,6 +25,9 @@ export default function Countdown({
   const [timeBox, setTimeBox] = useState(120);
   const [setTimer] = useMutation(TIMER_SET);
   const classes = useStyles();
+  const { data: { timer } = {}, loading, error } = useSubscription(TIMER_SUB, {
+    variables: { id: session?.event?.id },
+  });
 
   const handleTimerSet = (time: number) => {
     setTimer({ variables: { id: timer?.id, time } });

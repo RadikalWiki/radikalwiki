@@ -1,18 +1,16 @@
 import React, { Fragment, useState } from "react";
 import {
   Link as NextLink,
-  HeaderCard,
   AddChildButton,
   Content,
   ContentToolbar,
+  PollList,
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
 import {
-  Cancel,
-  HowToVote,
   Lock,
   ExpandMore,
   Subject,
@@ -51,7 +49,6 @@ export default function Id() {
     variables: { id },
   });
   const [expand, setExpand] = useState(true);
-  const [deletePoll] = useMutation(POLL_DEL);
   const [open, setOpen] = useState<boolean[]>([]);
 
   let changeNumber = 0;
@@ -59,20 +56,6 @@ export default function Id() {
     changeNumber += 1;
     return changeNumber;
   };
-
-  const handleDeletePoll = (value: any) => async (_: any) => {
-    await deletePoll({ variables: { id: value } });
-  };
-
-  const editable =
-    ((session?.user.id === content?.creatorId ||
-      (content?.authors.some(
-        (a: any) => a.identity?.user?.id === session?.user.id
-      ) &&
-        ((!content?.parent && !content?.folder.lockContent) ||
-          (content?.parent && !content?.folder.lockChildren)))) &&
-      !content?.published) ||
-    session?.roles.includes("admin");
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
@@ -122,7 +105,7 @@ export default function Id() {
           <CardHeader
             title={content?.name}
             subheader={
-              !(content?.parent && content?.folder.mode === "candidates")
+              !(content?.parent && content?.folder.mode == "candidates")
                 ? formatAuthors(content?.authors)
                 : ""
             }
@@ -141,10 +124,10 @@ export default function Id() {
             }
           />
           <Divider />
-          <Collapse in={expand} timeout={500}>
-            {editable && <ContentToolbar content={content} />}
+          <Collapse in={expand} timeout={500} unmountOnExit>
+            <ContentToolbar contentId={id as string} />
             <Divider />
-            <Content content={content} />
+            <Content contentId={id as string} />
           </Collapse>
         </Card>
       </Fade>
@@ -219,9 +202,9 @@ export default function Id() {
                       </ListItem>
                       <Divider />
                       <Collapse in={open[index]} unmountOnExit>
-                        {editable && <ContentToolbar content={child} />}
+                        <ContentToolbar contentId={child.id} />
                         <Divider />
-                        <Content content={child} />
+                        <Content contentId={child.id} />
                         <Divider />
                       </Collapse>
                     </Fragment>
@@ -242,47 +225,7 @@ export default function Id() {
             </Card>
           </Fade>
         )}
-      {content?.polls && content?.polls.length !== 0 && (
-        <HeaderCard title="Afstemningsresultater">
-          <List>
-            {content?.polls.map(
-              (poll: { id: any; created: any; total: any; createdAt: any }) => (
-                <ListItem button component={NextLink} href={`/poll/${poll.id}`}>
-                  <Tooltip title="Antal stemmer">
-                    <ListItemAvatar>
-                      <Badge
-                        color="secondary"
-                        max={1000}
-                        badgeContent={poll.total.aggregate.count}
-                      >
-                        <Avatar style={{ backgroundColor: "#ec407a" }}>
-                          <HowToVote style={{ color: "#fff" }} />
-                        </Avatar>
-                      </Badge>
-                    </ListItemAvatar>
-                  </Tooltip>
-                  <ListItemText
-                    primary={`${new Date(poll.createdAt).toLocaleString(
-                      "da-DK"
-                    )}`}
-                  />
-                  {session.roles.includes("admin") && (
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={handleDeletePoll(poll.id)}
-                        color="primary"
-                        edge="end"
-                      >
-                        <Cancel />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  )}
-                </ListItem>
-              )
-            )}
-          </List>
-        </HeaderCard>
-      )}
+      <PollList contentId={id as string} />
     </>
   );
 }

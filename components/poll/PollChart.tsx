@@ -42,15 +42,18 @@ const parseData = (poll: any, screen: boolean) => {
 };
 
 export default function PollChart({
-  loading,
-  poll,
+  pollId,
   screen = false,
 }: {
-  loading: boolean;
-  poll: any;
+  pollId: string;
   screen?: boolean;
 }) {
   const classes = useStyles();
+  const { data, loading } = useSubscription(POLL_SUB_RESULT, {
+    variables: { id: pollId },
+  });
+
+  const poll = data?.poll;
 
   const chartData = parseData(poll, screen) || [];
 
@@ -78,11 +81,11 @@ export default function PollChart({
           <Animation />
         </Chart>
 
-        {!(poll?.active || screen) &&
-        <Typography className={classes.textChart}>
-          Afgivne stemmer: {poll?.total.aggregate.count}
-        </Typography>
-        }
+        {!(poll?.active || screen) && (
+          <Typography className={classes.textChart}>
+            Afgivne stemmer: {poll?.total.aggregate.count}
+          </Typography>
+        )}
       </Card>
     </Fade>
   );

@@ -1,9 +1,19 @@
 import React from "react";
-import { Card, CardHeader, Typography } from "@material-ui/core";
+import { Card, CardHeader, Typography, Fade } from "@material-ui/core";
 import { useStyles } from "hooks";
+import { useQuery } from "@apollo/client";
+import { Content } from "comps";
+import { CONTENT_GET } from "gql";
 
-export default function ContentCard({ content }: { content: any }) {
+export default function ContentCard({ contentId }: { contentId: string }) {
   const classes = useStyles();
+  const {
+    data: { content } = {},
+    loading,
+    error,
+  } = useQuery(CONTENT_GET, {
+    variables: { id: contentId },
+  });
 
   if (!content) return null;
 
@@ -11,23 +21,7 @@ export default function ContentCard({ content }: { content: any }) {
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
   return (
-    <>
-      {content.parent && (
-        <Card className={classes.card}>
-          <CardHeader
-            title={content.parent.name}
-            subheader={formatAuthors(content.parent.authors)}
-            subheaderTypographyProps={{ color: "inherit" }}
-            className={classes.cardHeader}
-          />
-          <Typography
-            className={classes.text}
-            style={{ whiteSpace: "pre-line" }}
-          >
-            <div dangerouslySetInnerHTML={{ __html: content.parent.data }} />
-          </Typography>
-        </Card>
-      )}
+    <Fade in={!loading}>
       <Card className={classes.card}>
         <CardHeader
           title={content.name}
@@ -35,10 +29,8 @@ export default function ContentCard({ content }: { content: any }) {
           subheaderTypographyProps={{ color: "inherit" }}
           className={classes.cardHeader}
         />
-        <Typography className={classes.text} style={{ whiteSpace: "pre-line" }}>
-          <div dangerouslySetInnerHTML={{ __html: content?.data }} />
-        </Typography>
+        <Content contentId={contentId} />
       </Card>
-    </>
+    </Fade>
   );
 }

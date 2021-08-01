@@ -1,9 +1,18 @@
 import { CardContent, Grid, Paper } from "@material-ui/core";
 import Image from "material-ui-image";
 import { useStyles } from "hooks";
+import { useQuery } from "@apollo/client";
+import { CONTENT_GET_DATA } from "gql";
 
-export default function Content({ content }: { content: any }) {
+export default function Content({ contentId }: { contentId: string }) {
   const classes = useStyles();
+  const {
+    loading,
+    data: { content } = {},
+    error,
+  } = useQuery(CONTENT_GET_DATA, {
+    variables: { id: contentId },
+  });
   const image = content?.file
     ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}`
     : null;

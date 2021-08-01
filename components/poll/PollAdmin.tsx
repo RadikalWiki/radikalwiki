@@ -2,33 +2,29 @@ import React from "react";
 import { useSession, useStyles } from "hooks";
 import { Button } from "@material-ui/core";
 import { useMutation, useSubscription } from "@apollo/client";
-import { POLL_STOP, EVENT_POLL_SUB } from "gql";
+import { POLL_STOP, POLL_SUB_ADMIN } from "gql";
 import { useRouter } from "next/router";
-import { AdminCard } from "comps/common";
+import { AdminCard } from "comps";
 
-export default function PollAdmin({
-  id,
-  loading,
-  data,
-}: {
-  id: string;
-  loading: boolean;
-  data: any;
-}) {
+export default function PollAdmin({ pollId }: { pollId: string }) {
   const [session] = useSession();
   const classes = useStyles();
   const router = useRouter();
   const [stopPoll] = useMutation(POLL_STOP);
+  const { data, loading } = useSubscription(POLL_SUB_ADMIN, {
+    variables: { id: pollId },
+  });
 
   const handleStopPoll = async (_: any) => {
-    const res = await stopPoll();
-    router.push(`/poll/${id}`);
+    await stopPoll();
+    router.push(`/poll/${pollId}`);
   };
 
+  console.log(data);
   if (!session?.roles.includes("admin") || !data?.poll.active) return null;
 
   return (
-    <AdminCard show={true}>
+    <AdminCard show={!loading}>
       <Button
         size="large"
         color="secondary"
