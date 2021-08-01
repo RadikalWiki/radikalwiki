@@ -19,7 +19,6 @@ export default function Speak() {
   return (
     <>
       <SpeakerAdmin />
-      <Countdown timer={event?.timer} interactive />
       <Card className={classes.speakerCard}>
         <CardHeader title="Talerliste" className={classes.cardHeader} />
         <SpeakerList interactive />
