@@ -4,7 +4,7 @@ import { EVENT_GET_FOLDER } from "gql";
 import { useRouter } from "next/router";
 import { useSession } from "hooks";
 
-export default function Vote() {
+export default function Folder() {
   const router = useRouter();
   const [session] = useSession();
   const { data } = useQuery(EVENT_GET_FOLDER, {

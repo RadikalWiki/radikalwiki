@@ -86,8 +86,9 @@ export default function Id() {
     );
     if (filter.length == 1) {
       router.push(`/${filter[0].type}/${filter[0].id}`);
+    } else {
+      setState(v);
     }
-    setState(v);
   };
   const renderInput = (params: any): ReactNode => {
     return (
