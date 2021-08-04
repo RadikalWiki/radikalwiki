@@ -31,7 +31,7 @@ export default function PollList({ contentId }: { contentId: string }) {
     await deletePoll({ variables: { id: value } });
   };
 
-  if (content?.polls && content?.polls.length !== 0) return null;
+  if (loading || content?.polls && content?.polls.length !== 0) return null;
 
   return (
     <Fade in={!loading}>
