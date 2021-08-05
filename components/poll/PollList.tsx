@@ -31,7 +31,7 @@ export default function PollList({ contentId }: { contentId: string }) {
     await deletePoll({ variables: { id: value } });
   };
 
-  if (loading || content?.polls && content?.polls.length !== 0) return null;
+  if (loading || content?.polls && content?.polls.length == 0) return null;
 
   return (
     <Fade in={!loading}>
@@ -39,7 +39,7 @@ export default function PollList({ contentId }: { contentId: string }) {
         <List>
           {content?.polls.map(
             (poll: { id: any; total: any; createdAt: any }) => (
-              <ListItem button component={NextLink} href={`/poll/${poll.id}`}>
+              <ListItem key={poll.id} button component={NextLink} href={`/poll/${poll.id}`}>
                 <Tooltip title="Antal stemmer">
                   <ListItemAvatar>
                     <Badge
