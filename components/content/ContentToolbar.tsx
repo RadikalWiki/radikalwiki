@@ -1,5 +1,12 @@
-import { CardActions, Button, Box } from "@material-ui/core";
-import { Delete, Edit, Publish } from "@material-ui/icons";
+import { CardActions, Box } from "@material-ui/core";
+import {
+  Delete,
+  Edit,
+  Publish,
+  Visibility,
+  VisibilityOff,
+  Poll,
+} from "@material-ui/icons";
 import { useSession, useStyles } from "hooks";
 import { useRouter } from "next/router";
 import { useMutation, useQuery } from "@apollo/client";
@@ -11,6 +18,7 @@ import {
   POLL_STOP,
   EVENT_UPDATE,
 } from "gql";
+import { AutoButton } from "comps";
 
 export default function ContentToolbar({ contentId }: { contentId: string }) {
   const [session] = useSession();
@@ -85,53 +93,51 @@ export default function ContentToolbar({ contentId }: { contentId: string }) {
 
   return (
     <CardActions>
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={handleFocusContent(contentId)}
-      >
-        Vis
-      </Button>
-      <Button color="primary" variant="contained" onClick={handleHide(null)}>
-        Skjul
-      </Button>
-      {!(content?.parent && content?.folder.mode == "candidates") && (
-        <Button
-          className={classes.adminButton}
-          color="primary"
-          variant="contained"
-          onClick={handleAddPoll}
-        >
-          Ny afstemning
-        </Button>
-      )}
+      {session?.roles.includes("admin") && [
+        <AutoButton
+          key="focus"
+          text="Vis"
+          icon={<Visibility />}
+          onClick={handleFocusContent(contentId)}
+        />,
+        <AutoButton
+          key="hide"
+          text="Skjul"
+          icon={<VisibilityOff />}
+          onClick={handleHide(null)}
+        />,
+        !(content?.parent && content?.folder.mode == "candidates") && (
+          <AutoButton
+            key="poll"
+            text="Ny afstemning"
+            icon={<Poll />}
+            onClick={handleAddPoll}
+          />
+        ),
+      ]}
       <Box className={classes.flexGrow} />
-      <Button
-        color="primary"
-        variant="contained"
-        endIcon={<Delete />}
-        onClick={handleDelete}
-      >
-        Slet
-      </Button>
-      <Button
-        color="primary"
-        variant="contained"
-        endIcon={<Edit />}
-        onClick={handleEdit}
-      >
-        Rediger
-      </Button>
-      {!content?.published && (
-        <Button
-          color="primary"
-          variant="contained"
-          endIcon={<Publish />}
-          onClick={handlePublish}
-        >
-          Indsend
-        </Button>
-      )}
+      {editable && [
+        <AutoButton
+          key="delete"
+          text="Slet"
+          icon={<Delete />}
+          onClick={handleDelete}
+        />,
+        <AutoButton
+          key="edit"
+          text="Rediger"
+          icon={<Edit />}
+          onClick={handleEdit}
+        />,
+        !content?.published && (
+          <AutoButton
+            key="sent"
+            text="Indsend"
+            icon={<Publish />}
+            onClick={handlePublish}
+          />
+        ),
+      ]}
     </CardActions>
   );
 }
