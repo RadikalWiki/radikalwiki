@@ -6,7 +6,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
 import Image from "material-ui-image";
 import {
-  CONTENT_GET,
+  CONTENT_GET_EDIT,
   CONTENT_UPDATE,
   CONTENT_DELETE,
   AUTHORSHIPS_ADD,
@@ -46,7 +46,7 @@ export default function Id() {
     loading,
     data: { content } = {},
     error,
-  } = useQuery(CONTENT_GET, {
+  } = useQuery(CONTENT_GET_EDIT, {
     variables: { id },
   });
   const [updateContent] = useMutation(CONTENT_UPDATE);

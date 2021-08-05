@@ -142,6 +142,57 @@ export const CONTENT_GET = gql`
   }
 `;
 
+export const CONTENT_GET_EDIT = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      name
+      data
+      creatorId
+      published
+      authors {
+        id
+        name
+        identity {
+          displayName
+          user {
+            id
+          }
+        }
+      }
+      folder {
+        id
+        name
+        mode
+        parentId
+        lockContent
+        lockChildren
+      }
+      parent {
+        id
+        name
+        parent {
+          id
+        }
+      }
+      children(order_by: { published: asc, createdAt: asc }) {
+        id
+        name
+        published
+        authors {
+          name
+          identity {
+            displayName
+            user {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CONTENT_GET_POLLS = gql`
   query ($id: uuid!) {
     content: contents_by_pk(id: $id) {
