@@ -10,12 +10,7 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
-import {
-  Lock,
-  ExpandMore,
-  Subject,
-  ExpandLess,
-} from "@material-ui/icons";
+import { Lock, ExpandMore, Subject, ExpandLess } from "@material-ui/icons";
 import { CONTENT_GET, POLL_DEL } from "gql";
 import {
   Avatar,
@@ -126,7 +121,6 @@ export default function Id() {
           <Divider />
           <Collapse in={expand} unmountOnExit>
             <ContentToolbar contentId={id as string} />
-            <Divider />
             <Content contentId={id as string} />
           </Collapse>
         </Card>
@@ -203,7 +197,6 @@ export default function Id() {
                       <Divider />
                       <Collapse in={open[index]}>
                         <ContentToolbar contentId={child.id} />
-                        <Divider />
                         <Content contentId={child.id} />
                         <Divider />
                       </Collapse>

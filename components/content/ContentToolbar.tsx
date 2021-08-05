@@ -1,4 +1,4 @@
-import { CardActions, Box } from "@material-ui/core";
+import { CardActions, Box, Divider } from "@material-ui/core";
 import {
   Delete,
   Edit,
@@ -91,53 +91,58 @@ export default function ContentToolbar({ contentId }: { contentId: string }) {
     });
   };
 
+  if (!editable) return null;
+
   return (
-    <CardActions>
-      {session?.roles.includes("admin") && [
-        <AutoButton
-          key="focus"
-          text="Vis"
-          icon={<Visibility />}
-          onClick={handleFocusContent(contentId)}
-        />,
-        <AutoButton
-          key="hide"
-          text="Skjul"
-          icon={<VisibilityOff />}
-          onClick={handleHide(null)}
-        />,
-        !(content?.parent && content?.folder.mode == "candidates") && (
+    <>
+      <CardActions>
+        {session?.roles.includes("admin") && [
           <AutoButton
-            key="poll"
-            text="Ny afstemning"
-            icon={<Poll />}
-            onClick={handleAddPoll}
-          />
-        ),
-      ]}
-      <Box className={classes.flexGrow} />
-      {editable && [
+            key="focus"
+            text="Vis"
+            icon={<Visibility />}
+            onClick={handleFocusContent(contentId)}
+          />,
+          <AutoButton
+            key="hide"
+            text="Skjul"
+            icon={<VisibilityOff />}
+            onClick={handleHide(null)}
+          />,
+          !(content?.parent && content?.folder.mode == "candidates") && (
+            <AutoButton
+              key="poll"
+              text="Ny afstemning"
+              icon={<Poll />}
+              onClick={handleAddPoll}
+            />
+          ),
+        ]}
+        <Box className={classes.flexGrow} />
         <AutoButton
           key="delete"
           text="Slet"
           icon={<Delete />}
           onClick={handleDelete}
-        />,
+        />
+        ,
         <AutoButton
           key="edit"
           text="Rediger"
           icon={<Edit />}
           onClick={handleEdit}
-        />,
-        !content?.published && (
+        />
+        ,
+        {!content?.published && (
           <AutoButton
             key="sent"
             text="Indsend"
             icon={<Publish />}
             onClick={handlePublish}
           />
-        ),
-      ]}
-    </CardActions>
+        )}
+      </CardActions>
+      <Divider />
+    </>
   );
 }
