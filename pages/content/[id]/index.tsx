@@ -124,7 +124,7 @@ export default function Id() {
             }
           />
           <Divider />
-          <Collapse in={expand} timeout={500} unmountOnExit>
+          <Collapse in={expand} unmountOnExit>
             <ContentToolbar contentId={id as string} />
             <Divider />
             <Content contentId={id as string} />
@@ -201,7 +201,7 @@ export default function Id() {
                         </ListItemSecondaryAction>
                       </ListItem>
                       <Divider />
-                      <Collapse in={open[index]} unmountOnExit>
+                      <Collapse in={open[index]}>
                         <ContentToolbar contentId={child.id} />
                         <Divider />
                         <Content contentId={child.id} />
