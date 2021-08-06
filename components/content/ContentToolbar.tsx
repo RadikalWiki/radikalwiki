@@ -125,14 +125,12 @@ export default function ContentToolbar({ contentId }: { contentId: string }) {
           icon={<Delete />}
           onClick={handleDelete}
         />
-        ,
         <AutoButton
           key="edit"
           text="Rediger"
           icon={<Edit />}
           onClick={handleEdit}
         />
-        ,
         {!content?.published && (
           <AutoButton
             key="sent"
