@@ -11,7 +11,7 @@ import { useQuery } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
 import { FOLDER_GET } from "gql";
 import { Autocomplete } from "@material-ui/lab";
-import { Search, Subject, Lock } from "@material-ui/icons";
+import { Search, Subject, Lock, Folder } from "@material-ui/icons";
 import {
   IconButton,
   Breadcrumbs,
@@ -205,7 +205,11 @@ export default function Id() {
                       href={`/${e.type}/${e.id}`}
                     >
                       <ListItemAvatar>
-                        {e.published ? (
+                        {e.type == "folder" ? (
+                          <Avatar className={classes.avatar}>
+                            <Folder />
+                          </Avatar>
+                        ) : e.published ? (
                           <Avatar className={classes.avatar}>
                             {getFolderLetter()}
                           </Avatar>
