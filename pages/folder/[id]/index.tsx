@@ -11,7 +11,7 @@ import { useQuery } from "@apollo/client";
 import { useStyles, useSession } from "hooks";
 import { FOLDER_GET } from "gql";
 import { Autocomplete } from "@material-ui/lab";
-import { Search, Subject } from "@material-ui/icons";
+import { Search, Subject, Lock } from "@material-ui/icons";
 import {
   IconButton,
   Breadcrumbs,
@@ -57,11 +57,12 @@ export default function Id() {
   const searchAnchorRef = useRef(null);
   folderLetter = 0;
   const contents =
-    data?.folder.contents.map(({ id, name, priority }: any) => ({
+    data?.folder.contents.map(({ id, name, priority, published }: any) => ({
       id,
       name,
       priority,
       subtitle: null,
+      published,
       type: "content",
     })) || [];
   const folders =
@@ -188,7 +189,13 @@ export default function Id() {
           <List className={classes.list}>
             <Divider />
             {list.map(
-              (e: { name: any; id: any; type: any; subtitle: any }) =>
+              (e: {
+                name: any;
+                id: any;
+                type: any;
+                subtitle: any;
+                published: boolean;
+              }) =>
                 (!state ||
                   e.name.toLowerCase().includes(state.toLowerCase())) && (
                   <Fragment key={e.id}>
@@ -198,9 +205,17 @@ export default function Id() {
                       href={`/${e.type}/${e.id}`}
                     >
                       <ListItemAvatar>
-                        <Avatar className={classes.avatar}>
-                          {getFolderLetter()}
-                        </Avatar>
+                        {e.published ? (
+                          <Avatar className={classes.avatar}>
+                            {getFolderLetter()}
+                          </Avatar>
+                        ) : (
+                          <Tooltip title="Ikke indsendt">
+                            <Avatar>
+                              <Lock color="primary" />
+                            </Avatar>
+                          </Tooltip>
+                        )}
                       </ListItemAvatar>
                       <ListItemText primary={e.name} secondary={e.subtitle} />
                     </ListItem>

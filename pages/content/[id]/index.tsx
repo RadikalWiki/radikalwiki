@@ -52,8 +52,20 @@ export default function Id() {
     return changeNumber;
   };
 
+  const getLetter = (index: number) => {
+    let res = String.fromCharCode(65 + (index % 26));
+    if (index >= 26) {
+      res = String.fromCharCode(64 + Math.floor(index / 26)) + res;
+    }
+    return res;
+  };
+
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
+
+  const index = content?.parent
+    ? content?.parent?.children.findIndex((e: any) => e.id === id)
+    : content?.folder.contents.findIndex((e: any) => e.id === id);
 
   return (
     <>
@@ -99,6 +111,21 @@ export default function Id() {
         <Card className={classes.card}>
           <CardHeader
             title={content?.name}
+            avatar={
+              <Avatar className={classes.avatar}>
+                {!content?.published ? (
+                  <Tooltip title="Ikke indsendt">
+                    <Avatar>
+                      <Lock color="primary" />
+                    </Avatar>
+                  </Tooltip>
+                ) : content?.parent ? (
+                  index + 1
+                ) : (
+                  getLetter(index)
+                )}
+              </Avatar>
+            }
             subheader={
               !(content?.parent && content?.folder.mode == "candidates")
                 ? formatAuthors(content?.authors)
@@ -177,9 +204,7 @@ export default function Id() {
                           secondary={
                             content.folder.mode == "changes"
                               ? formatAuthors(child?.authors)
-                              : !child.published
-                              ? "Ikke indsendt"
-                              : "Indsendt"
+                              : null
                           }
                         />
                         <ListItemSecondaryAction>

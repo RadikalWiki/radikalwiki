@@ -116,11 +116,22 @@ export const CONTENT_GET = gql`
         parentId
         lockContent
         lockChildren
+        contents(
+          where: { published: { _eq: true }, parentId: { _is_null: true } }
+        ) {
+          id
+        }
       }
       parent {
         id
         name
         parent {
+          id
+        }
+        children(
+          where: { published: { _eq: true } }
+          order_by: { published: asc, createdAt: asc }
+        ) {
           id
         }
       }
@@ -167,11 +178,17 @@ export const CONTENT_GET_EDIT = gql`
         parentId
         lockContent
         lockChildren
+        contents {
+          id
+        }
       }
       parent {
         id
         name
         parent {
+          id
+        }
+        children {
           id
         }
       }
@@ -881,6 +898,7 @@ export const FOLDER_GET = gql`
         id
         name
         priority
+        published
       }
       folders {
         id
