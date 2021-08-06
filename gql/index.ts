@@ -894,7 +894,10 @@ export const FOLDER_GET = gql`
         name
         parentId
       }
-      contents(where: { parentId: { _is_null: true } }) {
+      contents(
+        where: { parentId: { _is_null: true } }
+        order_by: { published: asc, createdAt: asc }
+      ) {
         id
         name
         priority
