@@ -8,6 +8,7 @@ import { useTheme, useEnv } from "hooks";
 import { auth } from "utils/nhost";
 import { NhostApolloProvider } from "@nhost/react-apollo";
 import { NhostAuthProvider, useAuth } from "@nhost/react-auth";
+import { onError } from "@apollo/client/link/error";
 
 export default function App({
   Component,
@@ -28,6 +29,23 @@ export default function App({
     ? process.env.GRAPHQL_HTTP_LOCAL
     : process.env.NEXT_PUBLIC_GRAPHQL_HTTP;
 
+  const errorLink = onError(({ networkError, graphQLErrors }) => {
+    if (graphQLErrors) {
+      graphQLErrors.map(({ message, locations, path }) => {
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+        );
+        if (message.includes("not authenticated")) {
+          console.log("redirect please")
+        }
+      });
+    }
+    if (networkError) {
+      // @ts-ignore
+      console.log(networkError);
+    }
+  });
+
   return (
     <>
       <Head>
@@ -43,6 +61,7 @@ export default function App({
           auth={auth}
           connectToDevTools={true}
           gqlEndpoint={endpoint}
+          onError={errorLink}
         >
           <StylesProvider injectFirst>
             <ThemeProvider theme={theme}>
