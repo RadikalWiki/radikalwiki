@@ -1,4 +1,4 @@
-import { POLL_GET_TYPE, USER_CHECK_TOKEN_ROLE, VOTE_ADD } from "gql";
+import { POLL_GET_TYPE, VOTE_ADD } from "gql";
 import { query, mutation } from "hooks";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";

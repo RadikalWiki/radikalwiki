@@ -1,4 +1,4 @@
-import { EVENT_CHECK_VOTE, USER_CHECK_TOKEN_ROLE } from "gql";
+import { EVENT_CHECK_VOTE } from "gql";
 import { query } from "hooks";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";

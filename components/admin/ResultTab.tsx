@@ -1,6 +1,6 @@
 import { useSubscription } from "@apollo/client";
 import { useStyles } from "hooks";
-import { POLL_SUB_ALL_RESULT } from "gql";
+//import { POLL_SUB_ALL_RESULT } from "gql";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 const numColWidth = 90;
@@ -46,6 +46,8 @@ const getRows = (data: any) => {
 
 export default function ResultsGrid() {
   const classes = useStyles();
+  return null;
+  /*
   const { data } = useSubscription(POLL_SUB_ALL_RESULT);
 
   const rows = getRows(data?.poll);
@@ -61,4 +63,5 @@ export default function ResultsGrid() {
       }}
     />
   );
+  */
 }
