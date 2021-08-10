@@ -17,12 +17,12 @@ const useStyles = () =>
     scroll: {
       overflowY: "auto",
       WebkitOverflowScrolling: "touch",
-      height: `calc(100vh - 128px)`,
+      height: `calc(100vh - 64px)`,
       [`${theme.breakpoints.up("xs")} and (orientation: landscape)`]: {
         height: `calc(100vh - 48px)`,
       },
       [theme.breakpoints.up("sm")]: {
-        height: `calc(100vh - 128px)`,
+        height: `calc(100vh - 64px)`,
       },
     },
     input: {
@@ -109,11 +109,6 @@ const useStyles = () =>
     },
     subheader: {
       backgroundColor: theme.palette.background.paper,
-    },
-    appBarTop: {
-      position: "fixed",
-      top: 0,
-      bottom: "auto",
     },
     appBar: {
       position: "fixed",

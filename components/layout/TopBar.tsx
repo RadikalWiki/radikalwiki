@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 import { Menu, ArrowDropDown } from "@material-ui/icons";
-import { Drawer, UserButton, EventDialog } from "comps";
+import { Drawer, UserButton, EventDialog, HideOnScroll } from "comps";
 import { useStyles, useSession } from "hooks";
 import { useAuth } from "@nhost/react-auth";
 
@@ -26,34 +26,36 @@ export default function TopBar() {
 
   return (
     <>
-      <AppBar className={classes.appBarTop} elevation={2}>
-        <Toolbar>
-          {session && [
-            <IconButton
-              key="menu"
-              aria-label="menu"
-              edge="start"
-              color="inherit"
-              onClick={() => setOpenDrawer(!openDrawer)}
-            >
-              <Menu />
-            </IconButton>,
-            <Tooltip key="tooltip" title="Vælg begivenhed">
-              <Button
+      <HideOnScroll>
+        <AppBar elevation={2}>
+          <Toolbar>
+            {session && [
+              <IconButton
+                key="menu"
+                aria-label="menu"
+                edge="start"
                 color="inherit"
-                endIcon={<ArrowDropDown />}
-                onClick={() => setEventDialog(true)}
+                onClick={() => setOpenDrawer(!openDrawer)}
               >
-                <Typography color="inherit" variant="h6">
-                  {name || "Vælg begivenhed"}
-                </Typography>
-              </Button>
-            </Tooltip>,
-          ]}
-          <div className={classes.flexGrow} />
-          <UserButton />
-        </Toolbar>
-      </AppBar>
+                <Menu />
+              </IconButton>,
+              <Tooltip key="tooltip" title="Vælg begivenhed">
+                <Button
+                  color="inherit"
+                  endIcon={<ArrowDropDown />}
+                  onClick={() => setEventDialog(true)}
+                >
+                  <Typography color="inherit" variant="h6">
+                    {name || "Vælg begivenhed"}
+                  </Typography>
+                </Button>
+              </Tooltip>,
+            ]}
+            <div className={classes.flexGrow} />
+            <UserButton />
+          </Toolbar>
+        </AppBar>
+      </HideOnScroll>
       <Drawer open={openDrawer} onClick={() => setOpenDrawer(false)} />
       {signedIn != null && (
         <EventDialog open={eventDialog} setOpen={setEventDialog} />
