@@ -484,46 +484,9 @@ export const EVENT_POLL_SUB = gql`
             name
           }
           folder {
+            id
             mode
           }
-        }
-      }
-    }
-  }
-`;
-
-export const POLL_RESULT_ACTION = gql`
-  query ($id: uuid) {
-    getPollResult(pollId: $id) {
-      id
-      name
-      count
-      keys
-      values
-    }
-  }
-`;
-
-export const POLL_RESULT = gql`
-  query ($id: uuid!) {
-    poll: polls_by_pk(id: $id) {
-      active
-      content {
-        id
-        name
-        pollType {
-          id
-          options {
-            name
-          }
-        }
-      }
-      votes {
-        value
-      }
-      total: votes_aggregate(where: {}) {
-        aggregate {
-          count
         }
       }
     }
@@ -533,6 +496,7 @@ export const POLL_RESULT = gql`
 export const POLL_GET_CONTENT = gql`
   query ($id: uuid!) {
     poll: polls_by_pk(id: $id) {
+      id
       active
       content {
         id
@@ -556,6 +520,7 @@ export const POLL_GET_CONTENT = gql`
 export const POLL_SUB_ADMIN = gql`
   subscription ($id: uuid!) {
     poll: polls_by_pk(id: $id) {
+      id
       active
     }
   }
@@ -564,6 +529,7 @@ export const POLL_SUB_ADMIN = gql`
 export const POLL_SUB_RESULT = gql`
   subscription ($id: uuid!) {
     poll: polls_by_pk(id: $id) {
+      id
       active
       content {
         id
@@ -578,33 +544,6 @@ export const POLL_SUB_RESULT = gql`
           id
           name
           mode
-        }
-      }
-      votes {
-        value
-      }
-      total: votes_aggregate(where: {}) {
-        aggregate {
-          count
-        }
-      }
-    }
-  }
-`;
-
-export const POLL_SUB_ALL_RESULT = gql`
-  subscription {
-    polls(
-      distinct_on: [contentId]
-      order_by: [{ contentId: desc, createdAt: desc }]
-      where: { content: { pollType: { id: { _eq: 0 } } } }
-    ) {
-      content {
-        name
-        pollType {
-          options {
-            name
-          }
         }
       }
       votes {
@@ -857,27 +796,6 @@ export const USER_GET_DISPLAY_NAME = gql`
       identity {
         displayName
       }
-    }
-  }
-`;
-
-export const USER_CHECK_TOKEN = gql`
-  query ($token: uuid!) {
-    users(where: { token: { _eq: $token } }) {
-      id
-      name
-      role
-    }
-  }
-`;
-
-export const USER_CHECK_TOKEN_ROLE = gql`
-  query ($token: uuid!, $role: String!) {
-    users(
-      where: { _and: [{ token: { _eq: $token } }, { role: { _eq: $role } }] }
-    ) {
-      name
-      role
     }
   }
 `;
