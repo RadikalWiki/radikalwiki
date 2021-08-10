@@ -1,7 +1,8 @@
 import { POLL_GET_TYPE, USER_CHECK_TOKEN_ROLE, VOTE_ADD } from "gql";
 import { query, mutation } from "hooks";
 import { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "utils/nhost";
+import { jwtVerify } from "jose/jwt/verify";
+import { createSecretKey } from "crypto";
 
 const validateVote = (vote: Set<number>, content: any): Boolean => {
   if (content.minVote > vote.size || content.maxVote < vote.size) {
@@ -22,7 +23,27 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const userId = req.body.session_variables["x-hasura-user-id"];
+  // Get jwt
+  const auth = req.headers.authorization as string;
+  if (!auth) {
+    return res.status(400).send({ message: "Missing Authorization header" });
+  }
+  const jwt = auth?.split(" ")[1];
+  if (!jwt) {
+    return res.status(400).send({ message: "Missing token" });
+  }
+  
+  // Get secret
+  const jwk = createSecretKey(process.env.JWT_KEY as any);
+
+  // Verify token
+  let payload: any;
+  try {
+    ({ payload } = await jwtVerify(jwt, jwk, { algorithms: ["HS256"]}));
+  } catch (e: any) {
+    return res.status(401).send({ message: e.message });
+  }
+  const userId = payload["https://hasura.io/jwt/claims"]["x-hasura-user-id"] 
 
   // Validate vote
   const { pollId, value }: { pollId: string; value: Set<number> } =

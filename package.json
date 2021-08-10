@@ -28,6 +28,7 @@
     "gqless": "^2.0.14",
     "graphql": "^15.5.1",
     "html-to-docx": "^1.2.1",
+    "jose": "^3.14.3",
     "js-cookie": "^2.2.1",
     "material-ui-image": "^3.3.2",
     "next": "^11.0.1",

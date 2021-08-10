@@ -20,7 +20,6 @@ export default function PollAdmin({ pollId }: { pollId: string }) {
     router.push(`/poll/${pollId}`);
   };
 
-  console.log(data);
   if (!session?.roles.includes("admin") || !data?.poll.active) return null;
 
   return (

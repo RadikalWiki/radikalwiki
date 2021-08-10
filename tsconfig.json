@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "lib": ["dom", "esnext"],
+    "target": "es6",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "jsx": "preserve",
     "moduleResolution": "node",
     "forceConsistentCasingInFileNames": true,
@@ -13,18 +15,33 @@
     "esModuleInterop": true,
     "allowJs": true,
     "paths": {
-      "comps": ["./components"],
-      "comps/*": ["./components/*"],
-      "hooks": ["./hooks"],
-      "gql": ["./gql"]
+      "comps": [
+        "./components"
+      ],
+      "comps/*": [
+        "./components/*"
+      ],
+      "hooks": [
+        "./hooks"
+      ],
+      "gql": [
+        "./gql"
+      ]
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "module": "esnext"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -17,11 +17,9 @@ export default function Vote() {
       const pollId = data.canVote.pollId;
       router.push(`/poll/${pollId}`);
     }
-  }, [data, loading]);
+  }, [data]);
 
-  return (
-    <>
-      <VoteForm />
-    </>
-  );
+  if (loading) return null;
+
+  return <VoteForm />;
 }
