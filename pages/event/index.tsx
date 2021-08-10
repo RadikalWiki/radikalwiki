@@ -53,19 +53,17 @@ export default function Index() {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/event">
-            <Typography className={classes.breadText}>Begivenheder</Typography>
-          </Link>
-          <Autocomplete
-            freeSolo
-            onChange={onChange}
-            options={events}
-            renderInput={renderInput}
-          />
-        </Breadcrumbs>
-      </Card>
+      <Breadcrumbs className={classes.bread}>
+        <Link component={NextLink} color="primary" href="/event">
+          <Typography className={classes.breadText}>Begivenheder</Typography>
+        </Link>
+        <Autocomplete
+          freeSolo
+          onChange={onChange}
+          options={events}
+          renderInput={renderInput}
+        />
+      </Breadcrumbs>
       <Card className={classes.card}>
         <List className={classes.list}>
           {data?.events.map(

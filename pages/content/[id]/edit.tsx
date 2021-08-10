@@ -103,42 +103,39 @@ export default function Id() {
   return (
     <>
       <Fade in={!loading}>
-        <Card className={classes.card}>
-          <Breadcrumbs className={classes.bread}>
+        <Breadcrumbs className={classes.bread}>
+          <Link
+            component={NextLink}
+            className={classes.breadText}
+            color="primary"
+            href="/folder"
+          >
+            <Tooltip title="Indhold">
+              <Subject />
+            </Tooltip>
+          </Link>
+          {content?.parent ? (
             <Link
               component={NextLink}
-              className={classes.breadText}
               color="primary"
-              href="/folder"
+              href={`/content/${content?.parent.id}`}
             >
-              <Tooltip title="Indhold">
-                <Subject />
-              </Tooltip>
+              {content?.parent.name}
             </Link>
-            {content?.parent ? (
-              <Link
-                component={NextLink}
-                color="primary"
-                href={`/content/${content?.parent.id}`}
-              >
-                {content?.parent.name}
-              </Link>
-            ) : (
-              <Link
-                component={NextLink}
-                color="primary"
-                href={`/folder/${content?.folder.id}`}
-              >
-                {content?.folder.name}
-              </Link>
-            )}
-            <Link component={NextLink} color="primary" href={`/content/${id}`}>
-              {name}
+          ) : (
+            <Link
+              component={NextLink}
+              color="primary"
+              href={`/folder/${content?.folder.id}`}
+            >
+              {content?.folder.name}
             </Link>
-          </Breadcrumbs>
-        </Card>
+          )}
+          <Link component={NextLink} color="primary" href={`/content/${id}`}>
+            {name}
+          </Link>
+        </Breadcrumbs>
       </Fade>
-
       <Fade in={!loading}>
         <Card className={classes.card}>
           <CardHeader

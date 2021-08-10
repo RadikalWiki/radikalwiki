@@ -56,21 +56,17 @@ export default function Index() {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Box>
-          <Breadcrumbs className={classes.bread}>
-            <Link component={NextLink} color="primary" href="/group">
-              <Typography className={classes.breadText}>Grupper</Typography>
-            </Link>
-            <Autocomplete
-              freeSolo
-              onChange={onChange}
-              options={groups}
-              renderInput={renderInput}
-            />
-          </Breadcrumbs>
-        </Box>
-      </Card>
+      <Breadcrumbs className={classes.bread}>
+        <Link component={NextLink} color="primary" href="/group">
+          <Typography className={classes.breadText}>Grupper</Typography>
+        </Link>
+        <Autocomplete
+          freeSolo
+          onChange={onChange}
+          options={groups}
+          renderInput={renderInput}
+        />
+      </Breadcrumbs>
       <Card className={classes.card}>
         <List className={classes.list}>
           {data?.groups.map(

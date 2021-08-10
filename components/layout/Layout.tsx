@@ -17,7 +17,7 @@ export default function Layout({ children }: { children?: any }) {
     <SessionProvider>
       <TopBar />
       <Scroll>
-        <Container>
+        <Container className={classes.container}>
           {signedIn != null && children}
           <div className={classes.pad} />
         </Container>

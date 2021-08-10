@@ -7,6 +7,10 @@ const useStyles = () =>
         margin: theme.spacing(0),
       },
     },
+    container: {
+      paddingLeft: theme.spacing(0),
+      paddingRight: theme.spacing(0),
+    },
     flexGrow: {
       flexGrow: 1,
     },
@@ -120,12 +124,11 @@ const useStyles = () =>
       flexGrow: 1,
     },
     bread: {
-      padding: theme.spacing(0, 2, 0),
+      padding: theme.spacing(2, 0, 2, 2),
     },
     breadText: {
       alignItems: "center",
       display: "flex",
-      height: 60,
     },
     fabButton: {
       position: "fixed",

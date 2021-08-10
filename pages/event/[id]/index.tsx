@@ -14,19 +14,16 @@ export default function Index() {
 
   return (
     <>
-      <Card className={classes.card}>
-        <Breadcrumbs className={classes.bread}>
-          <Link component={NextLink} color="primary" href="/event">
-            <Typography className={classes.breadText}>Begivenheder</Typography>
-          </Link>
-          <Link component={NextLink} color="primary" href={`/event/${id}`}>
-            <Typography className={classes.breadText}>
-              {data?.event.name}
-            </Typography>
-          </Link>
-        </Breadcrumbs>
-      </Card>
-      <Card className={classes.card}></Card>
+      <Breadcrumbs className={classes.bread}>
+        <Link component={NextLink} color="primary" href="/event">
+          <Typography className={classes.breadText}>Begivenheder</Typography>
+        </Link>
+        <Link component={NextLink} color="primary" href={`/event/${id}`}>
+          <Typography className={classes.breadText}>
+            {data?.event.name}
+          </Typography>
+        </Link>
+      </Breadcrumbs>
       <AddAdmissionsFab eventId={id as string} />
     </>
   );

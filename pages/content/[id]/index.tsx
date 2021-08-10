@@ -70,42 +70,40 @@ export default function Id() {
   return (
     <>
       <Fade in={!loading}>
-        <Card className={classes.card}>
-          <Breadcrumbs className={classes.bread}>
+        <Breadcrumbs className={classes.bread}>
+          <Link
+            component={NextLink}
+            className={classes.breadText}
+            color="primary"
+            href="/folder"
+          >
+            <Tooltip title="Indhold">
+              <Subject />
+            </Tooltip>
+          </Link>
+          {content?.parent ? (
             <Link
               component={NextLink}
-              className={classes.breadText}
               color="primary"
-              href="/folder"
+              href={`/content/${content?.parent.id}`}
             >
-              <Tooltip title="Indhold">
-                <Subject />
-              </Tooltip>
+              {content?.parent.name || ""}
             </Link>
-            {content?.parent ? (
+          ) : (
+            content?.folder.parentId && (
               <Link
                 component={NextLink}
                 color="primary"
-                href={`/content/${content?.parent.id}`}
+                href={`/folder/${content?.folder.id}`}
               >
-                {content?.parent.name || ""}
+                {content?.folder.name || ""}
               </Link>
-            ) : (
-              content?.folder.parentId && (
-                <Link
-                  component={NextLink}
-                  color="primary"
-                  href={`/folder/${content?.folder.id}`}
-                >
-                  {content?.folder.name || ""}
-                </Link>
-              )
-            )}
-            <Link component={NextLink} color="primary" href={`/content/${id}`}>
-              {content?.name || ""}
-            </Link>
-          </Breadcrumbs>
-        </Card>
+            )
+          )}
+          <Link component={NextLink} color="primary" href={`/content/${id}`}>
+            {content?.name || ""}
+          </Link>
+        </Breadcrumbs>
       </Fade>
       <Fade in={!loading}>
         <Card className={classes.card}>

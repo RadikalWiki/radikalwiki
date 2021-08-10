@@ -19,54 +19,52 @@ export default function Id() {
   return (
     <>
       <Fade in={!loading}>
-        <Card className={classes.card}>
-          <Breadcrumbs className={classes.bread}>
-            <Link
-              component={NextLink}
-              className={classes.breadText}
-              color="primary"
-              href="/folder"
-            >
-              <Tooltip title="Indhold">
-                <Subject />
-              </Tooltip>
-            </Link>
-            {content?.parent ? (
-              <Link
-                component={NextLink}
-                color="primary"
-                href={`/content/${content?.parent.id}`}
-              >
-                {content?.parent.name}
-              </Link>
-            ) : (
-              <Link
-                component={NextLink}
-                color="primary"
-                href={`/folder/${content?.folder.id}`}
-              >
-                {content?.folder.name}
-              </Link>
-            )}
+        <Breadcrumbs className={classes.bread}>
+          <Link
+            component={NextLink}
+            className={classes.breadText}
+            color="primary"
+            href="/folder"
+          >
+            <Tooltip title="Indhold">
+              <Subject />
+            </Tooltip>
+          </Link>
+          {content?.parent ? (
             <Link
               component={NextLink}
               color="primary"
-              href={`/content/${content?.id}`}
+              href={`/content/${content?.parent.id}`}
             >
-              {content?.name}
+              {content?.parent.name}
             </Link>
+          ) : (
             <Link
               component={NextLink}
               color="primary"
-              href={`/poll/${query?.id}`}
-              className={classes.breadText}
+              href={`/folder/${content?.folder.id}`}
             >
-              <Tooltip title="Afstemning">
-                <HowToVote />
-              </Tooltip>
+              {content?.folder.name}
             </Link>
-          </Breadcrumbs>
-        </Card>
+          )}
+          <Link
+            component={NextLink}
+            color="primary"
+            href={`/content/${content?.id}`}
+          >
+            {content?.name}
+          </Link>
+          <Link
+            component={NextLink}
+            color="primary"
+            href={`/poll/${query?.id}`}
+            className={classes.breadText}
+          >
+            <Tooltip title="Afstemning">
+              <HowToVote />
+            </Tooltip>
+          </Link>
+        </Breadcrumbs>
       </Fade>
       <PollAdmin pollId={query?.id as string} />
       <PollChart pollId={query?.id as string} />
