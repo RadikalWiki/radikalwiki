@@ -1,7 +1,6 @@
 import { createClient } from "nhost-js-sdk";
 
 const config = {
-  useCookies: true,
   baseURL: process.env.NEXT_PUBLIC_NHOST_BACKEND || "",
 };
 
