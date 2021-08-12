@@ -41,8 +41,8 @@ export default function SpeakerList({ interactive }: SpeakerListProps) {
               </Tooltip>
               <ListItemText primary={speak.user.identity.displayName} />
               {interactive &&
-                (speak.user.id == session.user.id ||
-                  session.roles.includes("admin")) && (
+                (speak.user.id == session?.user.id ||
+                  session?.roles.includes("admin")) && (
                   <ListItemSecondaryAction>
                     <IconButton
                       onClick={handleRemoveSpeak(speak.id)}

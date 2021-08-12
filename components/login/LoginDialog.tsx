@@ -71,11 +71,15 @@ export default function EventDialog({
       });
       const displayName =
         data?.user.identity?.displayName || session?.user.email;
+
+      const res = await fetch('/api/time');
+      const { time } = await res.json();
       setSession({
         ...session,
         event: null,
         displayName,
         roles: [],
+        timeDiff: new Date().getTime() - new Date(time).getTime(),
       });
       setOpen(false);
       router.push("/");

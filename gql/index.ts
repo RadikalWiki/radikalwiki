@@ -461,10 +461,10 @@ export const CONTENT_DELETE_AUTHORSHIPS = gql`
   }
 `;
 
-export const TIMER_SET = gql`
+export const EVENT_TIMER_SET = gql`
   mutation ($id: uuid!, $time: Int) {
-    update_timers_by_pk(pk_columns: { id: $id }, _set: { time: $time }) {
-      id
+    update_timers(where: { eventId: { _eq: $id } }, _set: { time: $time }) {
+      affected_rows
     }
   }
 `;
@@ -740,11 +740,15 @@ export const EVENT_SUB_SPEAK = gql`
   }
 `;
 
-export const TIMER_SUB = gql`
+export const EVENT_TIMER_SUB = gql`
   subscription ($id: uuid!) {
-    timer: timers_by_pk(id: $id) {
-      updatedAt
-      time
+    events_by_pk(id: $id) {
+      id
+      timer {
+        id
+        time
+        updatedAt
+      }
     }
   }
 `;

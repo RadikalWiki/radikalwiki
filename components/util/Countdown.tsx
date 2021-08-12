@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, Card, TextField, Typography } from "@material-ui/core";
 import { useSession, useStyles } from "hooks";
 import { useMutation, useSubscription } from "@apollo/client";
-import { TIMER_SET, TIMER_SUB } from "gql";
+import { EVENT_TIMER_SET, EVENT_TIMER_SUB } from "gql";
 
 const timeString = (time: number) => {
   let sec = String(time % 60);
@@ -13,31 +13,33 @@ const timeString = (time: number) => {
   return `${min}:${sec}`;
 };
 
-export default function Countdown({
-  timerId,
-  interactive,
-}: {
-  timerId: string;
-  interactive?: boolean;
-}) {
+export default function Countdown({ interactive }: { interactive?: boolean }) {
   const [session] = useSession();
   const [time, setTime] = useState(0);
   const [timeBox, setTimeBox] = useState(120);
-  const [setTimer] = useMutation(TIMER_SET);
+  const [setTimer] = useMutation(EVENT_TIMER_SET);
   const classes = useStyles();
-  const { data: { timer } = {}, loading, error } = useSubscription(TIMER_SUB, {
+  const { data, loading, error } = useSubscription(EVENT_TIMER_SUB, {
     variables: { id: session?.event?.id },
   });
+  const timer = data?.events_by_pk.timer;
 
   const handleTimerSet = (time: number) => {
-    setTimer({ variables: { id: timer?.id, time } });
+    setTimer({
+      variables: {
+        id: session?.event?.id,
+        time: Math.ceil(time - session?.timeDiff / 1000),
+      },
+    });
   };
 
   useEffect(() => {
     const now = new Date();
     const created = new Date(timer?.updatedAt);
+    console.log(session?.timeDiff);
     let sec = Math.floor(
-      timer?.time - (now.getTime() - created.getTime()) / 1000
+      timer?.time -
+        (now.getTime() - created.getTime() - session?.timeDiff) / 1000
     );
     sec = sec >= 0 ? sec : 0;
     setTime(sec);

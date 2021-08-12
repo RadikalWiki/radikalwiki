@@ -31,6 +31,7 @@ export default function Screen() {
         ) : null}
       </Grid>
       <Grid item xs={3}>
+        <Countdown />
         <Card className={classes.card}>
           <CardHeader title="Talerliste" className={classes.cardHeader} />
           <SpeakerList />
