@@ -49,7 +49,13 @@ function ContentToolbar({ contentId }: { contentId: string }) {
     session?.roles.includes("admin");
 
   const handleDelete = async () => {
-    await deleteContent({ variables: { id: contentId } });
+    await deleteContent({
+      variables: { id: contentId },
+
+      refetchQueries: [
+        { query: CONTENT_GET_TOOLBAR, variables: { id: contentId } },
+      ],
+    });
 
     if (content.parent) {
       router.push(`/content/${content.parent.id}`);
@@ -61,8 +67,10 @@ function ContentToolbar({ contentId }: { contentId: string }) {
   const handlePublish = async () => {
     await updateContent({
       variables: { id: contentId, set: { published: true } },
+      refetchQueries: [
+        { query: CONTENT_GET_TOOLBAR, variables: { id: contentId } },
+      ],
     });
-    router.reload();
   };
 
   // TODO: properly style MUI buttons with next.js
