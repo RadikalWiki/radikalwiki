@@ -75,7 +75,11 @@ export default function VoteForm() {
         value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
       },
     });
-    router.push(`/poll/${poll.id}`);
+    if (poll.content.folder.mode == "candidates") {
+      router.push(`/content/${poll.content.id}`);
+    } else {
+      router.push(`/poll/${poll.id}`);
+    }
   };
 
   const handleChangeVote = (e: any) => {

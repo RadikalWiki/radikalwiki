@@ -552,6 +552,7 @@ export const EVENT_POLL_SUB = gql`
           maxVote
           minVote
           children(order_by: { priority: asc, createdAt: asc }) {
+            id
             name
           }
           folder {
