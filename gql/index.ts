@@ -203,6 +203,7 @@ export const CONTENT_GET_CHILDREN_ADD = gql`
       id
       folder {
         id
+        mode
         lockChildren
       }
       children(order_by: { published: asc, createdAt: asc }) {
