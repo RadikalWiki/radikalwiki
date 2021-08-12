@@ -19,8 +19,9 @@ import {
   EVENT_UPDATE,
 } from "gql";
 import { AutoButton } from "comps";
+import { memo } from "react";
 
-export default function ContentToolbar({ contentId }: { contentId: string }) {
+function ContentToolbar({ contentId }: { contentId: string }) {
   const [session] = useSession();
   const classes = useStyles();
   const router = useRouter();
@@ -61,6 +62,7 @@ export default function ContentToolbar({ contentId }: { contentId: string }) {
     await updateContent({
       variables: { id: contentId, set: { published: true } },
     });
+    router.reload();
   };
 
   // TODO: properly style MUI buttons with next.js
@@ -144,3 +146,5 @@ export default function ContentToolbar({ contentId }: { contentId: string }) {
     </>
   );
 }
+
+export default memo(ContentToolbar);

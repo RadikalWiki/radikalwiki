@@ -2,15 +2,23 @@ import React from "react";
 import { AutoButton } from "comps";
 import { PlusOne } from "@material-ui/icons";
 import { useSession } from "hooks";
-import { CONTENTS_ADD, AUTHORSHIPS_ADD } from "gql";
+import { CONTENTS_ADD, AUTHORSHIPS_ADD, CONTENT_GET_CHILDREN_ADD } from "gql";
 import { useMutation } from "@apollo/client";
 import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
 
 type mode = "candidates" | "changes";
 
-export default function AddChildButton({ content }: { content: any }) {
+export default function AddChildButton({ contentId }: { contentId: any }) {
   const [session] = useSession();
   const router = useRouter();
+  const {
+    loading,
+    data: { content } = {},
+    error,
+  } = useQuery(CONTENT_GET_CHILDREN_ADD, {
+    variables: { id: contentId },
+  });
   const [addContents] = useMutation(CONTENTS_ADD);
   const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
 
@@ -47,6 +55,8 @@ export default function AddChildButton({ content }: { content: any }) {
     await addAuthors({ variables: { objects } });
     router.push(`/content/${contentId}/edit`);
   };
+
+  if (content?.folder.lockChildren) return null;
 
   return (
     <AutoButton text={contentType} icon={<PlusOne />} onClick={handleSubmit} />

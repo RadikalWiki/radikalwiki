@@ -116,24 +116,94 @@ export const CONTENT_GET = gql`
         parentId
         lockContent
         lockChildren
+      }
+      parent {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const CONTENT_GET_AVATAR = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      published
+      folder {
+        id
         contents(
           where: { published: { _eq: true }, parentId: { _is_null: true } }
+          order_by: { priority: asc, createdAt: asc }
         ) {
           id
         }
       }
       parent {
         id
-        name
-        parent {
-          id
-        }
         children(
           where: { published: { _eq: true } }
-          order_by: { published: asc, createdAt: asc }
+          order_by: { priority: asc, createdAt: asc }
         ) {
           id
         }
+      }
+    }
+  }
+`;
+
+export const CONTENT_GET_CARD = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      name
+      authors {
+        id
+        name
+        identity {
+          displayName
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const CONTENT_GET_CHILDREN = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      folder {
+        id
+        mode
+      }
+      children(order_by: { published: asc, createdAt: asc }) {
+        id
+        name
+        published
+        authors {
+          name
+          identity {
+            displayName
+            user {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const CONTENT_GET_CHILDREN_ADD = gql`
+  query ($id: uuid!) {
+    content: contents_by_pk(id: $id) {
+      id
+      folder {
+        id
+        lockChildren
       }
       children(order_by: { published: asc, createdAt: asc }) {
         id
@@ -165,6 +235,7 @@ export const CONTENT_GET_EDIT = gql`
         id
         name
         identity {
+          email
           displayName
           user {
             id

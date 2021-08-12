@@ -79,8 +79,8 @@ export default function Id() {
     });
     await delAuthors({ variables: { id } });
     const objects = authors.map((author: any) =>
-      author.email || author.identity?.email
-        ? { contentId: id, email: author.email ?? author.identity?.email }
+      author.identity?.email
+        ? { contentId: id, email: author.identity?.email }
         : { contentId: id, name: author.name }
     );
     await addAuthors({ variables: { objects } });

@@ -3,7 +3,7 @@ import { Card, CardHeader, Typography, Fade } from "@material-ui/core";
 import { useStyles } from "hooks";
 import { useQuery } from "@apollo/client";
 import { Content } from "comps";
-import { CONTENT_GET } from "gql";
+import { CONTENT_GET_CARD } from "gql";
 
 export default function ContentCard({ contentId }: { contentId: string }) {
   const classes = useStyles();
@@ -11,7 +11,7 @@ export default function ContentCard({ contentId }: { contentId: string }) {
     data: { content } = {},
     loading,
     error,
-  } = useQuery(CONTENT_GET, {
+  } = useQuery(CONTENT_GET_CARD, {
     variables: { id: contentId },
   });
 
