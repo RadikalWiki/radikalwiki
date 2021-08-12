@@ -27,7 +27,7 @@ export default function AddIdentitiesFab() {
     ids.forEach(async (id: any) => {
       await addIdentities({
         variables: {
-          objects: [{id}],
+          objects: [id],
         },
       });
     });
