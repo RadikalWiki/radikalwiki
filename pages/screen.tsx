@@ -19,7 +19,7 @@ export default function Screen() {
   return (
     <Grid container alignItems="stretch" justify="space-evenly">
       <Grid item xs={9}>
-        {event?.poll ? (
+        {event?.pollId ? (
           <PollChart pollId={event.pollId} screen />
         ) : event?.contentId ? (
           <>
