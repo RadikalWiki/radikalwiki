@@ -28,7 +28,7 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
     setTimer({
       variables: {
         id: session?.event?.id,
-        time: Math.ceil(time - session?.timeDiff / 1000),
+        time,
       },
     });
   };
@@ -36,7 +36,6 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
   useEffect(() => {
     const now = new Date();
     const created = new Date(timer?.updatedAt);
-    console.log(session?.timeDiff);
     let sec = Math.floor(
       timer?.time -
         (now.getTime() - created.getTime() - session?.timeDiff) / 1000
