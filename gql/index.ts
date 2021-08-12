@@ -573,10 +573,12 @@ export const POLL_GET_CONTENT = gql`
         id
         name
         children {
+          id
           name
         }
         parent {
           id
+          name
         }
         folder {
           id
