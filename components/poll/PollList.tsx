@@ -15,9 +15,11 @@ import { Cancel, HowToVote } from "@material-ui/icons";
 import { useSession } from "hooks";
 import { useMutation, useQuery } from "@apollo/client";
 import { CONTENT_GET_POLLS, POLL_DEL } from "gql";
+import { useRouter } from "next/router";
 
 export default function PollList({ contentId }: { contentId: string }) {
   const [session] = useSession();
+  const router = useRouter();
   const {
     data: { content } = {},
     loading,
@@ -25,13 +27,15 @@ export default function PollList({ contentId }: { contentId: string }) {
   } = useQuery(CONTENT_GET_POLLS, {
     variables: { id: contentId },
   });
-  const [deletePoll] = useMutation(POLL_DEL);
+  const [deletePoll] = useMutation(POLL_DEL, {
+    refetchQueries: [{ query: CONTENT_GET_POLLS, variables: { id: contentId } }],
+  });
 
   const handleDeletePoll = (value: any) => async (_: any) => {
     await deletePoll({ variables: { id: value } });
   };
 
-  if (loading || content?.polls && content?.polls.length == 0) return null;
+  if (content?.polls && content?.polls.length == 0) return null;
 
   return (
     <Fade in={!loading}>
@@ -39,7 +43,12 @@ export default function PollList({ contentId }: { contentId: string }) {
         <List>
           {content?.polls.map(
             (poll: { id: any; total: any; createdAt: any }) => (
-              <ListItem key={poll.id} button component={NextLink} href={`/poll/${poll.id}`}>
+              <ListItem
+                key={poll.id}
+                button
+                component={NextLink}
+                href={`/poll/${poll.id}`}
+              >
                 <Tooltip title="Antal stemmer">
                   <ListItemAvatar>
                     <Badge
