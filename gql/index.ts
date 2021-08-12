@@ -609,7 +609,8 @@ export const POLL_SUB_RESULT = gql`
       content {
         id
         name
-        children {
+        children(order_by: { priority: asc, createdAt: asc }) {
+          id
           name
         }
         parent {
