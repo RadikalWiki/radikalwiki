@@ -24,7 +24,10 @@ export default function Screen() {
         ) : event?.contentId ? (
           <>
             {event.content.parent?.id && (
-              <ContentCard contentId={event.content.parent.id} />
+              <ContentCard
+                contentId={event.content.parent.id}
+                expanded={false}
+              />
             )}
             <ContentCard contentId={event.contentId} />
           </>
