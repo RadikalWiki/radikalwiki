@@ -549,6 +549,7 @@ export const EVENT_POLL_SUB = gql`
       id
       poll {
         id
+        active
         content {
           id
           name
