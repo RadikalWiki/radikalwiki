@@ -19,7 +19,7 @@ const parseData = (poll: any, screen: boolean) => {
   if (!poll) {
     return res;
   }
-  if (poll.active || screen) {
+  if (poll.active || (screen && poll.content.folder.mode == "candidates")) {
     return [{ option: "Antal Stemmer", count: poll.total.aggregate.count }];
   }
   if (poll.content.folder.mode === "changes") {
@@ -81,7 +81,7 @@ export default function PollChart({
           <Animation />
         </Chart>
 
-        {!(poll?.active || screen) && (
+        {!(poll?.active || (screen && poll?.content.folder.mode == "candidates")) && (
           <Typography className={classes.textChart}>
             Afgivne stemmer: {poll?.total.aggregate.count}
           </Typography>
