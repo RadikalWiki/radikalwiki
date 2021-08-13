@@ -13,7 +13,7 @@ export default function Vote() {
   });
 
   useEffect(() => {
-    if (data?.canVote.canVote === false) {
+    if (data?.canVote.canVote === false && data?.canVote.active) {
       const pollId = data.canVote.pollId;
       router.push(`/poll/${pollId}`);
     }

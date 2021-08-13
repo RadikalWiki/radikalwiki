@@ -102,7 +102,7 @@ export default function VoteForm() {
     setError(false);
   };
 
-  if (!loading && !poll) {
+  if (!loading && !(poll && poll.active)) {
     return (
       <Card className={classes.card}>
         <Typography className={classes.text} variant="h5">
