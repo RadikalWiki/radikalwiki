@@ -19,7 +19,7 @@ export default async function handler(
   }
   
   // Get secret
-  const jwk = createSecretKey(process.env.JWT_KEY as any);
+  const jwk = createSecretKey(Buffer.from(process.env.JWT_KEY as string));
 
   // Verify token
   let payload: any;
