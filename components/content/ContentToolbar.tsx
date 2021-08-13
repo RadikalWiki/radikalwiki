@@ -91,7 +91,7 @@ function ContentToolbar({ contentId }: { contentId: string }) {
 
   const handleFocusContent = (id: any) => async (_: any) => {
     await updateEvent({
-      variables: { id: session?.event?.id, set: { contentId: id } },
+      variables: { id: session?.event?.id, set: { contentId: id, pollId: null } },
     });
   };
 
