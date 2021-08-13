@@ -544,6 +544,13 @@ export const EVENT_CHECK_VOTE_ACTION = gql`
       canVote
       active
     }
+    event: events_by_pk(id: $id) {
+      id
+      poll {
+        id
+        active
+      }
+    }
   }
 `;
 

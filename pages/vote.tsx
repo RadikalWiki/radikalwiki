@@ -3,7 +3,8 @@ import { VoteForm } from "comps/vote";
 import { useQuery } from "@apollo/client";
 import { EVENT_CHECK_VOTE_ACTION } from "gql";
 import { useRouter } from "next/router";
-import { useSession } from "hooks";
+import { useSession, query } from "hooks";
+
 
 export default function Vote() {
   const router = useRouter();
@@ -14,7 +15,7 @@ export default function Vote() {
 
   useEffect(() => {
     console.log(data)
-    if (data?.canVote.canVote === false && data?.canVote.active) {
+    if (data?.canVote.canVote === false && data?.event.poll.active) {
       const pollId = data.canVote.pollId;
       router.push(`/poll/${pollId}`);
     }
