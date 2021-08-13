@@ -538,6 +538,7 @@ export const EVENT_CHECK_VOTE_ACTION = gql`
     canVote(eventId: $id) {
       pollId
       canVote
+      active
     }
   }
 `;
