@@ -528,6 +528,7 @@ export const EVENT_CHECK_VOTE = gql`
       }
       poll {
         id
+        active
         votes(where: { userId: { _eq: $userId } }) {
           id
         }
