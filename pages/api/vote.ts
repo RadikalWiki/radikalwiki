@@ -66,6 +66,9 @@ export default async function handler(
     id: eventId,
     userId,
   });
+  if (!event.poll.active) {
+    return res.status(401).send({ message: "Poll not active" });
+  }
   if (event.poll.votes.length !== 0) {
     return res.status(401).send({ message: "Already voted" });
   }

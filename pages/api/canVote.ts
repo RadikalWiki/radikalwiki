@@ -45,6 +45,6 @@ export default async function handler(
   return res.json({
     pollId: event.poll.id,
     active: event.poll.active,
-    canVote: event.poll.votes.length == 0 && event.admissions.length > 0,
+    canVote: event.poll.active && event.poll.votes.length == 0 && event.admissions.length > 0,
   });
 }
