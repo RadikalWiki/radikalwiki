@@ -507,6 +507,7 @@ export const POLL_GET_TYPE = gql`
         minVote
         folder {
           mode
+          eventId
         }
         children_aggregate {
           aggregate {
@@ -522,9 +523,11 @@ export const EVENT_CHECK_VOTE = gql`
   query ($id: uuid!, $userId: uuid!) {
     event: events_by_pk(id: $id) {
       id
+      admissions(where: { identity: { user: { id: { _eq: $userId } } } }) {
+        id
+      }
       poll {
         id
-        active
         votes(where: { userId: { _eq: $userId } }) {
           id
         }

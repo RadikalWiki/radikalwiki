@@ -1,4 +1,4 @@
-import { POLL_GET_TYPE, VOTE_ADD } from "gql";
+import { POLL_GET_TYPE, VOTE_ADD, EVENT_CHECK_VOTE } from "gql";
 import { query, mutation } from "hooks";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
@@ -32,18 +32,20 @@ export default async function handler(
   if (!jwt) {
     return res.status(400).send({ message: "Missing token" });
   }
-  
+
   // Get secret
-  const jwk = createSecretKey(Buffer.from(process.env.JWT_KEY as string, "hex"));
+  const jwk = createSecretKey(
+    Buffer.from(process.env.JWT_KEY as string, "hex")
+  );
 
   // Verify token
   let payload: any;
   try {
-    ({ payload } = await jwtVerify(jwt, jwk, { algorithms: ["HS256"]}));
+    ({ payload } = await jwtVerify(jwt, jwk, { algorithms: ["HS256"] }));
   } catch (e: any) {
     return res.status(401).send({ message: e.message });
   }
-  const userId = payload["https://hasura.io/jwt/claims"]["x-hasura-user-id"] 
+  const userId = payload["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
 
   // Validate vote
   const { pollId, value }: { pollId: string; value: Set<number> } =
@@ -54,6 +56,21 @@ export default async function handler(
   });
   if (!validateVote(vote, pollType.data.poll.content)) {
     return res.status(400).send({ message: "Invalid vote" });
+  }
+
+  // Check if voted
+  const eventId: string = pollType.data.poll.content.folder.eventId;
+  const {
+    data: { event },
+  } = await query(EVENT_CHECK_VOTE, {
+    id: eventId,
+    userId,
+  });
+  if (event.poll.votes.length !== 0) {
+    return res.status(401).send({ message: "Already voted" });
+  }
+  if (event.admissions.length == 0) {
+    return res.status(401).send({ message: "Not allowed to vote" });
   }
 
   // Add vote

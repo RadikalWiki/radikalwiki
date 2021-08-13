@@ -17,18 +17,20 @@ export default async function handler(
   if (!jwt) {
     return res.status(400).send({ message: "Missing token" });
   }
-  
+
   // Get secret
-  const jwk = createSecretKey(Buffer.from(process.env.JWT_KEY as string, "hex"));
+  const jwk = createSecretKey(
+    Buffer.from(process.env.JWT_KEY as string, "hex")
+  );
 
   // Verify token
   let payload: any;
   try {
-    ({ payload } = await jwtVerify(jwt, jwk, { algorithms: ["HS256"]}));
+    ({ payload } = await jwtVerify(jwt, jwk, { algorithms: ["HS256"] }));
   } catch (e: any) {
     return res.status(401).send({ message: e.message });
   }
-  const userId = payload["https://hasura.io/jwt/claims"]["x-hasura-user-id"] 
+  const userId = payload["https://hasura.io/jwt/claims"]["x-hasura-user-id"];
 
   // Check if voted
   const eventId: string = req.body.input.eventId;
@@ -43,6 +45,6 @@ export default async function handler(
   return res.json({
     pollId: event.poll.id,
     active: event.poll.active,
-    canVote: event.poll.votes.length == 0,
+    canVote: event.poll.votes.length == 0 && event.admissions.length > 0,
   });
 }
