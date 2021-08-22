@@ -6,13 +6,15 @@ import {
   LowPriority,
   GetApp,
   SupervisorAccount,
+  Lock,
+  LockOpen,
 } from "@material-ui/icons";
 import { useStyles } from "hooks";
 import { AddFolderDialog } from ".";
 import { useRouter } from "next/router";
 import HTMLtoDOCX from "html-to-docx";
-import { useApolloClient } from "@apollo/client";
-import { FOLDER_GET_EXPORT } from "gql";
+import { useApolloClient, useMutation } from "@apollo/client";
+import { FOLDER_GET, FOLDER_GET_EXPORT, FOLDER_UPDATE } from "gql";
 
 export default function FolderDial({ folder }: { folder: any }) {
   const classes = useStyles();
@@ -20,6 +22,7 @@ export default function FolderDial({ folder }: { folder: any }) {
   const router = useRouter();
   const [addDialog, setAddDialog] = useState(false);
   const client = useApolloClient();
+  const [updateFolder] = useMutation(FOLDER_UPDATE);
 
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
@@ -59,6 +62,25 @@ export default function FolderDial({ folder }: { folder: any }) {
     document.body.removeChild(link);
   };
 
+  const handleLockContent = async () => {
+    const set = { lockContent: !folder.lockContent };
+    await updateFolder({
+      variables: { id: folder.id, set },
+      refetchQueries: [{ query: FOLDER_GET, variables: { id: folder.id } }],
+    });
+  };
+
+  const handleLockChildren = async () => {
+    const set = { lockChildren: !folder.lockChildren };
+    await updateFolder({
+      variables: { id: folder.id, set },
+      refetchQueries: [{ query: FOLDER_GET, variables: { id: folder.id } }],
+    });
+  };
+
+  const childName =
+    folder?.mode == "changes" ? "Ændringsforslag" : "Kandidaturer";
+
   return (
     <>
       <SpeedDial
@@ -69,6 +91,28 @@ export default function FolderDial({ folder }: { folder: any }) {
         onClose={() => setOpen(false)}
         open={open}
       >
+        <SpeedDialAction
+          icon={
+            <Avatar className={classes.avatar}>
+              {folder?.lockContent ? <LockOpen /> : <Lock />}
+            </Avatar>
+          }
+          tooltipTitle={`${folder?.lockContent ? "Lås op" : "Lås"} indhold`}
+          tooltipOpen
+          onClick={handleLockContent}
+        />
+        <SpeedDialAction
+          icon={
+            <Avatar className={classes.avatar}>
+              {folder?.lockChildren ? <LockOpen /> : <Lock />}
+            </Avatar>
+          }
+          tooltipTitle={`${
+            folder?.lockChildren ? "Lås op" : "Lås"
+          } ${childName}`}
+          tooltipOpen
+          onClick={handleLockChildren}
+        />
         <SpeedDialAction
           icon={
             <Avatar className={classes.avatar}>
