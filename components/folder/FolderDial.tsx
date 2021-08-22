@@ -79,7 +79,7 @@ export default function FolderDial({ folder }: { folder: any }) {
   };
 
   const childName =
-    folder?.mode == "changes" ? "Ændringsforslag" : "Kandidaturer";
+    folder?.mode == "changes" ? "ændringsforslag" : "kandidaturer";
 
   return (
     <>

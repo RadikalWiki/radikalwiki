@@ -901,6 +901,7 @@ export const FOLDER_GET = gql`
       name
       lockContent
       lockChildren
+      mode
       parent {
         id
         name
