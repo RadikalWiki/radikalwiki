@@ -236,7 +236,7 @@ export default function Id() {
           </List>
         </Card>
       </Fade>
-      {!data?.folder.lockContent && <AddContentFab folderId={id as string} />}
+      {!loading && !data?.folder.lockContent && <AddContentFab folderId={id as string} />}
       {session?.roles.includes("admin") && <FolderDial folder={data?.folder} />}
     </>
   );
