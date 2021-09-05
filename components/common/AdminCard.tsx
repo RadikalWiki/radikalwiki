@@ -5,9 +5,11 @@ import { useStyles, useSession } from "hooks";
 export default function AdminCard({
   children,
   show,
+  title,
 }: {
   children: any;
   show: boolean;
+  title: string;
 }) {
   const [session] = useSession();
   const classes = useStyles();
@@ -18,7 +20,7 @@ export default function AdminCard({
     <Fade in={show}>
       <Card className={classes.cardAdmin}>
         <Typography variant="h5" className={classes.adminHeader}>
-          Adminpanel
+          {title}
         </Typography>
         {children}
       </Card>

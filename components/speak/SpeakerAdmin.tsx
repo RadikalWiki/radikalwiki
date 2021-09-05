@@ -27,7 +27,7 @@ export default function SpeakerAdmin() {
   };
 
   return (
-    <AdminCard show={!loading}>
+    <AdminCard title="Administrer Talerlisten" show={!loading}>
       <Button
         color="secondary"
         variant="contained"
@@ -35,7 +35,7 @@ export default function SpeakerAdmin() {
         className={classes.adminButton}
         onClick={() => handleLockSpeak(!event?.lockSpeak)}
       >
-        {event?.lockSpeak ? "Åben talerliste" : "Luk talerliste"}
+        {event?.lockSpeak ? "Åben" : "Luk"}
       </Button>
 
       <Button
@@ -45,7 +45,7 @@ export default function SpeakerAdmin() {
         className={classes.adminButton}
         onClick={() => removeSpeakAll()}
       >
-        Ryd talerliste
+        Ryd
       </Button>
     </AdminCard>
   );

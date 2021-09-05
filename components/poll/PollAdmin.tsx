@@ -23,7 +23,7 @@ export default function PollAdmin({ pollId }: { pollId: string }) {
   if (!session?.roles.includes("admin") || !data?.poll.active) return null;
 
   return (
-    <AdminCard show={!loading}>
+    <AdminCard title="Administrer Afstemning" show={!loading}>
       <Button
         size="large"
         color="secondary"
