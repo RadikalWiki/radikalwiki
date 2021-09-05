@@ -510,6 +510,7 @@ export const POLL_CHECK_VOTE = gql`
       maxVote
       minVote
       active
+      options
       votes(where: { userId: { _eq: $userId } }) {
         id
       }
