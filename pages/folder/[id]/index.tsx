@@ -225,7 +225,7 @@ export default function Id() {
                   </Fragment>
                 )
             )}
-            {list.length == 0 && (
+            {!loading && list.length == 0 && (
               <Fragment key="none">
                 <ListItem button>
                   <ListItemText primary="Intet indhold" />
