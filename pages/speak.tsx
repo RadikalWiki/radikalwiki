@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, CardHeader } from "@material-ui/core";
+import { Card, CardHeader, Grid } from "@material-ui/core";
 import { useSession, useStyles } from "hooks";
 import { Countdown, SpeakerAdmin, SpeakerDial, SpeakerList } from "comps";
 import { useSubscription } from "@apollo/client";
@@ -18,12 +18,20 @@ export default function Speak() {
 
   return (
     <>
-      <Countdown interactive />
-      <SpeakerAdmin />
-      <Card className={classes.speakerCard}>
-        <CardHeader title="Talerliste" className={classes.cardHeader} />
-        <SpeakerList interactive />
-      </Card>
+      <Grid container>
+        <Grid item xs={12} sm={6}>
+          <SpeakerAdmin />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Countdown interactive />
+        </Grid>
+        <Grid item xs={12}>
+          <Card className={classes.speakerCard}>
+            <CardHeader title="Talerliste" className={classes.cardHeader} />
+            <SpeakerList interactive />
+          </Card>
+        </Grid>
+      </Grid>
       <SpeakerDial event={event} />
     </>
   );
