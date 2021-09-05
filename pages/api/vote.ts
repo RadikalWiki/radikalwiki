@@ -56,6 +56,7 @@ export default async function handler(
   const vote = new Set(value);
   const { data } = await query(POLL_CHECK_VOTE, {
     id: pollId,
+    userId,
   });
   const poll = data.poll;
   if (!validateVote(vote, poll)) {
