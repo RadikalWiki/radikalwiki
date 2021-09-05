@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader, Grid } from "@material-ui/core";
 import { useSession, useStyles } from "hooks";
-import { Countdown, SpeakerAdmin, SpeakerDial, SpeakerList } from "comps";
+import { Countdown, SpeakerAdmin, SpeakerDial, SpeakerCard } from "comps";
 import { useSubscription } from "@apollo/client";
 import { EVENT_SUB } from "gql";
 
@@ -26,10 +26,7 @@ export default function Speak() {
           <Countdown interactive />
         </Grid>
         <Grid item xs={12}>
-          <Card className={classes.speakerCard}>
-            <CardHeader title="Talerliste" className={classes.cardHeader} />
-            <SpeakerList interactive />
-          </Card>
+          <SpeakerCard interactive />
         </Grid>
       </Grid>
       <SpeakerDial event={event} />

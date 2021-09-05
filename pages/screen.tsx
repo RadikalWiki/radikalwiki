@@ -1,7 +1,7 @@
 import React from "react";
 import { useStyles, useSession } from "hooks";
 import { Card, CardHeader, Grid } from "@material-ui/core";
-import { ContentCard, Countdown, PollChart, SpeakerList } from "comps";
+import { ContentCard, Countdown, PollChart, SpeakerCard } from "comps";
 import { useSubscription } from "@apollo/client";
 import { EVENT_SUB } from "gql";
 
@@ -35,10 +35,7 @@ export default function Screen() {
       </Grid>
       <Grid item xs={3}>
         <Countdown />
-        <Card className={classes.card}>
-          <CardHeader title="Talerliste" className={classes.cardHeader} />
-          <SpeakerList />
-        </Card>
+        <SpeakerCard />
       </Grid>
     </Grid>
   );
