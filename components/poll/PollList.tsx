@@ -28,7 +28,9 @@ export default function PollList({ contentId }: { contentId: string }) {
     variables: { id: contentId },
   });
   const [deletePoll] = useMutation(POLL_DEL, {
-    refetchQueries: [{ query: CONTENT_GET_POLLS, variables: { id: contentId } }],
+    refetchQueries: [
+      { query: CONTENT_GET_POLLS, variables: { id: contentId } },
+    ],
   });
 
   const handleDeletePoll = (value: any) => async (_: any) => {
@@ -67,7 +69,7 @@ export default function PollList({ contentId }: { contentId: string }) {
                     "da-DK"
                   )}`}
                 />
-                {session.roles.includes("admin") && (
+                {session?.roles.includes("admin") && (
                   <ListItemSecondaryAction>
                     <IconButton
                       onClick={handleDeletePoll(poll.id)}

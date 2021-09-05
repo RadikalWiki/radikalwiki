@@ -1,18 +1,21 @@
-import { POLL_GET_TYPE, VOTE_ADD, EVENT_CHECK_VOTE } from "gql";
+import { POLL_CHECK_VOTE, VOTE_ADD, EVENT_CHECK_VOTE } from "gql";
 import { query, mutation } from "hooks";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
 import { createSecretKey } from "crypto";
 
-const validateVote = (vote: Set<number>, content: any): Boolean => {
-  if (content.minVote > vote.size || content.maxVote < vote.size) {
+const validateVote = (vote: Set<number>, poll: any): Boolean => {
+  // Handle blank
+  const [first] = vote;
+  if (vote.size == 1 && first == poll.options[poll.options.length - 1]) {
+    return true;
+  }
+
+  if (poll.minVote > vote.size || poll.maxVote < vote.size) {
     return false;
   }
-  const aggregate = content.children_aggregate.aggregate;
-  const count = content.folder.mode == "candidates" ? aggregate.count + 1 : 3;
-  const options = [...Array(count).keys()];
   for (const v of vote.values()) {
-    if (!options.includes(v)) {
+    if (!poll.options.includes(v)) {
       return false;
     }
   }
@@ -51,28 +54,22 @@ export default async function handler(
   const { pollId, value }: { pollId: string; value: Set<number> } =
     req.body.input.vote;
   const vote = new Set(value);
-  const pollType = await query(POLL_GET_TYPE, {
+  const { data } = await query(POLL_CHECK_VOTE, {
     id: pollId,
   });
-  if (!validateVote(vote, pollType.data.poll.content)) {
+  const poll = data.poll;
+  if (!validateVote(vote, poll)) {
     return res.status(400).send({ message: "Invalid vote" });
   }
 
   // Check if voted
-  const eventId: string = pollType.data.poll.content.folder.eventId;
-  const {
-    data: { event },
-  } = await query(EVENT_CHECK_VOTE, {
-    id: eventId,
-    userId,
-  });
-  if (!event.poll.active) {
+  if (!poll.active) {
     return res.status(401).send({ message: "Poll not active" });
   }
-  if (event.poll.votes.length !== 0) {
+  if (poll.votes.length !== 0) {
     return res.status(401).send({ message: "Already voted" });
   }
-  if (event.admissions.length == 0) {
+  if (poll.content.folder.event.admissions.length == 0) {
     return res.status(401).send({ message: "Not allowed to vote" });
   }
 

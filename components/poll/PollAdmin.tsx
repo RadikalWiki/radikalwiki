@@ -31,7 +31,7 @@ export default function PollAdmin({ pollId }: { pollId: string }) {
         className={classes.adminButton}
         onClick={handleStopPoll}
       >
-        Stop afstemning
+        Stop
       </Button>
     </AdminCard>
   );

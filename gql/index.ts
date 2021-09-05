@@ -306,6 +306,10 @@ export const CONTENT_GET_TOOLBAR = gql`
       name
       creatorId
       published
+      children {
+        id
+        name
+      }
       authors {
         name
         identity {
@@ -499,19 +503,24 @@ export const POLL_STOP = gql`
   }
 `;
 
-export const POLL_GET_TYPE = gql`
-  query ($id: uuid!) {
+export const POLL_CHECK_VOTE = gql`
+  query ($id: uuid!, $userId: uuid!) {
     poll: polls_by_pk(id: $id) {
+      id
+      maxVote
+      minVote
+      active
+      votes(where: { userId: { _eq: $userId } }) {
+        id
+      }
       content {
-        maxVote
-        minVote
         folder {
-          mode
-          eventId
-        }
-        children_aggregate {
-          aggregate {
-            count
+          event {
+            admissions(
+              where: { identity: { user: { id: { _eq: $userId } } } }
+            ) {
+              id
+            }
           }
         }
       }
@@ -561,15 +570,12 @@ export const EVENT_POLL_SUB = gql`
       poll {
         id
         active
+        maxVote
+        minVote
+        options
         content {
           id
           name
-          maxVote
-          minVote
-          children(order_by: { priority: asc, createdAt: asc }) {
-            id
-            name
-          }
           folder {
             id
             mode

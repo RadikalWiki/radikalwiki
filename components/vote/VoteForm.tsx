@@ -30,29 +30,32 @@ export default function VoteForm() {
   const [error, setError] = useState(false);
 
   const poll = data?.event?.poll;
-  const opts =
-    poll?.content.folder.mode == "candidates"
-      ? [...poll?.content.children?.map((c: any) => c.name), "Blank"]
-      : ["For", "Imod", "Blank"];
 
-  const [vote, setVote] = useState(new Array(opts.length).fill(false) || []);
+  const [vote, setVote] = useState(
+    new Array(poll?.options.length).fill(false) || []
+  );
 
   const validate = (vote: any, submit: boolean) => {
     const selected = vote.filter((o: any) => o).length;
-    if (submit && poll?.content.minVote > selected) {
+    // Handle blank
+    if (selected == 1 && vote[vote.length - 1]) {
+      return true;
+    }
+
+    if (submit && poll?.minVote > selected) {
       setHelperText(
-        `Vælg venligst mindst ${poll.content.minVote} mulighed${
-          poll?.content.minVote > 1 ? "er" : ""
+        `Vælg venligst mindst ${poll.minVote} mulighed${
+          poll?.minVote > 1 ? "er" : ""
         }`
       );
       setError(true);
       return false;
     }
 
-    if (poll?.content.maxVote < selected) {
+    if (poll?.maxVote < selected) {
       setHelperText(
-        `Vælg venligst max ${poll.content.maxVote} mulighed${
-          poll?.content.maxVote > 1 ? "er" : ""
+        `Vælg venligst max ${poll.maxVote} mulighed${
+          poll?.maxVote > 1 ? "er" : ""
         }`
       );
       setError(true);
@@ -63,13 +66,11 @@ export default function VoteForm() {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    const selected = vote.filter((o) => o).length;
-
     if (!validate(vote, true)) {
       return;
     }
 
-    const res = await addVote({
+    await addVote({
       variables: {
         pollId: poll.id,
         value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
@@ -84,8 +85,8 @@ export default function VoteForm() {
 
   const handleChangeVote = (e: any) => {
     let voteOld;
-    if (1 === poll?.content.maxVote && 1 === poll?.content.minVote) {
-      voteOld = new Array(opts.length).fill(false);
+    if (1 === poll?.maxVote && 1 === poll?.minVote) {
+      voteOld = new Array(poll.options.length).fill(false);
     } else {
       voteOld = vote;
     }
@@ -112,7 +113,7 @@ export default function VoteForm() {
     );
   }
 
-  const Control = poll?.content?.maxVote != 1 ? Checkbox : Radio;
+  const Control = poll?.content.maxVote != 1 ? Checkbox : Radio;
 
   return (
     <Fade in={!loading}>
@@ -122,7 +123,7 @@ export default function VoteForm() {
           <form onSubmit={handleSubmit}>
             <FormControl error={error} className={classes.formControl}>
               <FormGroup>
-                {opts.map((opt: any, index: number) => (
+                {poll?.options.map((opt: any, index: number) => (
                   <FormControlLabel
                     key={index}
                     value={index}

@@ -14,21 +14,19 @@ import {
   CONTENT_GET_TOOLBAR,
   CONTENT_UPDATE,
   CONTENT_DELETE,
-  POLL_ADD,
-  POLL_STOP,
   EVENT_UPDATE,
 } from "gql";
-import { AutoButton } from "comps";
-import { memo } from "react";
+import { AutoButton, PollDialog } from "comps";
+import { memo, useState } from "react";
 
 function ContentToolbar({ contentId }: { contentId: string }) {
   const [session] = useSession();
   const classes = useStyles();
   const router = useRouter();
+
+  const [openPollDialog, setOpenPollDialog] = useState(false);
   const [updateContent] = useMutation(CONTENT_UPDATE);
   const [deleteContent] = useMutation(CONTENT_DELETE);
-  const [addPoll] = useMutation(POLL_ADD);
-  const [stopPoll] = useMutation(POLL_STOP);
   const [updateEvent] = useMutation(EVENT_UPDATE);
   const {
     data: { content } = {},
@@ -79,19 +77,15 @@ function ContentToolbar({ contentId }: { contentId: string }) {
   };
 
   const handleAddPoll = async (_: any) => {
-    stopPoll({ variables: { eventId: session?.event?.id } });
-    const { data: { poll } = {} } = await addPoll({
-      variables: { object: { contentId } },
-    });
-    await updateEvent({
-      variables: { id: session?.event?.id, set: { pollId: poll?.id } },
-    });
-    router.push(`/poll/${poll.id}`);
+    setOpenPollDialog(true);
   };
 
   const handleFocusContent = (id: any) => async (_: any) => {
     await updateEvent({
-      variables: { id: session?.event?.id, set: { contentId: id, pollId: null } },
+      variables: {
+        id: session?.event?.id,
+        set: { contentId: id, pollId: null },
+      },
     });
   };
 
@@ -151,6 +145,13 @@ function ContentToolbar({ contentId }: { contentId: string }) {
         )}
       </CardActions>
       <Divider />
+      {!(content?.parent && content?.folder.mode == "candidates") && (
+        <PollDialog
+          content={content}
+          open={openPollDialog}
+          setOpen={setOpenPollDialog}
+        />
+      )}
     </>
   );
 }
