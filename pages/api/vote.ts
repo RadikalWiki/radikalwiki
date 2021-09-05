@@ -7,7 +7,8 @@ import { createSecretKey } from "crypto";
 const validateVote = (vote: Set<number>, poll: any): Boolean => {
   // Handle blank
   const [first] = vote;
-  if (vote.size == 1 && first == poll.options[poll.options.length - 1]) {
+  const options = [...Array(poll?.options.length).keys()]
+  if (vote.size == 1 && first == poll.options[options.length - 1]) {
     return true;
   }
 
@@ -15,7 +16,7 @@ const validateVote = (vote: Set<number>, poll: any): Boolean => {
     return false;
   }
   for (const v of vote.values()) {
-    if (!poll.options.includes(v)) {
+    if (!options.includes(v)) {
       return false;
     }
   }
