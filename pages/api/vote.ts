@@ -75,12 +75,12 @@ export default async function handler(
     return res.status(401).send({ message: "Already voted" });
   }
   if (
-    poll.content.folder.event.admissions.length == 0 &&
-    poll.content.folder.event.admissions[0].voting
+    poll.content.folder.event.admissions.length == 0 ||
+    !poll.content.folder.event.admissions[0].voting
   ) {
     return res.status(401).send({ message: "Not allowed to vote" });
   }
-  if (poll.content.folder.event.admissions[0].checkedIn) {
+  if (!poll.content.folder.event.admissions[0].checkedIn) {
     return res.status(401).send({ message: "Not checked in" });
   }
 
