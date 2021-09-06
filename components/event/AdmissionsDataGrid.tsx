@@ -48,7 +48,6 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
     field: any;
     value: any;
   }) => {
-    console.log({ id, field, value });
     if (typeof value != "boolean") return;
     const set: Record<string, any> = {};
     set[field] = value;
@@ -56,7 +55,6 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
       mutation: ADMISSION_UPDATE,
       variables: { id, set },
     });
-    console.log(res)
   };
 
   const rows = getUsers(data?.event.admissions);
