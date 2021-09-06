@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -34,6 +34,9 @@ export default function VoteForm() {
   const [vote, setVote] = useState(
     new Array(poll?.options.length).fill(false) || []
   );
+  useEffect(() => {
+    setVote(new Array(poll?.options.length).fill(false))
+  }, [poll]);
 
   const validate = (vote: any, submit: boolean) => {
     const selected = vote.filter((o: any) => o).length;
@@ -49,8 +52,7 @@ export default function VoteForm() {
 
     if (submit && poll?.minVote > selected) {
       setHelperText(
-        `Vælg venligst mindst ${poll.minVote} mulighed${
-          poll?.minVote > 1 ? "er" : ""
+        `Vælg venligst mindst ${poll.minVote} mulighed${poll?.minVote > 1 ? "er" : ""
         }`
       );
       setError(true);
@@ -59,8 +61,7 @@ export default function VoteForm() {
 
     if (poll?.maxVote < selected) {
       setHelperText(
-        `Vælg venligst max ${poll.maxVote} mulighed${
-          poll?.maxVote > 1 ? "er" : ""
+        `Vælg venligst max ${poll.maxVote} mulighed${poll?.maxVote > 1 ? "er" : ""
         }`
       );
       setError(true);
@@ -132,7 +133,6 @@ export default function VoteForm() {
                   <FormControlLabel
                     key={index}
                     value={index}
-                    //checked={vote[opt.value]}
                     control={
                       <Control
                         checked={vote[index] || false}
