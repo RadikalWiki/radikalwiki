@@ -7,7 +7,7 @@ import { createSecretKey } from "crypto";
 const validateVote = (vote: Set<number>, poll: any): Boolean => {
   // Handle blank
   const [first] = vote;
-  const options = [...Array(poll?.options.length).keys()]
+  const options = [...Array(poll?.options.length).keys()];
   if (vote.size == 1 && first == poll.options[options.length - 1]) {
     return true;
   }
@@ -71,8 +71,14 @@ export default async function handler(
   if (poll.votes.length !== 0) {
     return res.status(401).send({ message: "Already voted" });
   }
-  if (poll.content.folder.event.admissions.length == 0) {
+  if (
+    poll.content.folder.event.admissions.length == 0 &&
+    poll.content.folder.event.admissions[0].voting
+  ) {
     return res.status(401).send({ message: "Not allowed to vote" });
+  }
+  if (poll.content.folder.event.admissions[0].checkedIn) {
+    return res.status(401).send({ message: "Not checked in" });
   }
 
   // Add vote

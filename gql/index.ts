@@ -521,6 +521,8 @@ export const POLL_CHECK_VOTE = gql`
               where: { identity: { user: { id: { _eq: $userId } } } }
             ) {
               id
+              voting
+              checkedIn
             }
           }
         }
@@ -535,6 +537,8 @@ export const EVENT_CHECK_VOTE = gql`
       id
       admissions(where: { identity: { user: { id: { _eq: $userId } } } }) {
         id
+        voting
+        checkedIn
       }
       poll {
         id
@@ -658,6 +662,7 @@ export const POLL_SUB_RESULT = gql`
 export const GROUP_GET_EVENTS = gql`
   query {
     groups {
+      id
       name
       events {
         id
@@ -818,6 +823,14 @@ export const ADMISSIONS_ADD = gql`
   }
 `;
 
+export const ADMISSION_UPDATE = gql`
+  mutation ($id: uuid!, $set: admissions_set_input!) {
+    update_admissions_by_pk(pk_columns: { id: $id }, _set: $set) {
+      id
+    }
+  }
+`;
+
 export const MEMBERSHIPS_ADD = gql`
   mutation ($objects: [memberships_insert_input!]!) {
     insert_memberships(objects: $objects) {
@@ -841,6 +854,23 @@ export const IDENTITIES_GET = gql`
     identities {
       displayName
       email
+    }
+  }
+`;
+
+export const EVENT_ADMISSIONS_GET = gql`
+  query ($id: uuid!) {
+    event: events_by_pk(id: $id) {
+      id
+      admissions(order_by: { identity: { displayName: asc } }) {
+        id
+        voting
+        checkedIn
+        identity {
+          email
+          displayName
+        }
+      }
     }
   }
 `;
@@ -1044,6 +1074,7 @@ export const IDENTITIES_FIND = gql`
 export const EVENT_GET_ROLE = gql`
   query ($id: uuid!, $email: String) {
     event: events_by_pk(id: $id) {
+      id
       group {
         creatorId
         memberships(where: { email: { _eq: $email } }) {
@@ -1059,6 +1090,7 @@ export const EVENT_GET_ROLE = gql`
 export const EVENT_GET_FOLDER = gql`
   query ($id: uuid!) {
     event: events_by_pk(id: $id) {
+      id
       folderId
     }
   }

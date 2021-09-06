@@ -12,8 +12,9 @@ import {
   ListItem,
   ListItemText,
   TextField,
-  Typography,
+  Tooltip,
 } from "@material-ui/core";
+import { Event } from "@material-ui/icons";
 import { Autocomplete } from "@material-ui/lab";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
@@ -54,8 +55,15 @@ export default function Index() {
   return (
     <>
       <Breadcrumbs className={classes.bread}>
-        <Link component={NextLink} color="primary" href="/event">
-          <Typography className={classes.breadText}>Begivenheder</Typography>
+        <Link
+          component={NextLink}
+          className={classes.breadText}
+          color="primary"
+          href="/event"
+        >
+          <Tooltip title="Begivenheder">
+            <Event />
+          </Tooltip>
         </Link>
         <Autocomplete
           freeSolo
