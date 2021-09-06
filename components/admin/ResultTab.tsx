@@ -1,7 +1,7 @@
 import { useSubscription } from "@apollo/client";
 import { useStyles } from "hooks";
 //import { POLL_SUB_ALL_RESULT } from "gql";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const numColWidth = 90;
 const columns: any[] = [

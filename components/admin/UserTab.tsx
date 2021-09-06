@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { useStyles } from "hooks";
 import { USERS_GET } from "gql";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const numColWidth = 200;
 const columns: any[] = [

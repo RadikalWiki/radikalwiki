@@ -1,8 +1,8 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 
 export default function useTheme() {
-  return createMuiTheme({
+  return createTheme({
     palette: {
       primary: {
         main: "#ec407a",

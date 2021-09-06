@@ -1,7 +1,7 @@
 import { useQuery, useSubscription } from "@apollo/client";
 import { useStyles } from "hooks";
 import { IDENTITIES_GET } from "gql";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const columns: any[] = [
   { field: "displayName", headerName: "Navn", width: 200 },

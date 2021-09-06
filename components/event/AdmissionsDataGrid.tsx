@@ -1,7 +1,7 @@
 import { useQuery, useApolloClient } from "@apollo/client";
 import { useStyles } from "hooks";
 import { EVENT_ADMISSIONS_GET, ADMISSION_UPDATE } from "gql";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const columns: any[] = [
   { field: "displayName", headerName: "Navn", width: 200 },
@@ -42,20 +42,21 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
   const handleCellEditCommit = async ({
     id,
     field,
-    props,
+    value,
   }: {
     id: any;
     field: any;
-    props: any;
+    value: any;
   }) => {
-    console.log({ id, field, props });
-    if (!props.value) return;
+    console.log({ id, field, value });
+    if (typeof value != "boolean") return;
     const set: Record<string, any> = {};
-    set[field] = props.value;
-    await client.mutate({
+    set[field] = value;
+    const res = await client.mutate({
       mutation: ADMISSION_UPDATE,
       variables: { id, set },
     });
+    console.log(res)
   };
 
   const rows = getUsers(data?.event.admissions);
@@ -71,7 +72,7 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
       components={{
         Toolbar: GridToolbar,
       }}
-      onEditCellChangeCommitted={handleCellEditCommit}
+      onCellEditCommit={handleCellEditCommit}
     />
   );
 }
