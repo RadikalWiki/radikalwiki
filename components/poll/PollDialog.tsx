@@ -63,6 +63,7 @@ export default function PollDialog({
             <TextField
               type="number"
               value={minVote}
+              disabled={content?.folder.mode == "changes"}
               onChange={(e) => {
                 const maxOpt = optionsCount - 1;
                 const val = parseInt(e.target.value);
@@ -80,6 +81,7 @@ export default function PollDialog({
             <TextField
               type="number"
               value={maxVote}
+              disabled={content?.folder.mode == "changes"}
               onChange={(e) => {
                 const maxOpt = optionsCount - 1;
                 const val = parseInt(e.target.value);
