@@ -41,6 +41,11 @@ export default function VoteForm() {
     if (selected == 1 && vote[vote.length - 1]) {
       return true;
     }
+    if (selected > 1 && vote[vote.length - 1]) {
+      setHelperText("Blank kan kun vælges alene");
+      setError(true);
+      return false;
+    }
 
     if (submit && poll?.minVote > selected) {
       setHelperText(

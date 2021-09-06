@@ -8,10 +8,13 @@ const validateVote = (vote: Set<number>, poll: any): Boolean => {
   // Handle blank
   const [first] = vote;
   const options = [...Array(poll?.options.length).keys()];
-  if (vote.size == 1 && first == poll.options[options.length - 1]) {
+  const blank = poll.options[options.length - 1];
+  if (vote.size == 1 && first == blank) {
     return true;
   }
-
+  if (vote.size > 1 && [...vote.values()].includes(blank)) {
+    return false;
+  }
   if (poll.minVote > vote.size || poll.maxVote < vote.size) {
     return false;
   }
