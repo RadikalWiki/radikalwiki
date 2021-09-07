@@ -58,7 +58,7 @@ export default function PollChart({
   const chartData = parseData(poll, screen) || [];
 
   return (
-    <Fade in={!loading} key={uuid()}>
+    <Fade in={!loading}>
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title={poll?.content.name} />
         {chartData?.map((data: any) => (
