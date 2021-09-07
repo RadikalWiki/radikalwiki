@@ -11,7 +11,6 @@ import { Card, CardHeader, Fade, Typography, Link } from "@material-ui/core";
 import { useStyles } from "hooks";
 import { useSubscription } from "@apollo/client";
 import { POLL_SUB_RESULT } from "gql";
-import { Link as NextLink } from "comps";
 import { v4 as uuid } from "uuid";
 
 const parseData = (poll: any, screen: boolean) => {
@@ -22,15 +21,8 @@ const parseData = (poll: any, screen: boolean) => {
   if (poll.active || (screen && poll.content.folder.mode == "candidates")) {
     return [{ option: "Antal Stemmer", count: poll.total.aggregate.count }];
   }
-  if (poll.content.folder.mode === "changes") {
-    res[0] = { option: "For", count: 0, key: uuid() };
-    res[1] = { option: "Imod", count: 0, key: uuid() };
-    res[2] = { option: "Blank", count: 0, key: uuid() };
-  } else {
-    for (const child of poll.content.children) {
-      res.push({ option: child.name, count: 0, key: uuid() });
-    }
-    res.push({ option: "Blank", count: 0, key: uuid() });
+  for (const option of poll.options) {
+    res.push({ option, count: 0, key: uuid() });
   }
   for (const vote of poll.votes) {
     for (const index of vote.value) {

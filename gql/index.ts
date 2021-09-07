@@ -631,19 +631,12 @@ export const POLL_SUB_RESULT = gql`
     poll: polls_by_pk(id: $id) {
       id
       active
+      options
       content {
         id
         name
-        children(order_by: { priority: asc, createdAt: asc }) {
-          id
-          name
-        }
-        parent {
-          id
-        }
         folder {
           id
-          name
           mode
         }
       }
