@@ -4,10 +4,11 @@ import {
   BarSeries,
   Chart,
   ValueAxis,
+  Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
-import { Animation, ValueScale } from "@devexpress/dx-react-chart";
+import { Animation, ValueScale, EventTracker } from "@devexpress/dx-react-chart";
 
-import { Card, CardHeader, Fade, Typography, Link } from "@material-ui/core";
+import { Card, CardHeader, Fade, Typography } from "@material-ui/core";
 import { useStyles } from "hooks";
 import { useSubscription } from "@apollo/client";
 import { POLL_SUB_RESULT } from "gql";
@@ -44,7 +45,6 @@ export default function PollChart({
   const { data, loading } = useSubscription(POLL_SUB_RESULT, {
     variables: { id: pollId },
   });
-
   const poll = data?.poll;
 
   const chartData = parseData(poll, screen) || [];
@@ -61,7 +61,7 @@ export default function PollChart({
           <ValueAxis />
           <ValueScale
             modifyDomain={(domain: any) => {
-              return [0, domain[1] ? domain[1] : 1];
+              return [0, domain[1] ? domain[1] + 5 : 5];
             }}
           />
 
@@ -71,9 +71,14 @@ export default function PollChart({
             argumentField="option"
           />
           <Animation />
+          <EventTracker />
+          <Tooltip />
         </Chart>
 
-        {!(poll?.active || (screen && poll?.content.folder.mode == "candidates")) && (
+        {!(
+          poll?.active ||
+          (screen && poll?.content.folder.mode == "candidates")
+        ) && (
           <Typography className={classes.textChart}>
             Afgivne stemmer: {poll?.total.aggregate.count}
           </Typography>
