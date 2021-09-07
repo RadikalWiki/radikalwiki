@@ -6,7 +6,7 @@ import {
   ValueAxis,
   Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
-import { Animation, ValueScale, EventTracker } from "@devexpress/dx-react-chart";
+import { Animation, ValueScale, EventTracker, HoverState } from "@devexpress/dx-react-chart";
 
 import { Card, CardHeader, Fade, Typography } from "@material-ui/core";
 import { useStyles } from "hooks";
@@ -73,6 +73,7 @@ export default function PollChart({
           <Animation />
           <EventTracker />
           <Tooltip />
+          <HoverState />
         </Chart>
 
         {!(
