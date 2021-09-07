@@ -637,6 +637,15 @@ export const POLL_SUB_RESULT = gql`
         name
         folder {
           id
+          event {
+            admissions_aggregate(
+              where: { voting: { _eq: true }, checkedIn: { _eq: true } }
+            ) {
+              aggregate {
+                count
+              }
+            }
+          }
           mode
         }
       }

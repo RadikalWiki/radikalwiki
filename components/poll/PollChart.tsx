@@ -6,7 +6,12 @@ import {
   ValueAxis,
   Tooltip,
 } from "@devexpress/dx-react-chart-material-ui";
-import { Animation, ValueScale, EventTracker, HoverState } from "@devexpress/dx-react-chart";
+import {
+  Animation,
+  ValueScale,
+  EventTracker,
+  HoverState,
+} from "@devexpress/dx-react-chart";
 
 import { Card, CardHeader, Fade, Typography } from "@material-ui/core";
 import { useStyles } from "hooks";
@@ -48,6 +53,8 @@ export default function PollChart({
   const poll = data?.poll;
 
   const chartData = parseData(poll, screen) || [];
+  const voteCount =
+    poll?.content.folder.event.admissions_aggregate.aggregate.count;
 
   return (
     <Fade in={!loading}>
@@ -61,7 +68,7 @@ export default function PollChart({
           <ValueAxis />
           <ValueScale
             modifyDomain={(domain: any) => {
-              return [0, domain[1] ? domain[1] + 5 : 5];
+              return [0, voteCount ? voteCount : 10];
             }}
           />
 
@@ -81,7 +88,7 @@ export default function PollChart({
           (screen && poll?.content.folder.mode == "candidates")
         ) && (
           <Typography className={classes.textChart}>
-            Afgivne stemmer: {poll?.total.aggregate.count}
+            Afgivne stemmer: {poll?.total.aggregate.count}/{voteCount}
           </Typography>
         )}
       </Card>
