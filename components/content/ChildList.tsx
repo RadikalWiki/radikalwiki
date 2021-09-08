@@ -51,6 +51,9 @@ export default function ChildList({ contentId }: any) {
   const formatAuthors = (a: any) =>
     a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
 
+  if (!loading && content?.parent && content?.folder.mode == "candidates")
+    return null;
+
   return (
     <Fade in={!loading}>
       <Card className={classes.card}>
@@ -115,7 +118,7 @@ export default function ChildList({ contentId }: any) {
                 </ListItem>
                 <Divider />
                 <Collapse in={open[index]}>
-                  <ContentToolbar contentId={child.id} /> 
+                  <ContentToolbar contentId={child.id} />
                   <Content contentId={child.id} />
                   <Divider />
                 </Collapse>

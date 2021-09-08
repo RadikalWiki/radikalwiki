@@ -179,6 +179,7 @@ export const CONTENT_GET_CHILDREN = gql`
         id
         mode
       }
+      parent
       children(order_by: { published: asc, createdAt: asc }) {
         id
         name
