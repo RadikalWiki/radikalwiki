@@ -56,6 +56,8 @@ export default function PollChart({
   const voteCount =
     poll?.content.folder.event.admissions_aggregate.aggregate.count;
 
+  if (!loading && !poll) return null;
+
   return (
     <Fade in={!loading}>
       <Card className={classes.card}>

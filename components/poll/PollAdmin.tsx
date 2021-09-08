@@ -20,7 +20,7 @@ export default function PollAdmin({ pollId }: { pollId: string }) {
     router.push(`/poll/${pollId}`);
   };
 
-  if (!session?.roles.includes("admin") || !data?.poll.active) return null;
+  if (!session?.roles.includes("admin") || !data?.poll?.active) return null;
 
   return (
     <AdminCard title="Administrer Afstemning" show={!loading}>

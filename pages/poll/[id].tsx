@@ -1,7 +1,14 @@
 import React from "react";
 import { PollAdmin, PollChart, Link as NextLink } from "components";
 import { useRouter } from "next/router";
-import { Fade, Card, Breadcrumbs, Tooltip, Link } from "@material-ui/core";
+import {
+  Fade,
+  Card,
+  Breadcrumbs,
+  Tooltip,
+  Link,
+  Typography,
+} from "@material-ui/core";
 import { Subject, HowToVote } from "@material-ui/icons";
 import { useQuery } from "@apollo/client";
 import { POLL_GET_CONTENT } from "gql";
@@ -30,30 +37,33 @@ export default function Id() {
               <Subject />
             </Tooltip>
           </Link>
-          {content?.parent ? (
+          {data?.poll &&
+            (content?.parent ? (
+              <Link
+                component={NextLink}
+                color="primary"
+                href={`/content/${content?.parent.id}`}
+              >
+                {content?.parent.name}
+              </Link>
+            ) : (
+              <Link
+                component={NextLink}
+                color="primary"
+                href={`/folder/${content?.folder.id}`}
+              >
+                {content?.folder.name}
+              </Link>
+            ))}
+          {data?.poll && (
             <Link
               component={NextLink}
               color="primary"
-              href={`/content/${content?.parent.id}`}
+              href={`/content/${content?.id}`}
             >
-              {content?.parent.name}
-            </Link>
-          ) : (
-            <Link
-              component={NextLink}
-              color="primary"
-              href={`/folder/${content?.folder.id}`}
-            >
-              {content?.folder.name}
+              {content?.name}
             </Link>
           )}
-          <Link
-            component={NextLink}
-            color="primary"
-            href={`/content/${content?.id}`}
-          >
-            {content?.name}
-          </Link>
           <Link
             component={NextLink}
             color="primary"
@@ -66,6 +76,13 @@ export default function Id() {
           </Link>
         </Breadcrumbs>
       </Fade>
+      {!loading && !data?.poll && (
+        <Card className={classes.card}>
+          <Typography className={classes.text} variant="h5">
+            Afstemningen eksisterer ikke
+          </Typography>
+        </Card>
+      )}
       <PollAdmin pollId={query?.id as string} />
       <PollChart pollId={query?.id as string} />
     </>
