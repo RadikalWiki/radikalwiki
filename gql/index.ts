@@ -179,7 +179,9 @@ export const CONTENT_GET_CHILDREN = gql`
         id
         mode
       }
-      parent
+      parent {
+        id
+      }
       children(order_by: { published: asc, createdAt: asc }) {
         id
         name
@@ -307,6 +309,7 @@ export const CONTENT_GET_TOOLBAR = gql`
       name
       creatorId
       published
+      parentId
       children {
         id
         name

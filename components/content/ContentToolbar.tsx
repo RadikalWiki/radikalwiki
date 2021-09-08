@@ -15,6 +15,7 @@ import {
   CONTENT_UPDATE,
   CONTENT_DELETE,
   EVENT_UPDATE,
+  CONTENT_GET_CHILDREN,
 } from "gql";
 import { AutoButton, PollDialog } from "comps";
 import { memo, useState } from "react";
@@ -52,6 +53,7 @@ function ContentToolbar({ contentId }: { contentId: string }) {
 
       refetchQueries: [
         { query: CONTENT_GET_TOOLBAR, variables: { id: contentId } },
+        { query: CONTENT_GET_CHILDREN, variables: { id: content.parentId } },
       ],
     });
 
@@ -95,7 +97,7 @@ function ContentToolbar({ contentId }: { contentId: string }) {
     });
   };
 
-  if (!editable) return null;
+  if (!editable || !content) return null;
 
   return (
     <>
