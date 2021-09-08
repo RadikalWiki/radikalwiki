@@ -14,17 +14,17 @@ import {
 } from "@devexpress/dx-react-chart";
 
 import { Card, CardHeader, Fade, Typography } from "@material-ui/core";
-import { useStyles } from "hooks";
+import { useStyles, useSession } from "hooks";
 import { useSubscription } from "@apollo/client";
 import { POLL_SUB_RESULT } from "gql";
 import { v4 as uuid } from "uuid";
 
-const parseData = (poll: any, screen: boolean) => {
+const parseData = (poll: any, screen: boolean, admin: boolean) => {
   let res: any[] = [];
   if (!poll) {
     return res;
   }
-  if (poll.active || (screen && poll.content.folder.mode == "candidates")) {
+  if (poll.active || (poll.hidden && (screen || !admin))) {
     return [{ option: "Antal Stemmer", count: poll.total.aggregate.count }];
   }
   for (const option of poll.options) {
@@ -46,13 +46,15 @@ export default function PollChart({
   pollId: string;
   screen?: boolean;
 }) {
+  const [session] = useSession();
   const classes = useStyles();
   const { data, loading } = useSubscription(POLL_SUB_RESULT, {
     variables: { id: pollId },
   });
   const poll = data?.poll;
 
-  const chartData = parseData(poll, screen) || [];
+  const admin = session?.roles.includes("admin");
+  const chartData = parseData(poll, screen, admin) || [];
   const voteCount =
     poll?.content.folder.event.admissions_aggregate.aggregate.count;
 
@@ -85,12 +87,9 @@ export default function PollChart({
           <HoverState />
         </Chart>
 
-        {!(
-          poll?.active ||
-          (screen && poll?.content.folder.mode == "candidates")
-        ) && (
+        {!(poll?.active || (poll?.hidden && (screen || !admin))) && (
           <Typography className={classes.textChart}>
-            Afgivne stemmer: {poll?.total.aggregate.count}/{voteCount}
+            Antal Stemmer: {poll?.total.aggregate.count}/{voteCount}
           </Typography>
         )}
       </Card>

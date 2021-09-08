@@ -8,6 +8,9 @@ import {
   DialogContent,
   TextField,
   Button,
+  FormGroup,
+  FormControlLabel,
+  Switch,
 } from "@material-ui/core";
 import { POLL_ADD, POLL_STOP, EVENT_UPDATE } from "gql";
 import { useMutation } from "@apollo/client";
@@ -26,6 +29,7 @@ export default function PollDialog({
   const [session, setSession] = useSession();
   const [minVote, setMinVote] = useState(1);
   const [maxVote, setMaxVote] = useState(1);
+  const [hidden, setHidden] = useState(content?.folder.mode == "candidates");
   const [addPoll] = useMutation(POLL_ADD);
   const [stopPoll] = useMutation(POLL_STOP);
   const [updateEvent] = useMutation(EVENT_UPDATE);
@@ -44,6 +48,7 @@ export default function PollDialog({
           contentId: content.id,
           minVote,
           maxVote,
+          hidden,
           options: `{${options}}`,
         },
       },
@@ -92,10 +97,24 @@ export default function PollDialog({
               fullWidth
             />
           </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={hidden}
+                  onChange={() => setHidden(!hidden)}
+                  color="primary"
+                />
+              }
+              label="Skjul resultatet"
+            />
+          </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleAddPoll}>Start</Button>
+        <Button variant="contained" color="primary" onClick={handleAddPoll}>
+          Start
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -636,6 +636,7 @@ export const POLL_SUB_RESULT = gql`
       id
       active
       options
+      hidden
       content {
         id
         name
@@ -650,7 +651,6 @@ export const POLL_SUB_RESULT = gql`
               }
             }
           }
-          mode
         }
       }
       votes {
