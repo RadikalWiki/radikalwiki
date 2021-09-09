@@ -5,7 +5,13 @@ import { useQuery } from "@apollo/client";
 import { CONTENT_GET_DATA } from "gql";
 import { memo } from "react";
 
-function Content({ contentId }: { contentId: string }) {
+function Content({
+  contentId,
+  fontSize,
+}: {
+  contentId: string;
+  fontSize: string;
+}) {
   const classes = useStyles();
 
   const {
@@ -20,13 +26,15 @@ function Content({ contentId }: { contentId: string }) {
     ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file.path}?token=${content.file.token}`
     : null;
 
-
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={image ? 8 : 12}>
         {content?.data && (
           <CardContent>
-            <div dangerouslySetInnerHTML={{ __html: content?.data }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: content?.data }}
+              style={{ fontSize }}
+            />
           </CardContent>
         )}
       </Grid>

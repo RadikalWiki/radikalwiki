@@ -107,7 +107,7 @@ export default function Id() {
           <Divider />
           <Collapse in={expand}>
             <ContentToolbar contentId={id as string} />
-            <Content contentId={id as string} />
+            <Content contentId={id as string} fontSize="100%" />
           </Collapse>
         </Card>
       </Fade>
