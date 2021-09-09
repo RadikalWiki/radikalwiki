@@ -10,7 +10,7 @@ export default function Layout({ children }: { children?: any }) {
   const { signedIn } = useAuth();
   const classes = useStyles();
 
-  if (["/screen", "/login"].includes(pathname))
+  if (["/login", "/register", "/screen"].includes(pathname))
     return <SessionProvider>{signedIn != null && children}</SessionProvider>;
 
   return (

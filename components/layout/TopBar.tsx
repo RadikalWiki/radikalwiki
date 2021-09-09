@@ -19,7 +19,6 @@ export default function TopBar() {
   const classes = useStyles();
   const [openDrawer, setOpenDrawer] = useState(false);
   const [eventDialog, setEventDialog] = useState(false);
-  const { signedIn } = useAuth();
   const largeScreen = useMediaQuery("(min-width:640px)");
 
   const name = largeScreen ? session?.event?.name : session?.event?.shortName;
@@ -57,9 +56,7 @@ export default function TopBar() {
         </AppBar>
       </HideOnScroll>
       <Drawer open={openDrawer} onClick={() => setOpenDrawer(false)} />
-      {signedIn != null && (
-        <EventDialog open={eventDialog} setOpen={setEventDialog} />
-      )}
+      <EventDialog open={eventDialog} setOpen={setEventDialog} />
       <div className={classes.padTop} />
     </>
   );

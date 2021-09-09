@@ -16,8 +16,6 @@ export default function UserButton() {
   const router = useRouter();
   const [session, setSession] = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
-  const [loginDialog, setLoginDialog] = useState(false);
-  const [mode, setMode] = useState<"login" | "register">("login");
   const largeScreen = useMediaQuery("(min-width:640px)");
 
   const handleClick = (event: any) => {
@@ -37,8 +35,7 @@ export default function UserButton() {
 
   const handleLogin = (mode: "login" | "register") => () => {
     setAnchorEl(null);
-    setMode(mode);
-    setLoginDialog(true);
+    router.push(`/${mode}`);
   };
 
   const name = largeScreen
@@ -84,7 +81,6 @@ export default function UserButton() {
           </MenuItem>,
         ]}
       </Menu>
-      <LoginDialog mode={mode} open={loginDialog} setOpen={setLoginDialog} />
     </>
   );
 }

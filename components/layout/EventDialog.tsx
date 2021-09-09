@@ -13,6 +13,7 @@ import { Event } from "@material-ui/icons";
 import { EVENTS_GET, EVENT_GET_ROLE } from "gql";
 import { useQuery, useApolloClient } from "@apollo/client";
 import { useSession, useStyles } from "hooks";
+import { useAuth } from "@nhost/react-auth";
 
 const getRoles = (userId: string, group: any) => {
   const roles = new Set();
@@ -35,6 +36,8 @@ export default function EventDialog({
   const [session, setSession] = useSession();
   const { loading, data, error } = useQuery(EVENTS_GET);
   const client = useApolloClient();
+  const { signedIn } = useAuth();
+  if (signedIn == null) return null
 
   const handleEventSelect = (event: any) => async () => {
     const {
@@ -51,6 +54,7 @@ export default function EventDialog({
     router.push("/folder");
   };
 
+  console.log({ loading, data, error })
   return (
     <Dialog
       open={open}
