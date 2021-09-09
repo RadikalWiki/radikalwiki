@@ -119,7 +119,7 @@ export default function ChildList({ contentId }: any) {
                 <Divider />
                 <Collapse in={open[index]}>
                   <ContentToolbar contentId={child.id} />
-                  <Content contentId={child.id} />
+                  <Content contentId={child.id} fontSize="100%" />
                   <Divider />
                 </Collapse>
               </Fragment>
