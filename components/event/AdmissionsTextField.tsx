@@ -78,8 +78,8 @@ export default function AdmissionsTextField({
           {...params}
           color="primary"
           variant="outlined"
-          label="Forfattere"
-          placeholder="Tilføj Forfatter"
+          label="Tilføj adgang"
+          placeholder="Medlemsnavn"
         />
       )}
     />
