@@ -21,7 +21,7 @@ import { POLL_SUB_RESULT } from "gql";
 
 const parseData = (poll: any, screen: boolean, admin: boolean) => {
   if (!poll) {
-    return {};
+    return { options: [], data: []};
   }
   if (poll.active || (poll.hidden && (screen || !admin))) {
     return {
