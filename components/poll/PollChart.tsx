@@ -1,42 +1,45 @@
 import React from "react";
 import {
-  ArgumentAxis,
   BarSeries,
   Chart,
   ValueAxis,
   Tooltip,
+  Legend,
 } from "@devexpress/dx-react-chart-material-ui";
 import {
   Animation,
   ValueScale,
   EventTracker,
   HoverState,
+  Stack,
 } from "@devexpress/dx-react-chart";
 
 import { Card, CardHeader, Fade, Typography } from "@material-ui/core";
 import { useStyles, useSession } from "hooks";
 import { useSubscription } from "@apollo/client";
 import { POLL_SUB_RESULT } from "gql";
-import { v4 as uuid } from "uuid";
 
 const parseData = (poll: any, screen: boolean, admin: boolean) => {
-  let res: any[] = [];
   if (!poll) {
-    return res;
+    return {};
   }
   if (poll.active || (poll.hidden && (screen || !admin))) {
-    return [{ option: "Antal Stemmer", count: poll.total.aggregate.count }];
+    return {
+      options: ["Antal Stemmer"],
+      data: [{ 0: poll.total.aggregate.count }],
+    };
   }
-  for (const option of poll.options) {
-    res.push({ option, count: 0, key: uuid() });
+  let res: Record<string, any> = { arg: "none" };
+  for (let i = 0; i < poll.options.length; i++) {
+    res[i] = 0;
   }
   for (const vote of poll.votes) {
     for (const index of vote.value) {
-      res[index].count += 1;
+      res[index] += 1;
     }
   }
 
-  return res;
+  return { options: poll.options, data: [res] };
 };
 
 export default function PollChart({
@@ -64,11 +67,15 @@ export default function PollChart({
     <Fade in={!loading}>
       <Card className={classes.card}>
         <CardHeader className={classes.cardHeader} title={poll?.content.name} />
-        {chartData?.map((data: any) => (
-          <div aria-label={`${data?.option} fik ${data?.count} stemmer`}></div>
+        {chartData?.options?.map((opt: any, index: number) => (
+          <div
+            key={index}
+            aria-label={`${opt} fik ${
+              chartData.data ? chartData.data[0][index] : 0
+            } stemmer`}
+          ></div>
         ))}
-        <Chart height={400} data={chartData}>
-          <ArgumentAxis />
+        <Chart data={chartData.data} rotated>
           <ValueAxis />
           <ValueScale
             modifyDomain={(domain: any) => {
@@ -76,15 +83,20 @@ export default function PollChart({
             }}
           />
 
-          <BarSeries
-            color="#ec407a"
-            valueField="count"
-            argumentField="option"
-          />
+          {chartData.options?.map((opt: string, index: number) => (
+            <BarSeries
+              name={opt}
+              valueField={`${index}`}
+              argumentField="arg"
+              key={index}
+            />
+          ))}
           <Animation />
           <EventTracker />
           <Tooltip />
           <HoverState />
+          <Legend position="bottom" />
+          <Stack />
         </Chart>
 
         {!(poll?.active || (poll?.hidden && (screen || !admin))) && (
