@@ -1,4 +1,4 @@
-import { CardActions, Box, Divider } from "@material-ui/core";
+import { CardActions, Box, Divider } from "@mui/material";
 import {
   Delete,
   Edit,
@@ -6,76 +6,76 @@ import {
   Visibility,
   VisibilityOff,
   Poll,
-} from "@material-ui/icons";
-import { useSession, useStyles } from "hooks";
+} from "@mui/icons-material";
+import { useSession } from "hooks";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "@apollo/client";
-import {
-  CONTENT_GET_TOOLBAR,
-  CONTENT_UPDATE,
-  CONTENT_DELETE,
-  EVENT_UPDATE,
-  CONTENT_GET_CHILDREN,
-} from "gql";
+import { useMutation, useQuery } from "gql";
 import { AutoButton, PollDialog } from "comps";
-import { memo, useState } from "react";
+import { useState } from "react";
 
-function ContentToolbar({ contentId }: { contentId: string }) {
+function ContentToolbar({ id }: { id: string }) {
   const [session] = useSession();
-  const classes = useStyles();
   const router = useRouter();
-
+  const query = useQuery();
   const [openPollDialog, setOpenPollDialog] = useState(false);
-  const [updateContent] = useMutation(CONTENT_UPDATE);
-  const [deleteContent] = useMutation(CONTENT_DELETE);
-  const [updateEvent] = useMutation(EVENT_UPDATE);
-  const {
-    data: { content } = {},
-    loading,
-    error,
-  } = useQuery(CONTENT_GET_TOOLBAR, {
-    variables: { id: contentId },
+  const content = query.contents_by_pk({ id });
+  const [updateContent] = useMutation(
+    (mutation, args: { id: string; set: any }) => {
+      return mutation.update_contents_by_pk({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      })?.id;
+    },
+    {
+      refetchQueries: [
+        query.contents_by_pk({ id }),
+        query.contents({ where: { parentId: { _eq: id } } }),
+      ],
+    }
+  );
+  const [deleteContent] = useMutation((mutation, id: string) => {
+    return mutation.delete_contents_by_pk({ id });
   });
+  const [updateEvent] = useMutation(
+    (mutation, args: { id: string; set: any }) => {
+      return mutation.update_events_by_pk({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      })?.id;
+    }
+  );
 
   const editable =
-    ((session?.user.id === content?.creatorId ||
-      (content?.authors.some(
-        (a: any) => a.identity?.user?.id === session?.user.id
-      ) &&
-        ((!content?.parent && !content?.folder.lockContent) ||
-          (content?.parent && !content?.folder.lockChildren)))) &&
+    ((session?.user?.id === content?.creatorId ||
+      (content
+        ?.authors()
+        .some((a: any) => a.identity?.user?.id === session?.user?.id) &&
+        ((!content?.parent && !content?.folder?.lockContent) ||
+          (content?.parent && !content?.folder?.lockChildren)))) &&
       !content?.published) ||
-    session?.roles.includes("admin");
+    session?.roles?.includes("admin");
 
   const handleDelete = async () => {
     await deleteContent({
-      variables: { id: contentId },
-
-      refetchQueries: [
-        { query: CONTENT_GET_TOOLBAR, variables: { id: contentId } },
-        { query: CONTENT_GET_CHILDREN, variables: { id: content.parentId } },
-      ],
+      args: id,
     });
 
-    if (content.parent) {
+    if (content?.parent) {
       router.push(`/content/${content.parent.id}`);
     } else {
-      router.push(`/folder/${content.folder.id}`);
+      router.push(`/folder/${content?.folder?.id}`);
     }
   };
 
   const handlePublish = async () => {
     await updateContent({
-      variables: { id: contentId, set: { published: true } },
-      refetchQueries: [
-        { query: CONTENT_GET_TOOLBAR, variables: { id: contentId } },
-      ],
+      args: { id: id, set: { published: true } },
     });
   };
 
   // TODO: properly style MUI buttons with next.js
   const handleEdit = async () => {
-    router.push(`/content/${contentId}/edit`);
+    router.push(`/content/${id}/edit`);
   };
 
   const handleAddPoll = async (_: any) => {
@@ -84,8 +84,8 @@ function ContentToolbar({ contentId }: { contentId: string }) {
 
   const handleFocusContent = (id: any) => async (_: any) => {
     await updateEvent({
-      variables: {
-        id: session?.event?.id,
+      args: {
+        id: session?.event?.id as string,
         set: { contentId: id, pollId: null },
       },
     });
@@ -93,7 +93,10 @@ function ContentToolbar({ contentId }: { contentId: string }) {
 
   const handleHide = (id: any) => async (_: any) => {
     await updateEvent({
-      variables: { id: session?.event?.id, set: { contentId: id, pollId: id } },
+      args: {
+        id: session?.event?.id as string,
+        set: { contentId: id, pollId: id },
+      },
     });
   };
 
@@ -102,12 +105,12 @@ function ContentToolbar({ contentId }: { contentId: string }) {
   return (
     <>
       <CardActions>
-        {session?.roles.includes("admin") && [
+        {session?.roles?.includes("admin") && [
           <AutoButton
             key="focus"
             text="Vis"
             icon={<Visibility />}
-            onClick={handleFocusContent(contentId)}
+            onClick={handleFocusContent(id)}
           />,
           <AutoButton
             key="hide"
@@ -115,7 +118,7 @@ function ContentToolbar({ contentId }: { contentId: string }) {
             icon={<VisibilityOff />}
             onClick={handleHide(null)}
           />,
-          !(content?.parent && content?.folder.mode == "candidates") && (
+          !(content?.parent && content?.folder?.mode == "candidates") && (
             <AutoButton
               key="poll"
               text="Ny afstemning"
@@ -124,7 +127,7 @@ function ContentToolbar({ contentId }: { contentId: string }) {
             />
           ),
         ]}
-        <Box className={classes.flexGrow} />
+        <Box sx={{ flexGrow: 1 }} />
         <AutoButton
           key="delete"
           text="Slet"
@@ -147,9 +150,9 @@ function ContentToolbar({ contentId }: { contentId: string }) {
         )}
       </CardActions>
       <Divider />
-      {!(content?.parent && content?.folder.mode == "candidates") && (
+      {!(content?.parent && content?.folder?.mode == "candidates") && (
         <PollDialog
-          content={content}
+          id={id}
           open={openPollDialog}
           setOpen={setOpenPollDialog}
         />
@@ -158,4 +161,4 @@ function ContentToolbar({ contentId }: { contentId: string }) {
   );
 }
 
-export default memo(ContentToolbar);
+export default ContentToolbar;

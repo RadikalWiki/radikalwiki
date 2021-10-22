@@ -1,17 +1,10 @@
 import React from "react";
-import { Typography, CardContent } from "@material-ui/core";
+import { Typography, CardContent } from "@mui/material";
 import { HeaderCard } from "comps";
 import { useSession } from "hooks";
-import { USER_GET_PROFILE } from "gql";
-import { useQuery } from "@apollo/client";
 
-export default function Login() {
+export default function Index() {
   const [session] = useSession();
-  const { loading, data, error } = useQuery(USER_GET_PROFILE, {
-    variables: { id: session?.user.id },
-  });
-
-  const user = data?.user;
 
   return (
     <HeaderCard title="Velkommen til RadikalWiki">
@@ -24,10 +17,10 @@ export default function Login() {
             </Typography>
           </>
         )) ||
-          (session?.displayName === session?.user.email && (
+          (session?.user?.name === session?.user?.email && (
             <>
               <Typography>
-                Du har brugt e-mailen {session?.user.email}.
+                Du har brugt e-mailen {session?.user?.email}.
               </Typography>
               <Typography>
                 Denne e-mail er ikke registreret i RUs medlemsregister.
@@ -39,7 +32,7 @@ export default function Login() {
             </>
           )) || (
             <>
-              <Typography>Heyo {session?.displayName}!</Typography>
+              <Typography>Heyo {session?.user?.name}!</Typography>
               <Typography>
                 Vælg en begivenhed i toppanelet for at begynde.
               </Typography>

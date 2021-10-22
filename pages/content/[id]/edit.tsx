@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Link as NextLink, AuthorTextField, FileUploader, Editor } from "comps";
-import clsx from "clsx";
-import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@apollo/client";
-import { useStyles, useSession } from "hooks";
-import Image from "material-ui-image";
 import {
-  CONTENT_GET_EDIT,
-  CONTENT_UPDATE,
-  CONTENT_DELETE,
-  AUTHORSHIPS_ADD,
-  CONTENT_DELETE_AUTHORSHIPS,
+  Link as NextLink,
+  AuthorTextField,
+  FileUploader,
+  Editor,
+  ExpandButton,
+} from "comps";
+import { useRouter } from "next/router";
+import {
+  useQuery,
+  useMutation,
+  authorships_insert_input,
+  authorships,
+  files,
 } from "gql";
+import { useSession } from "hooks";
+import Image from "next/image";
 import {
   Box,
   Divider,
-  Fade,
-  IconButton,
   Breadcrumbs,
   Button,
   Card,
@@ -29,8 +31,8 @@ import {
   CardHeader,
   Tooltip,
   Collapse,
-} from "@material-ui/core";
-import { Publish, Save, Delete, ExpandMore, Subject } from "@material-ui/icons";
+} from "@mui/material";
+import { Publish, Save, Delete, Subject } from "@mui/icons-material";
 
 const getFileUrl = (file: any) =>
   file
@@ -39,61 +41,66 @@ const getFileUrl = (file: any) =>
 
 export default function Id() {
   const [session] = useSession();
-  const classes = useStyles();
   const router = useRouter();
-  const { id } = router.query;
-  const {
-    loading,
-    data: { content } = {},
-    error,
-  } = useQuery(CONTENT_GET_EDIT, {
-    variables: { id },
+  const id = router.query.id as string;
+  const query = useQuery();
+  const content = query.contents_by_pk({ id });
+  const [updateContent] = useMutation(
+    (mutation, args: { id: string; set: any }) => {
+      return mutation.update_contents_by_pk({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      });
+    }
+  );
+  const [deleteContent] = useMutation((mutation, id: string) => {
+    return mutation.delete_contents_by_pk({ id });
   });
-  const [updateContent] = useMutation(CONTENT_UPDATE);
-  const [deleteContent] = useMutation(CONTENT_DELETE);
-  const [delAuthors] = useMutation(CONTENT_DELETE_AUTHORSHIPS);
-  const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
+  const [deleteAuthors] = useMutation((mutation, id: string) => {
+    return mutation.delete_authorships_by_pk({ id });
+  });
+  const [addAuthors] = useMutation(
+    (mutation, args: authorships_insert_input[]) => {
+      return mutation.insert_authorships({ objects: args })?.returning;
+    }
+  );
 
   const [expand, setExpand] = useState(true);
   const [name, setName] = useState("");
-  const [authors, setAuthors] = useState([]);
+  const [authors, setAuthors] = useState<authorships[]>([]);
   const [data, setData] = useState("");
-  const [image, setImage] = useState<{
-    id: string;
-    path: string;
-    token: string;
-  } | null>(null);
+  const [image, setImage] = useState<any>();
 
   useEffect(() => {
     if (content) {
-      setName(content.name);
-      setAuthors(content.authors);
-      setData(content.data);
-      setImage(content.file);
+      setName(content?.name ?? "");
+      setAuthors(content?.authors().map((author) => ({ ...author })));
+      setData(content?.data ?? "");
+      setImage({ ...content?.file } ?? "");
     }
   }, [content]);
 
   const handleSave = (published: boolean) => async () => {
     await updateContent({
-      variables: { id, set: { name, data, published, fileId: image?.id } },
+      args: { id, set: { name, data, published, fileId: image?.id } },
     });
-    await delAuthors({ variables: { id } });
+    await deleteAuthors({ args: id });
     const objects = authors.map((author: any) =>
       author.identity?.email
         ? { contentId: id, email: author.identity?.email }
         : { contentId: id, name: author.name }
     );
-    await addAuthors({ variables: { objects } });
+    await addAuthors({ args: objects });
     router.push(`/content/${id}`);
   };
 
   const handleDelete = async () => {
-    await deleteContent({ variables: { id } });
+    await deleteContent({ args: id });
 
-    if (content.parent) {
-      router.push(`/content/${content.parent.id}`);
+    if (content?.parentId) {
+      router.push(`/content/${content?.parent?.id}`);
     } else {
-      router.push(`/folder/${content.folder.id}`);
+      router.push(`/folder/${content?.folder?.id}`);
     }
   };
 
@@ -102,139 +109,120 @@ export default function Id() {
 
   return (
     <>
-      <Fade in={!loading}>
-        <Breadcrumbs className={classes.bread}>
+      <Breadcrumbs sx={{ p: [2, 0, 2, 2] }}>
+        <Link
+          component={NextLink}
+          sx={{ alignItems: "center", display: "flex" }}
+          color="primary"
+          href="/folder"
+        >
+          <Tooltip title="Indhold">
+            <Subject />
+          </Tooltip>
+        </Link>
+        {content?.parent ? (
           <Link
             component={NextLink}
-            className={classes.breadText}
             color="primary"
-            href="/folder"
+            href={`/content/${content?.parent.id}`}
           >
-            <Tooltip title="Indhold">
-              <Subject />
-            </Tooltip>
+            {content?.parent.name}
           </Link>
-          {content?.parent ? (
-            <Link
-              component={NextLink}
-              color="primary"
-              href={`/content/${content?.parent.id}`}
-            >
-              {content?.parent.name}
-            </Link>
-          ) : (
-            <Link
-              component={NextLink}
-              color="primary"
-              href={`/folder/${content?.folder.id}`}
-            >
-              {content?.folder.name}
-            </Link>
-          )}
-          <Link component={NextLink} color="primary" href={`/content/${id}`}>
-            {name}
+        ) : (
+          <Link
+            component={NextLink}
+            color="primary"
+            href={`/folder/${content?.folder?.id}`}
+          >
+            {content?.folder?.name}
           </Link>
-        </Breadcrumbs>
-      </Fade>
-      <Fade in={!loading}>
-        <Card className={classes.card}>
-          <CardHeader
-            title={`${name} (Redigering)`}
-            subheader={
-              !(content?.parent && content?.folder.mode === "candidates")
-                ? formatAuthors(authors)
-                : ""
-            }
-            action={
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expand,
-                })}
+        )}
+        <Link component={NextLink} color="primary" href={`/content/${id}`}>
+          {name}
+        </Link>
+      </Breadcrumbs>
+      <Card elevation={3} sx={{ m: 1 }}>
+        <CardHeader
+          title={`${name} (Redigering)`}
+          subheader={
+            !(content?.parent && content?.folder?.mode === "candidates")
+              ? formatAuthors(authors)
+              : ""
+          }
+          action={<ExpandButton onClick={() => setExpand(!expand)} />}
+        />
+        <Divider />
+        <Collapse in={expand} timeout="auto">
+          <CardActions>
+            <Button
+              color="primary"
+              variant="contained"
+              endIcon={<Delete />}
+              onClick={handleDelete}
+            >
+              Slet
+            </Button>
+            <Box sx={{ flexGrow: 1 }} />
+            <Button
+              color="primary"
+              variant="contained"
+              endIcon={<Save />}
+              onClick={handleSave(false)}
+            >
+              Gem
+            </Button>
+            {!content?.published && (
+              <Button
                 color="primary"
-                onClick={() => setExpand(!expand)}
+                variant="contained"
+                endIcon={<Publish />}
+                onClick={handleSave(true)}
               >
-                <Tooltip title={expand ? "Skjul" : "Vis"}>
-                  <ExpandMore />
-                </Tooltip>
-              </IconButton>
-            }
-          />
+                Indsend
+              </Button>
+            )}
+          </CardActions>
           <Divider />
-          <Collapse in={expand} timeout="auto">
-            <CardActions>
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<Delete />}
-                onClick={handleDelete}
-              >
-                Slet
-              </Button>
-              <Box className={classes.flexGrow} />
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<Save />}
-                onClick={handleSave(false)}
-              >
-                Gem
-              </Button>
-              {!content?.published && (
-                <Button
-                  color="primary"
-                  variant="contained"
-                  endIcon={<Publish />}
-                  onClick={handleSave(true)}
-                >
-                  Indsend
-                </Button>
-              )}
-            </CardActions>
-            <Divider />
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    value={name}
-                    onChange={(e: any) => setName(e.target.value)}
-                    label="Titel"
-                    variant="outlined"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <AuthorTextField value={authors} onChange={setAuthors} />
-                </Grid>
-                <Grid item xs={12}>
-                  <Grid container>
-                    <Grid item xs={9}>
-                      <FileUploader
-                        contentId={content?.id}
-                        onNewFile={setImage}
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  value={name}
+                  onChange={(e: any) => setName(e.target.value)}
+                  label="Titel"
+                  variant="outlined"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <AuthorTextField value={authors} onChange={setAuthors} />
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container>
+                  <Grid item xs={9}>
+                    <FileUploader contentId={content?.id} onNewFile={setImage}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        component="span"
                       >
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          component="span"
-                        >
-                          Upload Billede
-                        </Button>
-                      </FileUploader>
-                    </Grid>
-                    {image && (
-                      <Grid item xs={3}>
-                        <Paper className={classes.image}>
-                          <Image src={getFileUrl(image) || ""} />
-                        </Paper>
-                      </Grid>
-                    )}
+                        Upload Billede
+                      </Button>
+                    </FileUploader>
                   </Grid>
+                  {image && (
+                    <Grid item xs={3}>
+                      <Paper sx={{ p: 1, m: 1 }}>
+                        <Image alt="Billede for indhold" src={getFileUrl(image) || ""} />
+                      </Paper>
+                    </Grid>
+                  )}
                 </Grid>
               </Grid>
-            </CardContent>
-          </Collapse>
-        </Card>
-      </Fade>
+            </Grid>
+          </CardContent>
+        </Collapse>
+      </Card>
       <Editor value={data} onChange={setData} />
     </>
   );

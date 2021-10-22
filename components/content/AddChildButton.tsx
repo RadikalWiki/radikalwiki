@@ -1,62 +1,66 @@
 import React from "react";
 import { AutoButton } from "comps";
-import { PlusOne } from "@material-ui/icons";
+import { PlusOne } from "@mui/icons-material";
 import { useSession } from "hooks";
-import { CONTENTS_ADD, AUTHORSHIPS_ADD, CONTENT_GET_CHILDREN_ADD } from "gql";
-import { useMutation } from "@apollo/client";
+import {
+  authorships_insert_input,
+  contents_insert_input,
+  useMutation,
+} from "gql";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "gql";
 
 type mode = "candidates" | "changes";
 
 export default function AddChildButton({ contentId }: { contentId: any }) {
   const [session] = useSession();
   const router = useRouter();
-  const {
-    loading,
-    data: { content } = {},
-    error,
-  } = useQuery(CONTENT_GET_CHILDREN_ADD, {
-    variables: { id: contentId },
-  });
-  const [addContents] = useMutation(CONTENTS_ADD);
-  const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
+  const query = useQuery();
+  const content = query.contents_by_pk({ id: contentId })
+  const [addContents] = useMutation(
+    (mutation, args: contents_insert_input[]) => {
+      return mutation.insert_contents({ objects: args })?.returning;
+    }
+  );
+  const [addAuthors] = useMutation(
+    (mutation, args: authorships_insert_input[]) => {
+      return mutation.insert_authorships({ objects: args })?.returning;
+    }
+  );
 
   const contentType =
-    content?.folder.mode == "candidates" ? "Kandidatur" : "Ændringsforslag";
+    content?.folder?.mode == "candidates" ? "Kandidatur" : "Ændringsforslag";
+  const children = content?.children().map((c) => c.id)
   const name =
-    content?.folder.mode == "candidates"
-      ? session?.displayName
+    content?.folder?.mode == "candidates"
+      ? session?.user?.name
       : content?.parent
-      ? `Ændringsforslag ${content?.children.length + 1} til "${content?.name}"`
-      : `Ændringsforslag ${content?.children.length + 1}`;
+      ? `Ændringsforslag ${children?.length ?? 0 + 1} til "${content?.name}"`
+      : `Ændringsforslag ${children?.length ?? 0 + 1}`;
 
   const handleSubmit = async () => {
-    const { data } = await addContents({
-      variables: {
-        objects: [
-          {
-            name,
-            folderId: content?.folder.id,
-            data: "",
-            creatorId: session?.user.id,
-            parentId: content?.id,
-          },
-        ],
-      },
+    const newContent = await addContents({
+      args: [{
+        name,
+        folderId: content?.folder?.id,
+        data: "",
+        creatorId: session?.user?.id,
+        parentId: content?.id,
+      }],
     });
-    const contentId = data.insert_contents.returning[0].id;
+    if (!newContent) return;
+    const contentId = newContent[0].id;
     const objects = [
       {
-        email: session.user.email,
+        email: session?.user?.email,
         contentId,
       },
     ];
-    await addAuthors({ variables: { objects } });
+    await addAuthors({ args: objects });
     router.push(`/content/${contentId}/edit`);
   };
 
-  if (content?.folder.lockChildren) return null;
+  if (content?.folder?.lockChildren) return null;
 
   return (
     <AutoButton text={contentType} icon={<PlusOne />} onClick={handleSubmit} />

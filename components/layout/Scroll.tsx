@@ -1,10 +1,8 @@
 import React from "react";
-import { useStyles } from "hooks";
-import { Fab, useScrollTrigger, Zoom } from "@material-ui/core";
-import { KeyboardArrowUp } from "@material-ui/icons";
+import { Fab, useScrollTrigger, Zoom, Box } from "@mui/material";
+import { KeyboardArrowUp } from "@mui/icons-material";
 
 export default function Scroll({ children }: any) {
-  const classes = useStyles();
   const trigger = useScrollTrigger({
     target:
       typeof document !== "undefined"
@@ -28,20 +26,20 @@ export default function Scroll({ children }: any) {
 
   return (
     <>
-      <div id="top-anchor" />
-      <div className={classes.scroll} id="scroll">
+      <Box id="top-anchor" />
+      <Box sx={{ overflowY: "auto", WebkitOverflowScrolling: "touch", height: "calc(100vh - 64px)" }} id="scroll">
         {children}
-      </div>
+      </Box>
       <Zoom in={trigger}>
-        <div
+        <Box
           onClick={handleClick}
           role="presentation"
-          className={classes.fabButton}
+          sx={{ position: "fixed", bottom: (t) => t.spacing(9), left: (t) => t.spacing(3) }}
         >
           <Fab color="primary" size="small">
             <KeyboardArrowUp />
           </Fab>
-        </div>
+        </Box>
       </Zoom>
     </>
   );

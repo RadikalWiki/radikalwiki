@@ -1,6 +1,4 @@
-import { useQuery, useSubscription } from "@apollo/client";
-import { useStyles } from "hooks";
-import { IDENTITIES_GET } from "gql";
+import { useQuery } from "gql";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const columns: any[] = [
@@ -8,24 +6,16 @@ const columns: any[] = [
   { field: "id", headerName: "E-Mail", width: 200 },
 ];
 
-const getUsers = (identities: any) => {
-  return identities?.map((identity: any) => ({
-    id: identity.email,
-    displayName: identity.displayName,
-  }));
-};
 
 export default function IdentityTab() {
-  const classes = useStyles();
-  const { data } = useQuery(IDENTITIES_GET);
+  const query = useQuery();
 
-  const rows = getUsers(data?.identities);
+  const rows = query.identities().map(({email , displayName }) => ({ id: email, displayName }) );
 
   if (!rows) return null;
 
   return (
     <DataGrid
-      className={classes.dataGrid}
       autoHeight
       columns={columns}
       rows={rows}

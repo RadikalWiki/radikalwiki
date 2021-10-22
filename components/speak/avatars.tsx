@@ -1,11 +1,11 @@
-import { green, orange, red, yellow } from "@material-ui/core/colors";
+import { green, orange, red, yellow } from "@mui/material/colors";
 import {
   Announcement,
   EmojiPeople,
   LiveHelp,
   PanTool,
   RecordVoiceOver,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { SpeakerAvatar } from "comps/speak";
 
 const avatars = [

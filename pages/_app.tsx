@@ -1,14 +1,17 @@
 import React, { useEffect, ComponentType } from "react";
-import { CssBaseline, ThemeProvider } from "@material-ui/core";
-import { StylesProvider } from "@material-ui/core/styles";
+import {
+  CssBaseline,
+  ThemeProvider,
+  Theme,
+  StyledEngineProvider,
+} from "@mui/material";
 import Head from "next/head";
 import { Layout } from "comps";
-import { useTheme, useEnv } from "hooks";
-//import { auth, useAuth, NhostAuthProvider, NhostApolloProvider } from "utils/nhost";
+import { useTheme } from "hooks";
 import { auth } from "utils/nhost";
-import { NhostApolloProvider } from "@nhost/react-apollo";
-import { NhostAuthProvider, useAuth } from "@nhost/react-auth";
-import { onError } from "@apollo/client/link/error";
+import { NhostAuthProvider } from "@nhost/react-auth";
+import { LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
 export default function App({
   Component,
@@ -24,28 +27,6 @@ export default function App({
   }, []);
   const theme = useTheme();
 
-  const local = typeof window === "undefined";
-  let endpoint = local
-    ? process.env.GRAPHQL_HTTP_LOCAL
-    : process.env.NEXT_PUBLIC_GRAPHQL_HTTP;
-
-  const errorLink = onError(({ networkError, graphQLErrors }) => {
-    if (graphQLErrors) {
-      graphQLErrors.map(({ message, locations, path }) => {
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-        );
-        if (message.includes("not authenticated")) {
-          console.log("redirect please")
-        }
-      });
-    }
-    if (networkError) {
-      // @ts-ignore
-      console.log(networkError);
-    }
-  });
-
   return (
     <>
       <Head>
@@ -57,21 +38,16 @@ export default function App({
       </Head>
 
       <NhostAuthProvider auth={auth}>
-        <NhostApolloProvider
-          auth={auth}
-          connectToDevTools={true}
-          gqlEndpoint={endpoint}
-          onError={errorLink}
-        >
-          <StylesProvider injectFirst>
+        <StyledEngineProvider injectFirst>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <Layout>
                 <Component {...pageProps} />
               </Layout>
             </ThemeProvider>
-          </StylesProvider>
-        </NhostApolloProvider>
+          </LocalizationProvider>
+        </StyledEngineProvider>
       </NhostAuthProvider>
     </>
   );

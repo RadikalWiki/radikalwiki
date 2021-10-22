@@ -1,17 +1,17 @@
 import React from "react";
-import { Fab } from "@material-ui/core";
-import { useStyles, useSession } from "hooks";
-import { IDENTITIES_ADD } from "gql";
-import { useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
+import { Fab } from "@mui/material";
+import { useMutation, identities_insert_input } from "gql";
 import { CSVReader } from "comps";
 
 export default function AddIdentitiesFab() {
-  const classes = useStyles();
-  const [addIdentities] = useMutation(IDENTITIES_ADD);
+  const [addIdentities] = useMutation(
+    (mutation, args: identities_insert_input[]) => {
+      return mutation.insert_identities({ objects: args })?.returning;
+    }
+  );
 
   const handleFile = async (fileData: any) => {
-    const ids = fileData.reduce(
+    const ids: identities_insert_input[] = fileData.reduce(
       (a: any, m: any) =>
         m.email && !a.includes(m.email.toLowerCase())
           ? [
@@ -24,11 +24,9 @@ export default function AddIdentitiesFab() {
           : a,
       []
     );
-    ids.forEach(async (id: any) => {
+    ids.forEach(async (id) => {
       await addIdentities({
-        variables: {
-          objects: [id],
-        },
+        args: [id],
       });
     });
   };
@@ -43,7 +41,7 @@ export default function AddIdentitiesFab() {
   return (
     <CSVReader parseOptions={parseOptions} onFileLoaded={handleFile}>
       <Fab
-        className={classes.speedDial}
+        sx={{ position: "fixed", bottom: 9, right: 3 }}
         variant="extended"
         color="primary"
         component="span"

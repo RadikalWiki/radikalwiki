@@ -1,6 +1,4 @@
-import { useQuery, useApolloClient } from "@apollo/client";
-import { useStyles } from "hooks";
-import { EVENT_ADMISSIONS_GET, ADMISSION_UPDATE } from "gql";
+import { useQuery, useMutation, mutation, admissions_update_column, admissions_set_input } from "gql";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const columns: any[] = [
@@ -22,22 +20,12 @@ const columns: any[] = [
   },
 ];
 
-const getUsers = (admissions: any) => {
-  return admissions?.map((admission: any) => ({
-    id: admission.id,
-    email: admission.identity.email,
-    displayName: admission.identity.displayName,
-    voting: admission.voting,
-    checkedIn: admission.checkedIn,
-  }));
-};
-
 export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
-  const classes = useStyles();
-  const { data, error } = useQuery(EVENT_ADMISSIONS_GET, {
-    variables: { id: eventId },
-  });
-  const client = useApolloClient();
+  const query = useQuery();
+  const event = query.events_by_pk({ id: eventId });
+  const [admissionUpdate] = useMutation((mutation, { id, set }: any) => {
+    mutation.update_admissions_by_pk({ pk_columns: id, _set: set } )
+  })
 
   const handleCellEditCommit = async ({
     id,
@@ -51,19 +39,23 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
     if (typeof value != "boolean") return;
     const set: Record<string, any> = {};
     set[field] = value;
-    const res = await client.mutate({
-      mutation: ADMISSION_UPDATE,
-      variables: { id, set },
-    });
+    await admissionUpdate({ args: { id, set } });
   };
 
-  const rows = getUsers(data?.event.admissions);
+  const rows = event
+    ?.admissions()
+    .map(({ id, identity, voting, checkedIn }) => ({
+      id,
+      email: identity?.email,
+      displayName: identity?.displayName,
+      voting,
+      checkedIn,
+    }));
 
   if (!rows) return null;
 
   return (
     <DataGrid
-      className={classes.dataGrid}
       autoHeight
       columns={columns}
       rows={rows}

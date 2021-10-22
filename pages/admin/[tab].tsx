@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import { useStyles } from "hooks";
 import { ResultTab, IdentityTab, UserTab, AddIdentitiesFab } from "comps";
-import { Tabs, Tab, Box, Card, Divider } from "@material-ui/core";
+import { Tabs, Tab, Box, Card, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 
 function TabPanel(props: any) {
   const { children, value, index, ...other } = props;
 
   return (
-    <div
+    <Box
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
@@ -16,7 +15,7 @@ function TabPanel(props: any) {
       {...other}
     >
       {value === index && <Box p={3}>{children}</Box>}
-    </div>
+    </Box>
   );
 }
 
@@ -29,7 +28,6 @@ function tabProps(id: string) {
 }
 
 export default function Admin() {
-  const classes = useStyles();
   const router = useRouter();
   const [value, setValue] = useState("users");
 
@@ -45,7 +43,7 @@ export default function Admin() {
   };
 
   return (
-    <Card className={classes.card}>
+    <Card elevation={3} sx={{ m: 1}}>
       <Tabs value={value} onChange={handleChange}>
         <Tab label="Brugere" {...tabProps("users")} />
         <Tab label="Identiteter" {...tabProps("identities")} />

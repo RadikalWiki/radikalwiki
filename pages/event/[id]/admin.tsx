@@ -5,8 +5,6 @@ import {
   AdmissionsDataGrid,
   AdmissionsTextField,
 } from "comps";
-import { useStyles } from "hooks";
-import { EVENT_GET, EVENT_ADMISSIONS_GET, ADMISSIONS_ADD } from "gql";
 import {
   Breadcrumbs,
   Tooltip,
@@ -14,40 +12,43 @@ import {
   Typography,
   Grid,
   Button,
-} from "@material-ui/core";
-import { Event, SupervisorAccount } from "@material-ui/icons";
+} from "@mui/material";
+import { Event, SupervisorAccount } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery, useMutation, admissions_insert_input } from "gql";
 
 export default function Index() {
-  const classes = useStyles();
   const router = useRouter();
   const { id } = router.query;
-  const { loading, data, error } = useQuery(EVENT_GET, { variables: { id } });
+  const query = useQuery();
+  const event = query.events_by_pk({ id });
   const [users, setUsers] = useState<any[]>([]);
-  const [addAdmissions] = useMutation(ADMISSIONS_ADD);
+  const [addAdmissions] = useMutation(
+    (mutation, args: admissions_insert_input[]) => {
+      return mutation.insert_admissions({ objects: args })?.returning;
+    },
+    {
+      refetchQueries: [event],
+    }
+  );
 
   const handleAddAdmissions = async () => {
-    console.log(users);
     const admissions = users.map((user) => ({
       eventId: id,
       email: user.identity.email,
     }));
     await addAdmissions({
-      variables: {
-        objects: admissions,
-      },
-      refetchQueries: [{ query: EVENT_ADMISSIONS_GET, variables: { id } }],
+      args: admissions,
     });
     setUsers([]);
   };
 
   return (
     <>
-      <Breadcrumbs className={classes.bread}>
+      <Breadcrumbs sx={{ p: [2, 0, 2, 2] }}>
         <Link
           component={NextLink}
-          className={classes.breadText}
+          sx={{ alignItems: "center", display: "flex" }}
           color="primary"
           href="/event"
         >
@@ -56,13 +57,13 @@ export default function Index() {
           </Tooltip>
         </Link>
         <Link component={NextLink} color="primary" href={`/event/${id}`}>
-          <Typography className={classes.breadText}>
-            {data?.event.name}
+          <Typography sx={{ alignItems: "center", display: "flex" }}>
+            {event?.name}
           </Typography>
         </Link>
         <Link
           component={NextLink}
-          className={classes.breadText}
+          sx={{ alignItems: "center", display: "flex" }}
           color="primary"
           href={`/event/${id}/admin`}
         >

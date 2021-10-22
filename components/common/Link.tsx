@@ -7,16 +7,16 @@ type NextComposedProps = Omit<
 > &
   NextLinkProps;
 
-const Link = React.forwardRef<HTMLAnchorElement, NextComposedProps>(
-  (props, ref) => {
-    const { as, href, ...other } = props;
+const RawLink = (props: any, ref: any) => {
+  const { as, href, ...other } = props;
 
-    return (
-      <NextLink href={href} as={as}>
-        <a {...other} ref={ref} />
-      </NextLink>
-    );
-  }
-);
+  return (
+    <NextLink href={href} as={as}>
+      <a {...other} ref={ref} />
+    </NextLink>
+  );
+};
+
+const Link = React.forwardRef<HTMLAnchorElement, NextComposedProps>(RawLink);
 
 export default Link;

@@ -1,5 +1,8 @@
 // next.config.js
 module.exports = {
+  images: {
+    domains: ['backend-cec17a36.nhost.app'],
+  },
   async headers() {
     return [
       {

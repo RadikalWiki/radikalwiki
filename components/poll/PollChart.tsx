@@ -13,27 +13,26 @@ import {
   HoverState,
   Stack,
 } from "@devexpress/dx-react-chart";
+import { Card, CardHeader, Typography, Box } from "@mui/material";
+import { useSession } from "hooks";
+import { polls, Maybe, useSubscription } from "gql";
 
-import { Card, CardHeader, Fade, Typography } from "@material-ui/core";
-import { useStyles, useSession } from "hooks";
-import { useSubscription } from "@apollo/client";
-import { POLL_SUB_RESULT } from "gql";
-
-const parseData = (poll: any, screen: boolean, admin: boolean) => {
-  if (!poll) {
-    return { options: [], data: []};
+const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
+  if (!poll || !poll.options) {
+    return { options: [], data: [] };
   }
   if (poll.active || (poll.hidden && (screen || !admin))) {
     return {
       options: ["Antal Stemmer"],
-      data: [{ 0: poll.total.aggregate.count }],
+      data: [{ 0: poll.votes_aggregate().aggregate?.count }],
     };
   }
+  console.log(poll.options)
   let res: Record<string, any> = { arg: "none" };
-  for (let i = 0; i < poll.options.length; i++) {
+  for (let i = 0; i < poll.options?.length; i++) {
     res[i] = 0;
   }
-  for (const vote of poll.votes) {
+  for (const vote of poll.votes()) {
     for (const index of vote.value) {
       res[index] += 1;
     }
@@ -50,61 +49,56 @@ export default function PollChart({
   screen?: boolean;
 }) {
   const [session] = useSession();
-  const classes = useStyles();
-  const { data, loading } = useSubscription(POLL_SUB_RESULT, {
-    variables: { id: pollId },
-  });
-  const poll = data?.poll;
-
-  const admin = session?.roles.includes("admin");
+  const subscription = useSubscription();
+  const poll = subscription.polls_by_pk({ id: pollId });
+  const admin = session?.roles?.includes("admin") ?? false;
   const chartData = parseData(poll, screen, admin) || [];
   const voteCount =
-    poll?.content.folder.event.admissions_aggregate.aggregate.count;
+    poll?.content?.folder?.event?.admissions_aggregate().aggregate?.count;
 
-  if (!loading && !poll) return null;
 
   return (
-    <Fade in={!loading}>
-      <Card className={classes.card}>
-        <CardHeader className={classes.cardHeader} title={poll?.content.name} />
-        {chartData?.options?.map((opt: any, index: number) => (
-          <div
+    <Card elevation={3} sx={{ m: 1 }}>
+      <CardHeader
+        sx={{
+          bgcolor: (theme) => theme.palette.secondary.main,
+          color: (theme) => theme.palette.secondary.contrastText,
+        }}
+        title={poll?.content?.name}
+      />
+      {chartData?.options?.map((opt: any, index: number) => (
+        <Box
+          key={index}
+          aria-label={`${opt} fik ${
+            chartData.data ? chartData.data[0][index] : 0
+          } stemmer`}
+        />
+      ))}
+      <Chart data={chartData.data} rotated>
+        <ValueAxis />
+        <ValueScale
+          modifyDomain={(domain: any) => {
+            return [0, voteCount ? voteCount : 10];
+          }}
+        />
+
+        {chartData.options?.map((opt: string, index: number) => (
+          <BarSeries
+            name={opt}
+            valueField={`${index}`}
+            argumentField="arg"
             key={index}
-            aria-label={`${opt} fik ${
-              chartData.data ? chartData.data[0][index] : 0
-            } stemmer`}
-          ></div>
-        ))}
-        <Chart data={chartData.data} rotated>
-          <ValueAxis />
-          <ValueScale
-            modifyDomain={(domain: any) => {
-              return [0, voteCount ? voteCount : 10];
-            }}
           />
+        ))}
+        <Animation />
+        <EventTracker />
+        <Tooltip />
+        <HoverState />
+        <Legend position="bottom" />
+        <Stack />
+      </Chart>
 
-          {chartData.options?.map((opt: string, index: number) => (
-            <BarSeries
-              name={opt}
-              valueField={`${index}`}
-              argumentField="arg"
-              key={index}
-            />
-          ))}
-          <Animation />
-          <EventTracker />
-          <Tooltip />
-          <HoverState />
-          <Legend position="bottom" />
-          <Stack />
-        </Chart>
-
-        {!(poll?.active || (poll?.hidden && (screen || !admin))) && (
-          <Typography className={classes.textChart}>
-            Antal Stemmer: {poll?.total.aggregate.count}/{voteCount}
-          </Typography>
-        )}
-      </Card>
-    </Fade>
+  
+    </Card>
   );
 }

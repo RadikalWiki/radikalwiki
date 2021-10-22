@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, useMediaQuery, IconButton, Tooltip } from "@material-ui/core";
+import { Button, useMediaQuery, IconButton, Tooltip } from "@mui/material";
 
 export default function AutoButton({
   text,
@@ -22,7 +22,7 @@ export default function AutoButton({
       {text}
     </Button>
   ) : (
-    <IconButton color="primary" onClick={onClick}>
+    <IconButton color="primary" onClick={onClick} size="large">
       <Tooltip title={text}>{icon}</Tooltip>
     </IconButton>
   );

@@ -3,10 +3,10 @@ import {
   AppBar,
   BottomNavigation,
   BottomNavigationAction,
-} from "@material-ui/core";
-import { HowToVote, RecordVoiceOver, Subject } from "@material-ui/icons";
+} from "@mui/material";
+import { HowToVote, RecordVoiceOver, Subject } from "@mui/icons-material";
 import { Link } from "comps";
-import { useStyles, useSession } from "hooks";
+import { useSession } from "hooks";
 import { useRouter } from "next/router";
 
 const getState = (path: string) =>
@@ -24,7 +24,6 @@ export default function NavBar() {
   const [session] = useSession();
   const { pathname } = useRouter();
   const [state, setState] = useState(getState(pathname));
-  const classes = useStyles();
 
   useEffect(() => {
     setState(getState(pathname));
@@ -33,38 +32,36 @@ export default function NavBar() {
   if (!session?.event?.id) return null;
 
   return (
-    <>
-      <AppBar className={classes.appBar}>
-        <BottomNavigation
-          value={state}
-          showLabels
-          onChange={(_, value: string) => {
-            setState(value);
-          }}
-        >
-          <BottomNavigationAction
-            component={Link}
-            href="/vote"
-            value="vote"
-            label="Stem"
-            icon={<HowToVote />}
-          />
-          <BottomNavigationAction
-            component={Link}
-            href="/folder"
-            value="content"
-            label="Indhold"
-            icon={<Subject />}
-          />
-          <BottomNavigationAction
-            component={Link}
-            href="/speak"
-            value="speak"
-            label="Tal"
-            icon={<RecordVoiceOver />}
-          />
-        </BottomNavigation>
-      </AppBar>
-    </>
+    <AppBar sx={{ position: "fixed", top: "auto", bottom: 0 }}>
+      <BottomNavigation
+        value={state}
+        showLabels
+        onChange={(_, value: string) => {
+          setState(value);
+        }}
+      >
+        <BottomNavigationAction
+          component={Link}
+          href="/vote"
+          value="vote"
+          label="Stem"
+          icon={<HowToVote />}
+        />
+        <BottomNavigationAction
+          component={Link}
+          href="/folder"
+          value="content"
+          label="Indhold"
+          icon={<Subject />}
+        />
+        <BottomNavigationAction
+          component={Link}
+          href="/speak"
+          value="speak"
+          label="Tal"
+          icon={<RecordVoiceOver />}
+        />
+      </BottomNavigation>
+    </AppBar>
   );
 }

@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { Fragment, useState } from "react";
 import { Link as NextLink, FolderSortFab } from "comps";
-import { useSession, useStyles } from "hooks";
-import { EVENT_GET_FOLDERS, FOLDER_GET } from "gql";
+import { useSession } from "hooks";
 import {
   Avatar,
   Tooltip,
@@ -15,43 +14,41 @@ import {
   ListItemAvatar,
   ListItemText,
   Fade,
-  RootRef,
   Typography,
-} from "@material-ui/core";
-import { Group, Subject } from "@material-ui/icons";
-import { useQuery } from "@apollo/client";
+} from "@mui/material";
+import { Group, Subject } from "@mui/icons-material";
+import { useQuery } from "gql";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useRouter } from "next/router";
 
 export default function Sort() {
-  const classes = useStyles();
   const [session] = useSession();
   const router = useRouter();
-  const { id } = router.query;
-  const { loading, data, error } = useQuery(FOLDER_GET, {
-    variables: { id },
-  });
   const [list, setList] = useState([]);
+  const { id } = router.query;
+  const query = useQuery();
+  const folder = query.folders_by_pk({ id });
 
-  useEffect(() => {
-    const contents =
-      data?.folder.contents.map(({ id, name, priority }: any) => ({
+  const contents =
+    folder
+      ?.contents({ where: { parentId: { _is_null: true } } })
+      .map(({ id = 0, name, priority, published }) => ({
         id,
         name,
         priority,
+        subtitle: undefined as any,
+        published,
         type: "content",
       })) || [];
-    const folders =
-      data?.folder.folders.map(({ id, name, priority }: any) => ({
-        id,
-        name,
-        priority,
-        type: "folder",
-      })) || [];
-    setList(
-      contents.concat(folders).sort((f: any, s: any) => f.priority - s.priority)
-    );
-  }, [data]);
+  const folders =
+    folder?.folders().map(({ id = 1, name, priority, subtitle }) => ({
+      id,
+      name,
+      priority,
+      subtitle,
+      published: undefined as boolean | undefined,
+      type: "folder",
+    })) || [];
 
   const handleDragEnd = ({ source, destination }: any) => {
     if (destination === undefined || destination === null) return;
@@ -64,46 +61,46 @@ export default function Sort() {
 
   return (
     <>
-      <Fade in={!loading}>
-        <Card className={classes.card}>
-          <Breadcrumbs className={classes.bread}>
-            <Link
-              component={NextLink}
-              className={classes.breadText}
-              color="primary"
-              href="/folder"
-            >
-              <Tooltip title="Indhold">
-                <Subject />
-              </Tooltip>
-            </Link>
-            {data?.folder.parentId && (
-              <Link
-                component={NextLink}
-                color="primary"
-                href={`/folder/${data?.folder.id}`}
-              >
-                <Typography className={classes.breadText}>
-                  {data?.folder.name}
-                </Typography>
-              </Link>
-            )}
+      <Card elevation={3} sx={{ m: 1 }}>
+        <Breadcrumbs sx={{ p: [2, 0, 2, 2] }}>
+          <Link
+            component={NextLink}
+            sx={{ alignItems: "center", display: "flex" }}
+            color="primary"
+            href="/folder"
+          >
+            <Tooltip title="Indhold">
+              <Subject />
+            </Tooltip>
+          </Link>
+          {folder?.parentId && (
             <Link
               component={NextLink}
               color="primary"
-              href={`/folder/${data?.folder.id}/sort`}
+              href={`/folder/${folder?.id}`}
             >
-              <Typography className={classes.breadText}>Sorter</Typography>
+              <Typography sx={{ alignItems: "center", display: "flex" }}>
+                {folder?.name}
+              </Typography>
             </Link>
-          </Breadcrumbs>
-        </Card>
-      </Fade>
+          )}
+          <Link
+            component={NextLink}
+            color="primary"
+            href={`/folder/${folder?.id}/sort`}
+          >
+            <Typography sx={{ alignItems: "center", display: "flex" }}>
+              Sorter
+            </Typography>
+          </Link>
+        </Breadcrumbs>
+      </Card>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Card className={classes.card}>
+        <Card elevation={3} sx={{ m: 1 }}>
           <Droppable droppableId="drop1">
             {(provided, snapshot) => (
-              <RootRef rootRef={provided.innerRef}>
-                <List className={classes.list}>
+              <>
+                <List sx={{ m: 0 }}>
                   {list.map(
                     (
                       folder: { name: any; id: any; mode: any },
@@ -124,7 +121,12 @@ export default function Sort() {
                               {...provided.dragHandleProps}
                             >
                               <ListItemAvatar>
-                                <Avatar className={classes.avatar}>
+                                <Avatar
+                                  sx={{
+                                    bgcolor: (theme) =>
+                                      theme.palette.primary.main,
+                                  }}
+                                >
                                   {folder.mode == "changes" ? (
                                     <Subject />
                                   ) : (
@@ -143,12 +145,12 @@ export default function Sort() {
                   {provided.placeholder}
                   <Divider />
                 </List>
-              </RootRef>
+              </>
             )}
           </Droppable>
         </Card>
       </DragDropContext>
-      <FolderSortFab folder={data?.folder} elements={list} />
+      <FolderSortFab folder={folder} elements={list} />
     </>
   );
 }

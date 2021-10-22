@@ -8,55 +8,64 @@ import {
   DialogContent,
   TextField,
   Button,
-  FormGroup,
   FormControlLabel,
   Switch,
-} from "@material-ui/core";
-import { POLL_ADD, POLL_STOP, EVENT_UPDATE } from "gql";
-import { useMutation } from "@apollo/client";
-import { useSession, useStyles } from "hooks";
+} from "@mui/material";
+import { polls_insert_input, useMutation, useQuery } from "gql";
+import { useSession } from "hooks";
 
 export default function PollDialog({
   open,
   setOpen,
-  content,
+  id,
 }: {
   open: boolean;
-  setOpen: any;
-  content: any;
+  setOpen: Function;
+  id: string;
 }) {
   const router = useRouter();
   const [session, setSession] = useSession();
   const [minVote, setMinVote] = useState(1);
   const [maxVote, setMaxVote] = useState(1);
-  const [hidden, setHidden] = useState(content?.folder.mode == "candidates");
-  const [addPoll] = useMutation(POLL_ADD);
-  const [stopPoll] = useMutation(POLL_STOP);
-  const [updateEvent] = useMutation(EVENT_UPDATE);
+  const query = useQuery();
+  const content = query.contents_by_pk({ id });
+  const [hidden, setHidden] = useState(content?.folder?.mode == "candidates");
+  const [addPoll] = useMutation((mutation, args: polls_insert_input) => {
+    return mutation.insert_polls_one({ object: args })?.id;
+  });
+  const [stopPoll] = useMutation((mutation) => {
+    return mutation.update_polls({ where: { content: { folder: { eventId: { _eq: session?.event?.id } } } }, _set: { active: false } })?.affected_rows
+  });
+  const [updateEvent] = useMutation(
+    (mutation, args: { id: string; set: any }) => {
+      return mutation.update_events_by_pk({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      })?.id;
+    }
+  );
 
   const options =
-    content?.folder.mode == "changes"
+    content?.folder?.mode == "changes"
       ? ["For", "Imod", "Blank"]
-      : content?.children.map((content: any) => content.name).concat("Blank");
-  const optionsCount = options?.length;
+      : content?.children().map(({ name }) => name).concat("Blank");
+  const optionsCount = options?.length || 0;
 
   const handleAddPoll = async (_: any) => {
-    stopPoll({ variables: { eventId: session?.event?.id } });
-    const { data: { poll } = {} } = await addPoll({
-      variables: {
-        object: {
-          contentId: content.id,
+    await stopPoll();
+    const pollId = await addPoll({
+      args: {
+          contentId: content?.id,
           minVote,
           maxVote,
           hidden,
           options: `{${options}}`,
         },
-      },
     });
     await updateEvent({
-      variables: { id: session?.event?.id, set: { pollId: poll?.id } },
+      args: { id: session?.event?.id as string, set: { pollId } },
     });
-    router.push(`/poll/${poll.id}`);
+    router.push(`/poll/${pollId}`);
   };
 
   return (
@@ -68,7 +77,7 @@ export default function PollDialog({
             <TextField
               type="number"
               value={minVote}
-              disabled={content?.folder.mode == "changes"}
+              disabled={content?.folder?.mode == "changes"}
               onChange={(e) => {
                 const maxOpt = optionsCount - 1;
                 const val = parseInt(e.target.value);
@@ -86,7 +95,7 @@ export default function PollDialog({
             <TextField
               type="number"
               value={maxVote}
-              disabled={content?.folder.mode == "changes"}
+              disabled={content?.folder?.mode == "changes"}
               onChange={(e) => {
                 const maxOpt = optionsCount - 1;
                 const val = parseInt(e.target.value);

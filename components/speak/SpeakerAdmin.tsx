@@ -1,38 +1,43 @@
 import React from "react";
-import { Button } from "@material-ui/core";
-import { useStyles, useSession } from "hooks";
+import { Button } from "@mui/material";
+import { useSession } from "hooks";
 import { AdminCard } from "components";
-import { useMutation, useSubscription } from "@apollo/client";
-import { EVENT_UPDATE, EVENT_SUB, EVENT_SPEAK_DEL_ALL } from "gql";
+import { useMutation, useSubscription } from "gql"
 
 export default function SpeakerAdmin() {
   const [session] = useSession();
-  const {
-    loading,
-    data: { event } = {},
-    error,
-  } = useSubscription(EVENT_SUB, {
-    variables: { id: session?.event?.id },
-  });
-  const classes = useStyles();
-  const [removeSpeakAll] = useMutation(EVENT_SPEAK_DEL_ALL, {
-    variables: { id: session?.event?.id },
-  });
-  const [setLockSpeak] = useMutation(EVENT_UPDATE);
-
+  const subscription = useSubscription();
+  const event = subscription.events_by_pk({ id: session?.event?.id })
+  const [deleteSpeakAll] = useMutation(
+    (mutation, args) => {
+      return mutation.delete_speaks({
+        where: { eventId: { _eq: session?.event?.id } }
+      })?.affected_rows;
+    }
+  );
+  const [setLockSpeak] = useMutation(
+    (mutation, args: { id: string; set: any }) => {
+      return mutation.update_events_by_pk({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      })?.id;
+    }
+  );
   const handleLockSpeak = async (lockSpeak: boolean) => {
     await setLockSpeak({
-      variables: { id: session.event.id, set: { lockSpeak } },
+      args: { id: session?.event?.id as string, set: { lockSpeak } },
     });
   };
 
+  if (!event) return null;
+
   return (
-    <AdminCard title="Administrer Talerlisten" show={!loading}>
+    <AdminCard title="Administrer Talerlisten">
       <Button
         color="secondary"
         variant="contained"
         size="large"
-        className={classes.adminButton}
+        sx={{ color: "#fff", m: 2 }}
         onClick={() => handleLockSpeak(!event?.lockSpeak)}
       >
         {event?.lockSpeak ? "Åben" : "Luk"}
@@ -42,8 +47,8 @@ export default function SpeakerAdmin() {
         color="secondary"
         variant="contained"
         size="large"
-        className={classes.adminButton}
-        onClick={() => removeSpeakAll()}
+        sx={{ color: "#fff", m: 2 }}
+        onClick={() => deleteSpeakAll()}
       >
         Ryd
       </Button>

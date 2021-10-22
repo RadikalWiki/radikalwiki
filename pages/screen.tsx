@@ -1,42 +1,37 @@
-import React from "react";
-import { useStyles, useSession } from "hooks";
-import { Card, CardHeader, Grid } from "@material-ui/core";
-import { ContentCard, Countdown, PollChart, SpeakerCard } from "comps";
-import { useSubscription } from "@apollo/client";
-import { EVENT_SUB } from "gql";
+import React, { Suspense } from "react";
+import { useSession } from "hooks";
+import { Grid } from "@mui/material";
+import { ScreenCard, Countdown, PollChart, SpeakerCard } from "comps";
+import { useSubscription } from "gql";
+import { Box } from "@mui/system";
 
 export default function Screen() {
-  const classes = useStyles();
   const [session] = useSession();
-  const {
-    data: { event } = {},
-    loading,
-    error,
-  } = useSubscription(EVENT_SUB, {
-    variables: { id: session?.event?.id },
-  });
+  const subscription = useSubscription();
+  const event = subscription.events_by_pk({ id: session?.event?.id });
 
   return (
-    <Grid container alignItems="stretch" justify="space-evenly">
-      <Grid item xs={9}>
-        {event?.pollId ? (
-          <PollChart pollId={event.pollId} screen />
-        ) : event?.contentId ? (
-          <>
-            {event.content.parent?.id && (
-              <ContentCard
-                contentId={event.content.parent.id}
-                expanded={false}
-              />
-            )}
-            <ContentCard contentId={event.contentId} />
-          </>
-        ) : null}
-      </Grid>
-      <Grid item xs={3}>
-        <Countdown />
-        <SpeakerCard />
-      </Grid>
-    </Grid>
+    <Suspense fallback={null}>
+      <Box sx={{ height: "100%" }}>
+        <Grid container alignItems="stretch" justifyContent="space-evenly">
+          <Grid item xs={9}>
+            {event?.pollId ? (
+              <PollChart pollId={event.pollId} screen />
+            ) : event?.contentId ? (
+              <>
+                {event?.content?.parent?.id && (
+                  <ScreenCard id={event.content.parent.id} expanded={false} />
+                )}
+                <ScreenCard id={event.contentId} />
+              </>
+            ) : null}
+          </Grid>
+          <Grid item xs={3}>
+            <Countdown />
+            <SpeakerCard />
+          </Grid>
+        </Grid>
+      </Box>
+    </Suspense>
   );
 }

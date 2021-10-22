@@ -1,19 +1,14 @@
-import { Avatar, Tooltip, Fade } from "@material-ui/core";
-import { Lock } from "@material-ui/icons";
-import { useStyles } from "hooks";
-import { useQuery } from "@apollo/client";
-import { CONTENT_GET_AVATAR } from "gql";
-import { memo } from "react";
+import { Avatar, Tooltip, Fade } from "@mui/material";
+import { Lock } from "@mui/icons-material";
+import {
+  useQuery,
+  Maybe,
+  contents,
+  contents_order_by,
+  order_by,
+} from "gql";
 
-function ContentAvatar({ contentId }: any) {
-  const classes = useStyles();
-  const {
-    loading,
-    data: { content } = {},
-    error,
-  } = useQuery(CONTENT_GET_AVATAR, {
-    variables: { id: contentId },
-  });
+function ContentAvatar({ content }: { content: Maybe<contents> }) {
 
   const getLetter = (index: number) => {
     let res = String.fromCharCode(65 + (index % 26));
@@ -24,26 +19,34 @@ function ContentAvatar({ contentId }: any) {
   };
 
   const index = content?.parent
-    ? content?.parent?.children.findIndex((e: any) => e.id === contentId)
-    : content?.folder.contents.findIndex((e: any) => e.id === contentId);
+    ? content?.parent
+        ?.children({
+          where: { published: { _eq: true } },
+          order_by: [{ priority: order_by.asc }, { createdAt: order_by.asc }],
+        })
+        .findIndex((e: any) => e.id === content.id)
+    : content?.folder
+        ?.contents({
+          where: { published: { _eq: true }, parentId: { _is_null: true } },
+          order_by: [{ priority: order_by.asc }, { createdAt: order_by.asc }],
+        })
+        .findIndex((e: any) => e.id === content.id) ?? 0;
 
   return (
-    <Fade in={!loading}>
-      <Avatar className={classes.avatar}>
-        {!content?.published ? (
-          <Tooltip title="Ikke indsendt">
-            <Avatar>
-              <Lock color="primary" />
-            </Avatar>
-          </Tooltip>
-        ) : content?.parent ? (
-          index + 1
-        ) : (
-          getLetter(index)
-        )}
-      </Avatar>
-    </Fade>
+    <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+      {!content?.published ? (
+        <Tooltip title="Ikke indsendt">
+          <Avatar>
+            <Lock color="primary" />
+          </Avatar>
+        </Tooltip>
+      ) : content?.parent ? (
+        index + 1
+      ) : (
+        getLetter(index)
+      )}
+    </Avatar>
   );
 }
 
-export default memo(ContentAvatar);
+export default ContentAvatar;

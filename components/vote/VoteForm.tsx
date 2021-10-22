@@ -5,37 +5,35 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
-  Fade,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormHelperText,
   Radio,
   Typography,
-} from "@material-ui/core";
-import { useMutation, useSubscription } from "@apollo/client";
-import { VOTE_ACTION, EVENT_POLL_SUB } from "gql";
-import { useStyles, useSession } from "hooks";
+} from "@mui/material";
+import { useMutation, useSubscription, votes_insert_input } from "gql";
+import { useSession } from "hooks";
 import { useRouter } from "next/router";
 
 export default function VoteForm() {
   const router = useRouter();
-  const classes = useStyles();
   const [session] = useSession();
-  const { loading, data } = useSubscription(EVENT_POLL_SUB, {
-    variables: { id: session?.event.id },
+  const subscription = useSubscription();
+  //const [addVote] = useMutation(VOTE_ACTION);
+  const [addVotes] = useMutation((mutation, args: votes_insert_input[]) => {
+    return mutation.insert_files({ objects: args })?.returning;
   });
-  const [addVote] = useMutation(VOTE_ACTION);
   const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);
 
-  const poll = data?.event?.poll;
+  const poll = subscription.events_by_pk({ id: session?.event?.id })?.poll;
 
   const [vote, setVote] = useState(
     new Array(poll?.options.length).fill(false) || []
   );
   useEffect(() => {
-    setVote(new Array(poll?.options.length).fill(false))
+    setVote(new Array(poll?.options.length).fill(false));
   }, [poll]);
 
   const validate = (vote: any, submit: boolean) => {
@@ -50,18 +48,20 @@ export default function VoteForm() {
       return false;
     }
 
-    if (submit && poll?.minVote > selected) {
+    if (submit && (poll?.minVote ?? 1) > selected) {
       setHelperText(
-        `Vælg venligst mindst ${poll.minVote} mulighed${poll?.minVote > 1 ? "er" : ""
+        `Vælg venligst mindst ${poll?.minVote} mulighed${
+          poll?.minVote ?? 1 > 1 ? "er" : ""
         }`
       );
       setError(true);
       return false;
     }
 
-    if (poll?.maxVote < selected) {
+    if (poll?.maxVote ?? 1 < selected) {
       setHelperText(
-        `Vælg venligst max ${poll.maxVote} mulighed${poll?.maxVote > 1 ? "er" : ""
+        `Vælg venligst max ${poll?.maxVote} mulighed${
+          poll?.maxVote ?? 1 > 1 ? "er" : ""
         }`
       );
       setError(true);
@@ -76,16 +76,18 @@ export default function VoteForm() {
       return;
     }
 
-    await addVote({
-      variables: {
-        pollId: poll.id,
-        value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
-      },
+    await addVotes({
+      args: [
+        {
+          pollId: poll?.id,
+          value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
+        },
+      ],
     });
-    if (poll.content.folder.mode == "candidates") {
-      router.push(`/content/${poll.content.id}`);
+    if (poll?.content?.folder?.mode == "candidates") {
+      router.push(`/content/${poll?.content?.id}`);
     } else {
-      router.push(`/poll/${poll.id}`);
+      router.push(`/poll/${poll?.id}`);
     }
   };
 
@@ -109,53 +111,57 @@ export default function VoteForm() {
     setError(false);
   };
 
-  if (!loading && !(poll && poll.active)) {
+  if (!(poll && poll.active)) {
     return (
-      <Card className={classes.card}>
-        <Typography className={classes.text} variant="h5">
+      <Card elevation={3} sx={{ m: 1 }}>
+        <Typography sx={{ p: 2 }} variant="h5">
           Ingen afstemning nu
         </Typography>
       </Card>
     );
   }
 
-  const Control = poll?.content.maxVote != 1 ? Checkbox : Radio;
+  const Control = poll?.maxVote != 1 ? Checkbox : Radio;
 
   return (
-    <Fade in={!loading}>
-      <Card className={classes.card}>
-        <CardHeader className={classes.cardHeader} title={poll?.content.name} />
-        <CardContent>
-          <form onSubmit={handleSubmit}>
-            <FormControl error={error} className={classes.formControl}>
-              <FormGroup>
-                {poll?.options.map((opt: any, index: number) => (
-                  <FormControlLabel
-                    key={index}
-                    value={index}
-                    control={
-                      <Control
-                        checked={vote[index] || false}
-                        onChange={handleChangeVote}
-                      />
-                    }
-                    label={opt}
-                  />
-                ))}
-              </FormGroup>
-              <FormHelperText>{helperText}</FormHelperText>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.button}
-              >
-                Stem
-              </Button>
-            </FormControl>
-          </form>
-        </CardContent>
-      </Card>
-    </Fade>
+    <Card elevation={3} sx={{ m: 1 }}>
+      <CardHeader
+        sx={{
+          bgcolor: (theme) => theme.palette.secondary.main,
+          color: (theme) => theme.palette.secondary.contrastText,
+        }}
+        title={poll?.content?.name}
+      />
+      <CardContent>
+        <form onSubmit={handleSubmit}>
+          <FormControl error={error}>
+            <FormGroup>
+              {poll?.options.map((opt: any, index: number) => (
+                <FormControlLabel
+                  key={index}
+                  value={index}
+                  control={
+                    <Control
+                      checked={vote[index] || false}
+                      onChange={handleChangeVote}
+                    />
+                  }
+                  label={opt}
+                />
+              ))}
+            </FormGroup>
+            <FormHelperText>{helperText}</FormHelperText>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              sx={{ m: [1, 1, 0, 0] }}
+            >
+              Stem
+            </Button>
+          </FormControl>
+        </form>
+      </CardContent>
+    </Card>
   );
 }

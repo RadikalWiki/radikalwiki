@@ -1,26 +1,24 @@
-import React, { useEffect } from "react";
-import { VoteForm } from "comps/vote";
-import { useQuery } from "@apollo/client";
-import { EVENT_CHECK_VOTE_ACTION } from "gql";
+import React, { Suspense, useEffect } from "react";
+import { VoteForm } from "comps";
+import { useQuery } from "gql";
 import { useRouter } from "next/router";
-import { useSession, query } from "hooks";
-
+import { useSession } from "hooks";
 
 export default function Vote() {
   const router = useRouter();
   const [session] = useSession();
-  const { data, loading, error } = useQuery(EVENT_CHECK_VOTE_ACTION, {
-    variables: { id: session?.event.id },
-  });
-
+  const query = useQuery();
   useEffect(() => {
-    if (data?.canVote.canVote === false && data?.event.poll?.active) {
-      const pollId = data.canVote.pollId;
-      router.push(`/poll/${pollId}`);
+    const canVote = query.canVote({ eventId: session?.event?.id });
+    if (!canVote) return;
+    if (canVote.canVote === false && query.events_by_pk({ id: session?.event?.id })?.poll?.active) {
+      router.push(`/poll/${canVote.pollId}`);
     }
-  }, [data]);
+  }, [query, router, session?.event?.id]);
 
-  if (loading) return null;
-
-  return <VoteForm />;
+  return (
+    <Suspense fallback={null}>
+      <VoteForm />
+    </Suspense>
+  );
 }

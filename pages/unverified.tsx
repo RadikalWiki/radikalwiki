@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, CardContent } from "@material-ui/core";
+import { Typography, CardContent } from "@mui/material";
 import { HeaderCard } from "comps";
 
 export default function Unverified() {

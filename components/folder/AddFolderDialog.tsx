@@ -11,74 +11,71 @@ import {
   Select,
   InputLabel,
   Grid,
-} from "@material-ui/core";
-import { useStyles, useSession } from "hooks";
-import { FOLDERS_ADD } from "gql";
-import { useMutation } from "@apollo/client";
+  Stack,
+} from "@mui/material";
+import { useSession } from "hooks";
+import { folders_insert_input, useMutation } from "gql";
 import { useRouter } from "next/router";
 
 export default function AddFolderDialog({ folder, open, setOpen }: any) {
   const [session] = useSession();
   const router = useRouter();
-  const classes = useStyles();
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [mode, setMode] = useState("");
-  const [addFolders] = useMutation(FOLDERS_ADD);
+  const [addFolders] = useMutation((mutation, args: folders_insert_input[]) => {
+    return mutation.insert_folders({ objects: args })?.returning;
+  });
 
   const handleSubmit = async () => {
-    const { data } = await addFolders({
-      variables: {
-        objects: [
-          {
-            name,
-            subtitle,
-            eventId: session.event.id,
-            mode,
-            parentId: folder.id,
-          },
-        ],
-      },
+    const newFolder = await addFolders({
+      args: [
+        {
+          name,
+          subtitle,
+          eventId: session?.event?.id,
+          mode,
+          parentId: folder.id,
+        },
+      ],
     });
-    router.push(`/folder/${data.insert_folders.returning[0].id}`);
+    if (!newFolder) return;
+    router.push(`/folder/${newFolder[0].id}`);
   };
 
   return (
     <Dialog maxWidth="xs" fullWidth open={open} onClose={() => setOpen(false)}>
       <DialogTitle>Tilføj mappe</DialogTitle>
       <DialogContent>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              autoFocus
-              required
-              label="Navn - Fx Resolutioner"
+        <Stack spacing={2}>
+          <TextField
+            sx={{ mt: 1 }}
+            autoFocus
+            required
+            label="Navn"
+            placeholder="Fx Resolutioner"
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            label="Undertitel"
+            placeholder="Fx Vedtægter, principprogram og andet"
+            fullWidth
+            onChange={(e) => setSubtitle(e.target.value)}
+          />
+          <FormControl fullWidth>
+            <InputLabel>Indholdstype</InputLabel>
+            <Select
+              label="Indholdstype"
               fullWidth
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Undertitel - Fx Vedtægter, principprogram og andet"
-              fullWidth
-              onChange={(e) => setSubtitle(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControl fullWidth>
-              <InputLabel>Indholdstype</InputLabel>
-              <Select
-                fullWidth
-                value={mode}
-                variant="standard"
-                onChange={(e) => setMode(e.target.value as string)}
-              >
-                <MenuItem value="changes">Politik</MenuItem>
-                <MenuItem value="candidates">Kandidaturer</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-        </Grid>
+              value={mode}
+              onChange={(e) => setMode(e.target.value as string)}
+            >
+              <MenuItem value="changes">Politik</MenuItem>
+              <MenuItem value="candidates">Kandidaturer</MenuItem>
+            </Select>
+          </FormControl>
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setOpen(false)} color="primary">

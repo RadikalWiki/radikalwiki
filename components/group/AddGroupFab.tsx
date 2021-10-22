@@ -9,33 +9,40 @@ import {
   DialogTitle,
   Fab,
   FormControl,
-} from "@material-ui/core";
-import { Add, GroupAdd } from "@material-ui/icons";
-import { useStyles, useSession } from "hooks";
-import { GROUP_ADD } from "gql";
-import { useMutation } from "@apollo/client";
+} from "@mui/material";
+import { Add, GroupAdd } from "@mui/icons-material";
+import { useSession } from "hooks";
+import { groups_insert_input, useMutation } from "gql";
 import { useRouter } from "next/router";
 
 export default function AddGroupFab() {
   const [session] = useSession();
   const router = useRouter();
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [shortName, setShortName] = useState("");
-  const [addGroup] = useMutation(GROUP_ADD);
+  const [addGroup] = useMutation(
+    (mutation, args: groups_insert_input[]) => {
+      return mutation.insert_groups({ objects: args })?.returning;
+    }
+  );
 
   const handleSubmit = async () => {
-    const { data } = await addGroup({
-      variables: { name, shortName, creatorId: session.user.id },
+    const group = await addGroup({
+      args: [{ name, shortName, creatorId: session?.user?.id }],
     });
-    router.push(`/group/${data.insert_groups_one.id}`);
+    if (!group) return;
+    router.push(`/group/${group[0].id}`);
   };
 
   return (
     <>
       <Fab
-        className={classes.speedDial}
+        sx={{
+          position: "fixed",
+          bottom: 9,
+          right: 3,
+        }}
         variant="extended"
         color="primary"
         aria-label="Tilføj gruppe"

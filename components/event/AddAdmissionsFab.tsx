@@ -1,14 +1,15 @@
 import React from "react";
-import { Fab } from "@material-ui/core";
-import { GroupAdd } from "@material-ui/icons";
-import { useStyles } from "hooks";
-import { ADMISSIONS_ADD } from "gql";
-import { useMutation } from "@apollo/client";
+import { Fab } from "@mui/material";
+import { GroupAdd } from "@mui/icons-material";
+import { admissions_insert_input, useMutation } from "gql";
 import { CSVReader } from "comps";
 
 export default function AddAdmissionsFab({ eventId }: { eventId?: string }) {
-  const classes = useStyles();
-  const [addAdmissions] = useMutation(ADMISSIONS_ADD);
+  const [addAdmissions] = useMutation(
+    (mutation, args: admissions_insert_input[]) => {
+      return mutation.insert_admissions({ objects: args })?.returning;
+    }
+  );
 
   const handleFile = async (fileData: any) => {
     const admissions = fileData.map((a: any) => ({
@@ -16,9 +17,7 @@ export default function AddAdmissionsFab({ eventId }: { eventId?: string }) {
       email: a.email.toLowerCase(),
     }));
     await addAdmissions({
-      variables: {
-        objects: admissions,
-      },
+      args: admissions,
     });
   };
 
@@ -32,7 +31,11 @@ export default function AddAdmissionsFab({ eventId }: { eventId?: string }) {
   return (
     <CSVReader parseOptions={parseOptions} onFileLoaded={handleFile}>
       <Fab
-        className={classes.speedDial}
+        sx={{
+          position: "fixed",
+          bottom: 9,
+          right: 3,
+        }}
         variant="extended"
         color="primary"
         aria-label="Tilføj adgang"

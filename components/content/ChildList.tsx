@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, Suspense, useState } from "react";
 import {
   Link as NextLink,
   AddChildButton,
@@ -8,10 +8,8 @@ import {
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
-import { useStyles, useSession } from "hooks";
-import { Lock, ExpandMore, Subject, ExpandLess } from "@material-ui/icons";
-import { CONTENT_GET_CHILDREN, POLL_DEL } from "gql";
+import { useSession } from "hooks";
+import { Lock, ExpandMore, Subject, ExpandLess } from "@mui/icons-material";
 import {
   Avatar,
   Badge,
@@ -29,17 +27,13 @@ import {
   ListItemText,
   Tooltip,
   Fade,
-} from "@material-ui/core";
+} from "@mui/material";
+import { useQuery } from "gql";
 
-export default function ChildList({ contentId }: any) {
-  const classes = useStyles();
-  const {
-    loading,
-    data: { content } = {},
-    error,
-  } = useQuery(CONTENT_GET_CHILDREN, {
-    variables: { id: contentId },
-  });
+export default function ChildList({ id }: { id: string }) {
+  const query = useQuery();
+  const content = query.contents_by_pk({ id });
+
   const [open, setOpen] = useState<boolean[]>([]);
 
   let changeNumber = 0;
@@ -48,44 +42,28 @@ export default function ChildList({ contentId }: any) {
     return changeNumber;
   };
 
-  const formatAuthors = (a: any) =>
-    a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
-
-  if (!loading && content?.parent && content?.folder.mode == "candidates")
-    return null;
-
   return (
-    <Fade in={!loading}>
-      <Card className={classes.card}>
-        <CardHeader
-          title={
-            content?.folder.mode == "changes"
-              ? "Ændringsforslag"
-              : "Kandidaturer"
-          }
-          action={<AddChildButton contentId={contentId} />}
-        />
-        <Divider />
-        <List>
-          {content?.children.map(
-            (
-              child: {
-                name: string;
-                id: string;
-                authors: any;
-                published: boolean;
-              },
-              index: number
-            ) => (
-              <Fragment key={child.id}>
-                <ListItem
-                  button
-                  component={NextLink}
-                  href={`/content/${child.id}`}
-                >
+    <Card elevation={3} sx={{ m: 1 }}>
+      <CardHeader
+        title={
+          content?.folder?.mode == "changes"
+            ? "Ændringsforslag"
+            : "Kandidaturer"
+        }
+      />
+      <Divider />
+      <List>
+        {content
+          ?.children()
+          .map(({ id = 0, name, authors, published }, index: number) =>
+            id != 0 ? (
+              <Fragment key={id}>
+                <ListItem button component={NextLink} href={`/content/${id}`}>
                   <ListItemAvatar>
-                    {child.published ? (
-                      <Avatar className={classes.avatar}>
+                    {published ? (
+                      <Avatar
+                        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
+                      >
                         {getChangeNumber()}
                       </Avatar>
                     ) : (
@@ -97,10 +75,10 @@ export default function ChildList({ contentId }: any) {
                     )}
                   </ListItemAvatar>
                   <ListItemText
-                    primary={child.name}
+                    primary={name}
                     secondary={
-                      content.folder.mode == "changes"
-                        ? formatAuthors(child?.authors)
+                      content?.folder?.mode == "changes"
+                        ? authors()?.map(({ identity, name }) => identity?.displayName ?? name).join(", ")
                         : null
                     }
                   />
@@ -111,33 +89,33 @@ export default function ChildList({ contentId }: any) {
                         copy[index] = !open[index];
                         setOpen(copy);
                       }}
+                      size="large"
                     >
                       {open[index] ? <ExpandLess /> : <ExpandMore />}
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Divider />
-                <Collapse in={open[index]}>
-                  <ContentToolbar contentId={child.id} />
-                  <Content contentId={child.id} fontSize="100%" />
+                <Collapse mountOnEnter unmountOnExit in={open[index]}>
+                  <ContentToolbar id={id} />
+                  <Content id={id} fontSize="100%" />
                   <Divider />
                 </Collapse>
               </Fragment>
-            )
+            ) : null
           )}
-          {content?.children.length == 0 && (
-            <ListItem button>
-              <ListItemText
-                primary={`Ingen ${
-                  content.folder.mode == "changes"
-                    ? "ændringsforslag"
-                    : "kandidaturer"
-                }`}
-              />
-            </ListItem>
-          )}
-        </List>
-      </Card>
-    </Fade>
+        {content?.children().map((id) => id).length == 0 && (
+          <ListItem button>
+            <ListItemText
+              primary={`Ingen ${
+                content?.folder?.mode == "changes"
+                  ? "ændringsforslag"
+                  : "kandidaturer"
+              }`}
+            />
+          </ListItem>
+        )}
+      </List>
+    </Card>
   );
 }

@@ -5,14 +5,14 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
-} from "@material-ui/core";
+} from "@mui/material";
 import {
   Airplay,
   Group,
   Event,
   SupervisorAccount,
   Settings,
-} from "@material-ui/icons";
+} from "@mui/icons-material";
 import { Link } from "comps";
 import { useSession } from "hooks";
 

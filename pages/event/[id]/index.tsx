@@ -1,23 +1,21 @@
 import React from "react";
 import { Link as NextLink } from "comps";
-import { useStyles } from "hooks";
-import { EVENT_GET } from "gql";
-import { Breadcrumbs, Link, Typography, Tooltip } from "@material-ui/core";
-import { Event } from "@material-ui/icons";
+import { Breadcrumbs, Link, Typography, Tooltip } from "@mui/material";
+import { Event } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "gql";
 
 export default function Index() {
-  const classes = useStyles();
   const router = useRouter();
   const { id } = router.query;
-  const { loading, data, error } = useQuery(EVENT_GET, { variables: { id } });
+  const query = useQuery();
+  const event = query.events_by_pk({ id })
 
   return (
-    <Breadcrumbs className={classes.bread}>
+    <Breadcrumbs sx={{ p: [2, 0, 2, 2]}}>
       <Link
         component={NextLink}
-        className={classes.breadText}
+        sx={{ alignItems: "center", display: "flex" }}
         color="primary"
         href="/event"
       >
@@ -26,8 +24,8 @@ export default function Index() {
         </Tooltip>
       </Link>
       <Link component={NextLink} color="primary" href={`/event/${id}`}>
-        <Typography className={classes.breadText}>
-          {data?.event.name}
+        <Typography sx={{ alignItems: "center", display: "flex" }}>
+          {event?.name}
         </Typography>
       </Link>
     </Breadcrumbs>

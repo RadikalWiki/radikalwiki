@@ -1,16 +1,26 @@
 import React from "react";
-import { Fab } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-import { useStyles, useSession } from "hooks";
+import { Fab } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import { useSession } from "hooks";
 import { CSVReader } from "comps";
-import { CONTENTS_ADD, AUTHORSHIPS_ADD } from "gql";
-import { useMutation } from "@apollo/client";
+import {
+  authorships_insert_input,
+  contents_insert_input,
+  useMutation,
+} from "gql";
 
-export default function AddContentFab({ folderId }: { folderId: string }) {
+export default function AddContentsFab({ folderId }: { folderId: string }) {
   const [session] = useSession();
-  const classes = useStyles();
-  const [addContent] = useMutation(CONTENTS_ADD);
-  const [addAuthors] = useMutation(AUTHORSHIPS_ADD);
+  const [addContent] = useMutation(
+    (mutation, args: contents_insert_input[]) => {
+      return mutation.insert_contents({ objects: args })?.returning;
+    }
+  );
+  const [addAuthors] = useMutation(
+    (mutation, args: authorships_insert_input[]) => {
+      return mutation.insert_authorships({ objects: args })?.returning;
+    }
+  );
 
   const handleFile = async (file: any) => {
     for (const content of file) {
@@ -38,15 +48,18 @@ export default function AddContentFab({ folderId }: { folderId: string }) {
           .join("")}`;
       }
 
-      const res = await addContent({
-        variables: {
-          name,
-          folderId,
-          data: data,
-          creatorId: session.user.id,
-          published: true,
-        },
+      const newContent = await addContent({
+        args: [
+          {
+            name,
+            folderId,
+            data: data,
+            creatorId: session?.user?.id,
+            published: true,
+          },
+        ],
       });
+      if (!newContent) return;
       const authors =
         content.stillere
           ?.replaceAll("- og", "- &")
@@ -58,10 +71,10 @@ export default function AddContentFab({ folderId }: { folderId: string }) {
         const objects = [
           {
             name: author,
-            contentId: res.data.insert_contents_one.id,
+            contentId: newContent[0].id,
           },
         ];
-        await addAuthors({ variables: { objects } });
+        await addAuthors({ args: objects });
       }
     }
   };
@@ -76,13 +89,13 @@ export default function AddContentFab({ folderId }: { folderId: string }) {
   return (
     <CSVReader parseOptions={parseOptions} onFileLoaded={handleFile}>
       <Fab
-        className={classes.speedDial2}
+        sx={{ position: "fixed", bottom: 9, right: 3 }}
         variant="extended"
         color="primary"
         aria-label="Tilføj mappe"
         component="span"
       >
-        <Add className={classes.extendedIcon} />
+        <Add sx={{ mr: 1 }} />
         Mappe
       </Fab>
     </CSVReader>

@@ -1,5 +1,4 @@
-import { POLL_CHECK_VOTE, VOTE_ADD, EVENT_CHECK_VOTE } from "gql";
-import { query, mutation } from "hooks";
+import { query, mutation } from "gql";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
 import { createSecretKey } from "crypto";
@@ -58,11 +57,14 @@ export default async function handler(
   const { pollId, value }: { pollId: string; value: Set<number> } =
     req.body.input.vote;
   const vote = new Set(value);
-  const { data } = await query(POLL_CHECK_VOTE, {
-    id: pollId,
-    userId,
-  });
-  const poll = data.poll;
+  //const { data } = await query(POLL_CHECK_VOTE, {
+  //  id: pollId,
+  //  userId,
+  //});
+  const poll = query.polls_by_pk({ id: pollId })
+  if (!poll) {
+    return res.status(401).send({ message: `Could find poll with id: ${pollId}` });
+  }
   if (!validateVote(vote, poll)) {
     return res.status(400).send({ message: "Invalid vote" });
   }
@@ -74,20 +76,24 @@ export default async function handler(
   if (poll.votes.length !== 0) {
     return res.status(401).send({ message: "Already voted" });
   }
+  const admissions = poll.content?.folder?.event
+    ?.admissions({ where: { identity: { user: { id: { _eq: userId } } } } })
+    ?.map(({ voting, checkedIn }) => ({ voting, checkedIn }));
   if (
-    poll.content.folder.event.admissions.length == 0 ||
-    !poll.content.folder.event.admissions[0].voting
+    !admissions ||
+    admissions.length == 0 ||
+    !admissions[0].voting
   ) {
     return res.status(401).send({ message: "Not allowed to vote" });
   }
-  if (!poll.content.folder.event.admissions[0].checkedIn) {
+  if (!admissions[0].checkedIn) {
     return res.status(401).send({ message: "Not checked in" });
   }
 
   // Add vote
   const parsedValue = `{${value}}`;
   try {
-    await mutation(VOTE_ADD, {
+    mutation.insert_votes_one({
       object: {
         userId,
         pollId,

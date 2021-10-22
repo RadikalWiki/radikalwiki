@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -7,19 +7,20 @@ import {
   Typography,
   Tooltip,
   useMediaQuery,
-} from "@material-ui/core";
+  Box,
+} from "@mui/material";
 
-import { Menu, ArrowDropDown } from "@material-ui/icons";
+import { Menu, ArrowDropDown } from "@mui/icons-material";
 import { Drawer, UserButton, EventDialog, HideOnScroll } from "comps";
-import { useStyles, useSession } from "hooks";
+import { useSession } from "hooks";
 import { useAuth } from "@nhost/react-auth";
 
 export default function TopBar() {
   const [session] = useSession();
-  const classes = useStyles();
   const [openDrawer, setOpenDrawer] = useState(false);
   const [eventDialog, setEventDialog] = useState(false);
   const largeScreen = useMediaQuery("(min-width:640px)");
+  const { signedIn } = useAuth();
 
   const name = largeScreen ? session?.event?.name : session?.event?.shortName;
 
@@ -35,6 +36,7 @@ export default function TopBar() {
                 edge="start"
                 color="inherit"
                 onClick={() => setOpenDrawer(!openDrawer)}
+                size="large"
               >
                 <Menu />
               </IconButton>,
@@ -50,14 +52,18 @@ export default function TopBar() {
                 </Button>
               </Tooltip>,
             ]}
-            <div className={classes.flexGrow} />
+            <Box sx={{ flexGrow: 1 }} />
             <UserButton />
           </Toolbar>
         </AppBar>
       </HideOnScroll>
       <Drawer open={openDrawer} onClick={() => setOpenDrawer(false)} />
-      <EventDialog open={eventDialog} setOpen={setEventDialog} />
-      <div className={classes.padTop} />
+      {signedIn && (
+        <Suspense fallback={null}>
+          <EventDialog open={eventDialog} setOpen={setEventDialog} />
+        </Suspense>
+      )}
+      <Box sx={{ p: 4 }} />
     </>
   );
 }

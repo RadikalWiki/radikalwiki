@@ -1,6 +1,3 @@
-import { useSubscription } from "@apollo/client";
-import { useStyles } from "hooks";
-//import { POLL_SUB_ALL_RESULT } from "gql";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const numColWidth = 90;
@@ -45,7 +42,6 @@ const getRows = (data: any) => {
 };
 
 export default function ResultsGrid() {
-  const classes = useStyles();
   return null;
   /*
   const { data } = useSubscription(POLL_SUB_ALL_RESULT);
@@ -54,7 +50,6 @@ export default function ResultsGrid() {
 
   return (
     <DataGrid
-      className={classes.dataGrid}
       autoHeight
       columns={columns}
       rows={rows}

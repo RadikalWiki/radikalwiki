@@ -1,26 +1,28 @@
 import React, { useState } from "react";
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
-import { avatars } from "comps/speak";
-import { useMutation } from "@apollo/client";
-import { SPEAK_ADD } from "gql";
-import { useStyles, useSession } from "hooks";
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
+import { avatars } from "comps";
+import { speaks_insert_input, useMutation, useSubscription } from "gql";
+import { useSession } from "hooks";
 
-export default function SpeakerDial({ event }: { event: any }) {
+export default function SpeakerDial() {
   const [session] = useSession();
-  const classes = useStyles();
+  const subscription = useSubscription();
+  const event = subscription.events_by_pk({ id: session?.event?.id })
   const [open, setOpen] = useState(false);
-  const [addSpeak] = useMutation(SPEAK_ADD);
+  const [addSpeaks] = useMutation((mutation, args: speaks_insert_input[]) => {
+    return mutation.insert_speaks({ objects: args })?.affected_rows;
+  });
 
   const handleAddSpeak = (type: number) => (_: any) => {
     setOpen(false);
-    addSpeak({
-      variables: {
-        object: {
-          userId: session.user.id,
-          eventId: session.event.id,
+    addSpeaks({
+      args: [
+        {
+          userId: session?.user?.id,
+          eventId: session?.event?.id,
           type: type,
         },
-      },
+      ],
     });
   };
 
@@ -28,7 +30,11 @@ export default function SpeakerDial({ event }: { event: any }) {
     <SpeedDial
       hidden={event?.lockSpeak ?? true}
       ariaLabel="Kom på talerliste"
-      className={classes.speedDial}
+      sx={{
+        position: "fixed",
+        bottom: (t) => t.spacing(9),
+        right: (t) => t.spacing(3),
+      }}
       icon={<SpeedDialIcon />}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}

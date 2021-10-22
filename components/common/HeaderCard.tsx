@@ -1,6 +1,5 @@
 import React from "react";
-import { Card, CardHeader } from "@material-ui/core";
-import { useStyles } from "hooks";
+import { Card, CardHeader } from "@mui/material";
 
 export default function HeaderCard({
   children,
@@ -11,9 +10,8 @@ export default function HeaderCard({
   title: string;
   avatar?: any;
 }) {
-  const classes = useStyles();
   return (
-    <Card className={classes.card}>
+    <Card elevation={3} sx={{ m: (t) => t.spacing(1) }}>
       <CardHeader title={title} avatar={avatar} />
       {children}
     </Card>

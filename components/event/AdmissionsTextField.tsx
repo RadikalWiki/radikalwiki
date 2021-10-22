@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { TextField } from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
-import { useStyles } from "hooks";
-import { useApolloClient } from "@apollo/client";
-import { IDENTITIES_FIND } from "gql";
+import { TextField } from "@mui/material";
+import { Autocomplete } from '@mui/material';
+import { useQuery } from "gql";
 
 const capitalize = (sentence: string) =>
   sentence.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
@@ -15,19 +13,14 @@ export default function AdmissionsTextField({
   value: any;
   onChange: any;
 }) {
+  const query = useQuery();
   const [options, setOptions] = useState<any[]>([]);
   const [inputValue, setInputValue] = React.useState("");
-  const client = useApolloClient();
 
   useEffect(() => {
     const fetch = async () => {
       const like = `%${inputValue}%`;
-      const {
-        data: { identities },
-      } = await client.query({
-        query: IDENTITIES_FIND,
-        variables: { like },
-      });
+      const identities = query.identities({ limit: 10, where: { displayName: { _ilike: like } }});
       let newOptions: any[] = [];
 
       if (value) {
@@ -50,7 +43,7 @@ export default function AdmissionsTextField({
       setOptions(newOptions);
     };
     fetch();
-  }, [value, inputValue]);
+  }, [value, inputValue, query]);
 
   return (
     <Autocomplete

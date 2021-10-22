@@ -1,8 +1,6 @@
 import React from "react";
 import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink } from "comps/common";
-import { useStyles } from "hooks";
-import { GROUPS_GET } from "gql";
+import { Link as NextLink } from "comps";
 import {
   Breadcrumbs,
   Card,
@@ -15,25 +13,25 @@ import {
   TextField,
   Typography,
   Box,
-} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+  Autocomplete
+} from "@mui/material";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "gql";
 import { AddGroupFab } from "comps";
+import { AddBoxRounded } from "@mui/icons-material";
 
 export default function Index() {
   const [state, setState] = useState("");
-  const classes = useStyles();
   const router = useRouter();
-  const { loading, data, error } = useQuery(GROUPS_GET);
+  const query = useQuery();
 
-  const groups = data?.groups.map((g: any) => g.name) || [];
+  const groups = query.groups().map(({ id, name }) => ({ id, name })) || [];
   const onChange = (_: any, v: any) => {
-    if (!data) {
+    if (!groups) {
       return;
     }
-    const filter = data.groups.filter((group: any) =>
-      v.toLowerCase().includes(group.name.toLowerCase())
+    const filter = groups.filter(({ name }) =>
+      v.toLowerCase().includes(name?.toLowerCase())
     );
     if (filter.length == 1) {
       router.push(`/group/${filter[0].id}`);
@@ -43,22 +41,22 @@ export default function Index() {
 
   const renderInput = (params: any): ReactNode => {
     return (
-      <div ref={params.InputProps.ref}>
+      <Box ref={params.InputProps.ref}>
         <TextField
           label="Søg"
           style={{ width: 200, height: 60 }}
           type="text"
           {...params.inputProps}
         />
-      </div>
+      </Box>
     );
   };
 
   return (
     <>
-      <Breadcrumbs className={classes.bread}>
+      <Breadcrumbs sx={{ p: [2, 0, 2, 2]}}>
         <Link component={NextLink} color="primary" href="/group">
-          <Typography className={classes.breadText}>Grupper</Typography>
+          <Typography sx={{ alignItems: "center", display: "flex" }}>Grupper</Typography>
         </Link>
         <Autocomplete
           freeSolo
@@ -67,12 +65,12 @@ export default function Index() {
           renderInput={renderInput}
         />
       </Breadcrumbs>
-      <Card className={classes.card}>
-        <List className={classes.list}>
-          {data?.groups.map(
-            (group: { name: any; id: any }) =>
+      <Card elevation={3} sx={{ m: 1}}>
+        <List sx={{ m: 0 }}>
+          {groups.map(
+            (group) =>
               (!state ||
-                group.name.toLowerCase().includes(state.toLowerCase())) && (
+                group.name?.toLowerCase().includes(state.toLowerCase())) && (
                 <Fragment key={group.id}>
                   <Divider />
                   <ListItem

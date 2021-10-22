@@ -8,21 +8,13 @@ import {
   Grid,
   TextField,
   Button,
-  makeStyles,
-} from "@material-ui/core";
-import { useSession, query } from "hooks";
+} from "@mui/material";
+import { useSession } from "hooks";
 import { auth } from "utils/nhost";
-import { USER_GET_DISPLAY_NAME } from "gql";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    padding: theme.spacing(3),
-  },
-}));
+import { query, resolved } from "gql";
 
 export default function LoginForm({ mode }: { mode: "login" | "register" }) {
   const router = useRouter();
-  const classes = useStyles();
   const [session, setSession] = useSession();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +23,7 @@ export default function LoginForm({ mode }: { mode: "login" | "register" }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [errorPassword, setPasswordError] = useState(false);
   const [errorPasswordMsg, setErrorPasswordMsg] = useState("");
+  //const query = useQuery();
 
   const onEmailChange = (e: any) => {
     setEmail(e.target.value);
@@ -66,18 +59,19 @@ export default function LoginForm({ mode }: { mode: "login" | "register" }) {
         email: email.toLowerCase(),
         password,
       });
-      const { data } = await query(USER_GET_DISPLAY_NAME, {
-        id: session?.user.id,
-      });
-      const displayName =
-        data?.user.identity?.displayName || session?.user.email;
+      const name = (await resolved(() => query.users_by_pk({ id: session?.user?.id })?.identity?.displayName)) ?? session?.user?.email;
+      const user = {
+        id: session?.user?.id as string,
+        name: name as string,
+        email: session?.user?.email as string,
+      }
 
       const res = await fetch("/api/time");
       const { time } = await res.json();
       setSession({
         ...session,
-        event: null,
-        displayName,
+        event: undefined,
+        user,
         roles: [],
         timeDiff: new Date().getTime() - new Date(time).getTime(),
       });
@@ -99,7 +93,7 @@ export default function LoginForm({ mode }: { mode: "login" | "register" }) {
   };
 
   return (
-    <Container className={classes.container} maxWidth="xs">
+    <Container sx={{ padding: 3 }} maxWidth="xs">
       <form>
         <Grid container spacing={2}>
           <Grid item xs={12}>

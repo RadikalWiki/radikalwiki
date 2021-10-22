@@ -1,5 +1,5 @@
 import { parse, ParseConfig } from "papaparse";
-import { Input } from "@material-ui/core";
+import { Input } from "@mui/material";
 export default function CSVReader({
   children,
   parseOptions,

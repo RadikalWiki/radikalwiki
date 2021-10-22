@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Suspense } from "react";
 import { useRouter } from "next/router";
 import {
   Dialog,
@@ -8,21 +8,11 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
-} from "@material-ui/core";
-import { Event } from "@material-ui/icons";
-import { EVENTS_GET, EVENT_GET_ROLE } from "gql";
-import { useQuery, useApolloClient } from "@apollo/client";
-import { useSession, useStyles } from "hooks";
+} from "@mui/material";
+import { Add, Event } from "@mui/icons-material";
+import { useQuery, query, resolved } from "gql";
+import { useSession } from "hooks";
 import { useAuth } from "@nhost/react-auth";
-
-const getRoles = (userId: string, group: any) => {
-  const roles = new Set();
-  group.memberships[0].roles.forEach((e: any) => roles.add(e.role));
-  if (group.creatorId == userId) {
-    roles.add("admin");
-  }
-  return [...roles];
-};
 
 export default function EventDialog({
   open,
@@ -32,48 +22,63 @@ export default function EventDialog({
   setOpen: any;
 }) {
   const router = useRouter();
-  const classes = useStyles();
   const [session, setSession] = useSession();
-  const { loading, data, error } = useQuery(EVENTS_GET);
-  const client = useApolloClient();
-  const { signedIn } = useAuth();
-  if (signedIn == null) return null
+  const events = useQuery().events();
 
-  const handleEventSelect = (event: any) => async () => {
-    const {
-      data: {
-        event: { group },
-      },
-    } = await client.query({
-      query: EVENT_GET_ROLE,
-      variables: { id: event.id, email: session.user.email },
+  const handleEventSelect = (id: any) => async () => {
+    const roles = (
+      await resolved(() =>
+        query
+          .events_by_pk({ id })
+          ?.group?.memberships({
+            where: { email: { _eq: session?.user?.email } },
+          })
+          ?.map(({ roles }) => roles().map(({ role }) => role ?? ""))
+      )
+    )?.flat();
+    const isCreator =
+      (await resolved(() => query.events_by_pk({ id })?.group?.creator?.id)) ==
+      session?.user?.id;
+    const event = await resolved(() => {
+      const event = query.events_by_pk({ id });
+      return { id: event?.id, name: event?.name ?? "", shortName: event?.shortName ?? "" };
     });
-    const roles = getRoles(session.user.id, group);
-    setSession({ event, roles });
+    setSession({
+      event,
+      roles: isCreator ? roles?.concat("admin") : roles,
+    });
     setOpen(false);
     router.push("/folder");
   };
 
-  console.log({ loading, data, error })
+  const addEvent = () => {
+    router.push("/event/new")
+  }
+
   return (
-    <Dialog
-      open={open}
-      onClose={() => setOpen(false)}
-    >
-      <DialogTitle>Vælg Begivenhed</DialogTitle>
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Vælg begivenhed</DialogTitle>
       <List>
-        {data?.events.map((event: { name: any; id: any }) => (
-          <Fragment key={event.id}>
-            <ListItem button onClick={handleEventSelect(event)}>
-              <ListItemAvatar>
-                <Avatar className={classes.avatar}>
-                  <Event />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={event.name} />
-            </ListItem>
-          </Fragment>
+        {events.map(({ id = 0, name }) => (
+          <ListItem key={id} button onClick={handleEventSelect(id)}>
+            <ListItemAvatar>
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+                <Event />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={name} />
+          </ListItem>
         ))}
+        {session?.roles?.includes("admin") &&
+          <ListItem key="add" button onClick={addEvent}>
+            <ListItemAvatar>
+              <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
+                <Add />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Tilføj begivenhed" />
+          </ListItem>
+        }
       </List>
     </Dialog>
   );

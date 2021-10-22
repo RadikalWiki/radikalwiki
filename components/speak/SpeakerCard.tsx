@@ -10,12 +10,12 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Tooltip,
-} from "@material-ui/core";
-import { Cancel } from "@material-ui/icons";
-import { useMutation, useSubscription } from "@apollo/client";
-import { SPEAK_DEL, EVENT_SUB_SPEAK } from "gql";
-import { useSession, useStyles } from "hooks";
+} from "@mui/material";
+import { Cancel } from "@mui/icons-material";
+import { useMutation, useSubscription, order_by } from "gql";
+import { useSession } from "hooks";
 import { avatars } from "components";
+import { TransitionGroup } from "react-transition-group";
 
 export default function SpeakerCard({
   interactive,
@@ -23,37 +23,47 @@ export default function SpeakerCard({
   interactive?: boolean;
 }) {
   const [session] = useSession();
-  const classes = useStyles();
-  const { error, data: { speaks } = {} } = useSubscription(EVENT_SUB_SPEAK, {
-    variables: { id: session?.event?.id },
+  const subscription = useSubscription();
+  const speaks = subscription.speaks({
+    order_by: [{ type: order_by.desc }],
+    where: { eventId: { _eq: session?.event?.id } },
   });
-  const [removeSpeak] = useMutation(SPEAK_DEL);
+  const [deleteSpeak] = useMutation((mutation, id: string) => {
+    return mutation.delete_speaks_by_pk({ id })?.id;
+  });
 
   const handleRemoveSpeak = (value: any) => (_: any) => {
-    removeSpeak({ variables: { id: value } });
+    deleteSpeak({ args: value });
   };
 
   return (
-    <Card className={classes.card}>
-      <CardHeader title="Talerliste" className={classes.cardHeader} />
+    <Card elevation={3} sx={{ m: 1 }}>
+      <CardHeader
+        title="Talerliste"
+        sx={{
+          bgcolor: (theme) => theme.palette.secondary.main,
+          color: (theme) => theme.palette.secondary.contrastText,
+        }}
+      />
       <List>
-        {speaks?.map(
-          (speak: { user: any; created: any; id: any; type: number }) => (
-            <Collapse in={true} key={speak.id}>
-              <ListItem key={speak.id} button>
-                <Tooltip title={avatars[speak.type].name}>
-                  <ListItemAvatar>{avatars[speak.type].avatar}</ListItemAvatar>
+        <TransitionGroup>
+          {speaks?.map(({ id = 0, user, type }) => (
+            <Collapse key={id}>
+              <ListItem key={id} button>
+                <Tooltip title={avatars[type ?? 0].name}>
+                  <ListItemAvatar>{avatars[type ?? 0].avatar}</ListItemAvatar>
                 </Tooltip>
-                <ListItemText primary={speak.user.identity.displayName} />
+                <ListItemText primary={user?.identity?.displayName} />
                 {interactive &&
-                  (speak.user.id == session?.user.id ||
-                    session?.roles.includes("admin")) && (
+                  (user?.id == session?.user?.id ||
+                    session?.roles?.includes("admin")) && (
                     <ListItemSecondaryAction>
                       <IconButton
-                        onClick={handleRemoveSpeak(speak.id)}
+                        onClick={handleRemoveSpeak(id)}
                         color="primary"
                         edge="end"
                         aria-label="Fjern fra talerliste"
+                        size="large"
                       >
                         <Cancel />
                       </IconButton>
@@ -61,8 +71,8 @@ export default function SpeakerCard({
                   )}
               </ListItem>
             </Collapse>
-          )
-        )}
+          ))}
+        </TransitionGroup>
       </List>
     </Card>
   );

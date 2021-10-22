@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Button, Menu, MenuItem, useMediaQuery } from "@material-ui/core";
+import { Button, Menu, MenuItem, useMediaQuery } from "@mui/material";
 import { Link } from "comps";
-import { AccountCircle } from "@material-ui/icons";
+import { AccountCircle } from "@mui/icons-material";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
 import { auth } from "utils/nhost";
-import { LoginDialog } from "comps/login";
 
 const abriviateName = (name: string) =>
   name?.split(" ").length === 1
@@ -39,13 +38,13 @@ export default function UserButton() {
   };
 
   const name = largeScreen
-    ? session?.displayName
-    : abriviateName(session?.displayName);
+    ? session?.user?.name
+    : abriviateName(session?.user?.name as string);
 
   return (
     <>
       <Button color="inherit" onClick={handleClick} endIcon={<AccountCircle />}>
-        {session?.displayName ? name : "Log ind"}
+        {session?.user?.name ? name : "Log ind"}
       </Button>
       <Menu
         anchorOrigin={{

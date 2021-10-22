@@ -5,44 +5,48 @@ import {
   ListItem,
   ListItemText,
   CardContent,
-} from "@material-ui/core";
+} from "@mui/material";
 import { HeaderCard, Link } from "comps";
 import { useSession } from "hooks";
-import { USER_GET_PROFILE } from "gql";
-import { useQuery } from "@apollo/client";
-import { AccountCircle, Group, Subject } from "@material-ui/icons";
+import { useQuery } from "gql";
+import { AccountCircle, Group, Subject } from "@mui/icons-material";
 
 export default function Login() {
   const [session] = useSession();
-  const { loading, data, error } = useQuery(USER_GET_PROFILE, {
-    variables: { id: session?.user.id },
+  const query = useQuery();
+  const id = session?.user?.id;
+  const user = query.users_by_pk({ id });
+  const contents = query.contents({
+    where: {
+      _or: [
+        { authors: { identity: { user: { id: { _eq: id } } } } },
+        { creatorId: { _eq: id } },
+      ],
+    },
   });
-
-  const user = data?.user;
-  const unknown = session?.user.email == session?.displayName;
+  const unknown = session?.user?.email == session?.user?.name;
   return (
     <>
       <HeaderCard title="Profil" avatar={<AccountCircle />}>
         <CardContent>
           <Typography>
-            Navn: {unknown ? "Ukendt" : session?.displayName}{" "}
+            Navn: {unknown ? "Ukendt" : session?.user?.name}{" "}
           </Typography>
-          <Typography>E-Mail: {session?.user.email}</Typography>
+          <Typography>E-Mail: {session?.user?.email}</Typography>
         </CardContent>
       </HeaderCard>
       <HeaderCard title="Medlemskaber" avatar={<Group />}>
         <List>
-          {user?.identity?.memberships?.map(
-            ({
-              group: { name, id },
-            }: {
-              group: { name: string; id: string };
-            }) => (
-              <ListItem key={id} button component={Link} href={`/group/${id}`}>
-                <ListItemText primary={name} />
-              </ListItem>
-            )
-          ) ?? (
+          {user?.identity?.memberships().map(({ group }) => (
+            <ListItem
+              key={group?.id}
+              button
+              component={Link}
+              href={`/group/${group?.id}`}
+            >
+              <ListItemText primary={group?.name} />
+            </ListItem>
+          )) ?? (
             <ListItem>
               <ListItemText primary="Ingen medlemskaber" />
             </ListItem>
@@ -51,31 +55,14 @@ export default function Login() {
       </HeaderCard>
       <HeaderCard title="Indhold" avatar={<Subject />}>
         <List>
-          {data?.contents?.map(
-            ({
-              name,
-              id,
-              parent,
-              folder,
-            }: {
-              name: string;
-              id: string;
-              parent: any;
-              folder: any;
-            }) => (
-              <ListItem
-                key={id}
-                button
-                component={Link}
-                href={`/content/${id}`}
-              >
-                <ListItemText
-                  primary={name}
-                  secondary={parent ? parent.name : folder.name}
-                />
-              </ListItem>
-            )
-          ) ?? (
+          {contents?.map(({ name, id, parent, folder }) => (
+            <ListItem key={id} button component={Link} href={`/content/${id}`}>
+              <ListItemText
+                primary={name}
+                secondary={parent ? parent.name : folder?.name}
+              />
+            </ListItem>
+          )) ?? (
             <ListItem>
               <ListItemText primary="Intet indhold" />
             </ListItem>

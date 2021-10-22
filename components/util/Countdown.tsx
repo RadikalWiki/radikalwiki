@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Card, TextField, Typography } from "@material-ui/core";
-import { useSession, useStyles } from "hooks";
-import { useMutation, useSubscription } from "@apollo/client";
-import { EVENT_TIMER_SET, EVENT_TIMER_SUB } from "gql";
+import {
+  Button,
+  Card,
+  CardContent,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { useSession } from "hooks";
+import { timers_set_input, useMutation, useSubscription } from "gql";
 
 const timeString = (time: number) => {
   let sec = String(time % 60);
@@ -17,28 +22,30 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
   const [session] = useSession();
   const [time, setTime] = useState(0);
   const [timeBox, setTimeBox] = useState(120);
-  const [setTimer] = useMutation(EVENT_TIMER_SET);
-  const classes = useStyles();
-  const { data, loading, error } = useSubscription(EVENT_TIMER_SUB, {
-    variables: { id: session?.event?.id },
-  });
-  const timer = data?.events_by_pk.timer;
+  const [setTimer] = useMutation(
+    (mutation, args: timers_set_input) => {
+      return mutation.update_timers({
+        where: { eventId: { _eq: session?.event?.id } },
+        _set: args,
+      })?.affected_rows;
+    }
+  );
+  const subscription = useSubscription();
+  const timer = subscription.events_by_pk({ id: session?.event?.id })?.timer;
 
   const handleTimerSet = (time: number) => {
     setTimer({
-      variables: {
-        id: session?.event?.id,
-        time,
-      },
+      args: { time },
     });
   };
 
   useEffect(() => {
+    if (!session?.timeDiff) return;
     const now = new Date();
     const created = new Date(timer?.updatedAt);
     let sec = Math.floor(
-      timer?.time -
-        (now.getTime() - created.getTime() - session?.timeDiff) / 1000
+      timer?.time ??
+        0 - (now.getTime() - created.getTime() - session?.timeDiff) / 1000
     );
     sec = sec >= 0 ? sec : 0;
     setTime(sec);
@@ -46,14 +53,20 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
       setTime((time) => (time > 1 ? time - 1 : 0));
     }, 1000);
     return () => clearInterval(interval);
-  }, [timer]);
+  }, [timer, session?.timeDiff]);
 
   return (
-    <Card className={classes.countdown}>
-      <Typography className={classes.text} variant="h5">
-        Taletid: {timeString(time)}
-      </Typography>
-      {interactive && session?.roles.includes("admin") && (
+    <Card
+      sx={{
+        m: 1,
+        bgcolor: (theme) => theme.palette.primary.main,
+        color: (theme) => theme.palette.secondary.contrastText,
+      }}
+    >
+      <CardContent>
+        <Typography variant="h5">Taletid: {timeString(time)}</Typography>
+      </CardContent>
+      {interactive && session?.roles?.includes("admin") && (
         <>
           <TextField
             id="filled-number"
@@ -61,7 +74,11 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
             type="number"
             color="secondary"
             value={timeBox}
-            className={classes.adminTextField}
+            sx={{
+              bgcolor: (theme) => theme.palette.secondary.main,
+              borderColor: "white",
+              m: 2,
+            }}
             InputLabelProps={{
               shrink: true,
               style: { color: "#fff" },
@@ -76,7 +93,7 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
             color="secondary"
             variant="contained"
             size="large"
-            className={classes.adminButton}
+            sx={{ color: "#fff", m: 2 }}
             onClick={() => handleTimerSet(time > 0 ? 0 : timeBox)}
           >
             {time == 0 ? "Start" : "Stop"}

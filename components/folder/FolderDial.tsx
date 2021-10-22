@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Avatar } from "@material-ui/core";
-import { SpeedDial, SpeedDialAction } from "@material-ui/lab";
+import { Avatar } from "@mui/material";
+import { SpeedDial, SpeedDialAction } from '@mui/material';
 import {
   Add,
   LowPriority,
@@ -8,41 +8,48 @@ import {
   SupervisorAccount,
   Lock,
   LockOpen,
-} from "@material-ui/icons";
-import { useStyles } from "hooks";
+} from "@mui/icons-material";
 import { AddFolderDialog } from ".";
 import { useRouter } from "next/router";
+import { useSession } from "hooks";
 import HTMLtoDOCX from "html-to-docx";
-import { useApolloClient, useMutation } from "@apollo/client";
-import { FOLDER_GET, FOLDER_GET_EXPORT, FOLDER_UPDATE } from "gql";
 
-export default function FolderDial({ folder }: { folder: any }) {
-  const classes = useStyles();
+import { useMutation, Maybe, contents, authorships, useQuery } from "gql";
+
+export default function FolderDial({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const [session] = useSession();
   const [addDialog, setAddDialog] = useState(false);
-  const client = useApolloClient();
-  const [updateFolder] = useMutation(FOLDER_UPDATE);
+  const query = useQuery();
+  const folder = query.folders_by_pk({ id });
+  const [updateFolder] = useMutation(
+    (mutation, args: { id: string, set: any }) => {
+      return mutation.update_folders_by_pk({ pk_columns: { id: args.id }, _set: args.set })?.id;
+    },
+    {
+      refetchQueries: [query.folders_by_pk({ id })]
+    }
+  );
 
-  const formatAuthors = (a: any) =>
-    a?.map((a: any) => a.identity?.displayName ?? a.name).join(", ");
+  if (!session?.roles?.includes("admin")) return null;
 
-  const formatContent = (content: any) => {
-    return `<h1>${content.name}</h1><blockquote><i>${formatAuthors(
-      content.authors
-    )}</i></blockquote>${content.data}${
-      content.children ? content.children.map(formatContent).join("") : ""
+  const formatAuthors = (a: authorships[] | undefined) =>
+    a?.map((a) => a.identity?.displayName ?? a.name).join(", ");
+
+  const formatContent = (content: Maybe<contents>): string => {
+    return `<h1>${content?.name}</h1><blockquote><i>${formatAuthors(
+      content?.authors()
+    )}</i></blockquote>${content?.data}${
+      content?.children ? content?.children().map(formatContent).join("") : ""
     }`;
   };
 
   const handleExport = async () => {
-    const { data } = await client.query({
-      query: FOLDER_GET_EXPORT,
-      variables: { id: folder.id },
-    });
+    const exportFolder = query.folders_by_pk({ id: folder?.id })
 
-    const html = data.export.contents.map(formatContent).join("");
-    const blob = await HTMLtoDOCX(html, "", {
+    const html = exportFolder?.contents().map(formatContent).join("");
+    const blob = await HTMLtoDOCX(html as string, "", {
       table: { row: { cantSplit: true } },
     });
 
@@ -50,7 +57,7 @@ export default function FolderDial({ folder }: { folder: any }) {
     const blobUrl = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = blobUrl;
-    link.download = `${folder.name} Eksport.docx`;
+    link.download = `${folder?.name} Eksport.docx`;
     document.body.appendChild(link);
     link.dispatchEvent(
       new MouseEvent("click", {
@@ -63,18 +70,16 @@ export default function FolderDial({ folder }: { folder: any }) {
   };
 
   const handleLockContent = async () => {
-    const set = { lockContent: !folder.lockContent };
+    const set = { lockContent: !folder?.lockContent };
     await updateFolder({
-      variables: { id: folder.id, set },
-      refetchQueries: [{ query: FOLDER_GET, variables: { id: folder.id } }],
+      args: { id: folder?.id, set },
     });
   };
 
   const handleLockChildren = async () => {
-    const set = { lockChildren: !folder.lockChildren };
+    const set = { lockChildren: !folder?.lockChildren };
     await updateFolder({
-      variables: { id: folder.id, set },
-      refetchQueries: [{ query: FOLDER_GET, variables: { id: folder.id } }],
+      args: { id: folder?.id, set },
     });
   };
 
@@ -85,7 +90,7 @@ export default function FolderDial({ folder }: { folder: any }) {
     <>
       <SpeedDial
         ariaLabel="Administrer mappe"
-        className={classes.speedDial2}
+        sx={{ position: "fixed", bottom: (t) => t.spacing(16), right: (t) => t.spacing(3) }}
         icon={<SupervisorAccount />}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
@@ -93,7 +98,7 @@ export default function FolderDial({ folder }: { folder: any }) {
       >
         <SpeedDialAction
           icon={
-            <Avatar className={classes.avatar}>
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
               {folder?.lockContent ? <LockOpen /> : <Lock />}
             </Avatar>
           }
@@ -103,7 +108,7 @@ export default function FolderDial({ folder }: { folder: any }) {
         />
         <SpeedDialAction
           icon={
-            <Avatar className={classes.avatar}>
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
               {folder?.lockChildren ? <LockOpen /> : <Lock />}
             </Avatar>
           }
@@ -115,7 +120,7 @@ export default function FolderDial({ folder }: { folder: any }) {
         />
         <SpeedDialAction
           icon={
-            <Avatar className={classes.avatar}>
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
               <Add />
             </Avatar>
           }
@@ -125,17 +130,17 @@ export default function FolderDial({ folder }: { folder: any }) {
         />
         <SpeedDialAction
           icon={
-            <Avatar className={classes.avatar}>
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
               <LowPriority />
             </Avatar>
           }
           tooltipTitle="Sorter"
           tooltipOpen
-          onClick={() => router.push(`/folder/${folder.id}/sort`)}
+          onClick={() => router.push(`/folder/${folder?.id}/sort`)}
         />
         <SpeedDialAction
           icon={
-            <Avatar className={classes.avatar}>
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
               <GetApp />
             </Avatar>
           }

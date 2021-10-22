@@ -1,8 +1,5 @@
-import React from "react";
-import { Fragment, ReactNode, useState } from "react";
-import { Link as NextLink } from "comps/common";
-import { useStyles } from "hooks";
-import { EVENTS_GET } from "gql";
+import React, { Fragment, ReactNode, useState } from "react";
+import { Link as NextLink } from "comps";
 import {
   Breadcrumbs,
   Card,
@@ -13,25 +10,22 @@ import {
   ListItemText,
   TextField,
   Tooltip,
-} from "@material-ui/core";
-import { Event } from "@material-ui/icons";
-import { Autocomplete } from "@material-ui/lab";
+} from "@mui/material";
+import { Event } from "@mui/icons-material";
+import { Autocomplete, Box } from '@mui/material';
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "gql";
 
 export default function Index() {
   const [state, setState] = useState("");
-  const classes = useStyles();
   const router = useRouter();
-  const { loading, data, error } = useQuery(EVENTS_GET);
+  const query = useQuery();
 
-  const events = data?.events.map((e: any) => e.name) || [];
+  const events = query.events().map(({ id, name }) => ({ id, name })) || [];
   const onChange = (_: any, v: any) => {
-    if (!data) {
-      return;
-    }
-    const filter = data.events.filter((event: any) =>
-      v.toLowerCase().includes(event.name.toLowerCase())
+
+    const filter = events.filter(({ name }) =>
+      v.toLowerCase().includes(name?.toLowerCase())
     );
     if (filter.length == 1) {
       router.push(`/event/${filter[0].id}`);
@@ -41,23 +35,23 @@ export default function Index() {
 
   const renderInput = (params: any): ReactNode => {
     return (
-      <div ref={params.InputProps.ref}>
+      <Box ref={params.InputProps.ref}>
         <TextField
           label="Søg"
           style={{ width: 200, height: 60 }}
           type="text"
           {...params.inputProps}
         />
-      </div>
+      </Box>
     );
   };
 
   return (
     <>
-      <Breadcrumbs className={classes.bread}>
+      <Breadcrumbs sx={{ p: [2, 0, 2, 2]}}>
         <Link
           component={NextLink}
-          className={classes.breadText}
+          sx={{ alignItems: "center", display: "flex" }}
           color="primary"
           href="/event"
         >
@@ -72,9 +66,9 @@ export default function Index() {
           renderInput={renderInput}
         />
       </Breadcrumbs>
-      <Card className={classes.card}>
-        <List className={classes.list}>
-          {data?.events.map(
+      <Card elevation={3} sx={{ m: 1}}>
+        <List sx={{ m: 0 }}>
+          {events?.map(
             (event: { name: any; id: any }) =>
               (!state ||
                 event.name.toLowerCase().includes(state.toLowerCase())) && (

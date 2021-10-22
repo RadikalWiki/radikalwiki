@@ -1,14 +1,12 @@
 import React from "react";
 import { NavBar, Scroll, TopBar, SessionProvider } from "comps";
-import { useStyles } from "hooks";
 import { useAuth } from "@nhost/react-auth";
 import { useRouter } from "next/router";
-import { Container } from "@material-ui/core";
+import { Container, Box } from "@mui/material";
 
 export default function Layout({ children }: { children?: any }) {
   const { pathname } = useRouter();
   const { signedIn } = useAuth();
-  const classes = useStyles();
 
   if (["/login", "/register", "/screen"].includes(pathname))
     return <SessionProvider>{signedIn != null && children}</SessionProvider>;
@@ -17,9 +15,9 @@ export default function Layout({ children }: { children?: any }) {
     <SessionProvider>
       <Scroll>
         <TopBar />
-        <Container className={classes.container}>
+        <Container sx={{ pl: 0, pr: 0 }}>
           {signedIn != null && children}
-          <div className={classes.pad} />
+          <Box sx={{ p: 4 }} />
         </Container>
       </Scroll>
       <NavBar />

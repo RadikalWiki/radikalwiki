@@ -1,5 +1,4 @@
-import { EVENT_CHECK_VOTE } from "gql";
-import { query } from "hooks";
+import { query } from "gql";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
 import { createSecretKey } from "crypto";
@@ -34,22 +33,23 @@ export default async function handler(
 
   // Check if voted
   const eventId: string = req.body.input.eventId;
-  const {
-    data: { event },
-  } = await query(EVENT_CHECK_VOTE, {
-    id: eventId,
-    userId,
-  });
+  const event = query.events_by_pk({ id: eventId });
+  const admissions = event
+    ?.admissions({ where: { identity: { user: { id: { _eq: userId } } } } })
+    ?.map(({ voting, checkedIn }) => ({ voting, checkedIn }));
+  const votes = event?.poll?.votes({ where: { userId: { _eq: userId } } });
+
+  if (!votes || !admissions) return;
 
   // Return pollId
   return res.json({
-    pollId: event.poll.id,
-    active: event.poll.active,
+    pollId: event?.poll?.id,
+    active: event?.poll?.active,
     canVote:
-      event.poll.active &&
-      event.poll.votes.length == 0 &&
-      event.admissions.length > 0 &&
-      event.admissions[0].voting &&
-      event.admissions[0].checkedIn,
+      event?.poll?.active &&
+      votes.length == 0 &&
+      admissions.length > 0 &&
+      admissions[0].voting &&
+      admissions[0].checkedIn,
   });
 }
