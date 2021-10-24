@@ -12,7 +12,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { Event } from "@mui/icons-material";
-import { Autocomplete, Box } from '@mui/material';
+import { Autocomplete, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { useQuery } from "gql";
 
@@ -23,7 +23,6 @@ export default function Index() {
 
   const events = query.events().map(({ id, name }) => ({ id, name })) || [];
   const onChange = (_: any, v: any) => {
-
     const filter = events.filter(({ name }) =>
       v.toLowerCase().includes(name?.toLowerCase())
     );
@@ -38,7 +37,7 @@ export default function Index() {
       <Box ref={params.InputProps.ref}>
         <TextField
           label="Søg"
-          style={{ width: 200, height: 60 }}
+          sx={{ width: 200, height: 60 }}
           type="text"
           {...params.inputProps}
         />
@@ -48,7 +47,7 @@ export default function Index() {
 
   return (
     <>
-      <Breadcrumbs sx={{ p: [2, 0, 2, 2]}}>
+      <Breadcrumbs sx={{ p: [2, 0, 2, 2] }}>
         <Link
           component={NextLink}
           sx={{ alignItems: "center", display: "flex" }}
@@ -66,7 +65,7 @@ export default function Index() {
           renderInput={renderInput}
         />
       </Breadcrumbs>
-      <Card elevation={3} sx={{ m: 1}}>
+      <Card elevation={3} sx={{ m: 1 }}>
         <List sx={{ m: 0 }}>
           {events?.map(
             (event: { name: any; id: any }) =>

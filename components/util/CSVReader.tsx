@@ -29,7 +29,7 @@ export default function CSVReader({
         id="input-file"
         type="file"
         onChange={handleChangeFile}
-        style={{ display: "none" }}
+        sx={{ display: "none" }}
       />
       <label htmlFor="input-file">{children}</label>
     </>

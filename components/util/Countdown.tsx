@@ -22,14 +22,12 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
   const [session] = useSession();
   const [time, setTime] = useState(0);
   const [timeBox, setTimeBox] = useState(120);
-  const [setTimer] = useMutation(
-    (mutation, args: timers_set_input) => {
-      return mutation.update_timers({
-        where: { eventId: { _eq: session?.event?.id } },
-        _set: args,
-      })?.affected_rows;
-    }
-  );
+  const [setTimer] = useMutation((mutation, args: timers_set_input) => {
+    return mutation.update_timers({
+      where: { eventId: { _eq: session?.event?.id } },
+      _set: args,
+    })?.affected_rows;
+  });
   const subscription = useSubscription();
   const timer = subscription.events_by_pk({ id: session?.event?.id })?.timer;
 
@@ -81,10 +79,10 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
             }}
             InputLabelProps={{
               shrink: true,
-              style: { color: "#fff" },
+              sx: { color: "#fff" },
             }}
             InputProps={{
-              style: { color: "#fff" },
+              sx: { color: "#fff" },
             }}
             onChange={(e) => setTimeBox(parseInt(e.target.value))}
             variant="filled"

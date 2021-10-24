@@ -1,19 +1,14 @@
 import { CardContent, Grid, Paper, Box } from "@mui/material";
-import Image from "next/image";
-import { useQuery } from "gql"
+import { Image } from "comps";
+import { useQuery } from "gql";
 
-function Content({
-  id,
-  fontSize,
-}: {
-  id: string;
-  fontSize: string;
-}) {
+function Content({ id, fontSize }: { id: string; fontSize: string }) {
   const query = useQuery();
-  const content = query.contents_by_pk({ id })
-  const image = content?.file
-    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file?.path}?token=${content.file?.token}`
-    : null;
+  const content = query.contents_by_pk({ id });
+  const image =
+    content?.file?.path && content.file?.token
+      ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${content.file?.path}?token=${content.file?.token}`
+      : null;
 
   return (
     <Grid container spacing={2}>
@@ -22,7 +17,7 @@ function Content({
           <CardContent>
             <Box
               dangerouslySetInnerHTML={{ __html: content?.data }}
-              style={{ fontSize }}
+              sx={{ fontSize }}
             />
           </CardContent>
         )}

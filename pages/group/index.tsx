@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
   Box,
-  Autocomplete
+  Autocomplete,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useQuery } from "gql";
@@ -44,7 +44,7 @@ export default function Index() {
       <Box ref={params.InputProps.ref}>
         <TextField
           label="Søg"
-          style={{ width: 200, height: 60 }}
+          sx={{ width: 200, height: 60 }}
           type="text"
           {...params.inputProps}
         />
@@ -54,9 +54,11 @@ export default function Index() {
 
   return (
     <>
-      <Breadcrumbs sx={{ p: [2, 0, 2, 2]}}>
+      <Breadcrumbs sx={{ p: [2, 0, 2, 2] }}>
         <Link component={NextLink} color="primary" href="/group">
-          <Typography sx={{ alignItems: "center", display: "flex" }}>Grupper</Typography>
+          <Typography sx={{ alignItems: "center", display: "flex" }}>
+            Grupper
+          </Typography>
         </Link>
         <Autocomplete
           freeSolo
@@ -65,7 +67,7 @@ export default function Index() {
           renderInput={renderInput}
         />
       </Breadcrumbs>
-      <Card elevation={3} sx={{ m: 1}}>
+      <Card elevation={3} sx={{ m: 1 }}>
         <List sx={{ m: 0 }}>
           {groups.map(
             (group) =>

@@ -19,11 +19,9 @@ export default function PollList({ contentId }: { contentId: string }) {
   const [session] = useSession();
   const query = useQuery();
   const polls = query.contents_by_pk({ id: contentId })?.polls();
-  const [deletePoll] = useMutation(
-    (mutation, id: string) => {
-      return mutation.delete_polls_by_pk({ id });
-    }
-  );
+  const [deletePoll] = useMutation((mutation, id: string) => {
+    return mutation.delete_polls_by_pk({ id });
+  });
 
   const handleDeletePoll = (id: string) => async () => {
     await deletePoll({ args: id });
@@ -34,13 +32,8 @@ export default function PollList({ contentId }: { contentId: string }) {
   return (
     <HeaderCard title="Afstemningsresultater">
       <List>
-        {polls?.map(({ id, votes_aggregate, createdAt, }) => (
-          <ListItem
-            key={id}
-            button
-            component={NextLink}
-            href={`/poll/${id}`}
-          >
+        {polls?.map(({ id, votes_aggregate, createdAt }) => (
+          <ListItem key={id} button component={NextLink} href={`/poll/${id}`}>
             <Tooltip title="Antal stemmer">
               <ListItemAvatar>
                 <Badge
@@ -48,8 +41,8 @@ export default function PollList({ contentId }: { contentId: string }) {
                   max={1000}
                   badgeContent={votes_aggregate().aggregate?.count}
                 >
-                  <Avatar style={{ backgroundColor: "#ec407a" }}>
-                    <HowToVote style={{ color: "#fff" }} />
+                  <Avatar sx={{ backgroundColor: "#ec407a" }}>
+                    <HowToVote sx={{ color: "#fff" }} />
                   </Avatar>
                 </Badge>
               </ListItemAvatar>

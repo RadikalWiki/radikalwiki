@@ -57,7 +57,10 @@ export default function ContentCard({
       <Card elevation={3} sx={{ m: 1 }}>
         <CardHeader
           title={content.name}
-          subheader={content.authors()?.map(({ identity, name }) => identity?.displayName ?? name).join(", ")}
+          subheader={content
+            .authors()
+            ?.map(({ identity, name }) => identity?.displayName ?? name)
+            .join(", ")}
           subheaderTypographyProps={{ color: "inherit" }}
           sx={{
             bgcolor: (theme) => theme.palette.secondary.main,
@@ -96,7 +99,7 @@ export default function ContentCard({
       >
         <Paper>
           <Slider
-            style={{ width: 200, margin: 20 }}
+            sx={{ width: 200, margin: 20 }}
             min={50}
             max={250}
             defaultValue={200}
