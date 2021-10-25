@@ -50,6 +50,7 @@ export default function ChildList({ id }: { id: string }) {
             ? "Ændringsforslag"
             : "Kandidaturer"
         }
+        action={<AddChildButton contentId={id} />}
       />
       <Divider />
       <List>

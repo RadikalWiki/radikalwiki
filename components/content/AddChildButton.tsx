@@ -16,10 +16,13 @@ export default function AddChildButton({ contentId }: { contentId: any }) {
   const [session] = useSession();
   const router = useRouter();
   const query = useQuery();
-  const content = query.contents_by_pk({ id: contentId })
+  const content = query.contents_by_pk({ id: contentId });
   const [addContents] = useMutation(
-    (mutation, args: contents_insert_input[]) => {
-      return mutation.insert_contents({ objects: args })?.returning;
+    (mutation, args: contents_insert_input) => {
+      return mutation.insert_contents_one({ object: args })?.id;
+    },
+    {
+      refetchQueries: [query.contents_by_pk({ id: contentId })],
     }
   );
   const [addAuthors] = useMutation(
@@ -30,26 +33,26 @@ export default function AddChildButton({ contentId }: { contentId: any }) {
 
   const contentType =
     content?.folder?.mode == "candidates" ? "Kandidatur" : "Ændringsforslag";
-  const children = content?.children().map((c) => c.id)
+  const children = content?.children().map((c) => c.id);
   const name =
     content?.folder?.mode == "candidates"
       ? session?.user?.name
       : content?.parent
-      ? `Ændringsforslag ${children?.length ?? 0 + 1} til "${content?.name}"`
-      : `Ændringsforslag ${children?.length ?? 0 + 1}`;
+      ? `Ændringsforslag ${(children?.length ?? 0) + 1} til "${content?.name}"`
+      : `Ændringsforslag ${(children?.length ?? 0) + 1}`;
 
+  console.log(name);
   const handleSubmit = async () => {
-    const newContent = await addContents({
-      args: [{
+    const contentId = await addContents({
+      args: {
         name,
         folderId: content?.folder?.id,
         data: "",
         creatorId: session?.user?.id,
         parentId: content?.id,
-      }],
+      },
     });
-    if (!newContent) return;
-    const contentId = newContent[0].id;
+    if (!contentId) return;
     const objects = [
       {
         email: session?.user?.email,

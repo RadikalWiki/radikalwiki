@@ -67,10 +67,10 @@ function ContentToolbar({ id }: { id: string }) {
       args: id,
     });
 
-    if (content?.parent) {
-      router.push(`/content/${content.parent.id}`);
+    if (content?.parentId) {
+      router.push(`/content/${content.parentId}`);
     } else {
-      router.push(`/folder/${content?.folder?.id}`);
+      router.push(`/folder/${content?.folderId}`);
     }
   };
 
