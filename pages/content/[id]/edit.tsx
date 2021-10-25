@@ -6,6 +6,7 @@ import {
   FileUploader,
   Editor,
   ExpandButton,
+  ContentBreadcrumps,
 } from "comps";
 import { useRouter } from "next/router";
 import {
@@ -29,13 +30,15 @@ import {
   CardHeader,
   Tooltip,
   Collapse,
+  Avatar,
 } from "@mui/material";
-import { Publish, Save, Delete, Subject } from "@mui/icons-material";
+import { Publish, Save, Delete, Subject, Edit } from "@mui/icons-material";
+import { useSession } from "hooks";
 
 const getFileUrl = (file: any) =>
   file?.path && file?.token
-      ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file?.path}?token=${file?.token}`
-      : null;
+    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file?.path}?token=${file?.token}`
+    : null;
 
 export default function Id() {
   return (
@@ -46,6 +49,7 @@ export default function Id() {
 }
 
 function IdRaw() {
+  const [session] = useSession();
   const router = useRouter();
   const id = router.query.id as string;
   const query = useQuery();
@@ -114,41 +118,15 @@ function IdRaw() {
 
   return (
     <>
-      <Breadcrumbs sx={{ p: [2, 0, 2, 2] }}>
-        <Link
-          component={NextLink}
-          sx={{ alignItems: "center", display: "flex" }}
-          color="primary"
-          href="/folder"
-        >
-          <Tooltip title="Indhold">
-            <Subject />
-          </Tooltip>
-        </Link>
-        {content?.parent ? (
-          <Link
-            component={NextLink}
-            color="primary"
-            href={`/content/${content?.parent.id}`}
-          >
-            {content?.parent.name}
-          </Link>
-        ) : (
-          <Link
-            component={NextLink}
-            color="primary"
-            href={`/folder/${content?.folder?.id}`}
-          >
-            {content?.folder?.name}
-          </Link>
-        )}
-        <Link component={NextLink} color="primary" href={`/content/${id}`}>
-          {name}
-        </Link>
-      </Breadcrumbs>
+      <ContentBreadcrumps id={id} />
       <Card elevation={3} sx={{ m: 1 }}>
         <CardHeader
-          title={`${name} (Redigering)`}
+          title={name}
+          avatar={
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+              <Edit/>
+            </Avatar>
+          }
           subheader={
             !(content?.parent && content?.folder?.mode === "candidates")
               ? formatAuthors(authors)
@@ -176,16 +154,17 @@ function IdRaw() {
             >
               Gem
             </Button>
-            {!content?.published && (
-              <Button
-                color="primary"
-                variant="contained"
-                endIcon={<Publish />}
-                onClick={handleSave(true)}
-              >
-                Indsend
-              </Button>
-            )}
+            {!content?.published ||
+              (session?.roles?.includes("admin") && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  endIcon={<Publish />}
+                  onClick={handleSave(true)}
+                >
+                  Indsend
+                </Button>
+              ))}
           </CardActions>
           <Divider />
           <CardContent>
@@ -205,7 +184,10 @@ function IdRaw() {
               <Grid item xs={12}>
                 <Grid container>
                   <Grid item xs={9}>
-                    <FileUploader contentId={content?.id} onNewFile={(file: any) => setImage(getFileUrl(file))}>
+                    <FileUploader
+                      contentId={content?.id}
+                      onNewFile={(file: any) => setImage(getFileUrl(file))}
+                    >
                       <Button
                         variant="contained"
                         color="primary"
@@ -218,10 +200,7 @@ function IdRaw() {
                   {image && (
                     <Grid item xs={3}>
                       <Paper sx={{ p: 1, m: 1 }}>
-                        <Image
-                          alt="Billede for indhold"
-                          src={image}
-                        />
+                        <Image alt="Billede for indhold" src={image} />
                       </Paper>
                     </Grid>
                   )}
