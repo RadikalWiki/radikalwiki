@@ -59,7 +59,7 @@ export default function AddContentFab({ id }: { id: string }) {
     router.push(`/content/${contentId}/edit`);
   };
 
-  if (!folder?.lockContent) return null;
+  if (folder?.lockContent) return null;
 
   return (
     <>
