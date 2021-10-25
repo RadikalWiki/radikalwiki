@@ -34,7 +34,7 @@ function ContentToolbar({ id }: { id: string }) {
     }
   );
   const [deleteContent] = useMutation((mutation, id: string) => {
-    return mutation.delete_contents_by_pk({ id });
+    return mutation.delete_contents_by_pk({ id })?.id;
   });
   const [updateEvent] = useMutation(
     (mutation, args: { id: string; set: any }) => {
