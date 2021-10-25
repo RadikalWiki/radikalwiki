@@ -24,27 +24,25 @@ export default function AddContentFab({ id }: { id: string }) {
   const [addContents] = useMutation(
     (
       mutation,
-      objects: {
+      object: {
         name: string;
         folderId: string;
         data: string;
         creatorId: string;
-      }[]
+      }
     ): string => {
-      return mutation.insert_contents({ objects })?.returning[0].id;
+      return mutation.insert_contents_one({ object })?.id;
     }
   );
   const [addAuthors] = useMutation(
     (mutation, objects: { email: string; contentId: string }[]) => {
-      mutation.insert_authorships({ objects });
+      mutation.insert_authorships({ objects })?.returning;
     }
   );
 
   const handleSubmit = async () => {
     const contentId = await addContents({
-      args: [
-        { name, folderId: folder?.id, data: "", creatorId: session?.user?.id as string },
-      ],
+      args: { name, folderId: folder?.id, data: "", creatorId: session?.user?.id as string },
     });
     const args = [{ email: session?.user?.email as string, contentId }];
     await addAuthors({ args });
