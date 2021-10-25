@@ -23,24 +23,23 @@ export default function AddFolderDialog({ folder, open, setOpen }: any) {
   const [name, setName] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [mode, setMode] = useState("");
-  const [addFolders] = useMutation((mutation, args: folders_insert_input[]) => {
-    return mutation.insert_folders({ objects: args })?.returning;
+  const [addFolders] = useMutation((mutation, args: folders_insert_input) => {
+    return mutation.insert_folders_one({ object: args })?.id;
   });
 
   const handleSubmit = async () => {
     const newFolder = await addFolders({
-      args: [
-        {
-          name,
-          subtitle,
-          eventId: session?.event?.id,
-          mode,
-          parentId: folder.id,
-        },
-      ],
+      args: {
+        name,
+        subtitle,
+        eventId: session?.event?.id,
+        mode,
+        parentId: folder.id,
+      },
     });
     if (!newFolder) return;
-    router.push(`/folder/${newFolder[0].id}`);
+    setOpen(false);
+    router.push(`/folder/${newFolder}`);
   };
 
   return (
@@ -78,10 +77,14 @@ export default function AddFolderDialog({ folder, open, setOpen }: any) {
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setOpen(false)} color="primary">
+        <Button
+          onClick={() => setOpen(false)}
+          color="primary"
+          variant="contained"
+        >
           Anuller
         </Button>
-        <Button onClick={handleSubmit} color="primary">
+        <Button onClick={handleSubmit} color="primary" variant="contained">
           Tilføj
         </Button>
       </DialogActions>
