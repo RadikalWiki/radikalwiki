@@ -55,14 +55,14 @@ function IdRaw() {
       return mutation.update_contents_by_pk({
         pk_columns: { id: args.id },
         _set: args.set,
-      });
+      })?.id;
     }
   );
   const [deleteContent] = useMutation((mutation, id: string) => {
-    return mutation.delete_contents_by_pk({ id });
+    return mutation.delete_contents_by_pk({ id })?.id;
   });
   const [deleteAuthors] = useMutation((mutation, id: string) => {
-    return mutation.delete_authorships_by_pk({ id });
+    return mutation.delete_authorships_by_pk({ id })?.id;
   });
   const [addAuthors] = useMutation(
     (mutation, args: authorships_insert_input[]) => {
