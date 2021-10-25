@@ -15,7 +15,7 @@ export default function Image({
 }: {
   src: any;
   alt: any;
-  layout: any;
+  layout?: any;
   onLoad?: Function;
   onError?: Function;
   animationDuration?: number;

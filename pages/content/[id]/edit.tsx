@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Suspense } from "react";
 import {
+  Image,
   Link as NextLink,
   AuthorTextField,
   FileUploader,
@@ -13,7 +14,6 @@ import {
   authorships_insert_input,
   authorships,
 } from "gql";
-import Image from "next/image";
 import {
   Box,
   Divider,
