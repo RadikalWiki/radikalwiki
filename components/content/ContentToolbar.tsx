@@ -33,9 +33,16 @@ function ContentToolbar({ id }: { id: string }) {
       ],
     }
   );
-  const [deleteContent] = useMutation((mutation, id: string) => {
-    return mutation.delete_contents_by_pk({ id })?.id;
-  });
+  const [deleteContent] = useMutation(
+    (mutation, id: string) => {
+      return mutation.delete_contents_by_pk({ id })?.id;
+    },
+    {
+      refetchQueries: [
+        query.folders_by_pk({ id: content?.folderId })
+      ],
+    }
+  );
   const [updateEvent] = useMutation(
     (mutation, args: { id: string; set: any }) => {
       return mutation.update_events_by_pk({
@@ -151,11 +158,7 @@ function ContentToolbar({ id }: { id: string }) {
       </CardActions>
       <Divider />
       {!(content?.parent && content?.folder?.mode == "candidates") && (
-        <PollDialog
-          id={id}
-          open={openPollDialog}
-          setOpen={setOpenPollDialog}
-        />
+        <PollDialog id={id} open={openPollDialog} setOpen={setOpenPollDialog} />
       )}
     </>
   );

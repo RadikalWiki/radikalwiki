@@ -32,6 +32,11 @@ export default function AddContentFab({ id }: { id: string }) {
       }
     ): string => {
       return mutation.insert_contents_one({ object })?.id;
+    },
+    {
+      refetchQueries: [
+        query.folders_by_pk({ id }),
+      ],
     }
   );
   const [addAuthors] = useMutation(
@@ -42,7 +47,12 @@ export default function AddContentFab({ id }: { id: string }) {
 
   const handleSubmit = async () => {
     const contentId = await addContents({
-      args: { name, folderId: folder?.id, data: "", creatorId: session?.user?.id as string },
+      args: {
+        name,
+        folderId: folder?.id,
+        data: "",
+        creatorId: session?.user?.id as string,
+      },
     });
     const args = [{ email: session?.user?.email as string, contentId }];
     await addAuthors({ args });
@@ -80,7 +90,11 @@ export default function AddContentFab({ id }: { id: string }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" onClick={() => setOpen(false)} color="primary">
+          <Button
+            variant="contained"
+            onClick={() => setOpen(false)}
+            color="primary"
+          >
             Anuller
           </Button>
           <Button variant="contained" onClick={handleSubmit} color="primary">
