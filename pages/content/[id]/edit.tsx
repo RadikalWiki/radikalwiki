@@ -33,9 +33,9 @@ import {
 import { Publish, Save, Delete, Subject } from "@mui/icons-material";
 
 const getFileUrl = (file: any) =>
-  file
-    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file.path}?token=${file.token}`
-    : null;
+  file?.path && file?.token
+      ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file?.path}?token=${file?.token}`
+      : null;
 
 export default function Id() {
   return (
@@ -81,7 +81,7 @@ function IdRaw() {
       setName(content?.name ?? "");
       setAuthors(content?.authors().map((author) => ({ ...author })));
       setData(content?.data ?? "");
-      setImage({ ...content?.file } ?? "");
+      setImage(getFileUrl(content?.file));
     }
   }, [content]);
 
@@ -205,7 +205,7 @@ function IdRaw() {
               <Grid item xs={12}>
                 <Grid container>
                   <Grid item xs={9}>
-                    <FileUploader contentId={content?.id} onNewFile={setImage}>
+                    <FileUploader contentId={content?.id} onNewFile={(file: any) => setImage(getFileUrl(file))}>
                       <Button
                         variant="contained"
                         color="primary"
@@ -220,7 +220,7 @@ function IdRaw() {
                       <Paper sx={{ p: 1, m: 1 }}>
                         <Image
                           alt="Billede for indhold"
-                          src={getFileUrl(image) || ""}
+                          src={image}
                         />
                       </Paper>
                     </Grid>
