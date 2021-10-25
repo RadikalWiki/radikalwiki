@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   Link as NextLink,
   AuthorTextField,
@@ -12,9 +12,7 @@ import {
   useMutation,
   authorships_insert_input,
   authorships,
-  files,
 } from "gql";
-import { useSession } from "hooks";
 import Image from "next/image";
 import {
   Box,
@@ -40,7 +38,14 @@ const getFileUrl = (file: any) =>
     : null;
 
 export default function Id() {
-  const [session] = useSession();
+  return (
+    <Suspense fallback={null}>
+      <IdRaw />
+    </Suspense>
+  );
+}
+
+function IdRaw() {
   const router = useRouter();
   const id = router.query.id as string;
   const query = useQuery();
@@ -213,7 +218,10 @@ export default function Id() {
                   {image && (
                     <Grid item xs={3}>
                       <Paper sx={{ p: 1, m: 1 }}>
-                        <Image alt="Billede for indhold" src={getFileUrl(image) || ""} />
+                        <Image
+                          alt="Billede for indhold"
+                          src={getFileUrl(image) || ""}
+                        />
                       </Paper>
                     </Grid>
                   )}
