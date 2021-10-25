@@ -35,14 +35,6 @@ import {
 import { useQuery } from "gql";
 import { TransitionGroup } from "react-transition-group";
 
-const getFolderLetter = (index: number) => {
-  let res = String.fromCharCode(65 + (index % 26));
-  if (index >= 26) {
-    res = String.fromCharCode(64 + Math.floor(index / 26)) + res;
-  }
-  return res;
-};
-
 export default function FolderCard({
   id,
   filter,
@@ -77,6 +69,17 @@ export default function FolderCard({
     .concat(folders)
     .sort((f: any, s: any) => f.priority - s.priority);
 
+  let letterIndex = 0;
+  const getFolderLetter = (increment: boolean) => {
+    const index = letterIndex;
+    if (increment) letterIndex += 1;
+    let res = String.fromCharCode(65 + (index % 26));
+    if (index >= 26) {
+      res = String.fromCharCode(64 + Math.floor(index / 26)) + res;
+    }
+    return res;
+  };
+  
   return (
     <Card elevation={3} sx={{ m: 1 }}>
       <List sx={{ m: 0 }}>
@@ -84,7 +87,7 @@ export default function FolderCard({
         <TransitionGroup>
           {list.map(({ id, name, type, subtitle, published }, index) =>
             name?.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) ||
-            getFolderLetter(index)
+            getFolderLetter(false)
               .toLocaleLowerCase()
               .includes(filter.toLocaleLowerCase()) ? (
               <Collapse key={id}>
@@ -100,7 +103,7 @@ export default function FolderCard({
                       <Avatar
                         sx={{ bgcolor: (theme) => theme.palette.primary.main }}
                       >
-                        {getFolderLetter(index)}
+                        {getFolderLetter(true)}
                       </Avatar>
                     ) : (
                       <Tooltip title="Ikke indsendt">
