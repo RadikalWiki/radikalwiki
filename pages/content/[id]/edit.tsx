@@ -41,17 +41,24 @@ const getFileUrl = (file: any) =>
     : null;
 
 export default function Id() {
+  const [_, setSession] = useSession();
+  const router = useRouter();
+  const id = router.query.id as string;
+  if(!id) return null
+  useEffect(() => {
+    setSession({ path: `/content/${id}/edit` })
+  }, [id]);
+
   return (
     <Suspense fallback={null}>
-      <IdRaw />
+      <IdRaw id={id} />
     </Suspense>
   );
 }
 
-function IdRaw() {
+function IdRaw({ id }: { id: string }) {
   const [session] = useSession();
   const router = useRouter();
-  const id = router.query.id as string;
   const query = useQuery();
   const content = query.contents_by_pk({ id });
   const [updateContent] = useMutation(

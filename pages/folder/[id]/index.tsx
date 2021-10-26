@@ -1,5 +1,5 @@
 import React, {
-  Suspense, useState,
+  Suspense, useEffect, useState,
 } from "react";
 import {
   AddContentFab,
@@ -8,14 +8,19 @@ import {
   FolderCard,
 } from "comps";
 import { useRouter } from "next/router";
+import { useSession } from "hooks";
 
 
 export default function Id() {
+  const [_, setSession] = useSession() 
   const router = useRouter();
   const id = router.query.id as string;
   const [filter, setFilter] = useState("");
 
   if(!id) return null
+  useEffect(() => {
+    setSession({ path: `/folder/${id}` })
+  }, [id]);
 
   return (
     <Suspense fallback={null}>
