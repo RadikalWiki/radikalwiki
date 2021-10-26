@@ -1,7 +1,7 @@
 import { useEffect, createContext, useContext } from "react";
 
 type Session = {
-  event?: { id: string; name: string; shortName: string };
+  event?: { id: string; name: string; shortName: string, folderId: string };
   roles?: string[];
   user?: { id: string; name: string; email: string };
   timeDiff?: number;

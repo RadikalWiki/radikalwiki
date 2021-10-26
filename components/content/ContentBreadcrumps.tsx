@@ -3,8 +3,10 @@ import { Breadcrumbs, Tooltip, Link, Stack } from "@mui/material";
 import { Box } from "@mui/system";
 import { Link as NextLink } from "comps";
 import { useQuery } from "gql";
+import { useSession } from "hooks";
 
 export default function ContentBreadcrumps({ id }: { id: string }) {
+  const [session] = useSession();
   const query = useQuery();
   const content = query.contents_by_pk({ id });
 
@@ -16,7 +18,7 @@ export default function ContentBreadcrumps({ id }: { id: string }) {
             component={NextLink}
             sx={{ alignItems: "center", display: "flex" }}
             color="primary"
-            href="/folder"
+            href={`/folder/${session?.event?.folderId}`}
           >
             <Tooltip title="Indhold">
               <Subject />

@@ -20,6 +20,7 @@ import { useQuery } from "gql";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Link as NextLink } from "comps";
+import { useSession } from "hooks";
 
 export default function FolderCard({
   id,
@@ -30,6 +31,7 @@ export default function FolderCard({
   filter: string;
   setFilter: Function;
 }) {
+  const [session] = useSession();
   const query = useQuery();
   const folder = query.folders_by_pk({ id });
   const [searchOpen, setSearchOpen] = useState(false);
@@ -50,7 +52,7 @@ export default function FolderCard({
             <Link
               component={NextLink}
               color="primary"
-              href={`/folder`}
+              href={`/folder/${session?.event?.folderId}`}
               sx={{ alignItems: "center", display: "flex" }}
             >
               <Tooltip title="Indhold">

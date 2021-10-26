@@ -41,7 +41,7 @@ export default function EventDialog({
       session?.user?.id;
     const event = await resolved(() => {
       const event = query.events_by_pk({ id });
-      return { id: event?.id, name: event?.name ?? "", shortName: event?.shortName ?? "" };
+      return { id: event?.id, name: event?.name ?? "", shortName: event?.shortName ?? "", folderId: event?.folderId };
     });
     setSession({
       event,
