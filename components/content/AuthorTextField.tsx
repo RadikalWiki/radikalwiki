@@ -25,9 +25,8 @@ export default function AuthorTextField({
           limit: 10,
           where: { displayName: { _ilike: like } },
           order_by: [{ displayName: order_by.asc }],
-        }).map(({ displayName, email }) => ({ displayName, email }));
+        }).map(({ displayName, email }) => ({ displayName, email })).map((identity) => ({ identity }));
       })
-      
       let newOptions: any[] = [];
 
       if (value) {
@@ -36,7 +35,7 @@ export default function AuthorTextField({
 
       if (identities) {
         newOptions = [
-          ...identities.map((identity) => ({ identity })),
+          ...identities,
           ...newOptions,
         ];
       }
@@ -47,6 +46,8 @@ export default function AuthorTextField({
           name: capitalize(inputValue),
         },
       ];
+      console.log(newOptions)
+
       setOptions(newOptions);
     };
     fetch();
