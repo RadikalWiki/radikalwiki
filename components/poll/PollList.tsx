@@ -1,3 +1,4 @@
+import React, { Fragment } from "react";
 import { HeaderCard, Link as NextLink } from "comps";
 import {
   List,
@@ -9,16 +10,17 @@ import {
   Avatar,
   ListItemSecondaryAction,
   IconButton,
+  Divider,
   Fade,
 } from "@mui/material";
 import { Cancel, HowToVote } from "@mui/icons-material";
 import { useSession } from "hooks";
 import { useMutation, useQuery } from "gql";
 
-export default function PollList({ contentId }: { contentId: string }) {
+export default function PollList({ id }: { id: string }) {
   const [session] = useSession();
   const query = useQuery();
-  const polls = query.contents_by_pk({ id: contentId })?.polls();
+  const polls = query.contents_by_pk({ id })?.polls();
   const [deletePoll] = useMutation((mutation, id: string) => {
     return mutation.delete_polls_by_pk({ id });
   });
@@ -31,38 +33,42 @@ export default function PollList({ contentId }: { contentId: string }) {
 
   return (
     <HeaderCard title="Afstemningsresultater">
+      <Divider />
       <List>
         {polls?.map(({ id, votes_aggregate, createdAt }) => (
-          <ListItem key={id} button component={NextLink} href={`/poll/${id}`}>
-            <Tooltip title="Antal stemmer">
-              <ListItemAvatar>
-                <Badge
-                  color="secondary"
-                  max={1000}
-                  badgeContent={votes_aggregate().aggregate?.count}
-                >
-                  <Avatar sx={{ backgroundColor: "#ec407a" }}>
-                    <HowToVote sx={{ color: "#fff" }} />
-                  </Avatar>
-                </Badge>
-              </ListItemAvatar>
-            </Tooltip>
-            <ListItemText
-              primary={`${new Date(createdAt).toLocaleString("da-DK")}`}
-            />
-            {session?.roles?.includes("admin") && (
-              <ListItemSecondaryAction>
-                <IconButton
-                  onClick={handleDeletePoll(id)}
-                  color="primary"
-                  edge="end"
-                  size="large"
-                >
-                  <Cancel />
-                </IconButton>
-              </ListItemSecondaryAction>
-            )}
-          </ListItem>
+          <Fragment key={id}>
+            <ListItem button component={NextLink} href={`/poll/${id}`}>
+              <Tooltip title="Antal stemmer">
+                <ListItemAvatar>
+                  <Badge
+                    color="secondary"
+                    max={1000}
+                    badgeContent={votes_aggregate().aggregate?.count()}
+                  >
+                    <Avatar sx={{ backgroundColor: "#ec407a" }}>
+                      <HowToVote sx={{ color: "#fff" }} />
+                    </Avatar>
+                  </Badge>
+                </ListItemAvatar>
+              </Tooltip>
+              <ListItemText
+                primary={`${new Date(createdAt).toLocaleString("da-DK")}`}
+              />
+              {session?.roles?.includes("admin") && (
+                <ListItemSecondaryAction>
+                  <IconButton
+                    onClick={handleDeletePoll(id)}
+                    color="primary"
+                    edge="end"
+                    size="large"
+                  >
+                    <Cancel />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              )}
+            </ListItem>
+            <Divider />
+          </Fragment>
         ))}
       </List>
     </HeaderCard>

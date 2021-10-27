@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import { ChildList, ContentBreadcrumps, ContentCard } from "comps";
+import { ChildList, ContentBreadcrumps, ContentCard, PollList } from "comps";
 import { useRouter } from "next/router";
 import { useSession } from "hooks";
 
@@ -19,6 +19,7 @@ export default function Id() {
       <ContentBreadcrumps id={id} />
       <ContentCard id={id} />
       <ChildList id={id} />
+      <PollList id={id} />
     </Suspense>
   );
 }
