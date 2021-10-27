@@ -29,11 +29,9 @@ export default function VoteForm() {
 
   const poll = subscription.events_by_pk({ id: session?.event?.id })?.poll;
 
-  const [vote, setVote] = useState(
-    new Array(poll?.options.length).fill(false) || []
-  );
+  const [vote, setVote] = useState<any[]>([]);
   useEffect(() => {
-    setVote(new Array(poll?.options.length).fill(false));
+    setVote(new Array(poll?.options?.length).fill(false));
   }, [poll]);
 
   const validate = (vote: any, submit: boolean) => {
@@ -51,17 +49,17 @@ export default function VoteForm() {
     if (submit && (poll?.minVote ?? 1) > selected) {
       setHelperText(
         `Vælg venligst mindst ${poll?.minVote} mulighed${
-          poll?.minVote ?? 1 > 1 ? "er" : ""
+          (poll?.minVote ?? 1) > 1 ? "er" : ""
         }`
       );
       setError(true);
       return false;
     }
 
-    if (poll?.maxVote ?? 1 < selected) {
+    if ((poll?.maxVote ?? 1) < selected) {
       setHelperText(
         `Vælg venligst max ${poll?.maxVote} mulighed${
-          poll?.maxVote ?? 1 > 1 ? "er" : ""
+          (poll?.maxVote ?? 1) > 1 ? "er" : ""
         }`
       );
       setError(true);
@@ -136,7 +134,7 @@ export default function VoteForm() {
         <form onSubmit={handleSubmit}>
           <FormControl error={error}>
             <FormGroup>
-              {poll?.options.map((opt: any, index: number) => (
+              {poll?.options?.map((opt: any, index: number) => (
                 <FormControlLabel
                   key={index}
                   value={index}
