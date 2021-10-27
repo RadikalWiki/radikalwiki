@@ -23,7 +23,7 @@ export default function AddGroupFab() {
   const [shortName, setShortName] = useState("");
   const [addGroup] = useMutation(
     (mutation, args: groups_insert_input[]) => {
-      return mutation.insert_groups({ objects: args })?.affected_rows;
+      return mutation.insert_groups({ objects: args })?.returning;
     }
   );
 
