@@ -75,11 +75,16 @@ function IdRaw({ id }: { id: string }) {
     return mutation.delete_contents_by_pk({ id })?.id;
   });
   const [deleteAuthors] = useMutation((mutation, id: string) => {
-    return mutation.delete_authorships_by_pk({ id })?.id;
+    return mutation.delete_authorships({ where: { contentId: { _eq: id } } })?.affected_rows;
   });
   const [addAuthors] = useMutation(
     (mutation, args: authorships_insert_input[]) => {
-      return mutation.insert_authorships({ objects: args })?.returning;
+      return mutation.insert_authorships({ objects: args })?.affected_rows;
+    },
+    {
+      refetchQueries: [
+        query.contents_by_pk({ id }),
+      ],
     }
   );
 
