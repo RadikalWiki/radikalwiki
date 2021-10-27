@@ -44,10 +44,12 @@ export default function Id() {
   const [_, setSession] = useSession();
   const router = useRouter();
   const id = router.query.id as string;
-  if(!id) return null
+
   useEffect(() => {
-    setSession({ path: `/content/${id}/edit` })
+    if (id) setSession({ path: `/content/${id}/edit` });
   }, [id]);
+
+  if (!id) return null;
 
   return (
     <Suspense fallback={null}>
@@ -131,7 +133,7 @@ function IdRaw({ id }: { id: string }) {
           title={name}
           avatar={
             <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              <Edit/>
+              <Edit />
             </Avatar>
           }
           subheader={
