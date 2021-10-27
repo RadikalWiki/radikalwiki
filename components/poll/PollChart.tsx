@@ -27,7 +27,6 @@ const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
       data: [{ 0: poll.votes_aggregate().aggregate?.count }],
     };
   }
-  console.log(poll.options)
   let res: Record<string, any> = { arg: "none" };
   for (let i = 0; i < poll.options?.length; i++) {
     res[i] = 0;

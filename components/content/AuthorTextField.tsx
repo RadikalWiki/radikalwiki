@@ -46,7 +46,6 @@ export default function AuthorTextField({
           name: capitalize(inputValue),
         },
       ];
-      console.log(newOptions)
 
       setOptions(newOptions);
     };

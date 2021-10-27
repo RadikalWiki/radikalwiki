@@ -41,7 +41,6 @@ export default function AddChildButton({ contentId }: { contentId: any }) {
       ? `Ændringsforslag ${(children?.length ?? 0) + 1} til "${content?.name}"`
       : `Ændringsforslag ${(children?.length ?? 0) + 1}`;
 
-  console.log(name);
   const handleSubmit = async () => {
     const contentId = await addContents({
       args: {

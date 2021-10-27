@@ -8,11 +8,12 @@ export default function Vote() {
   const router = useRouter();
   const [session] = useSession();
   const query = useQuery();
+  const poll = query.events_by_pk({ id: session?.event?.id })?.poll;
   useEffect(() => {
-    const canVote = query.canVote({ eventId: session?.event?.id });
-    if (!canVote) return;
-    if (canVote.canVote === false && query.events_by_pk({ id: session?.event?.id })?.poll?.active) {
-      router.push(`/poll/${canVote.pollId}`);
+    const res = query.canVote({ eventId: session?.event?.id });
+    if (!res) return;
+    if (res.canVote === false && poll?.active) {
+      router.push(`/poll/${res.pollId}`);
     }
   }, [query, router, session?.event?.id]);
 
