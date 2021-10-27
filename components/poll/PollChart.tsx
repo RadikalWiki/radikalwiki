@@ -54,7 +54,7 @@ export default function PollChart({
   const admin = session?.roles?.includes("admin") ?? false;
   const chartData = parseData(poll, screen, admin) || [];
   const voteCount =
-    poll?.content?.folder?.event?.admissions_aggregate().aggregate?.count;
+    poll?.content?.folder?.event?.admissions_aggregate().aggregate?.count();
 
 
   return (
