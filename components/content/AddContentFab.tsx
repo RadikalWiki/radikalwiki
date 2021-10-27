@@ -41,7 +41,7 @@ export default function AddContentFab({ id }: { id: string }) {
   );
   const [addAuthors] = useMutation(
     (mutation, objects: { email: string; contentId: string }[]) => {
-      mutation.insert_authorships({ objects })?.returning;
+      mutation.insert_authorships({ objects })?.affected_rows;
     }
   );
 

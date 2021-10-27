@@ -15,7 +15,7 @@ export default function FileUploader({
 }) {
   const [session] = useSession();
   const [addFiles] = useMutation((mutation, args: files_insert_input[]) => {
-    return mutation.insert_files({ objects: args })?.returning;
+    return mutation.insert_files({ objects: args })?.affected_rows;
   });
 
   const handleChangeFile = async (e: any) => {

@@ -28,11 +28,11 @@ export default function AddMembershipsFab({ groupId }: { groupId?: string }) {
   const [shortName, setShortName] = useState("");
   const [addMemberships] = useMutation(
     (mutation, args: memberships_insert_input[]) => {
-      return mutation.insert_memberships({ objects: args })?.returning;
+      return mutation.insert_memberships({ objects: args })?.affected_rows;
     }
   );
   const [addRoles] = useMutation((mutation, args: roles_insert_input[]) => {
-    return mutation.insert_roles({ objects: args })?.returning;
+    return mutation.insert_roles({ objects: args })?.affected_rows;
   });
 
   const handleFile = async (fileData: any) => {

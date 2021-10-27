@@ -13,12 +13,12 @@ export default function AddContentsFab({ folderId }: { folderId: string }) {
   const [session] = useSession();
   const [addContent] = useMutation(
     (mutation, args: contents_insert_input[]) => {
-      return mutation.insert_contents({ objects: args })?.returning;
+      return mutation.insert_contents({ objects: args })?.affected_rows;
     }
   );
   const [addAuthors] = useMutation(
     (mutation, args: authorships_insert_input[]) => {
-      return mutation.insert_authorships({ objects: args })?.returning;
+      return mutation.insert_authorships({ objects: args })?.affected_rows;
     }
   );
 

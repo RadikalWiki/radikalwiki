@@ -22,7 +22,7 @@ export default function VoteForm() {
   const subscription = useSubscription();
   //const [addVote] = useMutation(VOTE_ACTION);
   const [addVotes] = useMutation((mutation, args: votes_insert_input[]) => {
-    return mutation.insert_files({ objects: args })?.returning;
+    return mutation.insert_files({ objects: args })?.affected_rows;
   });
   const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);

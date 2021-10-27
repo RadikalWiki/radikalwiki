@@ -27,7 +27,7 @@ export default function AddChildButton({ contentId }: { contentId: any }) {
   );
   const [addAuthors] = useMutation(
     (mutation, args: authorships_insert_input[]) => {
-      return mutation.insert_authorships({ objects: args })?.returning;
+      return mutation.insert_authorships({ objects: args })?.affected_rows;
     }
   );
 

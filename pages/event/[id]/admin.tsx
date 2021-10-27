@@ -25,7 +25,7 @@ export default function Index() {
   const [users, setUsers] = useState<any[]>([]);
   const [addAdmissions] = useMutation(
     (mutation, args: admissions_insert_input[]) => {
-      return mutation.insert_admissions({ objects: args })?.returning;
+      return mutation.insert_admissions({ objects: args })?.affected_rows;
     },
     {
       refetchQueries: [event],

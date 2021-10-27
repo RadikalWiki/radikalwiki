@@ -6,7 +6,7 @@ import { CSVReader } from "comps";
 export default function AddIdentitiesFab() {
   const [addIdentities] = useMutation(
     (mutation, args: identities_insert_input[]) => {
-      return mutation.insert_identities({ objects: args })?.returning;
+      return mutation.insert_identities({ objects: args })?.affected_rows;
     }
   );
 

@@ -7,7 +7,7 @@ import { CSVReader } from "comps";
 export default function AddAdmissionsFab({ eventId }: { eventId?: string }) {
   const [addAdmissions] = useMutation(
     (mutation, args: admissions_insert_input[]) => {
-      return mutation.insert_admissions({ objects: args })?.returning;
+      return mutation.insert_admissions({ objects: args })?.affected_rows;
     }
   );
 
