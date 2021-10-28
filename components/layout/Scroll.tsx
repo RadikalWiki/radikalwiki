@@ -27,14 +27,31 @@ export default function Scroll({ children }: any) {
   return (
     <>
       <Box id="top-anchor" />
-      <Box sx={{ overflowY: "auto", WebkitOverflowScrolling: "touch", height: "calc(100vh - 64px)" }} id="scroll">
+      <Box
+        sx={{
+          // Disable scroll (Firefox)
+          scrollbarWidth: "none",
+          // Disable scroll (Webkit)
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+          height: "calc(100vh - 64px)",
+        }}
+        id="scroll"
+      >
         {children}
       </Box>
       <Zoom in={trigger}>
         <Box
           onClick={handleClick}
           role="presentation"
-          sx={{ position: "fixed", bottom: (t) => t.spacing(9), left: (t) => t.spacing(3) }}
+          sx={{
+            position: "fixed",
+            bottom: (t) => t.spacing(9),
+            left: (t) => t.spacing(3),
+          }}
         >
           <Fab color="primary" size="small">
             <KeyboardArrowUp />
