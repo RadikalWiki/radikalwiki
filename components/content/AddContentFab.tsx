@@ -7,6 +7,7 @@ import {
   DialogContent,
   DialogTitle,
   Fab,
+  Zoom,
 } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useSession } from "hooks";
@@ -34,9 +35,7 @@ export default function AddContentFab({ id }: { id: string }) {
       return mutation.insert_contents_one({ object })?.id;
     },
     {
-      refetchQueries: [
-        query.folders_by_pk({ id }),
-      ],
+      refetchQueries: [query.folders_by_pk({ id })],
     }
   );
   const [addAuthors] = useMutation(
@@ -63,20 +62,22 @@ export default function AddContentFab({ id }: { id: string }) {
 
   return (
     <>
-      <Fab
-        sx={{
-          position: "fixed",
-          bottom: (t) => t.spacing(9),
-          right: (t) => t.spacing(3),
-        }}
-        variant="extended"
-        color="primary"
-        aria-label="Tilføj indhold"
-        onClick={() => setOpen(true)}
-      >
-        <Add sx={{ mr: 1 }} />
-        Indhold
-      </Fab>
+      <Zoom in={true}>
+        <Fab
+          sx={{
+            position: "fixed",
+            bottom: (t) => t.spacing(9),
+            right: (t) => t.spacing(3),
+          }}
+          variant="extended"
+          color="primary"
+          aria-label="Tilføj indhold"
+          onClick={() => setOpen(true)}
+        >
+          <Add sx={{ mr: 1 }} />
+          Indhold
+        </Fab>
+      </Zoom>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Tilføj indhold</DialogTitle>
         <DialogContent>

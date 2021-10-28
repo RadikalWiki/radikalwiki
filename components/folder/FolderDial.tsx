@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Avatar } from "@mui/material";
-import { SpeedDial, SpeedDialAction } from '@mui/material';
+import { Avatar, Zoom } from "@mui/material";
+import { SpeedDial, SpeedDialAction } from "@mui/material";
 import {
   Add,
   LowPriority,
@@ -24,11 +24,14 @@ export default function FolderDial({ id }: { id: string }) {
   const query = useQuery();
   const folder = query.folders_by_pk({ id });
   const [updateFolder] = useMutation(
-    (mutation, args: { id: string, set: any }) => {
-      return mutation.update_folders_by_pk({ pk_columns: { id: args.id }, _set: args.set })?.id;
+    (mutation, args: { id: string; set: any }) => {
+      return mutation.update_folders_by_pk({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      })?.id;
     },
     {
-      refetchQueries: [query.folders_by_pk({ id })]
+      refetchQueries: [query.folders_by_pk({ id })],
     }
   );
 
@@ -46,7 +49,7 @@ export default function FolderDial({ id }: { id: string }) {
   };
 
   const handleExport = async () => {
-    const exportFolder = query.folders_by_pk({ id: folder?.id })
+    const exportFolder = query.folders_by_pk({ id: folder?.id });
 
     const html = exportFolder?.contents().map(formatContent).join("");
     const blob = await HTMLtoDOCX(html as string, "", {
@@ -88,67 +91,73 @@ export default function FolderDial({ id }: { id: string }) {
 
   return (
     <>
-      <SpeedDial
-        ariaLabel="Administrer mappe"
-        sx={{ position: "fixed", bottom: (t) => t.spacing(16), right: (t) => t.spacing(3) }}
-        icon={<SupervisorAccount />}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
-        open={open}
-      >
-        <SpeedDialAction
-          icon={
-            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              {folder?.lockContent ? <LockOpen /> : <Lock />}
-            </Avatar>
-          }
-          tooltipTitle={`${folder?.lockContent ? "Lås op" : "Lås"} indhold`}
-          tooltipOpen
-          onClick={handleLockContent}
-        />
-        <SpeedDialAction
-          icon={
-            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              {folder?.lockChildren ? <LockOpen /> : <Lock />}
-            </Avatar>
-          }
-          tooltipTitle={`${
-            folder?.lockChildren ? "Lås op" : "Lås"
-          } ${childName}`}
-          tooltipOpen
-          onClick={handleLockChildren}
-        />
-        <SpeedDialAction
-          icon={
-            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              <Add />
-            </Avatar>
-          }
-          tooltipTitle="Mappe"
-          tooltipOpen
-          onClick={() => setAddDialog(true)}
-        />
-        <SpeedDialAction
-          icon={
-            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              <LowPriority />
-            </Avatar>
-          }
-          tooltipTitle="Sorter"
-          tooltipOpen
-          onClick={() => router.push(`/folder/${folder?.id}/sort`)}
-        />
-        <SpeedDialAction
-          icon={
-            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-              <GetApp />
-            </Avatar>
-          }
-          tooltipTitle="Eksporter"
-          tooltipOpen
-          onClick={handleExport}
-        />
-      </SpeedDial>
+      <Zoom in={true}>
+        <SpeedDial
+          ariaLabel="Administrer mappe"
+          sx={{
+            position: "fixed",
+            bottom: (t) => t.spacing(16),
+            right: (t) => t.spacing(3),
+          }}
+          icon={<SupervisorAccount />}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
+          open={open}
+        >
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                {folder?.lockContent ? <LockOpen /> : <Lock />}
+              </Avatar>
+            }
+            tooltipTitle={`${folder?.lockContent ? "Lås op" : "Lås"} indhold`}
+            tooltipOpen
+            onClick={handleLockContent}
+          />
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                {folder?.lockChildren ? <LockOpen /> : <Lock />}
+              </Avatar>
+            }
+            tooltipTitle={`${
+              folder?.lockChildren ? "Lås op" : "Lås"
+            } ${childName}`}
+            tooltipOpen
+            onClick={handleLockChildren}
+          />
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                <Add />
+              </Avatar>
+            }
+            tooltipTitle="Mappe"
+            tooltipOpen
+            onClick={() => setAddDialog(true)}
+          />
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                <LowPriority />
+              </Avatar>
+            }
+            tooltipTitle="Sorter"
+            tooltipOpen
+            onClick={() => router.push(`/folder/${folder?.id}/sort`)}
+          />
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                <GetApp />
+              </Avatar>
+            }
+            tooltipTitle="Eksporter"
+            tooltipOpen
+            onClick={handleExport}
+          />
+        </SpeedDial>
+      </Zoom>
       <AddFolderDialog
         folder={folder}
         open={addDialog}
