@@ -3409,1631 +3409,6 @@ export const scalarsEnumsHash: import("gqty").ScalarsEnumsHash = {
   votes_update_column: true,
 };
 export const generatedSchema = {
-  query: {
-    __typename: { __type: "String!" },
-    admissions: {
-      __type: "[admissions!]!",
-      __args: {
-        distinct_on: "[admissions_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[admissions_order_by!]",
-        where: "admissions_bool_exp",
-      },
-    },
-    admissions_aggregate: {
-      __type: "admissions_aggregate!",
-      __args: {
-        distinct_on: "[admissions_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[admissions_order_by!]",
-        where: "admissions_bool_exp",
-      },
-    },
-    admissions_by_pk: { __type: "admissions", __args: { id: "uuid!" } },
-    auth_account_providers: {
-      __type: "[auth_account_providers!]!",
-      __args: {
-        distinct_on: "[auth_account_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_providers_order_by!]",
-        where: "auth_account_providers_bool_exp",
-      },
-    },
-    auth_account_providers_aggregate: {
-      __type: "auth_account_providers_aggregate!",
-      __args: {
-        distinct_on: "[auth_account_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_providers_order_by!]",
-        where: "auth_account_providers_bool_exp",
-      },
-    },
-    auth_account_providers_by_pk: {
-      __type: "auth_account_providers",
-      __args: { id: "uuid!" },
-    },
-    auth_account_roles: {
-      __type: "[auth_account_roles!]!",
-      __args: {
-        distinct_on: "[auth_account_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_roles_order_by!]",
-        where: "auth_account_roles_bool_exp",
-      },
-    },
-    auth_account_roles_aggregate: {
-      __type: "auth_account_roles_aggregate!",
-      __args: {
-        distinct_on: "[auth_account_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_roles_order_by!]",
-        where: "auth_account_roles_bool_exp",
-      },
-    },
-    auth_account_roles_by_pk: {
-      __type: "auth_account_roles",
-      __args: { id: "uuid!" },
-    },
-    auth_accounts: {
-      __type: "[auth_accounts!]!",
-      __args: {
-        distinct_on: "[auth_accounts_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_accounts_order_by!]",
-        where: "auth_accounts_bool_exp",
-      },
-    },
-    auth_accounts_aggregate: {
-      __type: "auth_accounts_aggregate!",
-      __args: {
-        distinct_on: "[auth_accounts_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_accounts_order_by!]",
-        where: "auth_accounts_bool_exp",
-      },
-    },
-    auth_accounts_by_pk: { __type: "auth_accounts", __args: { id: "uuid!" } },
-    auth_providers: {
-      __type: "[auth_providers!]!",
-      __args: {
-        distinct_on: "[auth_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_providers_order_by!]",
-        where: "auth_providers_bool_exp",
-      },
-    },
-    auth_providers_aggregate: {
-      __type: "auth_providers_aggregate!",
-      __args: {
-        distinct_on: "[auth_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_providers_order_by!]",
-        where: "auth_providers_bool_exp",
-      },
-    },
-    auth_providers_by_pk: {
-      __type: "auth_providers",
-      __args: { provider: "String!" },
-    },
-    auth_refresh_tokens: {
-      __type: "[auth_refresh_tokens!]!",
-      __args: {
-        distinct_on: "[auth_refresh_tokens_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_refresh_tokens_order_by!]",
-        where: "auth_refresh_tokens_bool_exp",
-      },
-    },
-    auth_refresh_tokens_aggregate: {
-      __type: "auth_refresh_tokens_aggregate!",
-      __args: {
-        distinct_on: "[auth_refresh_tokens_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_refresh_tokens_order_by!]",
-        where: "auth_refresh_tokens_bool_exp",
-      },
-    },
-    auth_refresh_tokens_by_pk: {
-      __type: "auth_refresh_tokens",
-      __args: { refresh_token: "uuid!" },
-    },
-    auth_roles: {
-      __type: "[auth_roles!]!",
-      __args: {
-        distinct_on: "[auth_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_roles_order_by!]",
-        where: "auth_roles_bool_exp",
-      },
-    },
-    auth_roles_aggregate: {
-      __type: "auth_roles_aggregate!",
-      __args: {
-        distinct_on: "[auth_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_roles_order_by!]",
-        where: "auth_roles_bool_exp",
-      },
-    },
-    auth_roles_by_pk: { __type: "auth_roles", __args: { role: "String!" } },
-    authorships: {
-      __type: "[authorships!]!",
-      __args: {
-        distinct_on: "[authorships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[authorships_order_by!]",
-        where: "authorships_bool_exp",
-      },
-    },
-    authorships_aggregate: {
-      __type: "authorships_aggregate!",
-      __args: {
-        distinct_on: "[authorships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[authorships_order_by!]",
-        where: "authorships_bool_exp",
-      },
-    },
-    authorships_by_pk: { __type: "authorships", __args: { id: "uuid!" } },
-    canVote: { __type: "CanVoteOutput", __args: { eventId: "uuid" } },
-    contents: {
-      __type: "[contents!]!",
-      __args: {
-        distinct_on: "[contents_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[contents_order_by!]",
-        where: "contents_bool_exp",
-      },
-    },
-    contents_aggregate: {
-      __type: "contents_aggregate!",
-      __args: {
-        distinct_on: "[contents_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[contents_order_by!]",
-        where: "contents_bool_exp",
-      },
-    },
-    contents_by_pk: { __type: "contents", __args: { id: "uuid!" } },
-    events: {
-      __type: "[events!]!",
-      __args: {
-        distinct_on: "[events_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[events_order_by!]",
-        where: "events_bool_exp",
-      },
-    },
-    events_aggregate: {
-      __type: "events_aggregate!",
-      __args: {
-        distinct_on: "[events_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[events_order_by!]",
-        where: "events_bool_exp",
-      },
-    },
-    events_by_pk: { __type: "events", __args: { id: "uuid!" } },
-    files: {
-      __type: "[files!]!",
-      __args: {
-        distinct_on: "[files_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[files_order_by!]",
-        where: "files_bool_exp",
-      },
-    },
-    files_aggregate: {
-      __type: "files_aggregate!",
-      __args: {
-        distinct_on: "[files_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[files_order_by!]",
-        where: "files_bool_exp",
-      },
-    },
-    files_by_pk: { __type: "files", __args: { id: "uuid!" } },
-    folders: {
-      __type: "[folders!]!",
-      __args: {
-        distinct_on: "[folders_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[folders_order_by!]",
-        where: "folders_bool_exp",
-      },
-    },
-    folders_aggregate: {
-      __type: "folders_aggregate!",
-      __args: {
-        distinct_on: "[folders_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[folders_order_by!]",
-        where: "folders_bool_exp",
-      },
-    },
-    folders_by_pk: { __type: "folders", __args: { id: "uuid!" } },
-    groups: {
-      __type: "[groups!]!",
-      __args: {
-        distinct_on: "[groups_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[groups_order_by!]",
-        where: "groups_bool_exp",
-      },
-    },
-    groups_aggregate: {
-      __type: "groups_aggregate!",
-      __args: {
-        distinct_on: "[groups_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[groups_order_by!]",
-        where: "groups_bool_exp",
-      },
-    },
-    groups_by_pk: { __type: "groups", __args: { id: "uuid!" } },
-    identities: {
-      __type: "[identities!]!",
-      __args: {
-        distinct_on: "[identities_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[identities_order_by!]",
-        where: "identities_bool_exp",
-      },
-    },
-    identities_aggregate: {
-      __type: "identities_aggregate!",
-      __args: {
-        distinct_on: "[identities_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[identities_order_by!]",
-        where: "identities_bool_exp",
-      },
-    },
-    identities_by_pk: { __type: "identities", __args: { email: "String!" } },
-    memberships: {
-      __type: "[memberships!]!",
-      __args: {
-        distinct_on: "[memberships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[memberships_order_by!]",
-        where: "memberships_bool_exp",
-      },
-    },
-    memberships_aggregate: {
-      __type: "memberships_aggregate!",
-      __args: {
-        distinct_on: "[memberships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[memberships_order_by!]",
-        where: "memberships_bool_exp",
-      },
-    },
-    memberships_by_pk: { __type: "memberships", __args: { id: "uuid!" } },
-    polls: {
-      __type: "[polls!]!",
-      __args: {
-        distinct_on: "[polls_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[polls_order_by!]",
-        where: "polls_bool_exp",
-      },
-    },
-    polls_aggregate: {
-      __type: "polls_aggregate!",
-      __args: {
-        distinct_on: "[polls_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[polls_order_by!]",
-        where: "polls_bool_exp",
-      },
-    },
-    polls_by_pk: { __type: "polls", __args: { id: "uuid!" } },
-    roles: {
-      __type: "[roles!]!",
-      __args: {
-        distinct_on: "[roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[roles_order_by!]",
-        where: "roles_bool_exp",
-      },
-    },
-    roles_aggregate: {
-      __type: "roles_aggregate!",
-      __args: {
-        distinct_on: "[roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[roles_order_by!]",
-        where: "roles_bool_exp",
-      },
-    },
-    roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
-    speaks: {
-      __type: "[speaks!]!",
-      __args: {
-        distinct_on: "[speaks_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[speaks_order_by!]",
-        where: "speaks_bool_exp",
-      },
-    },
-    speaks_aggregate: {
-      __type: "speaks_aggregate!",
-      __args: {
-        distinct_on: "[speaks_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[speaks_order_by!]",
-        where: "speaks_bool_exp",
-      },
-    },
-    speaks_by_pk: { __type: "speaks", __args: { id: "uuid!" } },
-    timers: {
-      __type: "[timers!]!",
-      __args: {
-        distinct_on: "[timers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[timers_order_by!]",
-        where: "timers_bool_exp",
-      },
-    },
-    timers_aggregate: {
-      __type: "timers_aggregate!",
-      __args: {
-        distinct_on: "[timers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[timers_order_by!]",
-        where: "timers_bool_exp",
-      },
-    },
-    timers_by_pk: { __type: "timers", __args: { id: "uuid!" } },
-    users: {
-      __type: "[users!]!",
-      __args: {
-        distinct_on: "[users_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[users_order_by!]",
-        where: "users_bool_exp",
-      },
-    },
-    users_aggregate: {
-      __type: "users_aggregate!",
-      __args: {
-        distinct_on: "[users_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[users_order_by!]",
-        where: "users_bool_exp",
-      },
-    },
-    users_by_pk: { __type: "users", __args: { id: "uuid!" } },
-    votes: {
-      __type: "[votes!]!",
-      __args: {
-        distinct_on: "[votes_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[votes_order_by!]",
-        where: "votes_bool_exp",
-      },
-    },
-    votes_aggregate: {
-      __type: "votes_aggregate!",
-      __args: {
-        distinct_on: "[votes_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[votes_order_by!]",
-        where: "votes_bool_exp",
-      },
-    },
-    votes_by_pk: { __type: "votes", __args: { id: "uuid!" } },
-  },
-  mutation: {
-    __typename: { __type: "String!" },
-    addVote: { __type: "VoteOutput!", __args: { vote: "VoteInput!" } },
-    delete_admissions: {
-      __type: "admissions_mutation_response",
-      __args: { where: "admissions_bool_exp!" },
-    },
-    delete_admissions_by_pk: { __type: "admissions", __args: { id: "uuid!" } },
-    delete_auth_account_providers: {
-      __type: "auth_account_providers_mutation_response",
-      __args: { where: "auth_account_providers_bool_exp!" },
-    },
-    delete_auth_account_providers_by_pk: {
-      __type: "auth_account_providers",
-      __args: { id: "uuid!" },
-    },
-    delete_auth_account_roles: {
-      __type: "auth_account_roles_mutation_response",
-      __args: { where: "auth_account_roles_bool_exp!" },
-    },
-    delete_auth_account_roles_by_pk: {
-      __type: "auth_account_roles",
-      __args: { id: "uuid!" },
-    },
-    delete_auth_accounts: {
-      __type: "auth_accounts_mutation_response",
-      __args: { where: "auth_accounts_bool_exp!" },
-    },
-    delete_auth_accounts_by_pk: {
-      __type: "auth_accounts",
-      __args: { id: "uuid!" },
-    },
-    delete_auth_providers: {
-      __type: "auth_providers_mutation_response",
-      __args: { where: "auth_providers_bool_exp!" },
-    },
-    delete_auth_providers_by_pk: {
-      __type: "auth_providers",
-      __args: { provider: "String!" },
-    },
-    delete_auth_refresh_tokens: {
-      __type: "auth_refresh_tokens_mutation_response",
-      __args: { where: "auth_refresh_tokens_bool_exp!" },
-    },
-    delete_auth_refresh_tokens_by_pk: {
-      __type: "auth_refresh_tokens",
-      __args: { refresh_token: "uuid!" },
-    },
-    delete_auth_roles: {
-      __type: "auth_roles_mutation_response",
-      __args: { where: "auth_roles_bool_exp!" },
-    },
-    delete_auth_roles_by_pk: {
-      __type: "auth_roles",
-      __args: { role: "String!" },
-    },
-    delete_authorships: {
-      __type: "authorships_mutation_response",
-      __args: { where: "authorships_bool_exp!" },
-    },
-    delete_authorships_by_pk: {
-      __type: "authorships",
-      __args: { id: "uuid!" },
-    },
-    delete_contents: {
-      __type: "contents_mutation_response",
-      __args: { where: "contents_bool_exp!" },
-    },
-    delete_contents_by_pk: { __type: "contents", __args: { id: "uuid!" } },
-    delete_events: {
-      __type: "events_mutation_response",
-      __args: { where: "events_bool_exp!" },
-    },
-    delete_events_by_pk: { __type: "events", __args: { id: "uuid!" } },
-    delete_files: {
-      __type: "files_mutation_response",
-      __args: { where: "files_bool_exp!" },
-    },
-    delete_files_by_pk: { __type: "files", __args: { id: "uuid!" } },
-    delete_folders: {
-      __type: "folders_mutation_response",
-      __args: { where: "folders_bool_exp!" },
-    },
-    delete_folders_by_pk: { __type: "folders", __args: { id: "uuid!" } },
-    delete_groups: {
-      __type: "groups_mutation_response",
-      __args: { where: "groups_bool_exp!" },
-    },
-    delete_groups_by_pk: { __type: "groups", __args: { id: "uuid!" } },
-    delete_identities: {
-      __type: "identities_mutation_response",
-      __args: { where: "identities_bool_exp!" },
-    },
-    delete_identities_by_pk: {
-      __type: "identities",
-      __args: { email: "String!" },
-    },
-    delete_memberships: {
-      __type: "memberships_mutation_response",
-      __args: { where: "memberships_bool_exp!" },
-    },
-    delete_memberships_by_pk: {
-      __type: "memberships",
-      __args: { id: "uuid!" },
-    },
-    delete_polls: {
-      __type: "polls_mutation_response",
-      __args: { where: "polls_bool_exp!" },
-    },
-    delete_polls_by_pk: { __type: "polls", __args: { id: "uuid!" } },
-    delete_roles: {
-      __type: "roles_mutation_response",
-      __args: { where: "roles_bool_exp!" },
-    },
-    delete_roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
-    delete_speaks: {
-      __type: "speaks_mutation_response",
-      __args: { where: "speaks_bool_exp!" },
-    },
-    delete_speaks_by_pk: { __type: "speaks", __args: { id: "uuid!" } },
-    delete_timers: {
-      __type: "timers_mutation_response",
-      __args: { where: "timers_bool_exp!" },
-    },
-    delete_timers_by_pk: { __type: "timers", __args: { id: "uuid!" } },
-    delete_users: {
-      __type: "users_mutation_response",
-      __args: { where: "users_bool_exp!" },
-    },
-    delete_users_by_pk: { __type: "users", __args: { id: "uuid!" } },
-    delete_votes: {
-      __type: "votes_mutation_response",
-      __args: { where: "votes_bool_exp!" },
-    },
-    delete_votes_by_pk: { __type: "votes", __args: { id: "uuid!" } },
-    insert_admissions: {
-      __type: "admissions_mutation_response",
-      __args: {
-        objects: "[admissions_insert_input!]!",
-        on_conflict: "admissions_on_conflict",
-      },
-    },
-    insert_admissions_one: {
-      __type: "admissions",
-      __args: {
-        object: "admissions_insert_input!",
-        on_conflict: "admissions_on_conflict",
-      },
-    },
-    insert_auth_account_providers: {
-      __type: "auth_account_providers_mutation_response",
-      __args: {
-        objects: "[auth_account_providers_insert_input!]!",
-        on_conflict: "auth_account_providers_on_conflict",
-      },
-    },
-    insert_auth_account_providers_one: {
-      __type: "auth_account_providers",
-      __args: {
-        object: "auth_account_providers_insert_input!",
-        on_conflict: "auth_account_providers_on_conflict",
-      },
-    },
-    insert_auth_account_roles: {
-      __type: "auth_account_roles_mutation_response",
-      __args: {
-        objects: "[auth_account_roles_insert_input!]!",
-        on_conflict: "auth_account_roles_on_conflict",
-      },
-    },
-    insert_auth_account_roles_one: {
-      __type: "auth_account_roles",
-      __args: {
-        object: "auth_account_roles_insert_input!",
-        on_conflict: "auth_account_roles_on_conflict",
-      },
-    },
-    insert_auth_accounts: {
-      __type: "auth_accounts_mutation_response",
-      __args: {
-        objects: "[auth_accounts_insert_input!]!",
-        on_conflict: "auth_accounts_on_conflict",
-      },
-    },
-    insert_auth_accounts_one: {
-      __type: "auth_accounts",
-      __args: {
-        object: "auth_accounts_insert_input!",
-        on_conflict: "auth_accounts_on_conflict",
-      },
-    },
-    insert_auth_providers: {
-      __type: "auth_providers_mutation_response",
-      __args: {
-        objects: "[auth_providers_insert_input!]!",
-        on_conflict: "auth_providers_on_conflict",
-      },
-    },
-    insert_auth_providers_one: {
-      __type: "auth_providers",
-      __args: {
-        object: "auth_providers_insert_input!",
-        on_conflict: "auth_providers_on_conflict",
-      },
-    },
-    insert_auth_refresh_tokens: {
-      __type: "auth_refresh_tokens_mutation_response",
-      __args: {
-        objects: "[auth_refresh_tokens_insert_input!]!",
-        on_conflict: "auth_refresh_tokens_on_conflict",
-      },
-    },
-    insert_auth_refresh_tokens_one: {
-      __type: "auth_refresh_tokens",
-      __args: {
-        object: "auth_refresh_tokens_insert_input!",
-        on_conflict: "auth_refresh_tokens_on_conflict",
-      },
-    },
-    insert_auth_roles: {
-      __type: "auth_roles_mutation_response",
-      __args: {
-        objects: "[auth_roles_insert_input!]!",
-        on_conflict: "auth_roles_on_conflict",
-      },
-    },
-    insert_auth_roles_one: {
-      __type: "auth_roles",
-      __args: {
-        object: "auth_roles_insert_input!",
-        on_conflict: "auth_roles_on_conflict",
-      },
-    },
-    insert_authorships: {
-      __type: "authorships_mutation_response",
-      __args: {
-        objects: "[authorships_insert_input!]!",
-        on_conflict: "authorships_on_conflict",
-      },
-    },
-    insert_authorships_one: {
-      __type: "authorships",
-      __args: {
-        object: "authorships_insert_input!",
-        on_conflict: "authorships_on_conflict",
-      },
-    },
-    insert_contents: {
-      __type: "contents_mutation_response",
-      __args: {
-        objects: "[contents_insert_input!]!",
-        on_conflict: "contents_on_conflict",
-      },
-    },
-    insert_contents_one: {
-      __type: "contents",
-      __args: {
-        object: "contents_insert_input!",
-        on_conflict: "contents_on_conflict",
-      },
-    },
-    insert_events: {
-      __type: "events_mutation_response",
-      __args: {
-        objects: "[events_insert_input!]!",
-        on_conflict: "events_on_conflict",
-      },
-    },
-    insert_events_one: {
-      __type: "events",
-      __args: {
-        object: "events_insert_input!",
-        on_conflict: "events_on_conflict",
-      },
-    },
-    insert_files: {
-      __type: "files_mutation_response",
-      __args: {
-        objects: "[files_insert_input!]!",
-        on_conflict: "files_on_conflict",
-      },
-    },
-    insert_files_one: {
-      __type: "files",
-      __args: {
-        object: "files_insert_input!",
-        on_conflict: "files_on_conflict",
-      },
-    },
-    insert_folders: {
-      __type: "folders_mutation_response",
-      __args: {
-        objects: "[folders_insert_input!]!",
-        on_conflict: "folders_on_conflict",
-      },
-    },
-    insert_folders_one: {
-      __type: "folders",
-      __args: {
-        object: "folders_insert_input!",
-        on_conflict: "folders_on_conflict",
-      },
-    },
-    insert_groups: {
-      __type: "groups_mutation_response",
-      __args: {
-        objects: "[groups_insert_input!]!",
-        on_conflict: "groups_on_conflict",
-      },
-    },
-    insert_groups_one: {
-      __type: "groups",
-      __args: {
-        object: "groups_insert_input!",
-        on_conflict: "groups_on_conflict",
-      },
-    },
-    insert_identities: {
-      __type: "identities_mutation_response",
-      __args: {
-        objects: "[identities_insert_input!]!",
-        on_conflict: "identities_on_conflict",
-      },
-    },
-    insert_identities_one: {
-      __type: "identities",
-      __args: {
-        object: "identities_insert_input!",
-        on_conflict: "identities_on_conflict",
-      },
-    },
-    insert_memberships: {
-      __type: "memberships_mutation_response",
-      __args: {
-        objects: "[memberships_insert_input!]!",
-        on_conflict: "memberships_on_conflict",
-      },
-    },
-    insert_memberships_one: {
-      __type: "memberships",
-      __args: {
-        object: "memberships_insert_input!",
-        on_conflict: "memberships_on_conflict",
-      },
-    },
-    insert_polls: {
-      __type: "polls_mutation_response",
-      __args: {
-        objects: "[polls_insert_input!]!",
-        on_conflict: "polls_on_conflict",
-      },
-    },
-    insert_polls_one: {
-      __type: "polls",
-      __args: {
-        object: "polls_insert_input!",
-        on_conflict: "polls_on_conflict",
-      },
-    },
-    insert_roles: {
-      __type: "roles_mutation_response",
-      __args: {
-        objects: "[roles_insert_input!]!",
-        on_conflict: "roles_on_conflict",
-      },
-    },
-    insert_roles_one: {
-      __type: "roles",
-      __args: {
-        object: "roles_insert_input!",
-        on_conflict: "roles_on_conflict",
-      },
-    },
-    insert_speaks: {
-      __type: "speaks_mutation_response",
-      __args: {
-        objects: "[speaks_insert_input!]!",
-        on_conflict: "speaks_on_conflict",
-      },
-    },
-    insert_speaks_one: {
-      __type: "speaks",
-      __args: {
-        object: "speaks_insert_input!",
-        on_conflict: "speaks_on_conflict",
-      },
-    },
-    insert_timers: {
-      __type: "timers_mutation_response",
-      __args: {
-        objects: "[timers_insert_input!]!",
-        on_conflict: "timers_on_conflict",
-      },
-    },
-    insert_timers_one: {
-      __type: "timers",
-      __args: {
-        object: "timers_insert_input!",
-        on_conflict: "timers_on_conflict",
-      },
-    },
-    insert_users: {
-      __type: "users_mutation_response",
-      __args: {
-        objects: "[users_insert_input!]!",
-        on_conflict: "users_on_conflict",
-      },
-    },
-    insert_users_one: {
-      __type: "users",
-      __args: {
-        object: "users_insert_input!",
-        on_conflict: "users_on_conflict",
-      },
-    },
-    insert_votes: {
-      __type: "votes_mutation_response",
-      __args: {
-        objects: "[votes_insert_input!]!",
-        on_conflict: "votes_on_conflict",
-      },
-    },
-    insert_votes_one: {
-      __type: "votes",
-      __args: {
-        object: "votes_insert_input!",
-        on_conflict: "votes_on_conflict",
-      },
-    },
-    update_admissions: {
-      __type: "admissions_mutation_response",
-      __args: { _set: "admissions_set_input", where: "admissions_bool_exp!" },
-    },
-    update_admissions_by_pk: {
-      __type: "admissions",
-      __args: {
-        _set: "admissions_set_input",
-        pk_columns: "admissions_pk_columns_input!",
-      },
-    },
-    update_auth_account_providers: {
-      __type: "auth_account_providers_mutation_response",
-      __args: {
-        _set: "auth_account_providers_set_input",
-        where: "auth_account_providers_bool_exp!",
-      },
-    },
-    update_auth_account_providers_by_pk: {
-      __type: "auth_account_providers",
-      __args: {
-        _set: "auth_account_providers_set_input",
-        pk_columns: "auth_account_providers_pk_columns_input!",
-      },
-    },
-    update_auth_account_roles: {
-      __type: "auth_account_roles_mutation_response",
-      __args: {
-        _set: "auth_account_roles_set_input",
-        where: "auth_account_roles_bool_exp!",
-      },
-    },
-    update_auth_account_roles_by_pk: {
-      __type: "auth_account_roles",
-      __args: {
-        _set: "auth_account_roles_set_input",
-        pk_columns: "auth_account_roles_pk_columns_input!",
-      },
-    },
-    update_auth_accounts: {
-      __type: "auth_accounts_mutation_response",
-      __args: {
-        _append: "auth_accounts_append_input",
-        _delete_at_path: "auth_accounts_delete_at_path_input",
-        _delete_elem: "auth_accounts_delete_elem_input",
-        _delete_key: "auth_accounts_delete_key_input",
-        _prepend: "auth_accounts_prepend_input",
-        _set: "auth_accounts_set_input",
-        where: "auth_accounts_bool_exp!",
-      },
-    },
-    update_auth_accounts_by_pk: {
-      __type: "auth_accounts",
-      __args: {
-        _append: "auth_accounts_append_input",
-        _delete_at_path: "auth_accounts_delete_at_path_input",
-        _delete_elem: "auth_accounts_delete_elem_input",
-        _delete_key: "auth_accounts_delete_key_input",
-        _prepend: "auth_accounts_prepend_input",
-        _set: "auth_accounts_set_input",
-        pk_columns: "auth_accounts_pk_columns_input!",
-      },
-    },
-    update_auth_providers: {
-      __type: "auth_providers_mutation_response",
-      __args: {
-        _set: "auth_providers_set_input",
-        where: "auth_providers_bool_exp!",
-      },
-    },
-    update_auth_providers_by_pk: {
-      __type: "auth_providers",
-      __args: {
-        _set: "auth_providers_set_input",
-        pk_columns: "auth_providers_pk_columns_input!",
-      },
-    },
-    update_auth_refresh_tokens: {
-      __type: "auth_refresh_tokens_mutation_response",
-      __args: {
-        _set: "auth_refresh_tokens_set_input",
-        where: "auth_refresh_tokens_bool_exp!",
-      },
-    },
-    update_auth_refresh_tokens_by_pk: {
-      __type: "auth_refresh_tokens",
-      __args: {
-        _set: "auth_refresh_tokens_set_input",
-        pk_columns: "auth_refresh_tokens_pk_columns_input!",
-      },
-    },
-    update_auth_roles: {
-      __type: "auth_roles_mutation_response",
-      __args: { _set: "auth_roles_set_input", where: "auth_roles_bool_exp!" },
-    },
-    update_auth_roles_by_pk: {
-      __type: "auth_roles",
-      __args: {
-        _set: "auth_roles_set_input",
-        pk_columns: "auth_roles_pk_columns_input!",
-      },
-    },
-    update_authorships: {
-      __type: "authorships_mutation_response",
-      __args: { _set: "authorships_set_input", where: "authorships_bool_exp!" },
-    },
-    update_authorships_by_pk: {
-      __type: "authorships",
-      __args: {
-        _set: "authorships_set_input",
-        pk_columns: "authorships_pk_columns_input!",
-      },
-    },
-    update_contents: {
-      __type: "contents_mutation_response",
-      __args: {
-        _inc: "contents_inc_input",
-        _set: "contents_set_input",
-        where: "contents_bool_exp!",
-      },
-    },
-    update_contents_by_pk: {
-      __type: "contents",
-      __args: {
-        _inc: "contents_inc_input",
-        _set: "contents_set_input",
-        pk_columns: "contents_pk_columns_input!",
-      },
-    },
-    update_events: {
-      __type: "events_mutation_response",
-      __args: { _set: "events_set_input", where: "events_bool_exp!" },
-    },
-    update_events_by_pk: {
-      __type: "events",
-      __args: {
-        _set: "events_set_input",
-        pk_columns: "events_pk_columns_input!",
-      },
-    },
-    update_files: {
-      __type: "files_mutation_response",
-      __args: { _set: "files_set_input", where: "files_bool_exp!" },
-    },
-    update_files_by_pk: {
-      __type: "files",
-      __args: {
-        _set: "files_set_input",
-        pk_columns: "files_pk_columns_input!",
-      },
-    },
-    update_folders: {
-      __type: "folders_mutation_response",
-      __args: {
-        _inc: "folders_inc_input",
-        _set: "folders_set_input",
-        where: "folders_bool_exp!",
-      },
-    },
-    update_folders_by_pk: {
-      __type: "folders",
-      __args: {
-        _inc: "folders_inc_input",
-        _set: "folders_set_input",
-        pk_columns: "folders_pk_columns_input!",
-      },
-    },
-    update_groups: {
-      __type: "groups_mutation_response",
-      __args: { _set: "groups_set_input", where: "groups_bool_exp!" },
-    },
-    update_groups_by_pk: {
-      __type: "groups",
-      __args: {
-        _set: "groups_set_input",
-        pk_columns: "groups_pk_columns_input!",
-      },
-    },
-    update_identities: {
-      __type: "identities_mutation_response",
-      __args: { _set: "identities_set_input", where: "identities_bool_exp!" },
-    },
-    update_identities_by_pk: {
-      __type: "identities",
-      __args: {
-        _set: "identities_set_input",
-        pk_columns: "identities_pk_columns_input!",
-      },
-    },
-    update_memberships: {
-      __type: "memberships_mutation_response",
-      __args: { _set: "memberships_set_input", where: "memberships_bool_exp!" },
-    },
-    update_memberships_by_pk: {
-      __type: "memberships",
-      __args: {
-        _set: "memberships_set_input",
-        pk_columns: "memberships_pk_columns_input!",
-      },
-    },
-    update_polls: {
-      __type: "polls_mutation_response",
-      __args: {
-        _inc: "polls_inc_input",
-        _set: "polls_set_input",
-        where: "polls_bool_exp!",
-      },
-    },
-    update_polls_by_pk: {
-      __type: "polls",
-      __args: {
-        _inc: "polls_inc_input",
-        _set: "polls_set_input",
-        pk_columns: "polls_pk_columns_input!",
-      },
-    },
-    update_roles: {
-      __type: "roles_mutation_response",
-      __args: { _set: "roles_set_input", where: "roles_bool_exp!" },
-    },
-    update_roles_by_pk: {
-      __type: "roles",
-      __args: {
-        _set: "roles_set_input",
-        pk_columns: "roles_pk_columns_input!",
-      },
-    },
-    update_speaks: {
-      __type: "speaks_mutation_response",
-      __args: {
-        _inc: "speaks_inc_input",
-        _set: "speaks_set_input",
-        where: "speaks_bool_exp!",
-      },
-    },
-    update_speaks_by_pk: {
-      __type: "speaks",
-      __args: {
-        _inc: "speaks_inc_input",
-        _set: "speaks_set_input",
-        pk_columns: "speaks_pk_columns_input!",
-      },
-    },
-    update_timers: {
-      __type: "timers_mutation_response",
-      __args: {
-        _inc: "timers_inc_input",
-        _set: "timers_set_input",
-        where: "timers_bool_exp!",
-      },
-    },
-    update_timers_by_pk: {
-      __type: "timers",
-      __args: {
-        _inc: "timers_inc_input",
-        _set: "timers_set_input",
-        pk_columns: "timers_pk_columns_input!",
-      },
-    },
-    update_users: {
-      __type: "users_mutation_response",
-      __args: { _set: "users_set_input", where: "users_bool_exp!" },
-    },
-    update_users_by_pk: {
-      __type: "users",
-      __args: {
-        _set: "users_set_input",
-        pk_columns: "users_pk_columns_input!",
-      },
-    },
-    update_votes: {
-      __type: "votes_mutation_response",
-      __args: { _set: "votes_set_input", where: "votes_bool_exp!" },
-    },
-    update_votes_by_pk: {
-      __type: "votes",
-      __args: {
-        _set: "votes_set_input",
-        pk_columns: "votes_pk_columns_input!",
-      },
-    },
-  },
-  subscription: {
-    __typename: { __type: "String!" },
-    admissions: {
-      __type: "[admissions!]!",
-      __args: {
-        distinct_on: "[admissions_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[admissions_order_by!]",
-        where: "admissions_bool_exp",
-      },
-    },
-    admissions_aggregate: {
-      __type: "admissions_aggregate!",
-      __args: {
-        distinct_on: "[admissions_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[admissions_order_by!]",
-        where: "admissions_bool_exp",
-      },
-    },
-    admissions_by_pk: { __type: "admissions", __args: { id: "uuid!" } },
-    auth_account_providers: {
-      __type: "[auth_account_providers!]!",
-      __args: {
-        distinct_on: "[auth_account_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_providers_order_by!]",
-        where: "auth_account_providers_bool_exp",
-      },
-    },
-    auth_account_providers_aggregate: {
-      __type: "auth_account_providers_aggregate!",
-      __args: {
-        distinct_on: "[auth_account_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_providers_order_by!]",
-        where: "auth_account_providers_bool_exp",
-      },
-    },
-    auth_account_providers_by_pk: {
-      __type: "auth_account_providers",
-      __args: { id: "uuid!" },
-    },
-    auth_account_roles: {
-      __type: "[auth_account_roles!]!",
-      __args: {
-        distinct_on: "[auth_account_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_roles_order_by!]",
-        where: "auth_account_roles_bool_exp",
-      },
-    },
-    auth_account_roles_aggregate: {
-      __type: "auth_account_roles_aggregate!",
-      __args: {
-        distinct_on: "[auth_account_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_account_roles_order_by!]",
-        where: "auth_account_roles_bool_exp",
-      },
-    },
-    auth_account_roles_by_pk: {
-      __type: "auth_account_roles",
-      __args: { id: "uuid!" },
-    },
-    auth_accounts: {
-      __type: "[auth_accounts!]!",
-      __args: {
-        distinct_on: "[auth_accounts_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_accounts_order_by!]",
-        where: "auth_accounts_bool_exp",
-      },
-    },
-    auth_accounts_aggregate: {
-      __type: "auth_accounts_aggregate!",
-      __args: {
-        distinct_on: "[auth_accounts_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_accounts_order_by!]",
-        where: "auth_accounts_bool_exp",
-      },
-    },
-    auth_accounts_by_pk: { __type: "auth_accounts", __args: { id: "uuid!" } },
-    auth_providers: {
-      __type: "[auth_providers!]!",
-      __args: {
-        distinct_on: "[auth_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_providers_order_by!]",
-        where: "auth_providers_bool_exp",
-      },
-    },
-    auth_providers_aggregate: {
-      __type: "auth_providers_aggregate!",
-      __args: {
-        distinct_on: "[auth_providers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_providers_order_by!]",
-        where: "auth_providers_bool_exp",
-      },
-    },
-    auth_providers_by_pk: {
-      __type: "auth_providers",
-      __args: { provider: "String!" },
-    },
-    auth_refresh_tokens: {
-      __type: "[auth_refresh_tokens!]!",
-      __args: {
-        distinct_on: "[auth_refresh_tokens_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_refresh_tokens_order_by!]",
-        where: "auth_refresh_tokens_bool_exp",
-      },
-    },
-    auth_refresh_tokens_aggregate: {
-      __type: "auth_refresh_tokens_aggregate!",
-      __args: {
-        distinct_on: "[auth_refresh_tokens_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_refresh_tokens_order_by!]",
-        where: "auth_refresh_tokens_bool_exp",
-      },
-    },
-    auth_refresh_tokens_by_pk: {
-      __type: "auth_refresh_tokens",
-      __args: { refresh_token: "uuid!" },
-    },
-    auth_roles: {
-      __type: "[auth_roles!]!",
-      __args: {
-        distinct_on: "[auth_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_roles_order_by!]",
-        where: "auth_roles_bool_exp",
-      },
-    },
-    auth_roles_aggregate: {
-      __type: "auth_roles_aggregate!",
-      __args: {
-        distinct_on: "[auth_roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[auth_roles_order_by!]",
-        where: "auth_roles_bool_exp",
-      },
-    },
-    auth_roles_by_pk: { __type: "auth_roles", __args: { role: "String!" } },
-    authorships: {
-      __type: "[authorships!]!",
-      __args: {
-        distinct_on: "[authorships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[authorships_order_by!]",
-        where: "authorships_bool_exp",
-      },
-    },
-    authorships_aggregate: {
-      __type: "authorships_aggregate!",
-      __args: {
-        distinct_on: "[authorships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[authorships_order_by!]",
-        where: "authorships_bool_exp",
-      },
-    },
-    authorships_by_pk: { __type: "authorships", __args: { id: "uuid!" } },
-    canVote: { __type: "CanVoteOutput", __args: { eventId: "uuid" } },
-    contents: {
-      __type: "[contents!]!",
-      __args: {
-        distinct_on: "[contents_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[contents_order_by!]",
-        where: "contents_bool_exp",
-      },
-    },
-    contents_aggregate: {
-      __type: "contents_aggregate!",
-      __args: {
-        distinct_on: "[contents_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[contents_order_by!]",
-        where: "contents_bool_exp",
-      },
-    },
-    contents_by_pk: { __type: "contents", __args: { id: "uuid!" } },
-    events: {
-      __type: "[events!]!",
-      __args: {
-        distinct_on: "[events_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[events_order_by!]",
-        where: "events_bool_exp",
-      },
-    },
-    events_aggregate: {
-      __type: "events_aggregate!",
-      __args: {
-        distinct_on: "[events_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[events_order_by!]",
-        where: "events_bool_exp",
-      },
-    },
-    events_by_pk: { __type: "events", __args: { id: "uuid!" } },
-    files: {
-      __type: "[files!]!",
-      __args: {
-        distinct_on: "[files_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[files_order_by!]",
-        where: "files_bool_exp",
-      },
-    },
-    files_aggregate: {
-      __type: "files_aggregate!",
-      __args: {
-        distinct_on: "[files_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[files_order_by!]",
-        where: "files_bool_exp",
-      },
-    },
-    files_by_pk: { __type: "files", __args: { id: "uuid!" } },
-    folders: {
-      __type: "[folders!]!",
-      __args: {
-        distinct_on: "[folders_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[folders_order_by!]",
-        where: "folders_bool_exp",
-      },
-    },
-    folders_aggregate: {
-      __type: "folders_aggregate!",
-      __args: {
-        distinct_on: "[folders_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[folders_order_by!]",
-        where: "folders_bool_exp",
-      },
-    },
-    folders_by_pk: { __type: "folders", __args: { id: "uuid!" } },
-    groups: {
-      __type: "[groups!]!",
-      __args: {
-        distinct_on: "[groups_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[groups_order_by!]",
-        where: "groups_bool_exp",
-      },
-    },
-    groups_aggregate: {
-      __type: "groups_aggregate!",
-      __args: {
-        distinct_on: "[groups_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[groups_order_by!]",
-        where: "groups_bool_exp",
-      },
-    },
-    groups_by_pk: { __type: "groups", __args: { id: "uuid!" } },
-    identities: {
-      __type: "[identities!]!",
-      __args: {
-        distinct_on: "[identities_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[identities_order_by!]",
-        where: "identities_bool_exp",
-      },
-    },
-    identities_aggregate: {
-      __type: "identities_aggregate!",
-      __args: {
-        distinct_on: "[identities_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[identities_order_by!]",
-        where: "identities_bool_exp",
-      },
-    },
-    identities_by_pk: { __type: "identities", __args: { email: "String!" } },
-    memberships: {
-      __type: "[memberships!]!",
-      __args: {
-        distinct_on: "[memberships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[memberships_order_by!]",
-        where: "memberships_bool_exp",
-      },
-    },
-    memberships_aggregate: {
-      __type: "memberships_aggregate!",
-      __args: {
-        distinct_on: "[memberships_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[memberships_order_by!]",
-        where: "memberships_bool_exp",
-      },
-    },
-    memberships_by_pk: { __type: "memberships", __args: { id: "uuid!" } },
-    polls: {
-      __type: "[polls!]!",
-      __args: {
-        distinct_on: "[polls_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[polls_order_by!]",
-        where: "polls_bool_exp",
-      },
-    },
-    polls_aggregate: {
-      __type: "polls_aggregate!",
-      __args: {
-        distinct_on: "[polls_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[polls_order_by!]",
-        where: "polls_bool_exp",
-      },
-    },
-    polls_by_pk: { __type: "polls", __args: { id: "uuid!" } },
-    roles: {
-      __type: "[roles!]!",
-      __args: {
-        distinct_on: "[roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[roles_order_by!]",
-        where: "roles_bool_exp",
-      },
-    },
-    roles_aggregate: {
-      __type: "roles_aggregate!",
-      __args: {
-        distinct_on: "[roles_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[roles_order_by!]",
-        where: "roles_bool_exp",
-      },
-    },
-    roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
-    speaks: {
-      __type: "[speaks!]!",
-      __args: {
-        distinct_on: "[speaks_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[speaks_order_by!]",
-        where: "speaks_bool_exp",
-      },
-    },
-    speaks_aggregate: {
-      __type: "speaks_aggregate!",
-      __args: {
-        distinct_on: "[speaks_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[speaks_order_by!]",
-        where: "speaks_bool_exp",
-      },
-    },
-    speaks_by_pk: { __type: "speaks", __args: { id: "uuid!" } },
-    timers: {
-      __type: "[timers!]!",
-      __args: {
-        distinct_on: "[timers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[timers_order_by!]",
-        where: "timers_bool_exp",
-      },
-    },
-    timers_aggregate: {
-      __type: "timers_aggregate!",
-      __args: {
-        distinct_on: "[timers_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[timers_order_by!]",
-        where: "timers_bool_exp",
-      },
-    },
-    timers_by_pk: { __type: "timers", __args: { id: "uuid!" } },
-    users: {
-      __type: "[users!]!",
-      __args: {
-        distinct_on: "[users_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[users_order_by!]",
-        where: "users_bool_exp",
-      },
-    },
-    users_aggregate: {
-      __type: "users_aggregate!",
-      __args: {
-        distinct_on: "[users_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[users_order_by!]",
-        where: "users_bool_exp",
-      },
-    },
-    users_by_pk: { __type: "users", __args: { id: "uuid!" } },
-    votes: {
-      __type: "[votes!]!",
-      __args: {
-        distinct_on: "[votes_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[votes_order_by!]",
-        where: "votes_bool_exp",
-      },
-    },
-    votes_aggregate: {
-      __type: "votes_aggregate!",
-      __args: {
-        distinct_on: "[votes_select_column!]",
-        limit: "Int",
-        offset: "Int",
-        order_by: "[votes_order_by!]",
-        where: "votes_bool_exp",
-      },
-    },
-    votes_by_pk: { __type: "votes", __args: { id: "uuid!" } },
-  },
   Boolean_comparison_exp: {
     _eq: { __type: "Boolean" },
     _gt: { __type: "Boolean" },
@@ -7446,6 +5821,717 @@ export const generatedSchema = {
     id: { __type: "uuid" },
     userId: { __type: "uuid" },
   },
+  mutation: {
+    __typename: { __type: "String!" },
+    addVote: { __type: "VoteOutput!", __args: { vote: "VoteInput!" } },
+    delete_admissions: {
+      __type: "admissions_mutation_response",
+      __args: { where: "admissions_bool_exp!" },
+    },
+    delete_admissions_by_pk: { __type: "admissions", __args: { id: "uuid!" } },
+    delete_auth_account_providers: {
+      __type: "auth_account_providers_mutation_response",
+      __args: { where: "auth_account_providers_bool_exp!" },
+    },
+    delete_auth_account_providers_by_pk: {
+      __type: "auth_account_providers",
+      __args: { id: "uuid!" },
+    },
+    delete_auth_account_roles: {
+      __type: "auth_account_roles_mutation_response",
+      __args: { where: "auth_account_roles_bool_exp!" },
+    },
+    delete_auth_account_roles_by_pk: {
+      __type: "auth_account_roles",
+      __args: { id: "uuid!" },
+    },
+    delete_auth_accounts: {
+      __type: "auth_accounts_mutation_response",
+      __args: { where: "auth_accounts_bool_exp!" },
+    },
+    delete_auth_accounts_by_pk: {
+      __type: "auth_accounts",
+      __args: { id: "uuid!" },
+    },
+    delete_auth_providers: {
+      __type: "auth_providers_mutation_response",
+      __args: { where: "auth_providers_bool_exp!" },
+    },
+    delete_auth_providers_by_pk: {
+      __type: "auth_providers",
+      __args: { provider: "String!" },
+    },
+    delete_auth_refresh_tokens: {
+      __type: "auth_refresh_tokens_mutation_response",
+      __args: { where: "auth_refresh_tokens_bool_exp!" },
+    },
+    delete_auth_refresh_tokens_by_pk: {
+      __type: "auth_refresh_tokens",
+      __args: { refresh_token: "uuid!" },
+    },
+    delete_auth_roles: {
+      __type: "auth_roles_mutation_response",
+      __args: { where: "auth_roles_bool_exp!" },
+    },
+    delete_auth_roles_by_pk: {
+      __type: "auth_roles",
+      __args: { role: "String!" },
+    },
+    delete_authorships: {
+      __type: "authorships_mutation_response",
+      __args: { where: "authorships_bool_exp!" },
+    },
+    delete_authorships_by_pk: {
+      __type: "authorships",
+      __args: { id: "uuid!" },
+    },
+    delete_contents: {
+      __type: "contents_mutation_response",
+      __args: { where: "contents_bool_exp!" },
+    },
+    delete_contents_by_pk: { __type: "contents", __args: { id: "uuid!" } },
+    delete_events: {
+      __type: "events_mutation_response",
+      __args: { where: "events_bool_exp!" },
+    },
+    delete_events_by_pk: { __type: "events", __args: { id: "uuid!" } },
+    delete_files: {
+      __type: "files_mutation_response",
+      __args: { where: "files_bool_exp!" },
+    },
+    delete_files_by_pk: { __type: "files", __args: { id: "uuid!" } },
+    delete_folders: {
+      __type: "folders_mutation_response",
+      __args: { where: "folders_bool_exp!" },
+    },
+    delete_folders_by_pk: { __type: "folders", __args: { id: "uuid!" } },
+    delete_groups: {
+      __type: "groups_mutation_response",
+      __args: { where: "groups_bool_exp!" },
+    },
+    delete_groups_by_pk: { __type: "groups", __args: { id: "uuid!" } },
+    delete_identities: {
+      __type: "identities_mutation_response",
+      __args: { where: "identities_bool_exp!" },
+    },
+    delete_identities_by_pk: {
+      __type: "identities",
+      __args: { email: "String!" },
+    },
+    delete_memberships: {
+      __type: "memberships_mutation_response",
+      __args: { where: "memberships_bool_exp!" },
+    },
+    delete_memberships_by_pk: {
+      __type: "memberships",
+      __args: { id: "uuid!" },
+    },
+    delete_polls: {
+      __type: "polls_mutation_response",
+      __args: { where: "polls_bool_exp!" },
+    },
+    delete_polls_by_pk: { __type: "polls", __args: { id: "uuid!" } },
+    delete_roles: {
+      __type: "roles_mutation_response",
+      __args: { where: "roles_bool_exp!" },
+    },
+    delete_roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
+    delete_speaks: {
+      __type: "speaks_mutation_response",
+      __args: { where: "speaks_bool_exp!" },
+    },
+    delete_speaks_by_pk: { __type: "speaks", __args: { id: "uuid!" } },
+    delete_timers: {
+      __type: "timers_mutation_response",
+      __args: { where: "timers_bool_exp!" },
+    },
+    delete_timers_by_pk: { __type: "timers", __args: { id: "uuid!" } },
+    delete_users: {
+      __type: "users_mutation_response",
+      __args: { where: "users_bool_exp!" },
+    },
+    delete_users_by_pk: { __type: "users", __args: { id: "uuid!" } },
+    delete_votes: {
+      __type: "votes_mutation_response",
+      __args: { where: "votes_bool_exp!" },
+    },
+    delete_votes_by_pk: { __type: "votes", __args: { id: "uuid!" } },
+    insert_admissions: {
+      __type: "admissions_mutation_response",
+      __args: {
+        objects: "[admissions_insert_input!]!",
+        on_conflict: "admissions_on_conflict",
+      },
+    },
+    insert_admissions_one: {
+      __type: "admissions",
+      __args: {
+        object: "admissions_insert_input!",
+        on_conflict: "admissions_on_conflict",
+      },
+    },
+    insert_auth_account_providers: {
+      __type: "auth_account_providers_mutation_response",
+      __args: {
+        objects: "[auth_account_providers_insert_input!]!",
+        on_conflict: "auth_account_providers_on_conflict",
+      },
+    },
+    insert_auth_account_providers_one: {
+      __type: "auth_account_providers",
+      __args: {
+        object: "auth_account_providers_insert_input!",
+        on_conflict: "auth_account_providers_on_conflict",
+      },
+    },
+    insert_auth_account_roles: {
+      __type: "auth_account_roles_mutation_response",
+      __args: {
+        objects: "[auth_account_roles_insert_input!]!",
+        on_conflict: "auth_account_roles_on_conflict",
+      },
+    },
+    insert_auth_account_roles_one: {
+      __type: "auth_account_roles",
+      __args: {
+        object: "auth_account_roles_insert_input!",
+        on_conflict: "auth_account_roles_on_conflict",
+      },
+    },
+    insert_auth_accounts: {
+      __type: "auth_accounts_mutation_response",
+      __args: {
+        objects: "[auth_accounts_insert_input!]!",
+        on_conflict: "auth_accounts_on_conflict",
+      },
+    },
+    insert_auth_accounts_one: {
+      __type: "auth_accounts",
+      __args: {
+        object: "auth_accounts_insert_input!",
+        on_conflict: "auth_accounts_on_conflict",
+      },
+    },
+    insert_auth_providers: {
+      __type: "auth_providers_mutation_response",
+      __args: {
+        objects: "[auth_providers_insert_input!]!",
+        on_conflict: "auth_providers_on_conflict",
+      },
+    },
+    insert_auth_providers_one: {
+      __type: "auth_providers",
+      __args: {
+        object: "auth_providers_insert_input!",
+        on_conflict: "auth_providers_on_conflict",
+      },
+    },
+    insert_auth_refresh_tokens: {
+      __type: "auth_refresh_tokens_mutation_response",
+      __args: {
+        objects: "[auth_refresh_tokens_insert_input!]!",
+        on_conflict: "auth_refresh_tokens_on_conflict",
+      },
+    },
+    insert_auth_refresh_tokens_one: {
+      __type: "auth_refresh_tokens",
+      __args: {
+        object: "auth_refresh_tokens_insert_input!",
+        on_conflict: "auth_refresh_tokens_on_conflict",
+      },
+    },
+    insert_auth_roles: {
+      __type: "auth_roles_mutation_response",
+      __args: {
+        objects: "[auth_roles_insert_input!]!",
+        on_conflict: "auth_roles_on_conflict",
+      },
+    },
+    insert_auth_roles_one: {
+      __type: "auth_roles",
+      __args: {
+        object: "auth_roles_insert_input!",
+        on_conflict: "auth_roles_on_conflict",
+      },
+    },
+    insert_authorships: {
+      __type: "authorships_mutation_response",
+      __args: {
+        objects: "[authorships_insert_input!]!",
+        on_conflict: "authorships_on_conflict",
+      },
+    },
+    insert_authorships_one: {
+      __type: "authorships",
+      __args: {
+        object: "authorships_insert_input!",
+        on_conflict: "authorships_on_conflict",
+      },
+    },
+    insert_contents: {
+      __type: "contents_mutation_response",
+      __args: {
+        objects: "[contents_insert_input!]!",
+        on_conflict: "contents_on_conflict",
+      },
+    },
+    insert_contents_one: {
+      __type: "contents",
+      __args: {
+        object: "contents_insert_input!",
+        on_conflict: "contents_on_conflict",
+      },
+    },
+    insert_events: {
+      __type: "events_mutation_response",
+      __args: {
+        objects: "[events_insert_input!]!",
+        on_conflict: "events_on_conflict",
+      },
+    },
+    insert_events_one: {
+      __type: "events",
+      __args: {
+        object: "events_insert_input!",
+        on_conflict: "events_on_conflict",
+      },
+    },
+    insert_files: {
+      __type: "files_mutation_response",
+      __args: {
+        objects: "[files_insert_input!]!",
+        on_conflict: "files_on_conflict",
+      },
+    },
+    insert_files_one: {
+      __type: "files",
+      __args: {
+        object: "files_insert_input!",
+        on_conflict: "files_on_conflict",
+      },
+    },
+    insert_folders: {
+      __type: "folders_mutation_response",
+      __args: {
+        objects: "[folders_insert_input!]!",
+        on_conflict: "folders_on_conflict",
+      },
+    },
+    insert_folders_one: {
+      __type: "folders",
+      __args: {
+        object: "folders_insert_input!",
+        on_conflict: "folders_on_conflict",
+      },
+    },
+    insert_groups: {
+      __type: "groups_mutation_response",
+      __args: {
+        objects: "[groups_insert_input!]!",
+        on_conflict: "groups_on_conflict",
+      },
+    },
+    insert_groups_one: {
+      __type: "groups",
+      __args: {
+        object: "groups_insert_input!",
+        on_conflict: "groups_on_conflict",
+      },
+    },
+    insert_identities: {
+      __type: "identities_mutation_response",
+      __args: {
+        objects: "[identities_insert_input!]!",
+        on_conflict: "identities_on_conflict",
+      },
+    },
+    insert_identities_one: {
+      __type: "identities",
+      __args: {
+        object: "identities_insert_input!",
+        on_conflict: "identities_on_conflict",
+      },
+    },
+    insert_memberships: {
+      __type: "memberships_mutation_response",
+      __args: {
+        objects: "[memberships_insert_input!]!",
+        on_conflict: "memberships_on_conflict",
+      },
+    },
+    insert_memberships_one: {
+      __type: "memberships",
+      __args: {
+        object: "memberships_insert_input!",
+        on_conflict: "memberships_on_conflict",
+      },
+    },
+    insert_polls: {
+      __type: "polls_mutation_response",
+      __args: {
+        objects: "[polls_insert_input!]!",
+        on_conflict: "polls_on_conflict",
+      },
+    },
+    insert_polls_one: {
+      __type: "polls",
+      __args: {
+        object: "polls_insert_input!",
+        on_conflict: "polls_on_conflict",
+      },
+    },
+    insert_roles: {
+      __type: "roles_mutation_response",
+      __args: {
+        objects: "[roles_insert_input!]!",
+        on_conflict: "roles_on_conflict",
+      },
+    },
+    insert_roles_one: {
+      __type: "roles",
+      __args: {
+        object: "roles_insert_input!",
+        on_conflict: "roles_on_conflict",
+      },
+    },
+    insert_speaks: {
+      __type: "speaks_mutation_response",
+      __args: {
+        objects: "[speaks_insert_input!]!",
+        on_conflict: "speaks_on_conflict",
+      },
+    },
+    insert_speaks_one: {
+      __type: "speaks",
+      __args: {
+        object: "speaks_insert_input!",
+        on_conflict: "speaks_on_conflict",
+      },
+    },
+    insert_timers: {
+      __type: "timers_mutation_response",
+      __args: {
+        objects: "[timers_insert_input!]!",
+        on_conflict: "timers_on_conflict",
+      },
+    },
+    insert_timers_one: {
+      __type: "timers",
+      __args: {
+        object: "timers_insert_input!",
+        on_conflict: "timers_on_conflict",
+      },
+    },
+    insert_users: {
+      __type: "users_mutation_response",
+      __args: {
+        objects: "[users_insert_input!]!",
+        on_conflict: "users_on_conflict",
+      },
+    },
+    insert_users_one: {
+      __type: "users",
+      __args: {
+        object: "users_insert_input!",
+        on_conflict: "users_on_conflict",
+      },
+    },
+    insert_votes: {
+      __type: "votes_mutation_response",
+      __args: {
+        objects: "[votes_insert_input!]!",
+        on_conflict: "votes_on_conflict",
+      },
+    },
+    insert_votes_one: {
+      __type: "votes",
+      __args: {
+        object: "votes_insert_input!",
+        on_conflict: "votes_on_conflict",
+      },
+    },
+    update_admissions: {
+      __type: "admissions_mutation_response",
+      __args: { _set: "admissions_set_input", where: "admissions_bool_exp!" },
+    },
+    update_admissions_by_pk: {
+      __type: "admissions",
+      __args: {
+        _set: "admissions_set_input",
+        pk_columns: "admissions_pk_columns_input!",
+      },
+    },
+    update_auth_account_providers: {
+      __type: "auth_account_providers_mutation_response",
+      __args: {
+        _set: "auth_account_providers_set_input",
+        where: "auth_account_providers_bool_exp!",
+      },
+    },
+    update_auth_account_providers_by_pk: {
+      __type: "auth_account_providers",
+      __args: {
+        _set: "auth_account_providers_set_input",
+        pk_columns: "auth_account_providers_pk_columns_input!",
+      },
+    },
+    update_auth_account_roles: {
+      __type: "auth_account_roles_mutation_response",
+      __args: {
+        _set: "auth_account_roles_set_input",
+        where: "auth_account_roles_bool_exp!",
+      },
+    },
+    update_auth_account_roles_by_pk: {
+      __type: "auth_account_roles",
+      __args: {
+        _set: "auth_account_roles_set_input",
+        pk_columns: "auth_account_roles_pk_columns_input!",
+      },
+    },
+    update_auth_accounts: {
+      __type: "auth_accounts_mutation_response",
+      __args: {
+        _append: "auth_accounts_append_input",
+        _delete_at_path: "auth_accounts_delete_at_path_input",
+        _delete_elem: "auth_accounts_delete_elem_input",
+        _delete_key: "auth_accounts_delete_key_input",
+        _prepend: "auth_accounts_prepend_input",
+        _set: "auth_accounts_set_input",
+        where: "auth_accounts_bool_exp!",
+      },
+    },
+    update_auth_accounts_by_pk: {
+      __type: "auth_accounts",
+      __args: {
+        _append: "auth_accounts_append_input",
+        _delete_at_path: "auth_accounts_delete_at_path_input",
+        _delete_elem: "auth_accounts_delete_elem_input",
+        _delete_key: "auth_accounts_delete_key_input",
+        _prepend: "auth_accounts_prepend_input",
+        _set: "auth_accounts_set_input",
+        pk_columns: "auth_accounts_pk_columns_input!",
+      },
+    },
+    update_auth_providers: {
+      __type: "auth_providers_mutation_response",
+      __args: {
+        _set: "auth_providers_set_input",
+        where: "auth_providers_bool_exp!",
+      },
+    },
+    update_auth_providers_by_pk: {
+      __type: "auth_providers",
+      __args: {
+        _set: "auth_providers_set_input",
+        pk_columns: "auth_providers_pk_columns_input!",
+      },
+    },
+    update_auth_refresh_tokens: {
+      __type: "auth_refresh_tokens_mutation_response",
+      __args: {
+        _set: "auth_refresh_tokens_set_input",
+        where: "auth_refresh_tokens_bool_exp!",
+      },
+    },
+    update_auth_refresh_tokens_by_pk: {
+      __type: "auth_refresh_tokens",
+      __args: {
+        _set: "auth_refresh_tokens_set_input",
+        pk_columns: "auth_refresh_tokens_pk_columns_input!",
+      },
+    },
+    update_auth_roles: {
+      __type: "auth_roles_mutation_response",
+      __args: { _set: "auth_roles_set_input", where: "auth_roles_bool_exp!" },
+    },
+    update_auth_roles_by_pk: {
+      __type: "auth_roles",
+      __args: {
+        _set: "auth_roles_set_input",
+        pk_columns: "auth_roles_pk_columns_input!",
+      },
+    },
+    update_authorships: {
+      __type: "authorships_mutation_response",
+      __args: { _set: "authorships_set_input", where: "authorships_bool_exp!" },
+    },
+    update_authorships_by_pk: {
+      __type: "authorships",
+      __args: {
+        _set: "authorships_set_input",
+        pk_columns: "authorships_pk_columns_input!",
+      },
+    },
+    update_contents: {
+      __type: "contents_mutation_response",
+      __args: {
+        _inc: "contents_inc_input",
+        _set: "contents_set_input",
+        where: "contents_bool_exp!",
+      },
+    },
+    update_contents_by_pk: {
+      __type: "contents",
+      __args: {
+        _inc: "contents_inc_input",
+        _set: "contents_set_input",
+        pk_columns: "contents_pk_columns_input!",
+      },
+    },
+    update_events: {
+      __type: "events_mutation_response",
+      __args: { _set: "events_set_input", where: "events_bool_exp!" },
+    },
+    update_events_by_pk: {
+      __type: "events",
+      __args: {
+        _set: "events_set_input",
+        pk_columns: "events_pk_columns_input!",
+      },
+    },
+    update_files: {
+      __type: "files_mutation_response",
+      __args: { _set: "files_set_input", where: "files_bool_exp!" },
+    },
+    update_files_by_pk: {
+      __type: "files",
+      __args: {
+        _set: "files_set_input",
+        pk_columns: "files_pk_columns_input!",
+      },
+    },
+    update_folders: {
+      __type: "folders_mutation_response",
+      __args: {
+        _inc: "folders_inc_input",
+        _set: "folders_set_input",
+        where: "folders_bool_exp!",
+      },
+    },
+    update_folders_by_pk: {
+      __type: "folders",
+      __args: {
+        _inc: "folders_inc_input",
+        _set: "folders_set_input",
+        pk_columns: "folders_pk_columns_input!",
+      },
+    },
+    update_groups: {
+      __type: "groups_mutation_response",
+      __args: { _set: "groups_set_input", where: "groups_bool_exp!" },
+    },
+    update_groups_by_pk: {
+      __type: "groups",
+      __args: {
+        _set: "groups_set_input",
+        pk_columns: "groups_pk_columns_input!",
+      },
+    },
+    update_identities: {
+      __type: "identities_mutation_response",
+      __args: { _set: "identities_set_input", where: "identities_bool_exp!" },
+    },
+    update_identities_by_pk: {
+      __type: "identities",
+      __args: {
+        _set: "identities_set_input",
+        pk_columns: "identities_pk_columns_input!",
+      },
+    },
+    update_memberships: {
+      __type: "memberships_mutation_response",
+      __args: { _set: "memberships_set_input", where: "memberships_bool_exp!" },
+    },
+    update_memberships_by_pk: {
+      __type: "memberships",
+      __args: {
+        _set: "memberships_set_input",
+        pk_columns: "memberships_pk_columns_input!",
+      },
+    },
+    update_polls: {
+      __type: "polls_mutation_response",
+      __args: {
+        _inc: "polls_inc_input",
+        _set: "polls_set_input",
+        where: "polls_bool_exp!",
+      },
+    },
+    update_polls_by_pk: {
+      __type: "polls",
+      __args: {
+        _inc: "polls_inc_input",
+        _set: "polls_set_input",
+        pk_columns: "polls_pk_columns_input!",
+      },
+    },
+    update_roles: {
+      __type: "roles_mutation_response",
+      __args: { _set: "roles_set_input", where: "roles_bool_exp!" },
+    },
+    update_roles_by_pk: {
+      __type: "roles",
+      __args: {
+        _set: "roles_set_input",
+        pk_columns: "roles_pk_columns_input!",
+      },
+    },
+    update_speaks: {
+      __type: "speaks_mutation_response",
+      __args: {
+        _inc: "speaks_inc_input",
+        _set: "speaks_set_input",
+        where: "speaks_bool_exp!",
+      },
+    },
+    update_speaks_by_pk: {
+      __type: "speaks",
+      __args: {
+        _inc: "speaks_inc_input",
+        _set: "speaks_set_input",
+        pk_columns: "speaks_pk_columns_input!",
+      },
+    },
+    update_timers: {
+      __type: "timers_mutation_response",
+      __args: {
+        _inc: "timers_inc_input",
+        _set: "timers_set_input",
+        where: "timers_bool_exp!",
+      },
+    },
+    update_timers_by_pk: {
+      __type: "timers",
+      __args: {
+        _inc: "timers_inc_input",
+        _set: "timers_set_input",
+        pk_columns: "timers_pk_columns_input!",
+      },
+    },
+    update_users: {
+      __type: "users_mutation_response",
+      __args: { _set: "users_set_input", where: "users_bool_exp!" },
+    },
+    update_users_by_pk: {
+      __type: "users",
+      __args: {
+        _set: "users_set_input",
+        pk_columns: "users_pk_columns_input!",
+      },
+    },
+    update_votes: {
+      __type: "votes_mutation_response",
+      __args: { _set: "votes_set_input", where: "votes_bool_exp!" },
+    },
+    update_votes_by_pk: {
+      __type: "votes",
+      __args: {
+        _set: "votes_set_input",
+        pk_columns: "votes_pk_columns_input!",
+      },
+    },
+  },
   polls: {
     __typename: { __type: "String!" },
     active: { __type: "Boolean!" },
@@ -7683,6 +6769,463 @@ export const generatedSchema = {
   polls_variance_order_by: {
     maxVote: { __type: "order_by" },
     minVote: { __type: "order_by" },
+  },
+  query: {
+    __typename: { __type: "String!" },
+    admissions: {
+      __type: "[admissions!]!",
+      __args: {
+        distinct_on: "[admissions_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[admissions_order_by!]",
+        where: "admissions_bool_exp",
+      },
+    },
+    admissions_aggregate: {
+      __type: "admissions_aggregate!",
+      __args: {
+        distinct_on: "[admissions_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[admissions_order_by!]",
+        where: "admissions_bool_exp",
+      },
+    },
+    admissions_by_pk: { __type: "admissions", __args: { id: "uuid!" } },
+    auth_account_providers: {
+      __type: "[auth_account_providers!]!",
+      __args: {
+        distinct_on: "[auth_account_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_providers_order_by!]",
+        where: "auth_account_providers_bool_exp",
+      },
+    },
+    auth_account_providers_aggregate: {
+      __type: "auth_account_providers_aggregate!",
+      __args: {
+        distinct_on: "[auth_account_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_providers_order_by!]",
+        where: "auth_account_providers_bool_exp",
+      },
+    },
+    auth_account_providers_by_pk: {
+      __type: "auth_account_providers",
+      __args: { id: "uuid!" },
+    },
+    auth_account_roles: {
+      __type: "[auth_account_roles!]!",
+      __args: {
+        distinct_on: "[auth_account_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_roles_order_by!]",
+        where: "auth_account_roles_bool_exp",
+      },
+    },
+    auth_account_roles_aggregate: {
+      __type: "auth_account_roles_aggregate!",
+      __args: {
+        distinct_on: "[auth_account_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_roles_order_by!]",
+        where: "auth_account_roles_bool_exp",
+      },
+    },
+    auth_account_roles_by_pk: {
+      __type: "auth_account_roles",
+      __args: { id: "uuid!" },
+    },
+    auth_accounts: {
+      __type: "[auth_accounts!]!",
+      __args: {
+        distinct_on: "[auth_accounts_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_accounts_order_by!]",
+        where: "auth_accounts_bool_exp",
+      },
+    },
+    auth_accounts_aggregate: {
+      __type: "auth_accounts_aggregate!",
+      __args: {
+        distinct_on: "[auth_accounts_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_accounts_order_by!]",
+        where: "auth_accounts_bool_exp",
+      },
+    },
+    auth_accounts_by_pk: { __type: "auth_accounts", __args: { id: "uuid!" } },
+    auth_providers: {
+      __type: "[auth_providers!]!",
+      __args: {
+        distinct_on: "[auth_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_providers_order_by!]",
+        where: "auth_providers_bool_exp",
+      },
+    },
+    auth_providers_aggregate: {
+      __type: "auth_providers_aggregate!",
+      __args: {
+        distinct_on: "[auth_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_providers_order_by!]",
+        where: "auth_providers_bool_exp",
+      },
+    },
+    auth_providers_by_pk: {
+      __type: "auth_providers",
+      __args: { provider: "String!" },
+    },
+    auth_refresh_tokens: {
+      __type: "[auth_refresh_tokens!]!",
+      __args: {
+        distinct_on: "[auth_refresh_tokens_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_refresh_tokens_order_by!]",
+        where: "auth_refresh_tokens_bool_exp",
+      },
+    },
+    auth_refresh_tokens_aggregate: {
+      __type: "auth_refresh_tokens_aggregate!",
+      __args: {
+        distinct_on: "[auth_refresh_tokens_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_refresh_tokens_order_by!]",
+        where: "auth_refresh_tokens_bool_exp",
+      },
+    },
+    auth_refresh_tokens_by_pk: {
+      __type: "auth_refresh_tokens",
+      __args: { refresh_token: "uuid!" },
+    },
+    auth_roles: {
+      __type: "[auth_roles!]!",
+      __args: {
+        distinct_on: "[auth_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_roles_order_by!]",
+        where: "auth_roles_bool_exp",
+      },
+    },
+    auth_roles_aggregate: {
+      __type: "auth_roles_aggregate!",
+      __args: {
+        distinct_on: "[auth_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_roles_order_by!]",
+        where: "auth_roles_bool_exp",
+      },
+    },
+    auth_roles_by_pk: { __type: "auth_roles", __args: { role: "String!" } },
+    authorships: {
+      __type: "[authorships!]!",
+      __args: {
+        distinct_on: "[authorships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[authorships_order_by!]",
+        where: "authorships_bool_exp",
+      },
+    },
+    authorships_aggregate: {
+      __type: "authorships_aggregate!",
+      __args: {
+        distinct_on: "[authorships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[authorships_order_by!]",
+        where: "authorships_bool_exp",
+      },
+    },
+    authorships_by_pk: { __type: "authorships", __args: { id: "uuid!" } },
+    canVote: { __type: "CanVoteOutput", __args: { eventId: "uuid" } },
+    contents: {
+      __type: "[contents!]!",
+      __args: {
+        distinct_on: "[contents_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[contents_order_by!]",
+        where: "contents_bool_exp",
+      },
+    },
+    contents_aggregate: {
+      __type: "contents_aggregate!",
+      __args: {
+        distinct_on: "[contents_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[contents_order_by!]",
+        where: "contents_bool_exp",
+      },
+    },
+    contents_by_pk: { __type: "contents", __args: { id: "uuid!" } },
+    events: {
+      __type: "[events!]!",
+      __args: {
+        distinct_on: "[events_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[events_order_by!]",
+        where: "events_bool_exp",
+      },
+    },
+    events_aggregate: {
+      __type: "events_aggregate!",
+      __args: {
+        distinct_on: "[events_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[events_order_by!]",
+        where: "events_bool_exp",
+      },
+    },
+    events_by_pk: { __type: "events", __args: { id: "uuid!" } },
+    files: {
+      __type: "[files!]!",
+      __args: {
+        distinct_on: "[files_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[files_order_by!]",
+        where: "files_bool_exp",
+      },
+    },
+    files_aggregate: {
+      __type: "files_aggregate!",
+      __args: {
+        distinct_on: "[files_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[files_order_by!]",
+        where: "files_bool_exp",
+      },
+    },
+    files_by_pk: { __type: "files", __args: { id: "uuid!" } },
+    folders: {
+      __type: "[folders!]!",
+      __args: {
+        distinct_on: "[folders_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[folders_order_by!]",
+        where: "folders_bool_exp",
+      },
+    },
+    folders_aggregate: {
+      __type: "folders_aggregate!",
+      __args: {
+        distinct_on: "[folders_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[folders_order_by!]",
+        where: "folders_bool_exp",
+      },
+    },
+    folders_by_pk: { __type: "folders", __args: { id: "uuid!" } },
+    groups: {
+      __type: "[groups!]!",
+      __args: {
+        distinct_on: "[groups_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[groups_order_by!]",
+        where: "groups_bool_exp",
+      },
+    },
+    groups_aggregate: {
+      __type: "groups_aggregate!",
+      __args: {
+        distinct_on: "[groups_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[groups_order_by!]",
+        where: "groups_bool_exp",
+      },
+    },
+    groups_by_pk: { __type: "groups", __args: { id: "uuid!" } },
+    identities: {
+      __type: "[identities!]!",
+      __args: {
+        distinct_on: "[identities_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[identities_order_by!]",
+        where: "identities_bool_exp",
+      },
+    },
+    identities_aggregate: {
+      __type: "identities_aggregate!",
+      __args: {
+        distinct_on: "[identities_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[identities_order_by!]",
+        where: "identities_bool_exp",
+      },
+    },
+    identities_by_pk: { __type: "identities", __args: { email: "String!" } },
+    memberships: {
+      __type: "[memberships!]!",
+      __args: {
+        distinct_on: "[memberships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[memberships_order_by!]",
+        where: "memberships_bool_exp",
+      },
+    },
+    memberships_aggregate: {
+      __type: "memberships_aggregate!",
+      __args: {
+        distinct_on: "[memberships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[memberships_order_by!]",
+        where: "memberships_bool_exp",
+      },
+    },
+    memberships_by_pk: { __type: "memberships", __args: { id: "uuid!" } },
+    polls: {
+      __type: "[polls!]!",
+      __args: {
+        distinct_on: "[polls_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[polls_order_by!]",
+        where: "polls_bool_exp",
+      },
+    },
+    polls_aggregate: {
+      __type: "polls_aggregate!",
+      __args: {
+        distinct_on: "[polls_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[polls_order_by!]",
+        where: "polls_bool_exp",
+      },
+    },
+    polls_by_pk: { __type: "polls", __args: { id: "uuid!" } },
+    roles: {
+      __type: "[roles!]!",
+      __args: {
+        distinct_on: "[roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[roles_order_by!]",
+        where: "roles_bool_exp",
+      },
+    },
+    roles_aggregate: {
+      __type: "roles_aggregate!",
+      __args: {
+        distinct_on: "[roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[roles_order_by!]",
+        where: "roles_bool_exp",
+      },
+    },
+    roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
+    speaks: {
+      __type: "[speaks!]!",
+      __args: {
+        distinct_on: "[speaks_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speaks_order_by!]",
+        where: "speaks_bool_exp",
+      },
+    },
+    speaks_aggregate: {
+      __type: "speaks_aggregate!",
+      __args: {
+        distinct_on: "[speaks_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speaks_order_by!]",
+        where: "speaks_bool_exp",
+      },
+    },
+    speaks_by_pk: { __type: "speaks", __args: { id: "uuid!" } },
+    timers: {
+      __type: "[timers!]!",
+      __args: {
+        distinct_on: "[timers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[timers_order_by!]",
+        where: "timers_bool_exp",
+      },
+    },
+    timers_aggregate: {
+      __type: "timers_aggregate!",
+      __args: {
+        distinct_on: "[timers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[timers_order_by!]",
+        where: "timers_bool_exp",
+      },
+    },
+    timers_by_pk: { __type: "timers", __args: { id: "uuid!" } },
+    users: {
+      __type: "[users!]!",
+      __args: {
+        distinct_on: "[users_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[users_order_by!]",
+        where: "users_bool_exp",
+      },
+    },
+    users_aggregate: {
+      __type: "users_aggregate!",
+      __args: {
+        distinct_on: "[users_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[users_order_by!]",
+        where: "users_bool_exp",
+      },
+    },
+    users_by_pk: { __type: "users", __args: { id: "uuid!" } },
+    votes: {
+      __type: "[votes!]!",
+      __args: {
+        distinct_on: "[votes_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[votes_order_by!]",
+        where: "votes_bool_exp",
+      },
+    },
+    votes_aggregate: {
+      __type: "votes_aggregate!",
+      __args: {
+        distinct_on: "[votes_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[votes_order_by!]",
+        where: "votes_bool_exp",
+      },
+    },
+    votes_by_pk: { __type: "votes", __args: { id: "uuid!" } },
   },
   roles: {
     __typename: { __type: "String!" },
@@ -7945,6 +7488,463 @@ export const generatedSchema = {
     type: { __type: "Float" },
   },
   speaks_variance_order_by: { type: { __type: "order_by" } },
+  subscription: {
+    __typename: { __type: "String!" },
+    admissions: {
+      __type: "[admissions!]!",
+      __args: {
+        distinct_on: "[admissions_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[admissions_order_by!]",
+        where: "admissions_bool_exp",
+      },
+    },
+    admissions_aggregate: {
+      __type: "admissions_aggregate!",
+      __args: {
+        distinct_on: "[admissions_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[admissions_order_by!]",
+        where: "admissions_bool_exp",
+      },
+    },
+    admissions_by_pk: { __type: "admissions", __args: { id: "uuid!" } },
+    auth_account_providers: {
+      __type: "[auth_account_providers!]!",
+      __args: {
+        distinct_on: "[auth_account_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_providers_order_by!]",
+        where: "auth_account_providers_bool_exp",
+      },
+    },
+    auth_account_providers_aggregate: {
+      __type: "auth_account_providers_aggregate!",
+      __args: {
+        distinct_on: "[auth_account_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_providers_order_by!]",
+        where: "auth_account_providers_bool_exp",
+      },
+    },
+    auth_account_providers_by_pk: {
+      __type: "auth_account_providers",
+      __args: { id: "uuid!" },
+    },
+    auth_account_roles: {
+      __type: "[auth_account_roles!]!",
+      __args: {
+        distinct_on: "[auth_account_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_roles_order_by!]",
+        where: "auth_account_roles_bool_exp",
+      },
+    },
+    auth_account_roles_aggregate: {
+      __type: "auth_account_roles_aggregate!",
+      __args: {
+        distinct_on: "[auth_account_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_account_roles_order_by!]",
+        where: "auth_account_roles_bool_exp",
+      },
+    },
+    auth_account_roles_by_pk: {
+      __type: "auth_account_roles",
+      __args: { id: "uuid!" },
+    },
+    auth_accounts: {
+      __type: "[auth_accounts!]!",
+      __args: {
+        distinct_on: "[auth_accounts_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_accounts_order_by!]",
+        where: "auth_accounts_bool_exp",
+      },
+    },
+    auth_accounts_aggregate: {
+      __type: "auth_accounts_aggregate!",
+      __args: {
+        distinct_on: "[auth_accounts_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_accounts_order_by!]",
+        where: "auth_accounts_bool_exp",
+      },
+    },
+    auth_accounts_by_pk: { __type: "auth_accounts", __args: { id: "uuid!" } },
+    auth_providers: {
+      __type: "[auth_providers!]!",
+      __args: {
+        distinct_on: "[auth_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_providers_order_by!]",
+        where: "auth_providers_bool_exp",
+      },
+    },
+    auth_providers_aggregate: {
+      __type: "auth_providers_aggregate!",
+      __args: {
+        distinct_on: "[auth_providers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_providers_order_by!]",
+        where: "auth_providers_bool_exp",
+      },
+    },
+    auth_providers_by_pk: {
+      __type: "auth_providers",
+      __args: { provider: "String!" },
+    },
+    auth_refresh_tokens: {
+      __type: "[auth_refresh_tokens!]!",
+      __args: {
+        distinct_on: "[auth_refresh_tokens_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_refresh_tokens_order_by!]",
+        where: "auth_refresh_tokens_bool_exp",
+      },
+    },
+    auth_refresh_tokens_aggregate: {
+      __type: "auth_refresh_tokens_aggregate!",
+      __args: {
+        distinct_on: "[auth_refresh_tokens_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_refresh_tokens_order_by!]",
+        where: "auth_refresh_tokens_bool_exp",
+      },
+    },
+    auth_refresh_tokens_by_pk: {
+      __type: "auth_refresh_tokens",
+      __args: { refresh_token: "uuid!" },
+    },
+    auth_roles: {
+      __type: "[auth_roles!]!",
+      __args: {
+        distinct_on: "[auth_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_roles_order_by!]",
+        where: "auth_roles_bool_exp",
+      },
+    },
+    auth_roles_aggregate: {
+      __type: "auth_roles_aggregate!",
+      __args: {
+        distinct_on: "[auth_roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[auth_roles_order_by!]",
+        where: "auth_roles_bool_exp",
+      },
+    },
+    auth_roles_by_pk: { __type: "auth_roles", __args: { role: "String!" } },
+    authorships: {
+      __type: "[authorships!]!",
+      __args: {
+        distinct_on: "[authorships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[authorships_order_by!]",
+        where: "authorships_bool_exp",
+      },
+    },
+    authorships_aggregate: {
+      __type: "authorships_aggregate!",
+      __args: {
+        distinct_on: "[authorships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[authorships_order_by!]",
+        where: "authorships_bool_exp",
+      },
+    },
+    authorships_by_pk: { __type: "authorships", __args: { id: "uuid!" } },
+    canVote: { __type: "CanVoteOutput", __args: { eventId: "uuid" } },
+    contents: {
+      __type: "[contents!]!",
+      __args: {
+        distinct_on: "[contents_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[contents_order_by!]",
+        where: "contents_bool_exp",
+      },
+    },
+    contents_aggregate: {
+      __type: "contents_aggregate!",
+      __args: {
+        distinct_on: "[contents_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[contents_order_by!]",
+        where: "contents_bool_exp",
+      },
+    },
+    contents_by_pk: { __type: "contents", __args: { id: "uuid!" } },
+    events: {
+      __type: "[events!]!",
+      __args: {
+        distinct_on: "[events_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[events_order_by!]",
+        where: "events_bool_exp",
+      },
+    },
+    events_aggregate: {
+      __type: "events_aggregate!",
+      __args: {
+        distinct_on: "[events_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[events_order_by!]",
+        where: "events_bool_exp",
+      },
+    },
+    events_by_pk: { __type: "events", __args: { id: "uuid!" } },
+    files: {
+      __type: "[files!]!",
+      __args: {
+        distinct_on: "[files_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[files_order_by!]",
+        where: "files_bool_exp",
+      },
+    },
+    files_aggregate: {
+      __type: "files_aggregate!",
+      __args: {
+        distinct_on: "[files_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[files_order_by!]",
+        where: "files_bool_exp",
+      },
+    },
+    files_by_pk: { __type: "files", __args: { id: "uuid!" } },
+    folders: {
+      __type: "[folders!]!",
+      __args: {
+        distinct_on: "[folders_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[folders_order_by!]",
+        where: "folders_bool_exp",
+      },
+    },
+    folders_aggregate: {
+      __type: "folders_aggregate!",
+      __args: {
+        distinct_on: "[folders_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[folders_order_by!]",
+        where: "folders_bool_exp",
+      },
+    },
+    folders_by_pk: { __type: "folders", __args: { id: "uuid!" } },
+    groups: {
+      __type: "[groups!]!",
+      __args: {
+        distinct_on: "[groups_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[groups_order_by!]",
+        where: "groups_bool_exp",
+      },
+    },
+    groups_aggregate: {
+      __type: "groups_aggregate!",
+      __args: {
+        distinct_on: "[groups_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[groups_order_by!]",
+        where: "groups_bool_exp",
+      },
+    },
+    groups_by_pk: { __type: "groups", __args: { id: "uuid!" } },
+    identities: {
+      __type: "[identities!]!",
+      __args: {
+        distinct_on: "[identities_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[identities_order_by!]",
+        where: "identities_bool_exp",
+      },
+    },
+    identities_aggregate: {
+      __type: "identities_aggregate!",
+      __args: {
+        distinct_on: "[identities_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[identities_order_by!]",
+        where: "identities_bool_exp",
+      },
+    },
+    identities_by_pk: { __type: "identities", __args: { email: "String!" } },
+    memberships: {
+      __type: "[memberships!]!",
+      __args: {
+        distinct_on: "[memberships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[memberships_order_by!]",
+        where: "memberships_bool_exp",
+      },
+    },
+    memberships_aggregate: {
+      __type: "memberships_aggregate!",
+      __args: {
+        distinct_on: "[memberships_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[memberships_order_by!]",
+        where: "memberships_bool_exp",
+      },
+    },
+    memberships_by_pk: { __type: "memberships", __args: { id: "uuid!" } },
+    polls: {
+      __type: "[polls!]!",
+      __args: {
+        distinct_on: "[polls_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[polls_order_by!]",
+        where: "polls_bool_exp",
+      },
+    },
+    polls_aggregate: {
+      __type: "polls_aggregate!",
+      __args: {
+        distinct_on: "[polls_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[polls_order_by!]",
+        where: "polls_bool_exp",
+      },
+    },
+    polls_by_pk: { __type: "polls", __args: { id: "uuid!" } },
+    roles: {
+      __type: "[roles!]!",
+      __args: {
+        distinct_on: "[roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[roles_order_by!]",
+        where: "roles_bool_exp",
+      },
+    },
+    roles_aggregate: {
+      __type: "roles_aggregate!",
+      __args: {
+        distinct_on: "[roles_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[roles_order_by!]",
+        where: "roles_bool_exp",
+      },
+    },
+    roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
+    speaks: {
+      __type: "[speaks!]!",
+      __args: {
+        distinct_on: "[speaks_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speaks_order_by!]",
+        where: "speaks_bool_exp",
+      },
+    },
+    speaks_aggregate: {
+      __type: "speaks_aggregate!",
+      __args: {
+        distinct_on: "[speaks_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speaks_order_by!]",
+        where: "speaks_bool_exp",
+      },
+    },
+    speaks_by_pk: { __type: "speaks", __args: { id: "uuid!" } },
+    timers: {
+      __type: "[timers!]!",
+      __args: {
+        distinct_on: "[timers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[timers_order_by!]",
+        where: "timers_bool_exp",
+      },
+    },
+    timers_aggregate: {
+      __type: "timers_aggregate!",
+      __args: {
+        distinct_on: "[timers_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[timers_order_by!]",
+        where: "timers_bool_exp",
+      },
+    },
+    timers_by_pk: { __type: "timers", __args: { id: "uuid!" } },
+    users: {
+      __type: "[users!]!",
+      __args: {
+        distinct_on: "[users_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[users_order_by!]",
+        where: "users_bool_exp",
+      },
+    },
+    users_aggregate: {
+      __type: "users_aggregate!",
+      __args: {
+        distinct_on: "[users_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[users_order_by!]",
+        where: "users_bool_exp",
+      },
+    },
+    users_by_pk: { __type: "users", __args: { id: "uuid!" } },
+    votes: {
+      __type: "[votes!]!",
+      __args: {
+        distinct_on: "[votes_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[votes_order_by!]",
+        where: "votes_bool_exp",
+      },
+    },
+    votes_aggregate: {
+      __type: "votes_aggregate!",
+      __args: {
+        distinct_on: "[votes_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[votes_order_by!]",
+        where: "votes_bool_exp",
+      },
+    },
+    votes_by_pk: { __type: "votes", __args: { id: "uuid!" } },
+  },
   timers: {
     __typename: { __type: "String!" },
     event: { __type: "events" },
@@ -8342,334 +8342,2186 @@ export const generatedSchema = {
   },
 } as const;
 
-export interface Query {
-  __typename?: "Query";
-  admissions: (args?: {
-    distinct_on?: Maybe<Array<admissions_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<admissions_order_by>>;
-    where?: Maybe<admissions_bool_exp>;
-  }) => Array<admissions>;
-  admissions_aggregate: (args?: {
-    distinct_on?: Maybe<Array<admissions_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<admissions_order_by>>;
-    where?: Maybe<admissions_bool_exp>;
-  }) => admissions_aggregate;
-  admissions_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<admissions>;
-  auth_account_providers: (args?: {
+export interface CanVoteOutput {
+  __typename?: "CanVoteOutput";
+  active?: Maybe<ScalarsEnums["Boolean"]>;
+  canVote?: Maybe<ScalarsEnums["Boolean"]>;
+  pollId: ScalarsEnums["uuid"];
+}
+
+export interface VoteOutput {
+  __typename?: "VoteOutput";
+  headers?: Maybe<ScalarsEnums["String"]>;
+  pollId: ScalarsEnums["uuid"];
+}
+
+/**
+ * columns and relationships of "admissions"
+ */
+export interface admissions {
+  __typename?: "admissions";
+  checkedIn: ScalarsEnums["Boolean"];
+  email: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  event?: Maybe<events>;
+  eventId: ScalarsEnums["uuid"];
+  id: ScalarsEnums["uuid"];
+  /**
+   * An object relationship
+   */
+  identity?: Maybe<identities>;
+  voting?: Maybe<ScalarsEnums["Boolean"]>;
+}
+
+/**
+ * aggregated selection of "admissions"
+ */
+export interface admissions_aggregate {
+  __typename?: "admissions_aggregate";
+  aggregate?: Maybe<admissions_aggregate_fields>;
+  nodes: Array<admissions>;
+}
+
+/**
+ * aggregate fields of "admissions"
+ */
+export interface admissions_aggregate_fields {
+  __typename?: "admissions_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<admissions_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<admissions_max_fields>;
+  min?: Maybe<admissions_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface admissions_max_fields {
+  __typename?: "admissions_max_fields";
+  email?: Maybe<ScalarsEnums["String"]>;
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface admissions_min_fields {
+  __typename?: "admissions_min_fields";
+  email?: Maybe<ScalarsEnums["String"]>;
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "admissions"
+ */
+export interface admissions_mutation_response {
+  __typename?: "admissions_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<admissions>;
+}
+
+/**
+ * columns and relationships of "auth.account_providers"
+ */
+export interface auth_account_providers {
+  __typename?: "auth_account_providers";
+  /**
+   * An object relationship
+   */
+  account: auth_accounts;
+  account_id: ScalarsEnums["uuid"];
+  auth_provider: ScalarsEnums["String"];
+  auth_provider_unique_id: ScalarsEnums["String"];
+  created_at: ScalarsEnums["timestamptz"];
+  id: ScalarsEnums["uuid"];
+  /**
+   * An object relationship
+   */
+  provider: auth_providers;
+  updated_at: ScalarsEnums["timestamptz"];
+}
+
+/**
+ * aggregated selection of "auth.account_providers"
+ */
+export interface auth_account_providers_aggregate {
+  __typename?: "auth_account_providers_aggregate";
+  aggregate?: Maybe<auth_account_providers_aggregate_fields>;
+  nodes: Array<auth_account_providers>;
+}
+
+/**
+ * aggregate fields of "auth.account_providers"
+ */
+export interface auth_account_providers_aggregate_fields {
+  __typename?: "auth_account_providers_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<auth_account_providers_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<auth_account_providers_max_fields>;
+  min?: Maybe<auth_account_providers_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface auth_account_providers_max_fields {
+  __typename?: "auth_account_providers_max_fields";
+  account_id?: Maybe<ScalarsEnums["uuid"]>;
+  auth_provider?: Maybe<ScalarsEnums["String"]>;
+  auth_provider_unique_id?: Maybe<ScalarsEnums["String"]>;
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface auth_account_providers_min_fields {
+  __typename?: "auth_account_providers_min_fields";
+  account_id?: Maybe<ScalarsEnums["uuid"]>;
+  auth_provider?: Maybe<ScalarsEnums["String"]>;
+  auth_provider_unique_id?: Maybe<ScalarsEnums["String"]>;
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
+}
+
+/**
+ * response of any mutation on the table "auth.account_providers"
+ */
+export interface auth_account_providers_mutation_response {
+  __typename?: "auth_account_providers_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<auth_account_providers>;
+}
+
+/**
+ * columns and relationships of "auth.account_roles"
+ */
+export interface auth_account_roles {
+  __typename?: "auth_account_roles";
+  /**
+   * An object relationship
+   */
+  account: auth_accounts;
+  account_id: ScalarsEnums["uuid"];
+  created_at: ScalarsEnums["timestamptz"];
+  id: ScalarsEnums["uuid"];
+  role: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  roleByRole: auth_roles;
+}
+
+/**
+ * aggregated selection of "auth.account_roles"
+ */
+export interface auth_account_roles_aggregate {
+  __typename?: "auth_account_roles_aggregate";
+  aggregate?: Maybe<auth_account_roles_aggregate_fields>;
+  nodes: Array<auth_account_roles>;
+}
+
+/**
+ * aggregate fields of "auth.account_roles"
+ */
+export interface auth_account_roles_aggregate_fields {
+  __typename?: "auth_account_roles_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<auth_account_roles_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<auth_account_roles_max_fields>;
+  min?: Maybe<auth_account_roles_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface auth_account_roles_max_fields {
+  __typename?: "auth_account_roles_max_fields";
+  account_id?: Maybe<ScalarsEnums["uuid"]>;
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  role?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface auth_account_roles_min_fields {
+  __typename?: "auth_account_roles_min_fields";
+  account_id?: Maybe<ScalarsEnums["uuid"]>;
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  role?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "auth.account_roles"
+ */
+export interface auth_account_roles_mutation_response {
+  __typename?: "auth_account_roles_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<auth_account_roles>;
+}
+
+/**
+ * columns and relationships of "auth.accounts"
+ */
+export interface auth_accounts {
+  __typename?: "auth_accounts";
+  /**
+   * An array relationship
+   */
+  account_providers: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<auth_account_providers_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<auth_account_providers_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<auth_account_providers_bool_exp>;
   }) => Array<auth_account_providers>;
-  auth_account_providers_aggregate: (args?: {
+  /**
+   * An aggregated array relationship
+   */
+  account_providers_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<auth_account_providers_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<auth_account_providers_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<auth_account_providers_bool_exp>;
   }) => auth_account_providers_aggregate;
-  auth_account_providers_by_pk: (args: {
-    id: Scalars["uuid"];
-  }) => Maybe<auth_account_providers>;
-  auth_account_roles: (args?: {
+  /**
+   * An array relationship
+   */
+  account_roles: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<auth_account_roles_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<auth_account_roles_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<auth_account_roles_bool_exp>;
   }) => Array<auth_account_roles>;
-  auth_account_roles_aggregate: (args?: {
+  /**
+   * An aggregated array relationship
+   */
+  account_roles_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<auth_account_roles_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<auth_account_roles_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<auth_account_roles_bool_exp>;
   }) => auth_account_roles_aggregate;
-  auth_account_roles_by_pk: (args: {
-    id: Scalars["uuid"];
-  }) => Maybe<auth_account_roles>;
-  auth_accounts: (args?: {
-    distinct_on?: Maybe<Array<auth_accounts_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<auth_accounts_order_by>>;
-    where?: Maybe<auth_accounts_bool_exp>;
-  }) => Array<auth_accounts>;
-  auth_accounts_aggregate: (args?: {
-    distinct_on?: Maybe<Array<auth_accounts_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<auth_accounts_order_by>>;
-    where?: Maybe<auth_accounts_bool_exp>;
-  }) => auth_accounts_aggregate;
-  auth_accounts_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<auth_accounts>;
-  auth_providers: (args?: {
-    distinct_on?: Maybe<Array<auth_providers_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<auth_providers_order_by>>;
-    where?: Maybe<auth_providers_bool_exp>;
-  }) => Array<auth_providers>;
-  auth_providers_aggregate: (args?: {
-    distinct_on?: Maybe<Array<auth_providers_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<auth_providers_order_by>>;
-    where?: Maybe<auth_providers_bool_exp>;
-  }) => auth_providers_aggregate;
-  auth_providers_by_pk: (args: {
-    provider: Scalars["String"];
-  }) => Maybe<auth_providers>;
-  auth_refresh_tokens: (args?: {
+  active: ScalarsEnums["Boolean"];
+  created_at: ScalarsEnums["timestamptz"];
+  custom_register_data: (args?: {
+    /**
+     * JSON select path
+     */
+    path?: Maybe<Scalars["String"]>;
+  }) => Maybe<ScalarsEnums["jsonb"]>;
+  default_role: ScalarsEnums["String"];
+  email?: Maybe<ScalarsEnums["citext"]>;
+  id: ScalarsEnums["uuid"];
+  is_anonymous: ScalarsEnums["Boolean"];
+  mfa_enabled: ScalarsEnums["Boolean"];
+  new_email?: Maybe<ScalarsEnums["citext"]>;
+  otp_secret?: Maybe<ScalarsEnums["String"]>;
+  password_hash?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * An array relationship
+   */
+  refresh_tokens: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<auth_refresh_tokens_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<auth_refresh_tokens_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<auth_refresh_tokens_bool_exp>;
   }) => Array<auth_refresh_tokens>;
-  auth_refresh_tokens_aggregate: (args?: {
+  /**
+   * An aggregated array relationship
+   */
+  refresh_tokens_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<auth_refresh_tokens_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<auth_refresh_tokens_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<auth_refresh_tokens_bool_exp>;
   }) => auth_refresh_tokens_aggregate;
-  auth_refresh_tokens_by_pk: (args: {
-    refresh_token: Scalars["uuid"];
-  }) => Maybe<auth_refresh_tokens>;
-  auth_roles: (args?: {
-    distinct_on?: Maybe<Array<auth_roles_select_column>>;
+  /**
+   * An object relationship
+   */
+  role: auth_roles;
+  ticket: ScalarsEnums["uuid"];
+  ticket_expires_at: ScalarsEnums["timestamptz"];
+  updated_at: ScalarsEnums["timestamptz"];
+  /**
+   * An object relationship
+   */
+  user: users;
+  user_id: ScalarsEnums["uuid"];
+}
+
+/**
+ * aggregated selection of "auth.accounts"
+ */
+export interface auth_accounts_aggregate {
+  __typename?: "auth_accounts_aggregate";
+  aggregate?: Maybe<auth_accounts_aggregate_fields>;
+  nodes: Array<auth_accounts>;
+}
+
+/**
+ * aggregate fields of "auth.accounts"
+ */
+export interface auth_accounts_aggregate_fields {
+  __typename?: "auth_accounts_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<auth_accounts_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<auth_accounts_max_fields>;
+  min?: Maybe<auth_accounts_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface auth_accounts_max_fields {
+  __typename?: "auth_accounts_max_fields";
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  default_role?: Maybe<ScalarsEnums["String"]>;
+  email?: Maybe<ScalarsEnums["citext"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  new_email?: Maybe<ScalarsEnums["citext"]>;
+  otp_secret?: Maybe<ScalarsEnums["String"]>;
+  password_hash?: Maybe<ScalarsEnums["String"]>;
+  ticket?: Maybe<ScalarsEnums["uuid"]>;
+  ticket_expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  user_id?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface auth_accounts_min_fields {
+  __typename?: "auth_accounts_min_fields";
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  default_role?: Maybe<ScalarsEnums["String"]>;
+  email?: Maybe<ScalarsEnums["citext"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  new_email?: Maybe<ScalarsEnums["citext"]>;
+  otp_secret?: Maybe<ScalarsEnums["String"]>;
+  password_hash?: Maybe<ScalarsEnums["String"]>;
+  ticket?: Maybe<ScalarsEnums["uuid"]>;
+  ticket_expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  user_id?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "auth.accounts"
+ */
+export interface auth_accounts_mutation_response {
+  __typename?: "auth_accounts_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<auth_accounts>;
+}
+
+/**
+ * columns and relationships of "auth.providers"
+ */
+export interface auth_providers {
+  __typename?: "auth_providers";
+  /**
+   * An array relationship
+   */
+  account_providers: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<auth_account_providers_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<auth_roles_order_by>>;
-    where?: Maybe<auth_roles_bool_exp>;
-  }) => Array<auth_roles>;
-  auth_roles_aggregate: (args?: {
-    distinct_on?: Maybe<Array<auth_roles_select_column>>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<auth_account_providers_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<auth_account_providers_bool_exp>;
+  }) => Array<auth_account_providers>;
+  /**
+   * An aggregated array relationship
+   */
+  account_providers_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<auth_account_providers_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<auth_roles_order_by>>;
-    where?: Maybe<auth_roles_bool_exp>;
-  }) => auth_roles_aggregate;
-  auth_roles_by_pk: (args: { role: Scalars["String"] }) => Maybe<auth_roles>;
-  authorships: (args?: {
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<auth_account_providers_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<auth_account_providers_bool_exp>;
+  }) => auth_account_providers_aggregate;
+  provider: ScalarsEnums["String"];
+}
+
+/**
+ * aggregated selection of "auth.providers"
+ */
+export interface auth_providers_aggregate {
+  __typename?: "auth_providers_aggregate";
+  aggregate?: Maybe<auth_providers_aggregate_fields>;
+  nodes: Array<auth_providers>;
+}
+
+/**
+ * aggregate fields of "auth.providers"
+ */
+export interface auth_providers_aggregate_fields {
+  __typename?: "auth_providers_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<auth_providers_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<auth_providers_max_fields>;
+  min?: Maybe<auth_providers_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface auth_providers_max_fields {
+  __typename?: "auth_providers_max_fields";
+  provider?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface auth_providers_min_fields {
+  __typename?: "auth_providers_min_fields";
+  provider?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "auth.providers"
+ */
+export interface auth_providers_mutation_response {
+  __typename?: "auth_providers_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<auth_providers>;
+}
+
+/**
+ * columns and relationships of "auth.refresh_tokens"
+ */
+export interface auth_refresh_tokens {
+  __typename?: "auth_refresh_tokens";
+  /**
+   * An object relationship
+   */
+  account: auth_accounts;
+  account_id: ScalarsEnums["uuid"];
+  created_at: ScalarsEnums["timestamptz"];
+  expires_at: ScalarsEnums["timestamptz"];
+  refresh_token: ScalarsEnums["uuid"];
+}
+
+/**
+ * aggregated selection of "auth.refresh_tokens"
+ */
+export interface auth_refresh_tokens_aggregate {
+  __typename?: "auth_refresh_tokens_aggregate";
+  aggregate?: Maybe<auth_refresh_tokens_aggregate_fields>;
+  nodes: Array<auth_refresh_tokens>;
+}
+
+/**
+ * aggregate fields of "auth.refresh_tokens"
+ */
+export interface auth_refresh_tokens_aggregate_fields {
+  __typename?: "auth_refresh_tokens_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<auth_refresh_tokens_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<auth_refresh_tokens_max_fields>;
+  min?: Maybe<auth_refresh_tokens_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface auth_refresh_tokens_max_fields {
+  __typename?: "auth_refresh_tokens_max_fields";
+  account_id?: Maybe<ScalarsEnums["uuid"]>;
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  refresh_token?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface auth_refresh_tokens_min_fields {
+  __typename?: "auth_refresh_tokens_min_fields";
+  account_id?: Maybe<ScalarsEnums["uuid"]>;
+  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
+  refresh_token?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "auth.refresh_tokens"
+ */
+export interface auth_refresh_tokens_mutation_response {
+  __typename?: "auth_refresh_tokens_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<auth_refresh_tokens>;
+}
+
+/**
+ * columns and relationships of "auth.roles"
+ */
+export interface auth_roles {
+  __typename?: "auth_roles";
+  /**
+   * An array relationship
+   */
+  account_roles: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<auth_account_roles_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<auth_account_roles_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<auth_account_roles_bool_exp>;
+  }) => Array<auth_account_roles>;
+  /**
+   * An aggregated array relationship
+   */
+  account_roles_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<auth_account_roles_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<auth_account_roles_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<auth_account_roles_bool_exp>;
+  }) => auth_account_roles_aggregate;
+  /**
+   * An array relationship
+   */
+  accounts: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<auth_accounts_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<auth_accounts_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<auth_accounts_bool_exp>;
+  }) => Array<auth_accounts>;
+  /**
+   * An aggregated array relationship
+   */
+  accounts_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<auth_accounts_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<auth_accounts_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<auth_accounts_bool_exp>;
+  }) => auth_accounts_aggregate;
+  role: ScalarsEnums["String"];
+}
+
+/**
+ * aggregated selection of "auth.roles"
+ */
+export interface auth_roles_aggregate {
+  __typename?: "auth_roles_aggregate";
+  aggregate?: Maybe<auth_roles_aggregate_fields>;
+  nodes: Array<auth_roles>;
+}
+
+/**
+ * aggregate fields of "auth.roles"
+ */
+export interface auth_roles_aggregate_fields {
+  __typename?: "auth_roles_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<auth_roles_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<auth_roles_max_fields>;
+  min?: Maybe<auth_roles_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface auth_roles_max_fields {
+  __typename?: "auth_roles_max_fields";
+  role?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface auth_roles_min_fields {
+  __typename?: "auth_roles_min_fields";
+  role?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "auth.roles"
+ */
+export interface auth_roles_mutation_response {
+  __typename?: "auth_roles_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<auth_roles>;
+}
+
+/**
+ * columns and relationships of "authorships"
+ */
+export interface authorships {
+  __typename?: "authorships";
+  /**
+   * An object relationship
+   */
+  content?: Maybe<contents>;
+  contentId: ScalarsEnums["uuid"];
+  email?: Maybe<ScalarsEnums["String"]>;
+  id: ScalarsEnums["uuid"];
+  /**
+   * An object relationship
+   */
+  identity?: Maybe<identities>;
+  name?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregated selection of "authorships"
+ */
+export interface authorships_aggregate {
+  __typename?: "authorships_aggregate";
+  aggregate?: Maybe<authorships_aggregate_fields>;
+  nodes: Array<authorships>;
+}
+
+/**
+ * aggregate fields of "authorships"
+ */
+export interface authorships_aggregate_fields {
+  __typename?: "authorships_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<authorships_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<authorships_max_fields>;
+  min?: Maybe<authorships_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface authorships_max_fields {
+  __typename?: "authorships_max_fields";
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  email?: Maybe<ScalarsEnums["String"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface authorships_min_fields {
+  __typename?: "authorships_min_fields";
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  email?: Maybe<ScalarsEnums["String"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "authorships"
+ */
+export interface authorships_mutation_response {
+  __typename?: "authorships_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<authorships>;
+}
+
+/**
+ * columns and relationships of "contents"
+ */
+export interface contents {
+  __typename?: "contents";
+  /**
+   * An array relationship
+   */
+  authors: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<authorships_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<authorships_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<authorships_bool_exp>;
   }) => Array<authorships>;
-  authorships_aggregate: (args?: {
+  /**
+   * An aggregated array relationship
+   */
+  authors_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<authorships_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<authorships_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<authorships_bool_exp>;
   }) => authorships_aggregate;
-  authorships_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<authorships>;
-  canVote: (args?: {
-    eventId?: Maybe<Scalars["uuid"]>;
-  }) => Maybe<CanVoteOutput>;
-  contents: (args?: {
+  /**
+   * An array relationship
+   */
+  children: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<contents_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<contents_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<contents_bool_exp>;
   }) => Array<contents>;
-  contents_aggregate: (args?: {
+  /**
+   * An aggregated array relationship
+   */
+  children_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<contents_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<contents_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<contents_bool_exp>;
   }) => contents_aggregate;
-  contents_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<contents>;
-  events: (args?: {
-    distinct_on?: Maybe<Array<events_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<events_order_by>>;
-    where?: Maybe<events_bool_exp>;
-  }) => Array<events>;
-  events_aggregate: (args?: {
-    distinct_on?: Maybe<Array<events_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<events_order_by>>;
-    where?: Maybe<events_bool_exp>;
-  }) => events_aggregate;
-  events_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<events>;
-  files: (args?: {
-    distinct_on?: Maybe<Array<files_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<files_order_by>>;
-    where?: Maybe<files_bool_exp>;
-  }) => Array<files>;
-  files_aggregate: (args?: {
-    distinct_on?: Maybe<Array<files_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<files_order_by>>;
-    where?: Maybe<files_bool_exp>;
-  }) => files_aggregate;
-  files_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<files>;
-  folders: (args?: {
-    distinct_on?: Maybe<Array<folders_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<folders_order_by>>;
-    where?: Maybe<folders_bool_exp>;
-  }) => Array<folders>;
-  folders_aggregate: (args?: {
-    distinct_on?: Maybe<Array<folders_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<folders_order_by>>;
-    where?: Maybe<folders_bool_exp>;
-  }) => folders_aggregate;
-  folders_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<folders>;
-  groups: (args?: {
-    distinct_on?: Maybe<Array<groups_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<groups_order_by>>;
-    where?: Maybe<groups_bool_exp>;
-  }) => Array<groups>;
-  groups_aggregate: (args?: {
-    distinct_on?: Maybe<Array<groups_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<groups_order_by>>;
-    where?: Maybe<groups_bool_exp>;
-  }) => groups_aggregate;
-  groups_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<groups>;
-  identities: (args?: {
-    distinct_on?: Maybe<Array<identities_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<identities_order_by>>;
-    where?: Maybe<identities_bool_exp>;
-  }) => Array<identities>;
-  identities_aggregate: (args?: {
-    distinct_on?: Maybe<Array<identities_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<identities_order_by>>;
-    where?: Maybe<identities_bool_exp>;
-  }) => identities_aggregate;
-  identities_by_pk: (args: { email: Scalars["String"] }) => Maybe<identities>;
-  memberships: (args?: {
-    distinct_on?: Maybe<Array<memberships_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<memberships_order_by>>;
-    where?: Maybe<memberships_bool_exp>;
-  }) => Array<memberships>;
-  memberships_aggregate: (args?: {
-    distinct_on?: Maybe<Array<memberships_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<memberships_order_by>>;
-    where?: Maybe<memberships_bool_exp>;
-  }) => memberships_aggregate;
-  memberships_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<memberships>;
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  /**
+   * An object relationship
+   */
+  creator?: Maybe<users>;
+  creatorId: ScalarsEnums["uuid"];
+  data: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  file?: Maybe<files>;
+  fileId?: Maybe<ScalarsEnums["uuid"]>;
+  /**
+   * An object relationship
+   */
+  folder?: Maybe<folders>;
+  folderId: ScalarsEnums["uuid"];
+  id: ScalarsEnums["uuid"];
+  name: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  parent?: Maybe<contents>;
+  parentId?: Maybe<ScalarsEnums["uuid"]>;
+  /**
+   * An array relationship
+   */
   polls: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<polls_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<polls_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<polls_bool_exp>;
   }) => Array<polls>;
+  /**
+   * An aggregated array relationship
+   */
   polls_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<polls_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<polls_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<polls_bool_exp>;
   }) => polls_aggregate;
-  polls_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<polls>;
-  roles: (args?: {
-    distinct_on?: Maybe<Array<roles_select_column>>;
+  priority: ScalarsEnums["Int"];
+  published: ScalarsEnums["Boolean"];
+  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
+}
+
+/**
+ * aggregated selection of "contents"
+ */
+export interface contents_aggregate {
+  __typename?: "contents_aggregate";
+  aggregate?: Maybe<contents_aggregate_fields>;
+  nodes: Array<contents>;
+}
+
+/**
+ * aggregate fields of "contents"
+ */
+export interface contents_aggregate_fields {
+  __typename?: "contents_aggregate_fields";
+  avg?: Maybe<contents_avg_fields>;
+  count: (args?: {
+    columns?: Maybe<Array<contents_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<contents_max_fields>;
+  min?: Maybe<contents_min_fields>;
+  stddev?: Maybe<contents_stddev_fields>;
+  stddev_pop?: Maybe<contents_stddev_pop_fields>;
+  stddev_samp?: Maybe<contents_stddev_samp_fields>;
+  sum?: Maybe<contents_sum_fields>;
+  var_pop?: Maybe<contents_var_pop_fields>;
+  var_samp?: Maybe<contents_var_samp_fields>;
+  variance?: Maybe<contents_variance_fields>;
+}
+
+/**
+ * aggregate avg on columns
+ */
+export interface contents_avg_fields {
+  __typename?: "contents_avg_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface contents_max_fields {
+  __typename?: "contents_max_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  creatorId?: Maybe<ScalarsEnums["uuid"]>;
+  data?: Maybe<ScalarsEnums["String"]>;
+  fileId?: Maybe<ScalarsEnums["uuid"]>;
+  folderId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  parentId?: Maybe<ScalarsEnums["uuid"]>;
+  priority?: Maybe<ScalarsEnums["Int"]>;
+  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface contents_min_fields {
+  __typename?: "contents_min_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  creatorId?: Maybe<ScalarsEnums["uuid"]>;
+  data?: Maybe<ScalarsEnums["String"]>;
+  fileId?: Maybe<ScalarsEnums["uuid"]>;
+  folderId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  parentId?: Maybe<ScalarsEnums["uuid"]>;
+  priority?: Maybe<ScalarsEnums["Int"]>;
+  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
+}
+
+/**
+ * response of any mutation on the table "contents"
+ */
+export interface contents_mutation_response {
+  __typename?: "contents_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<contents>;
+}
+
+/**
+ * aggregate stddev on columns
+ */
+export interface contents_stddev_fields {
+  __typename?: "contents_stddev_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_pop on columns
+ */
+export interface contents_stddev_pop_fields {
+  __typename?: "contents_stddev_pop_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_samp on columns
+ */
+export interface contents_stddev_samp_fields {
+  __typename?: "contents_stddev_samp_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate sum on columns
+ */
+export interface contents_sum_fields {
+  __typename?: "contents_sum_fields";
+  priority?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * aggregate var_pop on columns
+ */
+export interface contents_var_pop_fields {
+  __typename?: "contents_var_pop_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate var_samp on columns
+ */
+export interface contents_var_samp_fields {
+  __typename?: "contents_var_samp_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate variance on columns
+ */
+export interface contents_variance_fields {
+  __typename?: "contents_variance_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * columns and relationships of "events"
+ */
+export interface events {
+  __typename?: "events";
+  /**
+   * An array relationship
+   */
+  admissions: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<admissions_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<admissions_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<admissions_bool_exp>;
+  }) => Array<admissions>;
+  /**
+   * An aggregated array relationship
+   */
+  admissions_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<admissions_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<admissions_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<admissions_bool_exp>;
+  }) => admissions_aggregate;
+  /**
+   * An object relationship
+   */
+  content?: Maybe<contents>;
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  createdAt: ScalarsEnums["timestamptz"];
+  /**
+   * An object relationship
+   */
+  folder?: Maybe<folders>;
+  folderId?: Maybe<ScalarsEnums["uuid"]>;
+  /**
+   * An object relationship
+   */
+  group?: Maybe<groups>;
+  groupId: ScalarsEnums["uuid"];
+  id: ScalarsEnums["uuid"];
+  lockSpeak: ScalarsEnums["Boolean"];
+  name: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  poll?: Maybe<polls>;
+  pollId?: Maybe<ScalarsEnums["uuid"]>;
+  shortName: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  timer?: Maybe<timers>;
+  timerId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregated selection of "events"
+ */
+export interface events_aggregate {
+  __typename?: "events_aggregate";
+  aggregate?: Maybe<events_aggregate_fields>;
+  nodes: Array<events>;
+}
+
+/**
+ * aggregate fields of "events"
+ */
+export interface events_aggregate_fields {
+  __typename?: "events_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<events_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<events_max_fields>;
+  min?: Maybe<events_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface events_max_fields {
+  __typename?: "events_max_fields";
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  folderId?: Maybe<ScalarsEnums["uuid"]>;
+  groupId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  pollId?: Maybe<ScalarsEnums["uuid"]>;
+  shortName?: Maybe<ScalarsEnums["String"]>;
+  timerId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface events_min_fields {
+  __typename?: "events_min_fields";
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  folderId?: Maybe<ScalarsEnums["uuid"]>;
+  groupId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  pollId?: Maybe<ScalarsEnums["uuid"]>;
+  shortName?: Maybe<ScalarsEnums["String"]>;
+  timerId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "events"
+ */
+export interface events_mutation_response {
+  __typename?: "events_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<events>;
+}
+
+/**
+ * columns and relationships of "files"
+ */
+export interface files {
+  __typename?: "files";
+  createdAt: ScalarsEnums["timestamptz"];
+  id: ScalarsEnums["uuid"];
+  path: ScalarsEnums["String"];
+  token: ScalarsEnums["String"];
+  updatedAt: ScalarsEnums["timestamptz"];
+  /**
+   * An object relationship
+   */
+  user?: Maybe<users>;
+  userId: ScalarsEnums["uuid"];
+}
+
+/**
+ * aggregated selection of "files"
+ */
+export interface files_aggregate {
+  __typename?: "files_aggregate";
+  aggregate?: Maybe<files_aggregate_fields>;
+  nodes: Array<files>;
+}
+
+/**
+ * aggregate fields of "files"
+ */
+export interface files_aggregate_fields {
+  __typename?: "files_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<files_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<files_max_fields>;
+  min?: Maybe<files_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface files_max_fields {
+  __typename?: "files_max_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  path?: Maybe<ScalarsEnums["String"]>;
+  token?: Maybe<ScalarsEnums["String"]>;
+  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface files_min_fields {
+  __typename?: "files_min_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  path?: Maybe<ScalarsEnums["String"]>;
+  token?: Maybe<ScalarsEnums["String"]>;
+  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "files"
+ */
+export interface files_mutation_response {
+  __typename?: "files_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<files>;
+}
+
+/**
+ * columns and relationships of "folders"
+ */
+export interface folders {
+  __typename?: "folders";
+  /**
+   * An array relationship
+   */
+  contents: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<contents_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<contents_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<contents_bool_exp>;
+  }) => Array<contents>;
+  /**
+   * An aggregated array relationship
+   */
+  contents_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<contents_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<contents_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<contents_bool_exp>;
+  }) => contents_aggregate;
+  /**
+   * An object relationship
+   */
+  event?: Maybe<events>;
+  eventId: ScalarsEnums["uuid"];
+  /**
+   * An array relationship
+   */
+  folders: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<folders_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<folders_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<folders_bool_exp>;
+  }) => Array<folders>;
+  /**
+   * An aggregated array relationship
+   */
+  folders_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<folders_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<folders_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<folders_bool_exp>;
+  }) => folders_aggregate;
+  id: ScalarsEnums["uuid"];
+  lockChildren: ScalarsEnums["Boolean"];
+  lockContent: ScalarsEnums["Boolean"];
+  mode: ScalarsEnums["String"];
+  name: ScalarsEnums["String"];
+  /**
+   * An object relationship
+   */
+  parent?: Maybe<folders>;
+  parentId?: Maybe<ScalarsEnums["uuid"]>;
+  priority: ScalarsEnums["Int"];
+  subtitle?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregated selection of "folders"
+ */
+export interface folders_aggregate {
+  __typename?: "folders_aggregate";
+  aggregate?: Maybe<folders_aggregate_fields>;
+  nodes: Array<folders>;
+}
+
+/**
+ * aggregate fields of "folders"
+ */
+export interface folders_aggregate_fields {
+  __typename?: "folders_aggregate_fields";
+  avg?: Maybe<folders_avg_fields>;
+  count: (args?: {
+    columns?: Maybe<Array<folders_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<folders_max_fields>;
+  min?: Maybe<folders_min_fields>;
+  stddev?: Maybe<folders_stddev_fields>;
+  stddev_pop?: Maybe<folders_stddev_pop_fields>;
+  stddev_samp?: Maybe<folders_stddev_samp_fields>;
+  sum?: Maybe<folders_sum_fields>;
+  var_pop?: Maybe<folders_var_pop_fields>;
+  var_samp?: Maybe<folders_var_samp_fields>;
+  variance?: Maybe<folders_variance_fields>;
+}
+
+/**
+ * aggregate avg on columns
+ */
+export interface folders_avg_fields {
+  __typename?: "folders_avg_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface folders_max_fields {
+  __typename?: "folders_max_fields";
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  mode?: Maybe<ScalarsEnums["String"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  parentId?: Maybe<ScalarsEnums["uuid"]>;
+  priority?: Maybe<ScalarsEnums["Int"]>;
+  subtitle?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface folders_min_fields {
+  __typename?: "folders_min_fields";
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  mode?: Maybe<ScalarsEnums["String"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  parentId?: Maybe<ScalarsEnums["uuid"]>;
+  priority?: Maybe<ScalarsEnums["Int"]>;
+  subtitle?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "folders"
+ */
+export interface folders_mutation_response {
+  __typename?: "folders_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<folders>;
+}
+
+/**
+ * aggregate stddev on columns
+ */
+export interface folders_stddev_fields {
+  __typename?: "folders_stddev_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_pop on columns
+ */
+export interface folders_stddev_pop_fields {
+  __typename?: "folders_stddev_pop_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_samp on columns
+ */
+export interface folders_stddev_samp_fields {
+  __typename?: "folders_stddev_samp_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate sum on columns
+ */
+export interface folders_sum_fields {
+  __typename?: "folders_sum_fields";
+  priority?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * aggregate var_pop on columns
+ */
+export interface folders_var_pop_fields {
+  __typename?: "folders_var_pop_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate var_samp on columns
+ */
+export interface folders_var_samp_fields {
+  __typename?: "folders_var_samp_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate variance on columns
+ */
+export interface folders_variance_fields {
+  __typename?: "folders_variance_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * columns and relationships of "groups"
+ */
+export interface groups {
+  __typename?: "groups";
+  createdAt: ScalarsEnums["timestamptz"];
+  /**
+   * An object relationship
+   */
+  creator?: Maybe<users>;
+  creatorId?: Maybe<ScalarsEnums["uuid"]>;
+  /**
+   * An array relationship
+   */
+  events: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<events_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<events_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<events_bool_exp>;
+  }) => Array<events>;
+  /**
+   * An aggregated array relationship
+   */
+  events_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<events_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<events_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<events_bool_exp>;
+  }) => events_aggregate;
+  id: ScalarsEnums["uuid"];
+  /**
+   * An array relationship
+   */
+  memberships: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<memberships_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<memberships_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<memberships_bool_exp>;
+  }) => Array<memberships>;
+  /**
+   * An aggregated array relationship
+   */
+  memberships_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<memberships_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<memberships_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<memberships_bool_exp>;
+  }) => memberships_aggregate;
+  name: ScalarsEnums["String"];
+  public: ScalarsEnums["Boolean"];
+  shortName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregated selection of "groups"
+ */
+export interface groups_aggregate {
+  __typename?: "groups_aggregate";
+  aggregate?: Maybe<groups_aggregate_fields>;
+  nodes: Array<groups>;
+}
+
+/**
+ * aggregate fields of "groups"
+ */
+export interface groups_aggregate_fields {
+  __typename?: "groups_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<groups_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<groups_max_fields>;
+  min?: Maybe<groups_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface groups_max_fields {
+  __typename?: "groups_max_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  creatorId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  shortName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface groups_min_fields {
+  __typename?: "groups_min_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  creatorId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  shortName?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "groups"
+ */
+export interface groups_mutation_response {
+  __typename?: "groups_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<groups>;
+}
+
+/**
+ * columns and relationships of "identities"
+ */
+export interface identities {
+  __typename?: "identities";
+  displayName: ScalarsEnums["String"];
+  email: ScalarsEnums["String"];
+  /**
+   * An array relationship
+   */
+  memberships: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<memberships_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<memberships_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<memberships_bool_exp>;
+  }) => Array<memberships>;
+  /**
+   * An aggregated array relationship
+   */
+  memberships_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<memberships_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<memberships_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<memberships_bool_exp>;
+  }) => memberships_aggregate;
+  /**
+   * An object relationship
+   */
+  user?: Maybe<users>;
+}
+
+/**
+ * aggregated selection of "identities"
+ */
+export interface identities_aggregate {
+  __typename?: "identities_aggregate";
+  aggregate?: Maybe<identities_aggregate_fields>;
+  nodes: Array<identities>;
+}
+
+/**
+ * aggregate fields of "identities"
+ */
+export interface identities_aggregate_fields {
+  __typename?: "identities_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<identities_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<identities_max_fields>;
+  min?: Maybe<identities_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface identities_max_fields {
+  __typename?: "identities_max_fields";
+  displayName?: Maybe<ScalarsEnums["String"]>;
+  email?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface identities_min_fields {
+  __typename?: "identities_min_fields";
+  displayName?: Maybe<ScalarsEnums["String"]>;
+  email?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "identities"
+ */
+export interface identities_mutation_response {
+  __typename?: "identities_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<identities>;
+}
+
+/**
+ * columns and relationships of "memberships"
+ */
+export interface memberships {
+  __typename?: "memberships";
+  email?: Maybe<ScalarsEnums["String"]>;
+  /**
+   * An object relationship
+   */
+  group?: Maybe<groups>;
+  groupId: ScalarsEnums["uuid"];
+  id: ScalarsEnums["uuid"];
+  /**
+   * An object relationship
+   */
+  identity?: Maybe<identities>;
+  /**
+   * An array relationship
+   */
+  roles: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<roles_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<roles_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<roles_bool_exp>;
   }) => Array<roles>;
+  /**
+   * An aggregated array relationship
+   */
   roles_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
     distinct_on?: Maybe<Array<roles_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
     limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
     offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
     order_by?: Maybe<Array<roles_order_by>>;
+    /**
+     * filter the rows returned
+     */
     where?: Maybe<roles_bool_exp>;
   }) => roles_aggregate;
-  roles_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<roles>;
-  speaks: (args?: {
-    distinct_on?: Maybe<Array<speaks_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<speaks_order_by>>;
-    where?: Maybe<speaks_bool_exp>;
-  }) => Array<speaks>;
-  speaks_aggregate: (args?: {
-    distinct_on?: Maybe<Array<speaks_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<speaks_order_by>>;
-    where?: Maybe<speaks_bool_exp>;
-  }) => speaks_aggregate;
-  speaks_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<speaks>;
-  timers: (args?: {
-    distinct_on?: Maybe<Array<timers_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<timers_order_by>>;
-    where?: Maybe<timers_bool_exp>;
-  }) => Array<timers>;
-  timers_aggregate: (args?: {
-    distinct_on?: Maybe<Array<timers_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<timers_order_by>>;
-    where?: Maybe<timers_bool_exp>;
-  }) => timers_aggregate;
-  timers_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<timers>;
-  users: (args?: {
-    distinct_on?: Maybe<Array<users_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<users_order_by>>;
-    where?: Maybe<users_bool_exp>;
-  }) => Array<users>;
-  users_aggregate: (args?: {
-    distinct_on?: Maybe<Array<users_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<users_order_by>>;
-    where?: Maybe<users_bool_exp>;
-  }) => users_aggregate;
-  users_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<users>;
-  votes: (args?: {
-    distinct_on?: Maybe<Array<votes_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<votes_order_by>>;
-    where?: Maybe<votes_bool_exp>;
-  }) => Array<votes>;
-  votes_aggregate: (args?: {
-    distinct_on?: Maybe<Array<votes_select_column>>;
-    limit?: Maybe<Scalars["Int"]>;
-    offset?: Maybe<Scalars["Int"]>;
-    order_by?: Maybe<Array<votes_order_by>>;
-    where?: Maybe<votes_bool_exp>;
-  }) => votes_aggregate;
-  votes_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<votes>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregated selection of "memberships"
+ */
+export interface memberships_aggregate {
+  __typename?: "memberships_aggregate";
+  aggregate?: Maybe<memberships_aggregate_fields>;
+  nodes: Array<memberships>;
+}
+
+/**
+ * aggregate fields of "memberships"
+ */
+export interface memberships_aggregate_fields {
+  __typename?: "memberships_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<memberships_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<memberships_max_fields>;
+  min?: Maybe<memberships_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface memberships_max_fields {
+  __typename?: "memberships_max_fields";
+  email?: Maybe<ScalarsEnums["String"]>;
+  groupId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface memberships_min_fields {
+  __typename?: "memberships_min_fields";
+  email?: Maybe<ScalarsEnums["String"]>;
+  groupId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "memberships"
+ */
+export interface memberships_mutation_response {
+  __typename?: "memberships_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<memberships>;
 }
 
 export interface Mutation {
@@ -9135,6 +10987,766 @@ export interface Mutation {
   }) => Maybe<votes>;
 }
 
+/**
+ * columns and relationships of "polls"
+ */
+export interface polls {
+  __typename?: "polls";
+  active: ScalarsEnums["Boolean"];
+  /**
+   * An object relationship
+   */
+  content?: Maybe<contents>;
+  contentId: ScalarsEnums["uuid"];
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  hidden: ScalarsEnums["Boolean"];
+  id: ScalarsEnums["uuid"];
+  maxVote: ScalarsEnums["Int"];
+  minVote: ScalarsEnums["Int"];
+  options?: Maybe<ScalarsEnums["_text"]>;
+  /**
+   * An array relationship
+   */
+  votes: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<votes_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<votes_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<votes_bool_exp>;
+  }) => Array<votes>;
+  /**
+   * An aggregated array relationship
+   */
+  votes_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<votes_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<votes_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<votes_bool_exp>;
+  }) => votes_aggregate;
+}
+
+/**
+ * aggregated selection of "polls"
+ */
+export interface polls_aggregate {
+  __typename?: "polls_aggregate";
+  aggregate?: Maybe<polls_aggregate_fields>;
+  nodes: Array<polls>;
+}
+
+/**
+ * aggregate fields of "polls"
+ */
+export interface polls_aggregate_fields {
+  __typename?: "polls_aggregate_fields";
+  avg?: Maybe<polls_avg_fields>;
+  count: (args?: {
+    columns?: Maybe<Array<polls_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<polls_max_fields>;
+  min?: Maybe<polls_min_fields>;
+  stddev?: Maybe<polls_stddev_fields>;
+  stddev_pop?: Maybe<polls_stddev_pop_fields>;
+  stddev_samp?: Maybe<polls_stddev_samp_fields>;
+  sum?: Maybe<polls_sum_fields>;
+  var_pop?: Maybe<polls_var_pop_fields>;
+  var_samp?: Maybe<polls_var_samp_fields>;
+  variance?: Maybe<polls_variance_fields>;
+}
+
+/**
+ * aggregate avg on columns
+ */
+export interface polls_avg_fields {
+  __typename?: "polls_avg_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface polls_max_fields {
+  __typename?: "polls_max_fields";
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  maxVote?: Maybe<ScalarsEnums["Int"]>;
+  minVote?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface polls_min_fields {
+  __typename?: "polls_min_fields";
+  contentId?: Maybe<ScalarsEnums["uuid"]>;
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  maxVote?: Maybe<ScalarsEnums["Int"]>;
+  minVote?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * response of any mutation on the table "polls"
+ */
+export interface polls_mutation_response {
+  __typename?: "polls_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<polls>;
+}
+
+/**
+ * aggregate stddev on columns
+ */
+export interface polls_stddev_fields {
+  __typename?: "polls_stddev_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_pop on columns
+ */
+export interface polls_stddev_pop_fields {
+  __typename?: "polls_stddev_pop_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_samp on columns
+ */
+export interface polls_stddev_samp_fields {
+  __typename?: "polls_stddev_samp_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate sum on columns
+ */
+export interface polls_sum_fields {
+  __typename?: "polls_sum_fields";
+  maxVote?: Maybe<ScalarsEnums["Int"]>;
+  minVote?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * aggregate var_pop on columns
+ */
+export interface polls_var_pop_fields {
+  __typename?: "polls_var_pop_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate var_samp on columns
+ */
+export interface polls_var_samp_fields {
+  __typename?: "polls_var_samp_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate variance on columns
+ */
+export interface polls_variance_fields {
+  __typename?: "polls_variance_fields";
+  maxVote?: Maybe<ScalarsEnums["Float"]>;
+  minVote?: Maybe<ScalarsEnums["Float"]>;
+}
+
+export interface Query {
+  __typename?: "Query";
+  admissions: (args?: {
+    distinct_on?: Maybe<Array<admissions_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<admissions_order_by>>;
+    where?: Maybe<admissions_bool_exp>;
+  }) => Array<admissions>;
+  admissions_aggregate: (args?: {
+    distinct_on?: Maybe<Array<admissions_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<admissions_order_by>>;
+    where?: Maybe<admissions_bool_exp>;
+  }) => admissions_aggregate;
+  admissions_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<admissions>;
+  auth_account_providers: (args?: {
+    distinct_on?: Maybe<Array<auth_account_providers_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_account_providers_order_by>>;
+    where?: Maybe<auth_account_providers_bool_exp>;
+  }) => Array<auth_account_providers>;
+  auth_account_providers_aggregate: (args?: {
+    distinct_on?: Maybe<Array<auth_account_providers_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_account_providers_order_by>>;
+    where?: Maybe<auth_account_providers_bool_exp>;
+  }) => auth_account_providers_aggregate;
+  auth_account_providers_by_pk: (args: {
+    id: Scalars["uuid"];
+  }) => Maybe<auth_account_providers>;
+  auth_account_roles: (args?: {
+    distinct_on?: Maybe<Array<auth_account_roles_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_account_roles_order_by>>;
+    where?: Maybe<auth_account_roles_bool_exp>;
+  }) => Array<auth_account_roles>;
+  auth_account_roles_aggregate: (args?: {
+    distinct_on?: Maybe<Array<auth_account_roles_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_account_roles_order_by>>;
+    where?: Maybe<auth_account_roles_bool_exp>;
+  }) => auth_account_roles_aggregate;
+  auth_account_roles_by_pk: (args: {
+    id: Scalars["uuid"];
+  }) => Maybe<auth_account_roles>;
+  auth_accounts: (args?: {
+    distinct_on?: Maybe<Array<auth_accounts_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_accounts_order_by>>;
+    where?: Maybe<auth_accounts_bool_exp>;
+  }) => Array<auth_accounts>;
+  auth_accounts_aggregate: (args?: {
+    distinct_on?: Maybe<Array<auth_accounts_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_accounts_order_by>>;
+    where?: Maybe<auth_accounts_bool_exp>;
+  }) => auth_accounts_aggregate;
+  auth_accounts_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<auth_accounts>;
+  auth_providers: (args?: {
+    distinct_on?: Maybe<Array<auth_providers_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_providers_order_by>>;
+    where?: Maybe<auth_providers_bool_exp>;
+  }) => Array<auth_providers>;
+  auth_providers_aggregate: (args?: {
+    distinct_on?: Maybe<Array<auth_providers_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_providers_order_by>>;
+    where?: Maybe<auth_providers_bool_exp>;
+  }) => auth_providers_aggregate;
+  auth_providers_by_pk: (args: {
+    provider: Scalars["String"];
+  }) => Maybe<auth_providers>;
+  auth_refresh_tokens: (args?: {
+    distinct_on?: Maybe<Array<auth_refresh_tokens_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_refresh_tokens_order_by>>;
+    where?: Maybe<auth_refresh_tokens_bool_exp>;
+  }) => Array<auth_refresh_tokens>;
+  auth_refresh_tokens_aggregate: (args?: {
+    distinct_on?: Maybe<Array<auth_refresh_tokens_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_refresh_tokens_order_by>>;
+    where?: Maybe<auth_refresh_tokens_bool_exp>;
+  }) => auth_refresh_tokens_aggregate;
+  auth_refresh_tokens_by_pk: (args: {
+    refresh_token: Scalars["uuid"];
+  }) => Maybe<auth_refresh_tokens>;
+  auth_roles: (args?: {
+    distinct_on?: Maybe<Array<auth_roles_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_roles_order_by>>;
+    where?: Maybe<auth_roles_bool_exp>;
+  }) => Array<auth_roles>;
+  auth_roles_aggregate: (args?: {
+    distinct_on?: Maybe<Array<auth_roles_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<auth_roles_order_by>>;
+    where?: Maybe<auth_roles_bool_exp>;
+  }) => auth_roles_aggregate;
+  auth_roles_by_pk: (args: { role: Scalars["String"] }) => Maybe<auth_roles>;
+  authorships: (args?: {
+    distinct_on?: Maybe<Array<authorships_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<authorships_order_by>>;
+    where?: Maybe<authorships_bool_exp>;
+  }) => Array<authorships>;
+  authorships_aggregate: (args?: {
+    distinct_on?: Maybe<Array<authorships_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<authorships_order_by>>;
+    where?: Maybe<authorships_bool_exp>;
+  }) => authorships_aggregate;
+  authorships_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<authorships>;
+  canVote: (args?: {
+    eventId?: Maybe<Scalars["uuid"]>;
+  }) => Maybe<CanVoteOutput>;
+  contents: (args?: {
+    distinct_on?: Maybe<Array<contents_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<contents_order_by>>;
+    where?: Maybe<contents_bool_exp>;
+  }) => Array<contents>;
+  contents_aggregate: (args?: {
+    distinct_on?: Maybe<Array<contents_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<contents_order_by>>;
+    where?: Maybe<contents_bool_exp>;
+  }) => contents_aggregate;
+  contents_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<contents>;
+  events: (args?: {
+    distinct_on?: Maybe<Array<events_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<events_order_by>>;
+    where?: Maybe<events_bool_exp>;
+  }) => Array<events>;
+  events_aggregate: (args?: {
+    distinct_on?: Maybe<Array<events_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<events_order_by>>;
+    where?: Maybe<events_bool_exp>;
+  }) => events_aggregate;
+  events_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<events>;
+  files: (args?: {
+    distinct_on?: Maybe<Array<files_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<files_order_by>>;
+    where?: Maybe<files_bool_exp>;
+  }) => Array<files>;
+  files_aggregate: (args?: {
+    distinct_on?: Maybe<Array<files_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<files_order_by>>;
+    where?: Maybe<files_bool_exp>;
+  }) => files_aggregate;
+  files_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<files>;
+  folders: (args?: {
+    distinct_on?: Maybe<Array<folders_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<folders_order_by>>;
+    where?: Maybe<folders_bool_exp>;
+  }) => Array<folders>;
+  folders_aggregate: (args?: {
+    distinct_on?: Maybe<Array<folders_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<folders_order_by>>;
+    where?: Maybe<folders_bool_exp>;
+  }) => folders_aggregate;
+  folders_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<folders>;
+  groups: (args?: {
+    distinct_on?: Maybe<Array<groups_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<groups_order_by>>;
+    where?: Maybe<groups_bool_exp>;
+  }) => Array<groups>;
+  groups_aggregate: (args?: {
+    distinct_on?: Maybe<Array<groups_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<groups_order_by>>;
+    where?: Maybe<groups_bool_exp>;
+  }) => groups_aggregate;
+  groups_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<groups>;
+  identities: (args?: {
+    distinct_on?: Maybe<Array<identities_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<identities_order_by>>;
+    where?: Maybe<identities_bool_exp>;
+  }) => Array<identities>;
+  identities_aggregate: (args?: {
+    distinct_on?: Maybe<Array<identities_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<identities_order_by>>;
+    where?: Maybe<identities_bool_exp>;
+  }) => identities_aggregate;
+  identities_by_pk: (args: { email: Scalars["String"] }) => Maybe<identities>;
+  memberships: (args?: {
+    distinct_on?: Maybe<Array<memberships_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<memberships_order_by>>;
+    where?: Maybe<memberships_bool_exp>;
+  }) => Array<memberships>;
+  memberships_aggregate: (args?: {
+    distinct_on?: Maybe<Array<memberships_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<memberships_order_by>>;
+    where?: Maybe<memberships_bool_exp>;
+  }) => memberships_aggregate;
+  memberships_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<memberships>;
+  polls: (args?: {
+    distinct_on?: Maybe<Array<polls_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<polls_order_by>>;
+    where?: Maybe<polls_bool_exp>;
+  }) => Array<polls>;
+  polls_aggregate: (args?: {
+    distinct_on?: Maybe<Array<polls_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<polls_order_by>>;
+    where?: Maybe<polls_bool_exp>;
+  }) => polls_aggregate;
+  polls_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<polls>;
+  roles: (args?: {
+    distinct_on?: Maybe<Array<roles_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<roles_order_by>>;
+    where?: Maybe<roles_bool_exp>;
+  }) => Array<roles>;
+  roles_aggregate: (args?: {
+    distinct_on?: Maybe<Array<roles_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<roles_order_by>>;
+    where?: Maybe<roles_bool_exp>;
+  }) => roles_aggregate;
+  roles_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<roles>;
+  speaks: (args?: {
+    distinct_on?: Maybe<Array<speaks_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<speaks_order_by>>;
+    where?: Maybe<speaks_bool_exp>;
+  }) => Array<speaks>;
+  speaks_aggregate: (args?: {
+    distinct_on?: Maybe<Array<speaks_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<speaks_order_by>>;
+    where?: Maybe<speaks_bool_exp>;
+  }) => speaks_aggregate;
+  speaks_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<speaks>;
+  timers: (args?: {
+    distinct_on?: Maybe<Array<timers_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<timers_order_by>>;
+    where?: Maybe<timers_bool_exp>;
+  }) => Array<timers>;
+  timers_aggregate: (args?: {
+    distinct_on?: Maybe<Array<timers_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<timers_order_by>>;
+    where?: Maybe<timers_bool_exp>;
+  }) => timers_aggregate;
+  timers_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<timers>;
+  users: (args?: {
+    distinct_on?: Maybe<Array<users_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<users_order_by>>;
+    where?: Maybe<users_bool_exp>;
+  }) => Array<users>;
+  users_aggregate: (args?: {
+    distinct_on?: Maybe<Array<users_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<users_order_by>>;
+    where?: Maybe<users_bool_exp>;
+  }) => users_aggregate;
+  users_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<users>;
+  votes: (args?: {
+    distinct_on?: Maybe<Array<votes_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<votes_order_by>>;
+    where?: Maybe<votes_bool_exp>;
+  }) => Array<votes>;
+  votes_aggregate: (args?: {
+    distinct_on?: Maybe<Array<votes_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<votes_order_by>>;
+    where?: Maybe<votes_bool_exp>;
+  }) => votes_aggregate;
+  votes_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<votes>;
+}
+
+/**
+ * columns and relationships of "roles"
+ */
+export interface roles {
+  __typename?: "roles";
+  id: ScalarsEnums["uuid"];
+  /**
+   * An object relationship
+   */
+  membership?: Maybe<memberships>;
+  membershipId: ScalarsEnums["uuid"];
+  role: ScalarsEnums["String"];
+}
+
+/**
+ * aggregated selection of "roles"
+ */
+export interface roles_aggregate {
+  __typename?: "roles_aggregate";
+  aggregate?: Maybe<roles_aggregate_fields>;
+  nodes: Array<roles>;
+}
+
+/**
+ * aggregate fields of "roles"
+ */
+export interface roles_aggregate_fields {
+  __typename?: "roles_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<roles_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<roles_max_fields>;
+  min?: Maybe<roles_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface roles_max_fields {
+  __typename?: "roles_max_fields";
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  membershipId?: Maybe<ScalarsEnums["uuid"]>;
+  role?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface roles_min_fields {
+  __typename?: "roles_min_fields";
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  membershipId?: Maybe<ScalarsEnums["uuid"]>;
+  role?: Maybe<ScalarsEnums["String"]>;
+}
+
+/**
+ * response of any mutation on the table "roles"
+ */
+export interface roles_mutation_response {
+  __typename?: "roles_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<roles>;
+}
+
+/**
+ * columns and relationships of "speaks"
+ */
+export interface speaks {
+  __typename?: "speaks";
+  createdAt: ScalarsEnums["timestamptz"];
+  eventId: ScalarsEnums["uuid"];
+  id: ScalarsEnums["uuid"];
+  type: ScalarsEnums["Int"];
+  /**
+   * An object relationship
+   */
+  user?: Maybe<users>;
+  userId: ScalarsEnums["uuid"];
+}
+
+/**
+ * aggregated selection of "speaks"
+ */
+export interface speaks_aggregate {
+  __typename?: "speaks_aggregate";
+  aggregate?: Maybe<speaks_aggregate_fields>;
+  nodes: Array<speaks>;
+}
+
+/**
+ * aggregate fields of "speaks"
+ */
+export interface speaks_aggregate_fields {
+  __typename?: "speaks_aggregate_fields";
+  avg?: Maybe<speaks_avg_fields>;
+  count: (args?: {
+    columns?: Maybe<Array<speaks_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<speaks_max_fields>;
+  min?: Maybe<speaks_min_fields>;
+  stddev?: Maybe<speaks_stddev_fields>;
+  stddev_pop?: Maybe<speaks_stddev_pop_fields>;
+  stddev_samp?: Maybe<speaks_stddev_samp_fields>;
+  sum?: Maybe<speaks_sum_fields>;
+  var_pop?: Maybe<speaks_var_pop_fields>;
+  var_samp?: Maybe<speaks_var_samp_fields>;
+  variance?: Maybe<speaks_variance_fields>;
+}
+
+/**
+ * aggregate avg on columns
+ */
+export interface speaks_avg_fields {
+  __typename?: "speaks_avg_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface speaks_max_fields {
+  __typename?: "speaks_max_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  type?: Maybe<ScalarsEnums["Int"]>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface speaks_min_fields {
+  __typename?: "speaks_min_fields";
+  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  type?: Maybe<ScalarsEnums["Int"]>;
+  userId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "speaks"
+ */
+export interface speaks_mutation_response {
+  __typename?: "speaks_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<speaks>;
+}
+
+/**
+ * aggregate stddev on columns
+ */
+export interface speaks_stddev_fields {
+  __typename?: "speaks_stddev_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_pop on columns
+ */
+export interface speaks_stddev_pop_fields {
+  __typename?: "speaks_stddev_pop_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate stddev_samp on columns
+ */
+export interface speaks_stddev_samp_fields {
+  __typename?: "speaks_stddev_samp_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate sum on columns
+ */
+export interface speaks_sum_fields {
+  __typename?: "speaks_sum_fields";
+  type?: Maybe<ScalarsEnums["Int"]>;
+}
+
+/**
+ * aggregate var_pop on columns
+ */
+export interface speaks_var_pop_fields {
+  __typename?: "speaks_var_pop_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate var_samp on columns
+ */
+export interface speaks_var_samp_fields {
+  __typename?: "speaks_var_samp_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
+/**
+ * aggregate variance on columns
+ */
+export interface speaks_variance_fields {
+  __typename?: "speaks_variance_fields";
+  type?: Maybe<ScalarsEnums["Float"]>;
+}
+
 export interface Subscription {
   __typename?: "Subscription";
   admissions: (args?: {
@@ -9465,2618 +12077,6 @@ export interface Subscription {
   votes_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<votes>;
 }
 
-export interface CanVoteOutput {
-  __typename?: "CanVoteOutput";
-  active?: Maybe<ScalarsEnums["Boolean"]>;
-  canVote?: Maybe<ScalarsEnums["Boolean"]>;
-  pollId: ScalarsEnums["uuid"];
-}
-
-export interface VoteOutput {
-  __typename?: "VoteOutput";
-  headers?: Maybe<ScalarsEnums["String"]>;
-  pollId: ScalarsEnums["uuid"];
-}
-
-/**
- * columns and relationships of "admissions"
- */
-export interface admissions {
-  __typename?: "admissions";
-  checkedIn: ScalarsEnums["Boolean"];
-  email: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  event?: Maybe<events>;
-  eventId: ScalarsEnums["uuid"];
-  id: ScalarsEnums["uuid"];
-  /**
-   * An object relationship
-   */
-  identity?: Maybe<identities>;
-  voting?: Maybe<ScalarsEnums["Boolean"]>;
-}
-
-/**
- * aggregated selection of "admissions"
- */
-export interface admissions_aggregate {
-  __typename?: "admissions_aggregate";
-  aggregate?: Maybe<admissions_aggregate_fields>;
-  nodes: Array<admissions>;
-}
-
-/**
- * aggregate fields of "admissions"
- */
-export interface admissions_aggregate_fields {
-  __typename?: "admissions_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<admissions_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<admissions_max_fields>;
-  min?: Maybe<admissions_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface admissions_max_fields {
-  __typename?: "admissions_max_fields";
-  email?: Maybe<ScalarsEnums["String"]>;
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface admissions_min_fields {
-  __typename?: "admissions_min_fields";
-  email?: Maybe<ScalarsEnums["String"]>;
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "admissions"
- */
-export interface admissions_mutation_response {
-  __typename?: "admissions_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<admissions>;
-}
-
-/**
- * columns and relationships of "auth.account_providers"
- */
-export interface auth_account_providers {
-  __typename?: "auth_account_providers";
-  /**
-   * An object relationship
-   */
-  account: auth_accounts;
-  account_id: ScalarsEnums["uuid"];
-  auth_provider: ScalarsEnums["String"];
-  auth_provider_unique_id: ScalarsEnums["String"];
-  created_at: ScalarsEnums["timestamptz"];
-  id: ScalarsEnums["uuid"];
-  /**
-   * An object relationship
-   */
-  provider: auth_providers;
-  updated_at: ScalarsEnums["timestamptz"];
-}
-
-/**
- * aggregated selection of "auth.account_providers"
- */
-export interface auth_account_providers_aggregate {
-  __typename?: "auth_account_providers_aggregate";
-  aggregate?: Maybe<auth_account_providers_aggregate_fields>;
-  nodes: Array<auth_account_providers>;
-}
-
-/**
- * aggregate fields of "auth.account_providers"
- */
-export interface auth_account_providers_aggregate_fields {
-  __typename?: "auth_account_providers_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<auth_account_providers_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<auth_account_providers_max_fields>;
-  min?: Maybe<auth_account_providers_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface auth_account_providers_max_fields {
-  __typename?: "auth_account_providers_max_fields";
-  account_id?: Maybe<ScalarsEnums["uuid"]>;
-  auth_provider?: Maybe<ScalarsEnums["String"]>;
-  auth_provider_unique_id?: Maybe<ScalarsEnums["String"]>;
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface auth_account_providers_min_fields {
-  __typename?: "auth_account_providers_min_fields";
-  account_id?: Maybe<ScalarsEnums["uuid"]>;
-  auth_provider?: Maybe<ScalarsEnums["String"]>;
-  auth_provider_unique_id?: Maybe<ScalarsEnums["String"]>;
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
-}
-
-/**
- * response of any mutation on the table "auth.account_providers"
- */
-export interface auth_account_providers_mutation_response {
-  __typename?: "auth_account_providers_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<auth_account_providers>;
-}
-
-/**
- * columns and relationships of "auth.account_roles"
- */
-export interface auth_account_roles {
-  __typename?: "auth_account_roles";
-  /**
-   * An object relationship
-   */
-  account: auth_accounts;
-  account_id: ScalarsEnums["uuid"];
-  created_at: ScalarsEnums["timestamptz"];
-  id: ScalarsEnums["uuid"];
-  role: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  roleByRole: auth_roles;
-}
-
-/**
- * aggregated selection of "auth.account_roles"
- */
-export interface auth_account_roles_aggregate {
-  __typename?: "auth_account_roles_aggregate";
-  aggregate?: Maybe<auth_account_roles_aggregate_fields>;
-  nodes: Array<auth_account_roles>;
-}
-
-/**
- * aggregate fields of "auth.account_roles"
- */
-export interface auth_account_roles_aggregate_fields {
-  __typename?: "auth_account_roles_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<auth_account_roles_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<auth_account_roles_max_fields>;
-  min?: Maybe<auth_account_roles_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface auth_account_roles_max_fields {
-  __typename?: "auth_account_roles_max_fields";
-  account_id?: Maybe<ScalarsEnums["uuid"]>;
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  role?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface auth_account_roles_min_fields {
-  __typename?: "auth_account_roles_min_fields";
-  account_id?: Maybe<ScalarsEnums["uuid"]>;
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  role?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "auth.account_roles"
- */
-export interface auth_account_roles_mutation_response {
-  __typename?: "auth_account_roles_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<auth_account_roles>;
-}
-
-/**
- * columns and relationships of "auth.accounts"
- */
-export interface auth_accounts {
-  __typename?: "auth_accounts";
-  /**
-   * An array relationship
-   */
-  account_providers: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_providers_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_providers_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_providers_bool_exp>;
-  }) => Array<auth_account_providers>;
-  /**
-   * An aggregated array relationship
-   */
-  account_providers_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_providers_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_providers_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_providers_bool_exp>;
-  }) => auth_account_providers_aggregate;
-  /**
-   * An array relationship
-   */
-  account_roles: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_roles_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_roles_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_roles_bool_exp>;
-  }) => Array<auth_account_roles>;
-  /**
-   * An aggregated array relationship
-   */
-  account_roles_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_roles_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_roles_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_roles_bool_exp>;
-  }) => auth_account_roles_aggregate;
-  active: ScalarsEnums["Boolean"];
-  created_at: ScalarsEnums["timestamptz"];
-  custom_register_data: (args?: {
-    /**
-     * JSON select path
-     */
-    path?: Maybe<Scalars["String"]>;
-  }) => Maybe<ScalarsEnums["jsonb"]>;
-  default_role: ScalarsEnums["String"];
-  email?: Maybe<ScalarsEnums["citext"]>;
-  id: ScalarsEnums["uuid"];
-  is_anonymous: ScalarsEnums["Boolean"];
-  mfa_enabled: ScalarsEnums["Boolean"];
-  new_email?: Maybe<ScalarsEnums["citext"]>;
-  otp_secret?: Maybe<ScalarsEnums["String"]>;
-  password_hash?: Maybe<ScalarsEnums["String"]>;
-  /**
-   * An array relationship
-   */
-  refresh_tokens: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_refresh_tokens_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_refresh_tokens_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_refresh_tokens_bool_exp>;
-  }) => Array<auth_refresh_tokens>;
-  /**
-   * An aggregated array relationship
-   */
-  refresh_tokens_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_refresh_tokens_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_refresh_tokens_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_refresh_tokens_bool_exp>;
-  }) => auth_refresh_tokens_aggregate;
-  /**
-   * An object relationship
-   */
-  role: auth_roles;
-  ticket: ScalarsEnums["uuid"];
-  ticket_expires_at: ScalarsEnums["timestamptz"];
-  updated_at: ScalarsEnums["timestamptz"];
-  /**
-   * An object relationship
-   */
-  user: users;
-  user_id: ScalarsEnums["uuid"];
-}
-
-/**
- * aggregated selection of "auth.accounts"
- */
-export interface auth_accounts_aggregate {
-  __typename?: "auth_accounts_aggregate";
-  aggregate?: Maybe<auth_accounts_aggregate_fields>;
-  nodes: Array<auth_accounts>;
-}
-
-/**
- * aggregate fields of "auth.accounts"
- */
-export interface auth_accounts_aggregate_fields {
-  __typename?: "auth_accounts_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<auth_accounts_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<auth_accounts_max_fields>;
-  min?: Maybe<auth_accounts_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface auth_accounts_max_fields {
-  __typename?: "auth_accounts_max_fields";
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  default_role?: Maybe<ScalarsEnums["String"]>;
-  email?: Maybe<ScalarsEnums["citext"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  new_email?: Maybe<ScalarsEnums["citext"]>;
-  otp_secret?: Maybe<ScalarsEnums["String"]>;
-  password_hash?: Maybe<ScalarsEnums["String"]>;
-  ticket?: Maybe<ScalarsEnums["uuid"]>;
-  ticket_expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  user_id?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface auth_accounts_min_fields {
-  __typename?: "auth_accounts_min_fields";
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  default_role?: Maybe<ScalarsEnums["String"]>;
-  email?: Maybe<ScalarsEnums["citext"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  new_email?: Maybe<ScalarsEnums["citext"]>;
-  otp_secret?: Maybe<ScalarsEnums["String"]>;
-  password_hash?: Maybe<ScalarsEnums["String"]>;
-  ticket?: Maybe<ScalarsEnums["uuid"]>;
-  ticket_expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  updated_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  user_id?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "auth.accounts"
- */
-export interface auth_accounts_mutation_response {
-  __typename?: "auth_accounts_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<auth_accounts>;
-}
-
-/**
- * columns and relationships of "auth.providers"
- */
-export interface auth_providers {
-  __typename?: "auth_providers";
-  /**
-   * An array relationship
-   */
-  account_providers: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_providers_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_providers_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_providers_bool_exp>;
-  }) => Array<auth_account_providers>;
-  /**
-   * An aggregated array relationship
-   */
-  account_providers_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_providers_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_providers_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_providers_bool_exp>;
-  }) => auth_account_providers_aggregate;
-  provider: ScalarsEnums["String"];
-}
-
-/**
- * aggregated selection of "auth.providers"
- */
-export interface auth_providers_aggregate {
-  __typename?: "auth_providers_aggregate";
-  aggregate?: Maybe<auth_providers_aggregate_fields>;
-  nodes: Array<auth_providers>;
-}
-
-/**
- * aggregate fields of "auth.providers"
- */
-export interface auth_providers_aggregate_fields {
-  __typename?: "auth_providers_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<auth_providers_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<auth_providers_max_fields>;
-  min?: Maybe<auth_providers_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface auth_providers_max_fields {
-  __typename?: "auth_providers_max_fields";
-  provider?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface auth_providers_min_fields {
-  __typename?: "auth_providers_min_fields";
-  provider?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "auth.providers"
- */
-export interface auth_providers_mutation_response {
-  __typename?: "auth_providers_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<auth_providers>;
-}
-
-/**
- * columns and relationships of "auth.refresh_tokens"
- */
-export interface auth_refresh_tokens {
-  __typename?: "auth_refresh_tokens";
-  /**
-   * An object relationship
-   */
-  account: auth_accounts;
-  account_id: ScalarsEnums["uuid"];
-  created_at: ScalarsEnums["timestamptz"];
-  expires_at: ScalarsEnums["timestamptz"];
-  refresh_token: ScalarsEnums["uuid"];
-}
-
-/**
- * aggregated selection of "auth.refresh_tokens"
- */
-export interface auth_refresh_tokens_aggregate {
-  __typename?: "auth_refresh_tokens_aggregate";
-  aggregate?: Maybe<auth_refresh_tokens_aggregate_fields>;
-  nodes: Array<auth_refresh_tokens>;
-}
-
-/**
- * aggregate fields of "auth.refresh_tokens"
- */
-export interface auth_refresh_tokens_aggregate_fields {
-  __typename?: "auth_refresh_tokens_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<auth_refresh_tokens_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<auth_refresh_tokens_max_fields>;
-  min?: Maybe<auth_refresh_tokens_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface auth_refresh_tokens_max_fields {
-  __typename?: "auth_refresh_tokens_max_fields";
-  account_id?: Maybe<ScalarsEnums["uuid"]>;
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  refresh_token?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface auth_refresh_tokens_min_fields {
-  __typename?: "auth_refresh_tokens_min_fields";
-  account_id?: Maybe<ScalarsEnums["uuid"]>;
-  created_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  expires_at?: Maybe<ScalarsEnums["timestamptz"]>;
-  refresh_token?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "auth.refresh_tokens"
- */
-export interface auth_refresh_tokens_mutation_response {
-  __typename?: "auth_refresh_tokens_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<auth_refresh_tokens>;
-}
-
-/**
- * columns and relationships of "auth.roles"
- */
-export interface auth_roles {
-  __typename?: "auth_roles";
-  /**
-   * An array relationship
-   */
-  account_roles: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_roles_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_roles_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_roles_bool_exp>;
-  }) => Array<auth_account_roles>;
-  /**
-   * An aggregated array relationship
-   */
-  account_roles_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_account_roles_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_account_roles_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_account_roles_bool_exp>;
-  }) => auth_account_roles_aggregate;
-  /**
-   * An array relationship
-   */
-  accounts: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_accounts_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_accounts_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_accounts_bool_exp>;
-  }) => Array<auth_accounts>;
-  /**
-   * An aggregated array relationship
-   */
-  accounts_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<auth_accounts_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<auth_accounts_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<auth_accounts_bool_exp>;
-  }) => auth_accounts_aggregate;
-  role: ScalarsEnums["String"];
-}
-
-/**
- * aggregated selection of "auth.roles"
- */
-export interface auth_roles_aggregate {
-  __typename?: "auth_roles_aggregate";
-  aggregate?: Maybe<auth_roles_aggregate_fields>;
-  nodes: Array<auth_roles>;
-}
-
-/**
- * aggregate fields of "auth.roles"
- */
-export interface auth_roles_aggregate_fields {
-  __typename?: "auth_roles_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<auth_roles_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<auth_roles_max_fields>;
-  min?: Maybe<auth_roles_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface auth_roles_max_fields {
-  __typename?: "auth_roles_max_fields";
-  role?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface auth_roles_min_fields {
-  __typename?: "auth_roles_min_fields";
-  role?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "auth.roles"
- */
-export interface auth_roles_mutation_response {
-  __typename?: "auth_roles_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<auth_roles>;
-}
-
-/**
- * columns and relationships of "authorships"
- */
-export interface authorships {
-  __typename?: "authorships";
-  /**
-   * An object relationship
-   */
-  content?: Maybe<contents>;
-  contentId: ScalarsEnums["uuid"];
-  email?: Maybe<ScalarsEnums["String"]>;
-  id: ScalarsEnums["uuid"];
-  /**
-   * An object relationship
-   */
-  identity?: Maybe<identities>;
-  name?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregated selection of "authorships"
- */
-export interface authorships_aggregate {
-  __typename?: "authorships_aggregate";
-  aggregate?: Maybe<authorships_aggregate_fields>;
-  nodes: Array<authorships>;
-}
-
-/**
- * aggregate fields of "authorships"
- */
-export interface authorships_aggregate_fields {
-  __typename?: "authorships_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<authorships_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<authorships_max_fields>;
-  min?: Maybe<authorships_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface authorships_max_fields {
-  __typename?: "authorships_max_fields";
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  email?: Maybe<ScalarsEnums["String"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface authorships_min_fields {
-  __typename?: "authorships_min_fields";
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  email?: Maybe<ScalarsEnums["String"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "authorships"
- */
-export interface authorships_mutation_response {
-  __typename?: "authorships_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<authorships>;
-}
-
-/**
- * columns and relationships of "contents"
- */
-export interface contents {
-  __typename?: "contents";
-  /**
-   * An array relationship
-   */
-  authors: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<authorships_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<authorships_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<authorships_bool_exp>;
-  }) => Array<authorships>;
-  /**
-   * An aggregated array relationship
-   */
-  authors_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<authorships_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<authorships_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<authorships_bool_exp>;
-  }) => authorships_aggregate;
-  /**
-   * An array relationship
-   */
-  children: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<contents_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<contents_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<contents_bool_exp>;
-  }) => Array<contents>;
-  /**
-   * An aggregated array relationship
-   */
-  children_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<contents_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<contents_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<contents_bool_exp>;
-  }) => contents_aggregate;
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  /**
-   * An object relationship
-   */
-  creator?: Maybe<users>;
-  creatorId: ScalarsEnums["uuid"];
-  data: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  file?: Maybe<files>;
-  fileId?: Maybe<ScalarsEnums["uuid"]>;
-  /**
-   * An object relationship
-   */
-  folder?: Maybe<folders>;
-  folderId: ScalarsEnums["uuid"];
-  id: ScalarsEnums["uuid"];
-  name: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  parent?: Maybe<contents>;
-  parentId?: Maybe<ScalarsEnums["uuid"]>;
-  /**
-   * An array relationship
-   */
-  polls: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<polls_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<polls_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<polls_bool_exp>;
-  }) => Array<polls>;
-  /**
-   * An aggregated array relationship
-   */
-  polls_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<polls_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<polls_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<polls_bool_exp>;
-  }) => polls_aggregate;
-  priority: ScalarsEnums["Int"];
-  published: ScalarsEnums["Boolean"];
-  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
-}
-
-/**
- * aggregated selection of "contents"
- */
-export interface contents_aggregate {
-  __typename?: "contents_aggregate";
-  aggregate?: Maybe<contents_aggregate_fields>;
-  nodes: Array<contents>;
-}
-
-/**
- * aggregate fields of "contents"
- */
-export interface contents_aggregate_fields {
-  __typename?: "contents_aggregate_fields";
-  avg?: Maybe<contents_avg_fields>;
-  count: (args?: {
-    columns?: Maybe<Array<contents_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<contents_max_fields>;
-  min?: Maybe<contents_min_fields>;
-  stddev?: Maybe<contents_stddev_fields>;
-  stddev_pop?: Maybe<contents_stddev_pop_fields>;
-  stddev_samp?: Maybe<contents_stddev_samp_fields>;
-  sum?: Maybe<contents_sum_fields>;
-  var_pop?: Maybe<contents_var_pop_fields>;
-  var_samp?: Maybe<contents_var_samp_fields>;
-  variance?: Maybe<contents_variance_fields>;
-}
-
-/**
- * aggregate avg on columns
- */
-export interface contents_avg_fields {
-  __typename?: "contents_avg_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface contents_max_fields {
-  __typename?: "contents_max_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  creatorId?: Maybe<ScalarsEnums["uuid"]>;
-  data?: Maybe<ScalarsEnums["String"]>;
-  fileId?: Maybe<ScalarsEnums["uuid"]>;
-  folderId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  parentId?: Maybe<ScalarsEnums["uuid"]>;
-  priority?: Maybe<ScalarsEnums["Int"]>;
-  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface contents_min_fields {
-  __typename?: "contents_min_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  creatorId?: Maybe<ScalarsEnums["uuid"]>;
-  data?: Maybe<ScalarsEnums["String"]>;
-  fileId?: Maybe<ScalarsEnums["uuid"]>;
-  folderId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  parentId?: Maybe<ScalarsEnums["uuid"]>;
-  priority?: Maybe<ScalarsEnums["Int"]>;
-  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
-}
-
-/**
- * response of any mutation on the table "contents"
- */
-export interface contents_mutation_response {
-  __typename?: "contents_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<contents>;
-}
-
-/**
- * aggregate stddev on columns
- */
-export interface contents_stddev_fields {
-  __typename?: "contents_stddev_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_pop on columns
- */
-export interface contents_stddev_pop_fields {
-  __typename?: "contents_stddev_pop_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_samp on columns
- */
-export interface contents_stddev_samp_fields {
-  __typename?: "contents_stddev_samp_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate sum on columns
- */
-export interface contents_sum_fields {
-  __typename?: "contents_sum_fields";
-  priority?: Maybe<ScalarsEnums["Int"]>;
-}
-
-/**
- * aggregate var_pop on columns
- */
-export interface contents_var_pop_fields {
-  __typename?: "contents_var_pop_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate var_samp on columns
- */
-export interface contents_var_samp_fields {
-  __typename?: "contents_var_samp_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate variance on columns
- */
-export interface contents_variance_fields {
-  __typename?: "contents_variance_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * columns and relationships of "events"
- */
-export interface events {
-  __typename?: "events";
-  /**
-   * An array relationship
-   */
-  admissions: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<admissions_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<admissions_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<admissions_bool_exp>;
-  }) => Array<admissions>;
-  /**
-   * An aggregated array relationship
-   */
-  admissions_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<admissions_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<admissions_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<admissions_bool_exp>;
-  }) => admissions_aggregate;
-  /**
-   * An object relationship
-   */
-  content?: Maybe<contents>;
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  createdAt: ScalarsEnums["timestamptz"];
-  /**
-   * An object relationship
-   */
-  folder?: Maybe<folders>;
-  folderId?: Maybe<ScalarsEnums["uuid"]>;
-  /**
-   * An object relationship
-   */
-  group?: Maybe<groups>;
-  groupId: ScalarsEnums["uuid"];
-  id: ScalarsEnums["uuid"];
-  lockSpeak: ScalarsEnums["Boolean"];
-  name: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  poll?: Maybe<polls>;
-  pollId?: Maybe<ScalarsEnums["uuid"]>;
-  shortName: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  timer?: Maybe<timers>;
-  timerId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregated selection of "events"
- */
-export interface events_aggregate {
-  __typename?: "events_aggregate";
-  aggregate?: Maybe<events_aggregate_fields>;
-  nodes: Array<events>;
-}
-
-/**
- * aggregate fields of "events"
- */
-export interface events_aggregate_fields {
-  __typename?: "events_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<events_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<events_max_fields>;
-  min?: Maybe<events_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface events_max_fields {
-  __typename?: "events_max_fields";
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  folderId?: Maybe<ScalarsEnums["uuid"]>;
-  groupId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  pollId?: Maybe<ScalarsEnums["uuid"]>;
-  shortName?: Maybe<ScalarsEnums["String"]>;
-  timerId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface events_min_fields {
-  __typename?: "events_min_fields";
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  folderId?: Maybe<ScalarsEnums["uuid"]>;
-  groupId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  pollId?: Maybe<ScalarsEnums["uuid"]>;
-  shortName?: Maybe<ScalarsEnums["String"]>;
-  timerId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "events"
- */
-export interface events_mutation_response {
-  __typename?: "events_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<events>;
-}
-
-/**
- * columns and relationships of "files"
- */
-export interface files {
-  __typename?: "files";
-  createdAt: ScalarsEnums["timestamptz"];
-  id: ScalarsEnums["uuid"];
-  path: ScalarsEnums["String"];
-  token: ScalarsEnums["String"];
-  updatedAt: ScalarsEnums["timestamptz"];
-  /**
-   * An object relationship
-   */
-  user?: Maybe<users>;
-  userId: ScalarsEnums["uuid"];
-}
-
-/**
- * aggregated selection of "files"
- */
-export interface files_aggregate {
-  __typename?: "files_aggregate";
-  aggregate?: Maybe<files_aggregate_fields>;
-  nodes: Array<files>;
-}
-
-/**
- * aggregate fields of "files"
- */
-export interface files_aggregate_fields {
-  __typename?: "files_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<files_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<files_max_fields>;
-  min?: Maybe<files_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface files_max_fields {
-  __typename?: "files_max_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  path?: Maybe<ScalarsEnums["String"]>;
-  token?: Maybe<ScalarsEnums["String"]>;
-  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface files_min_fields {
-  __typename?: "files_min_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  path?: Maybe<ScalarsEnums["String"]>;
-  token?: Maybe<ScalarsEnums["String"]>;
-  updatedAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "files"
- */
-export interface files_mutation_response {
-  __typename?: "files_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<files>;
-}
-
-/**
- * columns and relationships of "folders"
- */
-export interface folders {
-  __typename?: "folders";
-  /**
-   * An array relationship
-   */
-  contents: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<contents_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<contents_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<contents_bool_exp>;
-  }) => Array<contents>;
-  /**
-   * An aggregated array relationship
-   */
-  contents_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<contents_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<contents_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<contents_bool_exp>;
-  }) => contents_aggregate;
-  /**
-   * An object relationship
-   */
-  event?: Maybe<events>;
-  eventId: ScalarsEnums["uuid"];
-  /**
-   * An array relationship
-   */
-  folders: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<folders_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<folders_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<folders_bool_exp>;
-  }) => Array<folders>;
-  /**
-   * An aggregated array relationship
-   */
-  folders_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<folders_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<folders_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<folders_bool_exp>;
-  }) => folders_aggregate;
-  id: ScalarsEnums["uuid"];
-  lockChildren: ScalarsEnums["Boolean"];
-  lockContent: ScalarsEnums["Boolean"];
-  mode: ScalarsEnums["String"];
-  name: ScalarsEnums["String"];
-  /**
-   * An object relationship
-   */
-  parent?: Maybe<folders>;
-  parentId?: Maybe<ScalarsEnums["uuid"]>;
-  priority: ScalarsEnums["Int"];
-  subtitle?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregated selection of "folders"
- */
-export interface folders_aggregate {
-  __typename?: "folders_aggregate";
-  aggregate?: Maybe<folders_aggregate_fields>;
-  nodes: Array<folders>;
-}
-
-/**
- * aggregate fields of "folders"
- */
-export interface folders_aggregate_fields {
-  __typename?: "folders_aggregate_fields";
-  avg?: Maybe<folders_avg_fields>;
-  count: (args?: {
-    columns?: Maybe<Array<folders_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<folders_max_fields>;
-  min?: Maybe<folders_min_fields>;
-  stddev?: Maybe<folders_stddev_fields>;
-  stddev_pop?: Maybe<folders_stddev_pop_fields>;
-  stddev_samp?: Maybe<folders_stddev_samp_fields>;
-  sum?: Maybe<folders_sum_fields>;
-  var_pop?: Maybe<folders_var_pop_fields>;
-  var_samp?: Maybe<folders_var_samp_fields>;
-  variance?: Maybe<folders_variance_fields>;
-}
-
-/**
- * aggregate avg on columns
- */
-export interface folders_avg_fields {
-  __typename?: "folders_avg_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface folders_max_fields {
-  __typename?: "folders_max_fields";
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  mode?: Maybe<ScalarsEnums["String"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  parentId?: Maybe<ScalarsEnums["uuid"]>;
-  priority?: Maybe<ScalarsEnums["Int"]>;
-  subtitle?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface folders_min_fields {
-  __typename?: "folders_min_fields";
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  mode?: Maybe<ScalarsEnums["String"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  parentId?: Maybe<ScalarsEnums["uuid"]>;
-  priority?: Maybe<ScalarsEnums["Int"]>;
-  subtitle?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "folders"
- */
-export interface folders_mutation_response {
-  __typename?: "folders_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<folders>;
-}
-
-/**
- * aggregate stddev on columns
- */
-export interface folders_stddev_fields {
-  __typename?: "folders_stddev_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_pop on columns
- */
-export interface folders_stddev_pop_fields {
-  __typename?: "folders_stddev_pop_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_samp on columns
- */
-export interface folders_stddev_samp_fields {
-  __typename?: "folders_stddev_samp_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate sum on columns
- */
-export interface folders_sum_fields {
-  __typename?: "folders_sum_fields";
-  priority?: Maybe<ScalarsEnums["Int"]>;
-}
-
-/**
- * aggregate var_pop on columns
- */
-export interface folders_var_pop_fields {
-  __typename?: "folders_var_pop_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate var_samp on columns
- */
-export interface folders_var_samp_fields {
-  __typename?: "folders_var_samp_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate variance on columns
- */
-export interface folders_variance_fields {
-  __typename?: "folders_variance_fields";
-  priority?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * columns and relationships of "groups"
- */
-export interface groups {
-  __typename?: "groups";
-  createdAt: ScalarsEnums["timestamptz"];
-  /**
-   * An object relationship
-   */
-  creator?: Maybe<users>;
-  creatorId?: Maybe<ScalarsEnums["uuid"]>;
-  /**
-   * An array relationship
-   */
-  events: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<events_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<events_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<events_bool_exp>;
-  }) => Array<events>;
-  /**
-   * An aggregated array relationship
-   */
-  events_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<events_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<events_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<events_bool_exp>;
-  }) => events_aggregate;
-  id: ScalarsEnums["uuid"];
-  /**
-   * An array relationship
-   */
-  memberships: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<memberships_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<memberships_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<memberships_bool_exp>;
-  }) => Array<memberships>;
-  /**
-   * An aggregated array relationship
-   */
-  memberships_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<memberships_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<memberships_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<memberships_bool_exp>;
-  }) => memberships_aggregate;
-  name: ScalarsEnums["String"];
-  public: ScalarsEnums["Boolean"];
-  shortName?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregated selection of "groups"
- */
-export interface groups_aggregate {
-  __typename?: "groups_aggregate";
-  aggregate?: Maybe<groups_aggregate_fields>;
-  nodes: Array<groups>;
-}
-
-/**
- * aggregate fields of "groups"
- */
-export interface groups_aggregate_fields {
-  __typename?: "groups_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<groups_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<groups_max_fields>;
-  min?: Maybe<groups_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface groups_max_fields {
-  __typename?: "groups_max_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  creatorId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  shortName?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface groups_min_fields {
-  __typename?: "groups_min_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  creatorId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  name?: Maybe<ScalarsEnums["String"]>;
-  shortName?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "groups"
- */
-export interface groups_mutation_response {
-  __typename?: "groups_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<groups>;
-}
-
-/**
- * columns and relationships of "identities"
- */
-export interface identities {
-  __typename?: "identities";
-  displayName: ScalarsEnums["String"];
-  email: ScalarsEnums["String"];
-  /**
-   * An array relationship
-   */
-  memberships: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<memberships_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<memberships_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<memberships_bool_exp>;
-  }) => Array<memberships>;
-  /**
-   * An aggregated array relationship
-   */
-  memberships_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<memberships_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<memberships_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<memberships_bool_exp>;
-  }) => memberships_aggregate;
-  /**
-   * An object relationship
-   */
-  user?: Maybe<users>;
-}
-
-/**
- * aggregated selection of "identities"
- */
-export interface identities_aggregate {
-  __typename?: "identities_aggregate";
-  aggregate?: Maybe<identities_aggregate_fields>;
-  nodes: Array<identities>;
-}
-
-/**
- * aggregate fields of "identities"
- */
-export interface identities_aggregate_fields {
-  __typename?: "identities_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<identities_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<identities_max_fields>;
-  min?: Maybe<identities_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface identities_max_fields {
-  __typename?: "identities_max_fields";
-  displayName?: Maybe<ScalarsEnums["String"]>;
-  email?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface identities_min_fields {
-  __typename?: "identities_min_fields";
-  displayName?: Maybe<ScalarsEnums["String"]>;
-  email?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "identities"
- */
-export interface identities_mutation_response {
-  __typename?: "identities_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<identities>;
-}
-
-/**
- * columns and relationships of "memberships"
- */
-export interface memberships {
-  __typename?: "memberships";
-  email?: Maybe<ScalarsEnums["String"]>;
-  /**
-   * An object relationship
-   */
-  group?: Maybe<groups>;
-  groupId: ScalarsEnums["uuid"];
-  id: ScalarsEnums["uuid"];
-  /**
-   * An object relationship
-   */
-  identity?: Maybe<identities>;
-  /**
-   * An array relationship
-   */
-  roles: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<roles_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<roles_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<roles_bool_exp>;
-  }) => Array<roles>;
-  /**
-   * An aggregated array relationship
-   */
-  roles_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<roles_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<roles_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<roles_bool_exp>;
-  }) => roles_aggregate;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregated selection of "memberships"
- */
-export interface memberships_aggregate {
-  __typename?: "memberships_aggregate";
-  aggregate?: Maybe<memberships_aggregate_fields>;
-  nodes: Array<memberships>;
-}
-
-/**
- * aggregate fields of "memberships"
- */
-export interface memberships_aggregate_fields {
-  __typename?: "memberships_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<memberships_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<memberships_max_fields>;
-  min?: Maybe<memberships_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface memberships_max_fields {
-  __typename?: "memberships_max_fields";
-  email?: Maybe<ScalarsEnums["String"]>;
-  groupId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface memberships_min_fields {
-  __typename?: "memberships_min_fields";
-  email?: Maybe<ScalarsEnums["String"]>;
-  groupId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "memberships"
- */
-export interface memberships_mutation_response {
-  __typename?: "memberships_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<memberships>;
-}
-
-/**
- * columns and relationships of "polls"
- */
-export interface polls {
-  __typename?: "polls";
-  active: ScalarsEnums["Boolean"];
-  /**
-   * An object relationship
-   */
-  content?: Maybe<contents>;
-  contentId: ScalarsEnums["uuid"];
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  hidden: ScalarsEnums["Boolean"];
-  id: ScalarsEnums["uuid"];
-  maxVote: ScalarsEnums["Int"];
-  minVote: ScalarsEnums["Int"];
-  options?: Maybe<ScalarsEnums["_text"]>;
-  /**
-   * An array relationship
-   */
-  votes: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<votes_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<votes_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<votes_bool_exp>;
-  }) => Array<votes>;
-  /**
-   * An aggregated array relationship
-   */
-  votes_aggregate: (args?: {
-    /**
-     * distinct select on columns
-     */
-    distinct_on?: Maybe<Array<votes_select_column>>
-    /**
-     * limit the number of rows returned
-     */;
-    limit?: Maybe<Scalars["Int"]>
-    /**
-     * skip the first n rows. Use only with order_by
-     */;
-    offset?: Maybe<Scalars["Int"]>
-    /**
-     * sort the rows by one or more columns
-     */;
-    order_by?: Maybe<Array<votes_order_by>>
-    /**
-     * filter the rows returned
-     */;
-    where?: Maybe<votes_bool_exp>;
-  }) => votes_aggregate;
-}
-
-/**
- * aggregated selection of "polls"
- */
-export interface polls_aggregate {
-  __typename?: "polls_aggregate";
-  aggregate?: Maybe<polls_aggregate_fields>;
-  nodes: Array<polls>;
-}
-
-/**
- * aggregate fields of "polls"
- */
-export interface polls_aggregate_fields {
-  __typename?: "polls_aggregate_fields";
-  avg?: Maybe<polls_avg_fields>;
-  count: (args?: {
-    columns?: Maybe<Array<polls_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<polls_max_fields>;
-  min?: Maybe<polls_min_fields>;
-  stddev?: Maybe<polls_stddev_fields>;
-  stddev_pop?: Maybe<polls_stddev_pop_fields>;
-  stddev_samp?: Maybe<polls_stddev_samp_fields>;
-  sum?: Maybe<polls_sum_fields>;
-  var_pop?: Maybe<polls_var_pop_fields>;
-  var_samp?: Maybe<polls_var_samp_fields>;
-  variance?: Maybe<polls_variance_fields>;
-}
-
-/**
- * aggregate avg on columns
- */
-export interface polls_avg_fields {
-  __typename?: "polls_avg_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface polls_max_fields {
-  __typename?: "polls_max_fields";
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  maxVote?: Maybe<ScalarsEnums["Int"]>;
-  minVote?: Maybe<ScalarsEnums["Int"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface polls_min_fields {
-  __typename?: "polls_min_fields";
-  contentId?: Maybe<ScalarsEnums["uuid"]>;
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  maxVote?: Maybe<ScalarsEnums["Int"]>;
-  minVote?: Maybe<ScalarsEnums["Int"]>;
-}
-
-/**
- * response of any mutation on the table "polls"
- */
-export interface polls_mutation_response {
-  __typename?: "polls_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<polls>;
-}
-
-/**
- * aggregate stddev on columns
- */
-export interface polls_stddev_fields {
-  __typename?: "polls_stddev_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_pop on columns
- */
-export interface polls_stddev_pop_fields {
-  __typename?: "polls_stddev_pop_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_samp on columns
- */
-export interface polls_stddev_samp_fields {
-  __typename?: "polls_stddev_samp_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate sum on columns
- */
-export interface polls_sum_fields {
-  __typename?: "polls_sum_fields";
-  maxVote?: Maybe<ScalarsEnums["Int"]>;
-  minVote?: Maybe<ScalarsEnums["Int"]>;
-}
-
-/**
- * aggregate var_pop on columns
- */
-export interface polls_var_pop_fields {
-  __typename?: "polls_var_pop_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate var_samp on columns
- */
-export interface polls_var_samp_fields {
-  __typename?: "polls_var_samp_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate variance on columns
- */
-export interface polls_variance_fields {
-  __typename?: "polls_variance_fields";
-  maxVote?: Maybe<ScalarsEnums["Float"]>;
-  minVote?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * columns and relationships of "roles"
- */
-export interface roles {
-  __typename?: "roles";
-  id: ScalarsEnums["uuid"];
-  /**
-   * An object relationship
-   */
-  membership?: Maybe<memberships>;
-  membershipId: ScalarsEnums["uuid"];
-  role: ScalarsEnums["String"];
-}
-
-/**
- * aggregated selection of "roles"
- */
-export interface roles_aggregate {
-  __typename?: "roles_aggregate";
-  aggregate?: Maybe<roles_aggregate_fields>;
-  nodes: Array<roles>;
-}
-
-/**
- * aggregate fields of "roles"
- */
-export interface roles_aggregate_fields {
-  __typename?: "roles_aggregate_fields";
-  count: (args?: {
-    columns?: Maybe<Array<roles_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<roles_max_fields>;
-  min?: Maybe<roles_min_fields>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface roles_max_fields {
-  __typename?: "roles_max_fields";
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  membershipId?: Maybe<ScalarsEnums["uuid"]>;
-  role?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface roles_min_fields {
-  __typename?: "roles_min_fields";
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  membershipId?: Maybe<ScalarsEnums["uuid"]>;
-  role?: Maybe<ScalarsEnums["String"]>;
-}
-
-/**
- * response of any mutation on the table "roles"
- */
-export interface roles_mutation_response {
-  __typename?: "roles_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<roles>;
-}
-
-/**
- * columns and relationships of "speaks"
- */
-export interface speaks {
-  __typename?: "speaks";
-  createdAt: ScalarsEnums["timestamptz"];
-  eventId: ScalarsEnums["uuid"];
-  id: ScalarsEnums["uuid"];
-  type: ScalarsEnums["Int"];
-  /**
-   * An object relationship
-   */
-  user?: Maybe<users>;
-  userId: ScalarsEnums["uuid"];
-}
-
-/**
- * aggregated selection of "speaks"
- */
-export interface speaks_aggregate {
-  __typename?: "speaks_aggregate";
-  aggregate?: Maybe<speaks_aggregate_fields>;
-  nodes: Array<speaks>;
-}
-
-/**
- * aggregate fields of "speaks"
- */
-export interface speaks_aggregate_fields {
-  __typename?: "speaks_aggregate_fields";
-  avg?: Maybe<speaks_avg_fields>;
-  count: (args?: {
-    columns?: Maybe<Array<speaks_select_column>>;
-    distinct?: Maybe<Scalars["Boolean"]>;
-  }) => Maybe<ScalarsEnums["Int"]>;
-  max?: Maybe<speaks_max_fields>;
-  min?: Maybe<speaks_min_fields>;
-  stddev?: Maybe<speaks_stddev_fields>;
-  stddev_pop?: Maybe<speaks_stddev_pop_fields>;
-  stddev_samp?: Maybe<speaks_stddev_samp_fields>;
-  sum?: Maybe<speaks_sum_fields>;
-  var_pop?: Maybe<speaks_var_pop_fields>;
-  var_samp?: Maybe<speaks_var_samp_fields>;
-  variance?: Maybe<speaks_variance_fields>;
-}
-
-/**
- * aggregate avg on columns
- */
-export interface speaks_avg_fields {
-  __typename?: "speaks_avg_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate max on columns
- */
-export interface speaks_max_fields {
-  __typename?: "speaks_max_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  type?: Maybe<ScalarsEnums["Int"]>;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * aggregate min on columns
- */
-export interface speaks_min_fields {
-  __typename?: "speaks_min_fields";
-  createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
-  id?: Maybe<ScalarsEnums["uuid"]>;
-  type?: Maybe<ScalarsEnums["Int"]>;
-  userId?: Maybe<ScalarsEnums["uuid"]>;
-}
-
-/**
- * response of any mutation on the table "speaks"
- */
-export interface speaks_mutation_response {
-  __typename?: "speaks_mutation_response";
-  /**
-   * number of affected rows by the mutation
-   */
-  affected_rows: ScalarsEnums["Int"];
-  /**
-   * data of the affected rows by the mutation
-   */
-  returning: Array<speaks>;
-}
-
-/**
- * aggregate stddev on columns
- */
-export interface speaks_stddev_fields {
-  __typename?: "speaks_stddev_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_pop on columns
- */
-export interface speaks_stddev_pop_fields {
-  __typename?: "speaks_stddev_pop_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate stddev_samp on columns
- */
-export interface speaks_stddev_samp_fields {
-  __typename?: "speaks_stddev_samp_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate sum on columns
- */
-export interface speaks_sum_fields {
-  __typename?: "speaks_sum_fields";
-  type?: Maybe<ScalarsEnums["Int"]>;
-}
-
-/**
- * aggregate var_pop on columns
- */
-export interface speaks_var_pop_fields {
-  __typename?: "speaks_var_pop_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate var_samp on columns
- */
-export interface speaks_var_samp_fields {
-  __typename?: "speaks_var_samp_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
-/**
- * aggregate variance on columns
- */
-export interface speaks_variance_fields {
-  __typename?: "speaks_variance_fields";
-  type?: Maybe<ScalarsEnums["Float"]>;
-}
-
 /**
  * columns and relationships of "timers"
  */
@@ -12374,10 +12374,10 @@ export interface votes_mutation_response {
 }
 
 export interface SchemaObjectTypes {
-  Query: Query;
-  Mutation: Mutation;
-  Subscription: Subscription;
   CanVoteOutput: CanVoteOutput;
+  Mutation: Mutation;
+  Query: Query;
+  Subscription: Subscription;
   VoteOutput: VoteOutput;
   admissions: admissions;
   admissions_aggregate: admissions_aggregate;
@@ -12547,10 +12547,10 @@ export interface SchemaObjectTypes {
   votes_mutation_response: votes_mutation_response;
 }
 export type SchemaObjectTypesNames =
-  | "Query"
-  | "Mutation"
-  | "Subscription"
   | "CanVoteOutput"
+  | "Mutation"
+  | "Query"
+  | "Subscription"
   | "VoteOutput"
   | "admissions"
   | "admissions_aggregate"

@@ -11,9 +11,9 @@
     "strict": true,
     "noEmit": true,
     "experimentalDecorators": true,
-    "baseUrl": "./",
     "esModuleInterop": true,
     "allowJs": true,
+    "baseUrl": ".",
     "paths": {
       "comps": [
         "./components"
@@ -34,7 +34,8 @@
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
-    "module": "esnext"
+    "module": "esnext",
+    "incremental": true
   },
   "include": [
     "next-env.d.ts",

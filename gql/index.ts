@@ -1,21 +1,21 @@
 /**
- * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+ * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
 
 import { createReactClient } from "@gqty/react";
 import { createSubscriptionsClient } from "@gqty/subscriptions";
-import { createClient, QueryFetcher } from "gqty";
+import type { QueryFetcher } from "gqty";
+import { createClient } from "gqty";
 import { auth } from "utils/nhost";
-import {
-  generatedSchema,
-  scalarsEnumsHash,
+import type {
   GeneratedSchema,
   SchemaObjectTypes,
   SchemaObjectTypesNames,
 } from "./schema.generated";
+import { generatedSchema, scalarsEnumsHash } from "./schema.generated";
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
-  // Modify "http://localhost:8080/v1/graphql" if needed
+  // Modify "/api/graphql" if needed
   const headers: Record<string, string> = process.env
     .HASURA_GRAPHQL_ADMIN_SECRET
     ? {
@@ -53,8 +53,6 @@ const subscriptionsClient =
           url.protocol = url.protocol.replace("http", "ws");
           return url.href;
         },
-        lazy: true,
-        reconnect: true,
       })
     : undefined;
 
@@ -69,8 +67,21 @@ export const client = createClient<
   subscriptionsClient,
 });
 
-export const { query, mutation, mutate, subscription, resolved, refetch } =
-  client;
+const {
+  query,
+  mutation,
+  mutate,
+  subscription,
+  resolved,
+  refetch,
+  track,
+} = client;
+
+export {
+  query,
+  mutation,
+  resolved,
+}
 
 export const {
   graphql,
