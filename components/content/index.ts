@@ -6,6 +6,7 @@ export { default as ChildList } from "./ChildList";
 export { default as Content } from "./Content";
 export { default as ContentAvatar } from "./ContentAvatar";
 export { default as ContentCard } from "./ContentCard";
+export { default as ContentHeader } from "./ContentHeader";
 export { default as ContentToolbar } from "./ContentToolbar";
 export { default as ContentBreadcrumps } from "./ContentBreadcrumps";
 export { default as Editor } from "./Editor";

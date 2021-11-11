@@ -1,4 +1,4 @@
-import { Search, Subject } from "@mui/icons-material";
+import { Search, Subject, Poll } from "@mui/icons-material";
 import {
   Autocomplete,
   Breadcrumbs,
@@ -18,28 +18,48 @@ import {
 import { Box } from "@mui/system";
 import { useQuery } from "gql";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { ReactElement, ReactNode, useState } from "react";
 import { Link as NextLink } from "comps";
-import { useSession } from "hooks";
+import { useSession, Path } from "hooks";
 
-export default function FolderCard({
-  id,
+const getBreadcrumbIcon = (icon: string) => {
+  switch (icon) {
+    case "root":
+      return <Subject />;
+    case "poll":
+      return <Poll />;
+    default:
+      throw Error(`Unknown icon: ${icon}`);
+  }
+};
+
+export default function FolderBreadcrumbs({
   filter,
   setFilter,
 }: {
-  id: string;
-  filter: string;
-  setFilter: Function;
+  filter?: string;
+  setFilter?: Function;
 }) {
   const [session] = useSession();
-  const query = useQuery();
-  const folder = query.folders_by_pk({ id });
   const [searchOpen, setSearchOpen] = useState(false);
 
+  const path = [{
+      name: "Indhold",
+      url: `/folder/${session?.event?.folderId}`,
+      icon: "root",
+    }].concat(session?.path && typeof session.path != "string" ? session.path as any : [])
+  
   return (
     <Stack spacing={1} alignItems="center" direction="row" sx={{ p: 2 }}>
-      <Box sx={{ height: 48, width: "100%", alignItems: "center", display: "flex" }}>
-        {searchOpen ? (
+      <Box
+        sx={{
+          height: 48,
+          width: "100%",
+          alignItems: "center",
+          display: "flex",
+        }}
+      >
+        {searchOpen && setFilter ? (
           <TextField
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
@@ -49,39 +69,32 @@ export default function FolderCard({
           />
         ) : (
           <Breadcrumbs>
-            <Link
-              component={NextLink}
-              color="primary"
-              href={`/folder/${session?.event?.folderId}`}
-              sx={{ alignItems: "center", display: "flex" }}
-            >
-              <Tooltip title="Indhold">
-                <Subject />
-              </Tooltip>
-            </Link>
-            {folder?.parent && folder?.parent.parentId && (
+            {path.map((e) => (
               <Link
+                key={e.url}
                 component={NextLink}
                 color="primary"
-                href={`/folder/${folder?.parent.id}`}
+                href={e.url}
+                sx={{ alignItems: "center", display: "flex" }}
               >
-                <Typography>{folder?.parent.name}</Typography>
+                {e.icon ? (
+                  <Tooltip title={e.name}>{getBreadcrumbIcon(e.icon)}</Tooltip>
+                ) : (
+                  <Typography>{e.name}</Typography>
+                )}
               </Link>
-            )}
-            {folder?.parent && (
-              <Link component={NextLink} color="primary" href={`/folder/${id}`}>
-                <Typography>{folder?.name}</Typography>
-              </Link>
-            )}
+            ))}
           </Breadcrumbs>
         )}
       </Box>
       <Box sx={{ flexGrow: 1 }} />
-      <Box sx={{ height: 48, alignItems: "center", display: "flex" }}>
-        <IconButton onClick={() => setSearchOpen(!searchOpen)} size="large">
-          <Search />
-        </IconButton>
-      </Box>
+      {setFilter && (
+        <Box sx={{ height: 48, alignItems: "center", display: "flex" }}>
+          <IconButton onClick={() => setSearchOpen(!searchOpen)} size="large">
+            <Search />
+          </IconButton>
+        </Box>
+      )}
     </Stack>
   );
 }

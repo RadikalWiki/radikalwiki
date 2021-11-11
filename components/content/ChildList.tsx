@@ -30,7 +30,7 @@ import {
 } from "@mui/material";
 import { useQuery } from "gql";
 
-export default function ChildList({ id }: { id: string }) {
+function ChildListRaw({ id }: { id: string }) {
   const query = useQuery();
   const content = query.contents_by_pk({ id });
 
@@ -118,5 +118,13 @@ export default function ChildList({ id }: { id: string }) {
         )}
       </List>
     </Card>
+  );
+}
+
+export default function ChildList({ id }: { id: string }) {
+  return (
+     <Suspense fallback={null}>
+       <ChildListRaw id={id} />
+     </Suspense>
   );
 }

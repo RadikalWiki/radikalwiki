@@ -1,7 +1,9 @@
 import { useEffect, createContext, useContext } from "react";
 
-type Session = {
-  path?: string
+export type Path = { name: string; url: string; icon?: string }[];
+
+export type Session = {
+  path?: Path
   event?: { id: string; name: string; shortName: string, folderId: string };
   roles?: string[];
   user?: { id: string; name: string; email: string };

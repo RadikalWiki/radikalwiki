@@ -34,16 +34,17 @@ import {
 } from "@mui/material";
 import { useQuery } from "gql";
 import { TransitionGroup } from "react-transition-group";
+import { useSession } from "hooks";
 
-export default function FolderCard({
-  id,
-  filter,
-}: {
-  id: string;
-  filter: string;
-}) {
+function FolderList({ id, filter }: { id: string; filter: string }) {
+  const [_, setSession] = useSession()
   const query = useQuery();
+
   const folder = query.folders_by_pk({ id });
+
+  useEffect(() => {
+    if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }] : [] });
+  }, [id, folder]);
 
   const contents =
     folder
@@ -79,55 +80,73 @@ export default function FolderCard({
     }
     return res;
   };
-  
+
+  return (
+    <TransitionGroup>
+      {list.map(({ id, name, type, subtitle, published }) =>
+        name?.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) ||
+        getFolderLetter(false)
+          .toLocaleLowerCase()
+          .includes(filter.toLocaleLowerCase()) ? (
+          <Collapse key={id}>
+            <ListItem button component={NextLink} href={`/${type}/${id}`}>
+              <ListItemAvatar>
+                {type == "folder" ? (
+                  <Avatar
+                    sx={{
+                      bgcolor: (theme) => theme.palette.primary.main,
+                    }}
+                  >
+                    <Folder />
+                  </Avatar>
+                ) : published ? (
+                  <Avatar
+                    sx={{
+                      bgcolor: (theme) => theme.palette.primary.main,
+                    }}
+                  >
+                    {getFolderLetter(true)}
+                  </Avatar>
+                ) : (
+                  <Tooltip title="Ikke indsendt">
+                    <Avatar>
+                      <Lock color="primary" />
+                    </Avatar>
+                  </Tooltip>
+                )}
+              </ListItemAvatar>
+              <ListItemText primary={name} secondary={subtitle} />
+            </ListItem>
+            <Divider />
+          </Collapse>
+        ) : null
+      )}
+      {list.length == 0 && (
+        <Collapse key={id}>
+          <ListItem button>
+            <ListItemText primary="Intet indhold" />
+          </ListItem>
+          <Divider />
+        </Collapse>
+      )}
+    </TransitionGroup>
+  );
+}
+
+export default function FolderCard({
+  id,
+  filter,
+}: {
+  id: string;
+  filter: string;
+}) {
   return (
     <Card elevation={3} sx={{ m: 1 }}>
       <List sx={{ m: 0 }}>
         <Divider />
-        <TransitionGroup>
-          {list.map(({ id, name, type, subtitle, published }, index) =>
-            name?.toLocaleLowerCase().includes(filter.toLocaleLowerCase()) ||
-            getFolderLetter(false)
-              .toLocaleLowerCase()
-              .includes(filter.toLocaleLowerCase()) ? (
-              <Collapse key={id}>
-                <ListItem button component={NextLink} href={`/${type}/${id}`}>
-                  <ListItemAvatar>
-                    {type == "folder" ? (
-                      <Avatar
-                        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-                      >
-                        <Folder />
-                      </Avatar>
-                    ) : published ? (
-                      <Avatar
-                        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-                      >
-                        {getFolderLetter(true)}
-                      </Avatar>
-                    ) : (
-                      <Tooltip title="Ikke indsendt">
-                        <Avatar>
-                          <Lock color="primary" />
-                        </Avatar>
-                      </Tooltip>
-                    )}
-                  </ListItemAvatar>
-                  <ListItemText primary={name} secondary={subtitle} />
-                </ListItem>
-                <Divider />
-              </Collapse>
-            ) : null
-          )}
-          {list.length == 0 && (
-            <Collapse key={id}>
-              <ListItem button>
-                <ListItemText primary="Intet indhold" />
-              </ListItem>
-              <Divider />
-            </Collapse>
-          )}
-        </TransitionGroup>
+        <Suspense fallback={null}>
+          <FolderList id={id} filter={filter} />
+        </Suspense>
       </List>
     </Card>
   );

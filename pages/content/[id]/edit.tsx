@@ -6,7 +6,7 @@ import {
   FileUploader,
   Editor,
   ExpandButton,
-  ContentBreadcrumps,
+  FolderBreadcrumbs,
 } from "comps";
 import { useRouter } from "next/router";
 import {
@@ -45,10 +45,6 @@ export default function Id() {
   const router = useRouter();
   const id = router.query.id as string;
 
-  useEffect(() => {
-    if (id) setSession({ path: `/content/${id}/edit` });
-  }, [id]);
-
   if (!id) return null;
 
   return (
@@ -59,10 +55,11 @@ export default function Id() {
 }
 
 function IdRaw({ id }: { id: string }) {
-  const [session] = useSession();
+  const [session, setSession] = useSession();
   const router = useRouter();
   const query = useQuery();
   const content = query.contents_by_pk({ id });
+
   const [updateContent] = useMutation(
     (mutation, args: { id: string; set: any }) => {
       return mutation.update_contents_by_pk({
@@ -93,6 +90,10 @@ function IdRaw({ id }: { id: string }) {
   const [authors, setAuthors] = useState<authorships[]>([]);
   const [data, setData] = useState("");
   const [image, setImage] = useState<any>();
+
+  useEffect(() => {
+    if (content?.id && content?.folder?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
+  }, [content]);
 
   useEffect(() => {
     if (content) {
@@ -132,7 +133,7 @@ function IdRaw({ id }: { id: string }) {
 
   return (
     <>
-      <ContentBreadcrumps id={id} />
+      <FolderBreadcrumbs />
       <Card elevation={3} sx={{ m: 1 }}>
         <CardHeader
           title={name}

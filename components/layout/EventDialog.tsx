@@ -12,7 +12,6 @@ import {
 import { Add, Event } from "@mui/icons-material";
 import { useQuery, query, resolved } from "gql";
 import { useSession } from "hooks";
-import { useAuth } from "@nhost/react-auth";
 
 export default function EventDialog({
   open,
@@ -46,6 +45,7 @@ export default function EventDialog({
     setSession({
       event,
       roles: isCreator ? roles?.concat("admin") : roles,
+      path: []
     });
     setOpen(false);
     router.push("/folder");

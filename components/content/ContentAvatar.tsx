@@ -1,14 +1,12 @@
 import { Avatar, Tooltip, Fade } from "@mui/material";
 import { Lock } from "@mui/icons-material";
 import {
-  useQuery,
-  Maybe,
-  contents,
-  contents_order_by,
-  order_by,
+  order_by, useQuery,
 } from "gql";
 
-function ContentAvatar({ content }: { content: Maybe<contents> }) {
+function ContentAvatar({ id }: { id: string }) {
+  const query = useQuery();
+  const content = query.contents_by_pk({ id });
 
   const getLetter = (index: number) => {
     let res = String.fromCharCode(65 + (index % 26));

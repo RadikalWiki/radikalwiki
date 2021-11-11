@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Suspense } from "react";
 import { HeaderCard, Link as NextLink } from "comps";
 import {
   List,
@@ -17,12 +17,14 @@ import { Cancel, HowToVote } from "@mui/icons-material";
 import { useSession } from "hooks";
 import { useMutation, useQuery } from "gql";
 
-export default function PollList({ id }: { id: string }) {
+function PollListRaw({ id }: { id: string }) {
   const [session] = useSession();
   const query = useQuery();
   const polls = query.contents_by_pk({ id })?.polls();
   const [deletePoll] = useMutation((mutation, id: string) => {
-    return mutation.delete_polls_by_pk({ id });
+    return mutation.delete_polls_by_pk({ id })?.id;
+  }, {
+    refetchQueries: [query.contents_by_pk({ id })]
   });
 
   const handleDeletePoll = (id: string) => async () => {
@@ -72,5 +74,13 @@ export default function PollList({ id }: { id: string }) {
         ))}
       </List>
     </HeaderCard>
+  );
+}
+
+export default function PollList({ id }: { id: string }) {
+  return (
+     <Suspense fallback={null}>
+       <PollListRaw id={id} />
+     </Suspense>
   );
 }
