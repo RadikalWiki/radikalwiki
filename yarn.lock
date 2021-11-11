@@ -3435,7 +3435,7 @@ hosted-git-info@^2.1.4:
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
   integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
-html-to-docx@^1.2.1:
+html-to-docx@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/html-to-docx/-/html-to-docx-1.2.4.tgz#1d84b90d3d105142351b5c7a79326914791711cb"
   integrity sha512-Xr1tAFHkGpAgq+u+WTNBHhq3amKtPVKlbQFEi/W0fLbRjUvyVrX3PTQsQvlDBbA5ADCR9oOUEeAPzl7NguM85g==

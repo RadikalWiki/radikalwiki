@@ -14,7 +14,16 @@ import { useRouter } from "next/router";
 import { useSession } from "hooks";
 import HTMLtoDOCX from "html-to-docx";
 
-import { useMutation, Maybe, contents, authorships, useQuery } from "gql";
+import {
+  useMutation,
+  Maybe,
+  contents,
+  authorships,
+  useQuery,
+  resolved,
+  query as q,
+  order_by,
+} from "gql";
 
 export default function FolderDial({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
@@ -37,21 +46,41 @@ export default function FolderDial({ id }: { id: string }) {
 
   if (!session?.roles?.includes("admin")) return null;
 
-  const formatAuthors = (a: authorships[] | undefined) =>
-    a?.map((a) => a.identity?.displayName ?? a.name).join(", ");
-
-  const formatContent = (content: Maybe<contents>): string => {
-    return `<h1>${content?.name}</h1><blockquote><i>${formatAuthors(
-      content?.authors()
-    )}</i></blockquote>${content?.data}${
-      content?.children ? content?.children().map(formatContent).join("") : ""
+  const formatContent = async (id: string, level: number): Promise<string> => {
+    if (!id) return ""
+    const children = await resolved(() => {
+      return q
+        .contents_by_pk({ id })
+        ?.children()
+        .map((content) => content.id);
+    });
+    const authors = await resolved(() => {
+      return q
+        .contents_by_pk({ id })
+        ?.authors()
+        ?.map((a) => a.identity?.displayName ?? a.name)
+        .join(", ");
+    });
+    const content = await resolved(() => {
+      const content = q.contents_by_pk({ id });
+      if (content) return { name: content.name, data: content.data };
+    });
+    return `<h${level}>${
+      content?.name
+    }</h${level}><i>Stillet af: ${authors}</i>${content?.data}${
+      children ? "<br>" + (await Promise.all(children.map(async (id) => (await formatContent(id, level + 1))))).join("<br>") : ""
     }`;
   };
 
   const handleExport = async () => {
-    const exportFolder = query.folders_by_pk({ id: folder?.id });
+    const contents = await resolved(() => {
+      return q.folders_by_pk({ id: folder?.id })?.contents({
+          order_by: [{ priority: order_by.asc }],
+          where: { parentId: { _is_null: true } },
+        }).map(({ id }) => ({ id }))
+    });
+    const html = contents ? (await Promise.all(contents.map(async (content) => (await formatContent(content.id, 1))))).join("<br><br>") : "";
 
-    const html = exportFolder?.contents().map(formatContent).join("");
     const blob = await HTMLtoDOCX(html as string, "", {
       table: { row: { cantSplit: true } },
     });
