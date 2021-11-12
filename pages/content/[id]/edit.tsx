@@ -14,6 +14,8 @@ import {
   useMutation,
   authorships_insert_input,
   authorships,
+  identities,
+  Maybe
 } from "gql";
 import {
   Box,
@@ -72,16 +74,15 @@ function IdRaw({ id }: { id: string }) {
     return mutation.delete_contents_by_pk({ id })?.id;
   });
   const [deleteAuthors] = useMutation((mutation, id: string) => {
-    return mutation.delete_authorships({ where: { contentId: { _eq: id } } })?.affected_rows;
+    return mutation.delete_authorships({ where: { contentId: { _eq: id } } })
+      ?.affected_rows;
   });
   const [addAuthors] = useMutation(
     (mutation, args: authorships_insert_input[]) => {
       return mutation.insert_authorships({ objects: args })?.affected_rows;
     },
     {
-      refetchQueries: [
-        query.contents_by_pk({ id }),
-      ],
+      refetchQueries: [query.contents_by_pk({ id })],
     }
   );
 
@@ -92,13 +93,27 @@ function IdRaw({ id }: { id: string }) {
   const [image, setImage] = useState<any>();
 
   useEffect(() => {
-    if (content?.id && content?.folder?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
+    if (content?.id && content?.folder?.id)
+      setSession({
+        path: [
+          {
+            name: content.folder?.name ?? "",
+            url: `/folder/${content.folder?.id}`,
+          },
+          { name: content.name ?? "", url: `/content/${content.id}` },
+        ],
+      });
   }, [content]);
 
   useEffect(() => {
     if (content) {
       setName(content?.name ?? "");
-      setAuthors(content?.authors().map((author) => ({ ...author })));
+      setAuthors(
+        content?.authors().map((author) => {
+          const identity = { email: author?.identity?.email } as Maybe<identities>
+          return { identity, ...author };
+        })
+      );
       setData(content?.data ?? "");
       setImage(getFileUrl(content?.file));
     }
@@ -109,7 +124,7 @@ function IdRaw({ id }: { id: string }) {
       args: { id, set: { name, data, published, fileId: image?.id } },
     });
     await deleteAuthors({ args: id });
-    const objects = authors.map((author: any) =>
+    const objects = authors.map((author) =>
       author.identity?.email
         ? { contentId: id, email: author.identity?.email }
         : { contentId: id, name: author.name }
