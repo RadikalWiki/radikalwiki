@@ -16,6 +16,7 @@ import {
   memberships_insert_input,
   roles_insert_input,
   useMutation,
+  memberships_constraint,
 } from "gql";
 import { useRouter } from "next/router";
 import { CSVReader } from "comps";
@@ -28,7 +29,13 @@ export default function AddMembershipsFab({ groupId }: { groupId?: string }) {
   const [shortName, setShortName] = useState("");
   const [addMemberships] = useMutation(
     (mutation, args: memberships_insert_input[]) => {
-      return mutation.insert_memberships({ objects: args })?.returning;
+      return mutation.insert_memberships({
+        objects: args,
+        on_conflict: {
+          constraint: memberships_constraint.memberships_pkey,
+          update_columns: [],
+        },
+      })?.returning.map(({id}) => ({ id}))  ;
     }
   );
   const [addRoles] = useMutation((mutation, args: roles_insert_input[]) => {
@@ -52,7 +59,7 @@ export default function AddMembershipsFab({ groupId }: { groupId?: string }) {
     const newMembership = await addMemberships({
       args: memberships,
     });
-    const roles = newMembership?.map((m: any) => ({
+    const roles = newMembership?.map((m) => ({
       membershipId: m.id,
       role: "member",
     }));
@@ -71,8 +78,8 @@ export default function AddMembershipsFab({ groupId }: { groupId?: string }) {
       <Fab
         sx={{
           position: "fixed",
-          bottom: 9,
-          right: 3,
+          bottom: t => t.spacing(9),
+          right: t => t.spacing(9),
         }}
         variant="extended"
         color="primary"

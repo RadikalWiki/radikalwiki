@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Link as NextLink } from "comps";
 import {
   Breadcrumbs,
@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "gql";
 import { AddMembershipsFab } from "comps";
 
-export default function Id() {
+function Page() {
   const router = useRouter();
   const { id } = router.query;
   const query = useQuery();
@@ -35,5 +35,13 @@ export default function Id() {
       </Card>
       <AddMembershipsFab groupId={id as string} />
     </>
+  );
+}
+
+export default function Index() {
+  return (
+    <Suspense fallback={null}>
+      <Page />
+    </Suspense>
   );
 }

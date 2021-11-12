@@ -1,12 +1,18 @@
 import React from "react";
 import { Fab } from "@mui/material";
-import { useMutation, identities_insert_input } from "gql";
+import { useMutation, identities_insert_input, identities_constraint } from "gql";
 import { CSVReader } from "comps";
 
 export default function AddIdentitiesFab() {
   const [addIdentities] = useMutation(
     (mutation, args: identities_insert_input[]) => {
-      return mutation.insert_identities({ objects: args })?.affected_rows;
+      return mutation.insert_identities({
+        objects: args,
+        on_conflict: {
+          constraint: identities_constraint.idEmails_pkey,
+          update_columns: [],
+        },
+      })?.affected_rows;
     }
   );
 
@@ -41,7 +47,7 @@ export default function AddIdentitiesFab() {
   return (
     <CSVReader parseOptions={parseOptions} onFileLoaded={handleFile}>
       <Fab
-        sx={{ position: "fixed", bottom: 9, right: 3 }}
+        sx={{ position: "fixed", bottom: t => t.spacing(9), right: t => t.spacing(3) }}
         variant="extended"
         color="primary"
         component="span"
