@@ -33,6 +33,7 @@ import { useQuery } from "gql";
 function ChildListRaw({ id }: { id: string }) {
   const query = useQuery();
   const content = query.contents_by_pk({ id });
+  const children = content?.children();
 
   const [open, setOpen] = useState<boolean[]>([]);
 
@@ -41,6 +42,8 @@ function ChildListRaw({ id }: { id: string }) {
     changeNumber += 1;
     return changeNumber;
   };
+
+  if (content?.parentId) return null;
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
@@ -54,9 +57,8 @@ function ChildListRaw({ id }: { id: string }) {
       />
       <Divider />
       <List>
-        {content
-          ?.children()
-          .map(({ id = 0, name, authors, published }, index: number) =>
+        {children
+          ?.map(({ id = 0, name, authors, published }, index: number) =>
             id != 0 ? (
               <Fragment key={id}>
                 <ListItem button component={NextLink} href={`/content/${id}`}>
