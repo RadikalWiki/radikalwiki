@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import {
-  Grid,
   Dialog,
   DialogTitle,
   DialogActions,
   DialogContent,
-  TextField,
   Button,
   FormControlLabel,
   Switch,
+  Slider,
+  Stack,
+  Typography,
 } from "@mui/material";
 import { polls_insert_input, useMutation, useQuery } from "gql";
 import { useSession } from "hooks";
@@ -25,16 +26,26 @@ export default function PollDialog({
 }) {
   const router = useRouter();
   const [session, setSession] = useSession();
-  const [minVote, setMinVote] = useState(1);
-  const [maxVote, setMaxVote] = useState(1);
+
   const query = useQuery();
   const content = query.contents_by_pk({ id });
+
+  const [voteCount, setVoteCount] = React.useState<number[]>([1, 1]);
+
+  const handleChange = (event: Event, newValue: number | number[]) => {
+    console.log(newValue);
+    setVoteCount(newValue as number[]);
+  };
+
   const [hidden, setHidden] = useState(content?.folder?.mode == "candidates");
   const [addPoll] = useMutation((mutation, args: polls_insert_input) => {
     return mutation.insert_polls_one({ object: args })?.id;
   });
   const [stopPoll] = useMutation((mutation) => {
-    return mutation.update_polls({ where: { content: { folder: { eventId: { _eq: session?.event?.id } } } }, _set: { active: false } })?.affected_rows
+    return mutation.update_polls({
+      where: { content: { folder: { eventId: { _eq: session?.event?.id } } } },
+      _set: { active: false },
+    })?.affected_rows;
   });
   const [updateEvent] = useMutation(
     (mutation, args: { id: string; set: any }) => {
@@ -48,19 +59,22 @@ export default function PollDialog({
   const options =
     content?.folder?.mode == "changes"
       ? ["For", "Imod", "Blank"]
-      : content?.children().map(({ name }) => name).concat("Blank");
+      : content
+          ?.children()
+          .map(({ name }) => name)
+          .concat("Blank");
   const optionsCount = options?.length || 0;
 
   const handleAddPoll = async (_: any) => {
     await stopPoll();
     const pollId = await addPoll({
       args: {
-          contentId: content?.id,
-          minVote,
-          maxVote,
-          hidden,
-          options: `{${options}}`,
-        },
+        contentId: content?.id,
+        minVote: voteCount[0],
+        maxVote: voteCount[1],
+        hidden,
+        options: `{${options}}`,
+      },
     });
     await updateEvent({
       args: { id: session?.event?.id as string, set: { pollId } },
@@ -68,57 +82,42 @@ export default function PollDialog({
     router.push(`/poll/${pollId}`);
   };
 
+  const getMarks = (count: number) => {
+    const marks = []
+    for (let i = 0; i < count; i++) { 
+      marks.push({ value: i, label: `${i}`})
+    }
+    return marks
+  }
+
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
       <DialogTitle>Ny Afstemning</DialogTitle>
       <DialogContent>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              type="number"
-              value={minVote}
-              disabled={content?.folder?.mode == "changes"}
-              onChange={(e) => {
-                const maxOpt = optionsCount - 1;
-                const val = parseInt(e.target.value);
-                setMinVote(val > maxOpt ? maxOpt : val > 0 ? val : 1);
-                setMaxVote(
-                  val > maxOpt ? maxOpt : val > maxVote ? val : maxVote
-                );
-              }}
-              autoFocus
-              label="Minimum valg"
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              type="number"
-              value={maxVote}
-              disabled={content?.folder?.mode == "changes"}
-              onChange={(e) => {
-                const maxOpt = optionsCount - 1;
-                const val = parseInt(e.target.value);
-                setMinVote(minVote > val && val > 0 ? val : minVote);
-                setMaxVote(val > maxOpt ? maxOpt : val > 0 ? val : 1);
-              }}
-              label="Maksimum valg"
-              fullWidth
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={hidden}
-                  onChange={() => setHidden(!hidden)}
-                  color="primary"
-                />
-              }
-              label="Skjul resultatet"
-            />
-          </Grid>
-        </Grid>
+        <Stack spacing={2}>
+          <>
+          <Typography>Stemmeinterval</Typography>
+          <Slider
+            disabled={content?.folder?.mode == "changes"}
+            value={voteCount}
+            onChange={handleChange}
+            valueLabelDisplay="off"
+            min={1}
+            marks={getMarks(optionsCount)}
+            max={optionsCount - 1}
+          />
+          </>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={hidden}
+                onChange={() => setHidden(!hidden)}
+                color="primary"
+              />
+            }
+            label="Skjul resultatet"
+          />
+        </Stack>
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="primary" onClick={handleAddPoll}>
