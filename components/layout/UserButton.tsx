@@ -34,7 +34,7 @@ export default function UserButton() {
 
   const handleLogin = (mode: "login" | "register") => () => {
     setAnchorEl(null);
-    router.push(`/${mode}`);
+    router.push(`/user/${mode}`);
   };
 
   const name = largeScreen

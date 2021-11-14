@@ -8,7 +8,7 @@ export default function Layout({ children }: { children?: any }) {
   const { pathname } = useRouter();
   const { signedIn } = useAuth();
 
-  if (["/login", "/register", "/screen"].includes(pathname))
+  if (["/user/login", "/user/register", "/user/reset", "/user/confirm", "/screen"].includes(pathname))
     return <SessionProvider>{signedIn != null && children}</SessionProvider>;
 
   return (
