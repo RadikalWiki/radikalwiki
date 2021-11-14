@@ -16,10 +16,4 @@ export default function Id() {
       <PollList id={id} />
     </>
   );
-
-  return (
-    <Suspense fallback={null}>
-      <ContentCard id={id} />
-    </Suspense>
-  );
 }

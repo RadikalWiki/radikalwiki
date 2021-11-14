@@ -37,7 +37,7 @@ function PollListRaw({ id }: { id: string }) {
     <HeaderCard title="Afstemningsresultater">
       <Divider />
       <List>
-        {polls?.map(({ id, votes_aggregate, createdAt }) => (
+        {polls?.map(({ id = 0, votes_aggregate, createdAt }) => (
           <Fragment key={id}>
             <ListItem button component={NextLink} href={`/poll/${id}`}>
               <Tooltip title="Antal stemmer">
