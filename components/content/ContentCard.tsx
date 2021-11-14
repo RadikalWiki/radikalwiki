@@ -12,7 +12,7 @@ export default function ContentCard({ id }: { id: string }) {
         <ContentHeader id={id} expand={expand} setExpand={setExpand} />
         <Divider />
         <Collapse mountOnEnter unmountOnExit in={expand}>
-          <ContentToolbar id={id} />
+          <ContentToolbar id={id} child={false} />
           <Content id={id} fontSize="100%" />
         </Collapse>
       </Card>

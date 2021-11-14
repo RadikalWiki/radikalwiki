@@ -30,18 +30,101 @@ import {
 } from "@mui/material";
 import { useQuery } from "gql";
 
+function ChildListElement({ id, name, authors, published, index, mode }: any) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <Fragment key={id}>
+      <ListItem button component={NextLink} href={`/content/${id}`}>
+        <ListItemAvatar>
+          {published ? (
+            <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+              {index + 1}
+            </Avatar>
+          ) : (
+            <Tooltip title="Ikke indsendt">
+              <Avatar>
+                <Lock color="primary" />
+              </Avatar>
+            </Tooltip>
+          )}
+        </ListItemAvatar>
+        <ListItemText
+          primary={name}
+          secondary={
+            mode == "changes"
+              ? authors()
+                  ?.map(
+                    ({ identity, name }: any) => identity?.displayName ?? name
+                  )
+                  .join(", ")
+              : null
+          }
+        />
+        <ListItemSecondaryAction>
+          <IconButton
+            onClick={() => {
+              setOpen(!open);
+            }}
+            size="large"
+          >
+            {open ? <ExpandLess /> : <ExpandMore />}
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+      <Divider />
+      <Collapse mountOnEnter unmountOnExit in={open}>
+        <Suspense fallback={null}>
+          <ContentToolbar id={id} child />
+          <Content id={id} fontSize="100%" />
+        </Suspense>
+        <Divider />
+      </Collapse>
+    </Fragment>
+  );
+}
+
 function ChildListRaw({ id }: { id: string }) {
   const query = useQuery();
   const content = query.contents_by_pk({ id });
   const children = content?.children();
 
-  const [open, setOpen] = useState<boolean[]>([]);
+  if (content?.parentId) return null;
 
-  let changeNumber = 0;
-  const getChangeNumber = () => {
-    changeNumber += 1;
-    return changeNumber;
-  };
+  return (
+    <List>
+      {children?.map(({ id = 0, name, authors, published }, index: number) =>
+        id != 0 ? (
+          <ChildListElement
+            key={id}
+            id={id}
+            name={name}
+            authors={authors}
+            published={published}
+            index={index}
+            mode={content?.folder?.mode}
+          />
+        ) : null
+      )}
+      {content?.children().map((id) => id).length == 0 && (
+        <ListItem button>
+          <ListItemText
+            primary={`Ingen ${
+              content?.folder?.mode == "changes"
+                ? "ændringsforslag"
+                : "kandidaturer"
+            }`}
+          />
+        </ListItem>
+      )}
+    </List>
+  );
+}
+
+function ChildListCard({ id }: { id: string }) {
+  const query = useQuery();
+  const content = query.contents_by_pk({ id });
+  const children = content?.children();
 
   if (content?.parentId) return null;
 
@@ -56,77 +139,17 @@ function ChildListRaw({ id }: { id: string }) {
         action={<AddChildButton contentId={id} />}
       />
       <Divider />
-      <List>
-        {children
-          ?.map(({ id = 0, name, authors, published }, index: number) =>
-            id != 0 ? (
-              <Fragment key={id}>
-                <ListItem button component={NextLink} href={`/content/${id}`}>
-                  <ListItemAvatar>
-                    {published ? (
-                      <Avatar
-                        sx={{ bgcolor: (theme) => theme.palette.primary.main }}
-                      >
-                        {getChangeNumber()}
-                      </Avatar>
-                    ) : (
-                      <Tooltip title="Ikke indsendt">
-                        <Avatar>
-                          <Lock color="primary" />
-                        </Avatar>
-                      </Tooltip>
-                    )}
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={name}
-                    secondary={
-                      content?.folder?.mode == "changes"
-                        ? authors()?.map(({ identity, name }) => identity?.displayName ?? name).join(", ")
-                        : null
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      onClick={() => {
-                        const copy = [...open];
-                        copy[index] = !open[index];
-                        setOpen(copy);
-                      }}
-                      size="large"
-                    >
-                      {open[index] ? <ExpandLess /> : <ExpandMore />}
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <Divider />
-                <Collapse mountOnEnter unmountOnExit in={open[index]}>
-                  <ContentToolbar id={id} />
-                  <Content id={id} fontSize="100%" />
-                  <Divider />
-                </Collapse>
-              </Fragment>
-            ) : null
-          )}
-        {content?.children().map((id) => id).length == 0 && (
-          <ListItem button>
-            <ListItemText
-              primary={`Ingen ${
-                content?.folder?.mode == "changes"
-                  ? "ændringsforslag"
-                  : "kandidaturer"
-              }`}
-            />
-          </ListItem>
-        )}
-      </List>
+      <Suspense fallback={null}>
+        <ChildListRaw id={id} />
+      </Suspense>
     </Card>
   );
 }
 
 export default function ChildList({ id }: { id: string }) {
   return (
-     <Suspense fallback={null}>
-       <ChildListRaw id={id} />
-     </Suspense>
+    <Suspense fallback={null}>
+      <ChildListCard id={id} />;
+    </Suspense>
   );
 }

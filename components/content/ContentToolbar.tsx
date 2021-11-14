@@ -13,7 +13,7 @@ import { useMutation, useQuery } from "gql";
 import { AutoButton, PollDialog } from "comps";
 import { useState } from "react";
 
-function ContentToolbar({ id }: { id: string }) {
+function ContentToolbar({ id, child }: { id: string, child: boolean }) {
   const [session] = useSession();
   const router = useRouter();
   const query = useQuery();
@@ -157,7 +157,7 @@ function ContentToolbar({ id }: { id: string }) {
         )}
       </CardActions>
       <Divider />
-      {!(content?.parent && content?.folder?.mode == "candidates") && (
+      {!child && (
         <PollDialog id={id} open={openPollDialog} setOpen={setOpenPollDialog} />
       )}
     </>
