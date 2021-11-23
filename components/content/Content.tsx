@@ -17,7 +17,7 @@ function Content({ id, fontSize }: { id: string; fontSize: string }) {
           <CardContent>
             <Box
               dangerouslySetInnerHTML={{ __html: content?.data }}
-              sx={{ fontSize }}
+              sx={{ fontSize, overflowX: "auto" }}
             />
           </CardContent>
         )}
