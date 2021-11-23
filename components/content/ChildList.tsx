@@ -167,7 +167,7 @@ function ChildListCard({ id }: { id: string }) {
 export default function ChildList({ id }: { id: string }) {
   return (
     <Suspense fallback={null}>
-      <ChildListCard id={id} />;
+      <ChildListCard id={id} />
     </Suspense>
   );
 }
