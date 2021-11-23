@@ -1,15 +1,17 @@
 import React from "react";
 import { Fab, Tooltip } from "@mui/material";
 import { Save } from "@mui/icons-material";
-import { useMutation, useQuery } from "gql";
+import { order_by, useMutation, useQuery } from "gql";
 import { useRouter } from "next/router";
 
 export default function FolderSortFab({
   folder,
   elements,
+  contentId,
 }: {
   folder: any;
   elements: any;
+  contentId?: string;
 }) {
   const router = useRouter();
   const query = useQuery();
@@ -21,8 +23,13 @@ export default function FolderSortFab({
       })?.id;
     },
     {
-      refetchQueries: [query.folders_by_pk({ id: folder.id })],
-      awaitRefetchQueries: true
+      refetchQueries: [
+        query.folders_by_pk({ id: folder.id }),
+        query
+          .contents_by_pk({ id: contentId })
+          ?.children({ order_by: [{ priority: order_by.asc }] }),
+      ],
+      awaitRefetchQueries: true,
     }
   );
   const [updateContent] = useMutation(
@@ -33,22 +40,33 @@ export default function FolderSortFab({
       })?.id;
     },
     {
-      refetchQueries: [query.folders_by_pk({ id: folder.id })],
-      awaitRefetchQueries: true
+      refetchQueries: [
+        query.folders_by_pk({ id: folder.id }),
+        query
+          .contents_by_pk({ id: contentId })
+          ?.children({ order_by: [{ priority: order_by.asc }] }),
+        ,
+      ],
+      awaitRefetchQueries: true,
     }
   );
 
   const handleClick = async () => {
     const proms = elements.map(async (e: any, index: number) => {
       const set = { priority: index };
+      console.log({ id: e.id, set });
       if (e.type === "folder") {
         return updateFolder({ args: { id: e.id, set } });
       } else if (e.type === "content") {
         return updateContent({ args: { id: e.id, set } });
       }
     });
-    await Promise.all(proms)
-    router.push(`/folder/${folder.id}`);
+    await Promise.all(proms);
+    if (contentId) {
+      router.push(`/content/${contentId}`);
+    } else {
+      router.push(`/folder/${folder.id}`);
+    }
   };
 
   return (

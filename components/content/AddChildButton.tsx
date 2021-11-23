@@ -37,9 +37,7 @@ export default function AddChildButton({ contentId }: { contentId: any }) {
   const name =
     content?.folder?.mode == "candidates"
       ? session?.user?.name
-      : content?.parent
-      ? `Ændringsforslag ${(children?.length ?? 0) + 1} til "${content?.name}"`
-      : `Ændringsforslag ${(children?.length ?? 0) + 1}`;
+      : "Ændringsforslag";
 
   const handleSubmit = async () => {
     const contentId = await addContents({

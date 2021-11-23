@@ -5,11 +5,18 @@ import {
   Content,
   ContentToolbar,
   PollList,
+  AutoButton,
 } from "comps";
 import clsx from "clsx";
 import { useRouter } from "next/router";
 import { useSession } from "hooks";
-import { Lock, ExpandMore, Subject, ExpandLess } from "@mui/icons-material";
+import {
+  Lock,
+  ExpandMore,
+  Subject,
+  ExpandLess,
+  LowPriority,
+} from "@mui/icons-material";
 import {
   Avatar,
   Badge,
@@ -27,8 +34,9 @@ import {
   ListItemText,
   Tooltip,
   Fade,
+  CardActions,
 } from "@mui/material";
-import { useQuery } from "gql";
+import { order_by, useQuery } from "gql";
 
 function ChildListElement({ id, name, authors, published, index, mode }: any) {
   const [open, setOpen] = useState(false);
@@ -87,9 +95,9 @@ function ChildListElement({ id, name, authors, published, index, mode }: any) {
 function ChildListRaw({ id }: { id: string }) {
   const query = useQuery();
   const content = query.contents_by_pk({ id });
-  const children = content?.children();
-
-  if (content?.parentId) return null;
+  const children = content?.children({
+    order_by: [{ priority: order_by.asc }],
+  });
 
   return (
     <List>
@@ -124,9 +132,8 @@ function ChildListRaw({ id }: { id: string }) {
 function ChildListCard({ id }: { id: string }) {
   const query = useQuery();
   const content = query.contents_by_pk({ id });
-  const children = content?.children();
-
-  if (content?.parentId) return null;
+  const router = useRouter();
+  const [session] = useSession();
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
@@ -136,7 +143,18 @@ function ChildListCard({ id }: { id: string }) {
             ? "Ændringsforslag"
             : "Kandidaturer"
         }
-        action={<AddChildButton contentId={id} />}
+        action={
+          <CardActions sx={{ p: 0 }}>
+            {session?.roles?.includes("admin") && (
+              <AutoButton
+                text="Sorter"
+                icon={<LowPriority />}
+                onClick={() => router.push(`/content/${id}/sort`)}
+              />
+            )}
+            <AddChildButton contentId={id} />
+          </CardActions>
+        }
       />
       <Divider />
       <Suspense fallback={null}>

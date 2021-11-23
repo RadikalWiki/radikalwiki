@@ -3,6 +3,7 @@ export { default as AddContentFab } from "./AddContentFab";
 export { default as AddContentsFab } from "./AddContentsFab";
 export { default as AuthorTextField } from "./AuthorTextField";
 export { default as ChildList } from "./ChildList";
+export { default as ChildListSort } from "./ChildListSort";
 export { default as Content } from "./Content";
 export { default as ContentAvatar } from "./ContentAvatar";
 export { default as ContentCard } from "./ContentCard";
