@@ -99,7 +99,7 @@ export default function ContentCard({
       >
         <Paper>
           <Slider
-            sx={{ width: 200, margin: 20 }}
+            sx={{ width: 200, margin: 3 }}
             min={50}
             max={250}
             defaultValue={200}
