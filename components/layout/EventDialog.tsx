@@ -69,7 +69,7 @@ export default function EventDialog({
             <ListItemText primary={name} />
           </ListItem>
         ))}
-        {session?.roles?.includes("admin") &&
+        {session?.user?.sysAdmin &&
           <ListItem key="add" button onClick={addEvent}>
             <ListItemAvatar>
               <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
