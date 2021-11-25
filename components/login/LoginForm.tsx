@@ -74,10 +74,15 @@ export default function LoginForm({
           () =>
             query.users_by_pk({ id: session?.user?.id })?.identity?.displayName
         )) ?? session?.user?.email;
+      const sysAdmin = (await resolved(
+          () =>
+            query.users_by_pk({ id: session?.user?.id })?.sysAdmin
+        )) ?? false;
       const user = {
         id: session?.user?.id as string,
         name: name as string,
         email: session?.user?.email as string,
+        sysAdmin 
       };
 
       const res = await fetch("/api/time");

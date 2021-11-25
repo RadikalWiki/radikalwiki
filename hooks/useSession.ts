@@ -6,7 +6,7 @@ export type Session = {
   path?: Path
   event?: { id: string; name: string; shortName: string, folderId: string };
   roles?: string[];
-  user?: { id: string; name: string; email: string };
+  user?: { id: string; name: string; email: string; sysAdmin?: boolean };
   timeDiff?: number;
 };
 type SessionSetter = (props: Session | null) => void;
