@@ -52,6 +52,7 @@ export default function EventDialog({
   };
 
   const addEvent = () => {
+    setOpen(false);
     router.push("/event/new")
   }
 
