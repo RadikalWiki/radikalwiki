@@ -10,8 +10,8 @@
     "@devexpress/dx-react-core": "3.0.0-beta.1",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
-    "@gqty/react": "^1.1.1",
-    "@gqty/subscriptions": "^1.0.2",
+    "@gqty/react": "^2.1.0",
+    "@gqty/subscriptions": "^2.0.0",
     "@mui/icons-material": "^5.0.0",
     "@mui/lab": "^5.0.0-alpha.48",
     "@mui/material": "^5.0.0",
@@ -51,7 +51,7 @@
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "devDependencies": {
-    "@gqty/cli": "^2.2.0",
+    "@gqty/cli": "^2.3.0",
     "@types/node": "^14.14.22",
     "@types/react-beautiful-dnd": "^13.1.1",
     "@types/uuid": "^8.3.0",
