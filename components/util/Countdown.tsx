@@ -22,14 +22,22 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
   const [session] = useSession();
   const [time, setTime] = useState(0);
   const [timeBox, setTimeBox] = useState(120);
-  const [setTimer] = useMutation((mutation, args: timers_set_input) => {
-    return mutation.update_timers({
-      where: { eventId: { _eq: session?.event?.id } },
-      _set: args,
-    })?.affected_rows;
-  });
   const subscription = useSubscription();
-  const timer = subscription.events_by_pk({ id: session?.event?.id })?.timer;
+  const event = subscription.events_by_pk({
+    id: session?.event?.id,
+  });
+  const timer = event?.speakerlist?.timer;
+  if (!timer) return;
+  const [setTimer] = useMutation((mutation, args: timers_set_input) => {
+    console.log(event)
+    console.log(event?.speakerlist)
+    console.log(timer?.id)
+    return mutation.update_timers_by_pk({
+      pk_columns: { id: timer?.id },
+      //where: { eventId: { _eq: session?.event?.id } },
+      _set: args,
+    })?.id;
+  });
 
   const handleTimerSet = (time: number) => {
     setTimer({

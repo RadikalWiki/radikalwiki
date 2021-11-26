@@ -11,7 +11,7 @@ import {
   InputLabel,
 } from "@mui/material";
 import { useSession } from "hooks";
-import { events, events_insert_input, folders_insert_input, query, resolved, useMutation, useQuery } from "gql";
+import { events, events_insert_input, folders_insert_input, query, resolved, speakerlists_insert_input, timers_insert_input, useMutation, useQuery } from "gql";
 import { DatePicker } from "@mui/lab";
 
 export default function EventForm() {
@@ -33,6 +33,12 @@ export default function EventForm() {
   const [addFolders] = useMutation((mutation, args: folders_insert_input) => {
     return mutation.insert_folders_one({ object: args })?.id;
   });
+  const [addSpeakerlist] = useMutation((mutation, args: speakerlists_insert_input) => {
+    return mutation.insert_speakerlists_one({ object: args })?.id;
+  });
+  const [addTimer] = useMutation((mutation, args: timers_insert_input) => {
+    return mutation.insert_timers_one({ object: args })?.id;
+  });
   const [updateEvent] = useMutation(
     (mutation, args: { id: string; set: any }) => {
       return mutation.update_events_by_pk({
@@ -52,10 +58,25 @@ export default function EventForm() {
       },
 
     });
+    const timerId = await addTimer({
+      args:
+      {
+        eventId: event.id,
+      },
+
+    });
+    const speakerlistId = await addSpeakerlist({
+      args:
+      {
+        eventId: event.id,
+        timerId
+      },
+
+    });
     await updateEvent({
       args: {
         id: event.id,
-        set: { folderId },
+        set: { folderId, speakerlistId },
       },
     });
     setSession({

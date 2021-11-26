@@ -12,6 +12,7 @@ import { auth } from "utils/nhost";
 import { NhostAuthProvider } from "@nhost/react-auth";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import daLocale from 'date-fns/locale/da';
 
 export default function App({
   Component,
@@ -39,7 +40,7 @@ export default function App({
 
       <NhostAuthProvider auth={auth}>
         <StyledEngineProvider injectFirst>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <LocalizationProvider dateAdapter={AdapterDateFns} locale={daLocale}>
             <ThemeProvider theme={theme}>
               <CssBaseline />
               <Layout>

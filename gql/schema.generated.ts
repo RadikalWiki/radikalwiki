@@ -1462,13 +1462,13 @@ export interface events_bool_exp {
   group?: Maybe<groups_bool_exp>;
   groupId?: Maybe<uuid_comparison_exp>;
   id?: Maybe<uuid_comparison_exp>;
-  lockSpeak?: Maybe<Boolean_comparison_exp>;
   name?: Maybe<String_comparison_exp>;
   poll?: Maybe<polls_bool_exp>;
   pollId?: Maybe<uuid_comparison_exp>;
   shortName?: Maybe<String_comparison_exp>;
-  timer?: Maybe<timers_bool_exp>;
-  timerId?: Maybe<uuid_comparison_exp>;
+  speakerlist?: Maybe<speakerlists_bool_exp>;
+  speakerlistId?: Maybe<uuid_comparison_exp>;
+  speakerlists?: Maybe<speakerlists_bool_exp>;
 }
 
 /** unique or primary key constraints on table "events" */
@@ -1488,13 +1488,13 @@ export interface events_insert_input {
   group?: Maybe<groups_obj_rel_insert_input>;
   groupId?: Maybe<Scalars["uuid"]>;
   id?: Maybe<Scalars["uuid"]>;
-  lockSpeak?: Maybe<Scalars["Boolean"]>;
   name?: Maybe<Scalars["String"]>;
   poll?: Maybe<polls_obj_rel_insert_input>;
   pollId?: Maybe<Scalars["uuid"]>;
   shortName?: Maybe<Scalars["String"]>;
-  timer?: Maybe<timers_obj_rel_insert_input>;
-  timerId?: Maybe<Scalars["uuid"]>;
+  speakerlist?: Maybe<speakerlists_obj_rel_insert_input>;
+  speakerlistId?: Maybe<Scalars["uuid"]>;
+  speakerlists?: Maybe<speakerlists_arr_rel_insert_input>;
 }
 
 /** order by max() on columns of table "events" */
@@ -1507,7 +1507,7 @@ export interface events_max_order_by {
   name?: Maybe<order_by>;
   pollId?: Maybe<order_by>;
   shortName?: Maybe<order_by>;
-  timerId?: Maybe<order_by>;
+  speakerlistId?: Maybe<order_by>;
 }
 
 /** order by min() on columns of table "events" */
@@ -1520,7 +1520,7 @@ export interface events_min_order_by {
   name?: Maybe<order_by>;
   pollId?: Maybe<order_by>;
   shortName?: Maybe<order_by>;
-  timerId?: Maybe<order_by>;
+  speakerlistId?: Maybe<order_by>;
 }
 
 /** input type for inserting object relation for remote table "events" */
@@ -1547,13 +1547,13 @@ export interface events_order_by {
   group?: Maybe<groups_order_by>;
   groupId?: Maybe<order_by>;
   id?: Maybe<order_by>;
-  lockSpeak?: Maybe<order_by>;
   name?: Maybe<order_by>;
   poll?: Maybe<polls_order_by>;
   pollId?: Maybe<order_by>;
   shortName?: Maybe<order_by>;
-  timer?: Maybe<timers_order_by>;
-  timerId?: Maybe<order_by>;
+  speakerlist?: Maybe<speakerlists_order_by>;
+  speakerlistId?: Maybe<order_by>;
+  speakerlists_aggregate?: Maybe<speakerlists_aggregate_order_by>;
 }
 
 /** primary key columns input for table: "events" */
@@ -1574,15 +1574,13 @@ export enum events_select_column {
   /** column name */
   id = "id",
   /** column name */
-  lockSpeak = "lockSpeak",
-  /** column name */
   name = "name",
   /** column name */
   pollId = "pollId",
   /** column name */
   shortName = "shortName",
   /** column name */
-  timerId = "timerId",
+  speakerlistId = "speakerlistId",
 }
 
 /** input type for updating data in table "events" */
@@ -1592,11 +1590,10 @@ export interface events_set_input {
   folderId?: Maybe<Scalars["uuid"]>;
   groupId?: Maybe<Scalars["uuid"]>;
   id?: Maybe<Scalars["uuid"]>;
-  lockSpeak?: Maybe<Scalars["Boolean"]>;
   name?: Maybe<Scalars["String"]>;
   pollId?: Maybe<Scalars["uuid"]>;
   shortName?: Maybe<Scalars["String"]>;
-  timerId?: Maybe<Scalars["uuid"]>;
+  speakerlistId?: Maybe<Scalars["uuid"]>;
 }
 
 /** update columns of table "events" */
@@ -1612,15 +1609,13 @@ export enum events_update_column {
   /** column name */
   id = "id",
   /** column name */
-  lockSpeak = "lockSpeak",
-  /** column name */
   name = "name",
   /** column name */
   pollId = "pollId",
   /** column name */
   shortName = "shortName",
   /** column name */
-  timerId = "timerId",
+  speakerlistId = "speakerlistId",
 }
 
 /** order by aggregate values of table "files" */
@@ -2710,6 +2705,135 @@ export enum roles_update_column {
   role = "role",
 }
 
+/** order by aggregate values of table "speakerlists" */
+export interface speakerlists_aggregate_order_by {
+  count?: Maybe<order_by>;
+  max?: Maybe<speakerlists_max_order_by>;
+  min?: Maybe<speakerlists_min_order_by>;
+}
+
+/** input type for inserting array relation for remote table "speakerlists" */
+export interface speakerlists_arr_rel_insert_input {
+  data: Array<speakerlists_insert_input>;
+  on_conflict?: Maybe<speakerlists_on_conflict>;
+}
+
+/** Boolean expression to filter rows from the table "speakerlists". All fields are combined with a logical 'AND'. */
+export interface speakerlists_bool_exp {
+  _and?: Maybe<Array<Maybe<speakerlists_bool_exp>>>;
+  _not?: Maybe<speakerlists_bool_exp>;
+  _or?: Maybe<Array<Maybe<speakerlists_bool_exp>>>;
+  event?: Maybe<events_bool_exp>;
+  eventId?: Maybe<uuid_comparison_exp>;
+  id?: Maybe<uuid_comparison_exp>;
+  locked?: Maybe<Boolean_comparison_exp>;
+  name?: Maybe<String_comparison_exp>;
+  speakers?: Maybe<speaks_bool_exp>;
+  timer?: Maybe<timers_bool_exp>;
+  timerId?: Maybe<uuid_comparison_exp>;
+}
+
+/** unique or primary key constraints on table "speakerlists" */
+export enum speakerlists_constraint {
+  /** unique or primary key constraint */
+  speakerlists_pkey = "speakerlists_pkey",
+}
+
+/** input type for inserting data into table "speakerlists" */
+export interface speakerlists_insert_input {
+  event?: Maybe<events_obj_rel_insert_input>;
+  eventId?: Maybe<Scalars["uuid"]>;
+  id?: Maybe<Scalars["uuid"]>;
+  locked?: Maybe<Scalars["Boolean"]>;
+  name?: Maybe<Scalars["String"]>;
+  speakers?: Maybe<speaks_arr_rel_insert_input>;
+  timer?: Maybe<timers_obj_rel_insert_input>;
+  timerId?: Maybe<Scalars["uuid"]>;
+}
+
+/** order by max() on columns of table "speakerlists" */
+export interface speakerlists_max_order_by {
+  eventId?: Maybe<order_by>;
+  id?: Maybe<order_by>;
+  name?: Maybe<order_by>;
+  timerId?: Maybe<order_by>;
+}
+
+/** order by min() on columns of table "speakerlists" */
+export interface speakerlists_min_order_by {
+  eventId?: Maybe<order_by>;
+  id?: Maybe<order_by>;
+  name?: Maybe<order_by>;
+  timerId?: Maybe<order_by>;
+}
+
+/** input type for inserting object relation for remote table "speakerlists" */
+export interface speakerlists_obj_rel_insert_input {
+  data: speakerlists_insert_input;
+  on_conflict?: Maybe<speakerlists_on_conflict>;
+}
+
+/** on conflict condition type for table "speakerlists" */
+export interface speakerlists_on_conflict {
+  constraint: speakerlists_constraint;
+  update_columns: Array<speakerlists_update_column>;
+  where?: Maybe<speakerlists_bool_exp>;
+}
+
+/** ordering options when selecting data from "speakerlists" */
+export interface speakerlists_order_by {
+  event?: Maybe<events_order_by>;
+  eventId?: Maybe<order_by>;
+  id?: Maybe<order_by>;
+  locked?: Maybe<order_by>;
+  name?: Maybe<order_by>;
+  speakers_aggregate?: Maybe<speaks_aggregate_order_by>;
+  timer?: Maybe<timers_order_by>;
+  timerId?: Maybe<order_by>;
+}
+
+/** primary key columns input for table: "speakerlists" */
+export interface speakerlists_pk_columns_input {
+  id: Scalars["uuid"];
+}
+
+/** select columns of table "speakerlists" */
+export enum speakerlists_select_column {
+  /** column name */
+  eventId = "eventId",
+  /** column name */
+  id = "id",
+  /** column name */
+  locked = "locked",
+  /** column name */
+  name = "name",
+  /** column name */
+  timerId = "timerId",
+}
+
+/** input type for updating data in table "speakerlists" */
+export interface speakerlists_set_input {
+  eventId?: Maybe<Scalars["uuid"]>;
+  id?: Maybe<Scalars["uuid"]>;
+  locked?: Maybe<Scalars["Boolean"]>;
+  name?: Maybe<Scalars["String"]>;
+  timerId?: Maybe<Scalars["uuid"]>;
+}
+
+/** update columns of table "speakerlists" */
+export enum speakerlists_update_column {
+  /** column name */
+  eventId = "eventId",
+  /** column name */
+  id = "id",
+  /** column name */
+  locked = "locked",
+  /** column name */
+  name = "name",
+  /** column name */
+  timerId = "timerId",
+}
+
 /** order by aggregate values of table "speaks" */
 export interface speaks_aggregate_order_by {
   avg?: Maybe<speaks_avg_order_by>;
@@ -2733,6 +2857,7 @@ export interface speaks_arr_rel_insert_input {
 
 /** order by avg() on columns of table "speaks" */
 export interface speaks_avg_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
@@ -2742,8 +2867,9 @@ export interface speaks_bool_exp {
   _not?: Maybe<speaks_bool_exp>;
   _or?: Maybe<Array<Maybe<speaks_bool_exp>>>;
   createdAt?: Maybe<timestamptz_comparison_exp>;
-  eventId?: Maybe<uuid_comparison_exp>;
   id?: Maybe<uuid_comparison_exp>;
+  priority?: Maybe<Int_comparison_exp>;
+  speakerlistId?: Maybe<uuid_comparison_exp>;
   type?: Maybe<Int_comparison_exp>;
   user?: Maybe<users_bool_exp>;
   userId?: Maybe<uuid_comparison_exp>;
@@ -2757,14 +2883,16 @@ export enum speaks_constraint {
 
 /** input type for incrementing integer column in table "speaks" */
 export interface speaks_inc_input {
+  priority?: Maybe<Scalars["Int"]>;
   type?: Maybe<Scalars["Int"]>;
 }
 
 /** input type for inserting data into table "speaks" */
 export interface speaks_insert_input {
   createdAt?: Maybe<Scalars["timestamptz"]>;
-  eventId?: Maybe<Scalars["uuid"]>;
   id?: Maybe<Scalars["uuid"]>;
+  priority?: Maybe<Scalars["Int"]>;
+  speakerlistId?: Maybe<Scalars["uuid"]>;
   type?: Maybe<Scalars["Int"]>;
   user?: Maybe<users_obj_rel_insert_input>;
   userId?: Maybe<Scalars["uuid"]>;
@@ -2773,8 +2901,9 @@ export interface speaks_insert_input {
 /** order by max() on columns of table "speaks" */
 export interface speaks_max_order_by {
   createdAt?: Maybe<order_by>;
-  eventId?: Maybe<order_by>;
   id?: Maybe<order_by>;
+  priority?: Maybe<order_by>;
+  speakerlistId?: Maybe<order_by>;
   type?: Maybe<order_by>;
   userId?: Maybe<order_by>;
 }
@@ -2782,8 +2911,9 @@ export interface speaks_max_order_by {
 /** order by min() on columns of table "speaks" */
 export interface speaks_min_order_by {
   createdAt?: Maybe<order_by>;
-  eventId?: Maybe<order_by>;
   id?: Maybe<order_by>;
+  priority?: Maybe<order_by>;
+  speakerlistId?: Maybe<order_by>;
   type?: Maybe<order_by>;
   userId?: Maybe<order_by>;
 }
@@ -2804,8 +2934,9 @@ export interface speaks_on_conflict {
 /** ordering options when selecting data from "speaks" */
 export interface speaks_order_by {
   createdAt?: Maybe<order_by>;
-  eventId?: Maybe<order_by>;
   id?: Maybe<order_by>;
+  priority?: Maybe<order_by>;
+  speakerlistId?: Maybe<order_by>;
   type?: Maybe<order_by>;
   user?: Maybe<users_order_by>;
   userId?: Maybe<order_by>;
@@ -2821,9 +2952,11 @@ export enum speaks_select_column {
   /** column name */
   createdAt = "createdAt",
   /** column name */
-  eventId = "eventId",
-  /** column name */
   id = "id",
+  /** column name */
+  priority = "priority",
+  /** column name */
+  speakerlistId = "speakerlistId",
   /** column name */
   type = "type",
   /** column name */
@@ -2833,29 +2966,34 @@ export enum speaks_select_column {
 /** input type for updating data in table "speaks" */
 export interface speaks_set_input {
   createdAt?: Maybe<Scalars["timestamptz"]>;
-  eventId?: Maybe<Scalars["uuid"]>;
   id?: Maybe<Scalars["uuid"]>;
+  priority?: Maybe<Scalars["Int"]>;
+  speakerlistId?: Maybe<Scalars["uuid"]>;
   type?: Maybe<Scalars["Int"]>;
   userId?: Maybe<Scalars["uuid"]>;
 }
 
 /** order by stddev() on columns of table "speaks" */
 export interface speaks_stddev_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
 /** order by stddev_pop() on columns of table "speaks" */
 export interface speaks_stddev_pop_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
 /** order by stddev_samp() on columns of table "speaks" */
 export interface speaks_stddev_samp_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
 /** order by sum() on columns of table "speaks" */
 export interface speaks_sum_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
@@ -2864,9 +3002,11 @@ export enum speaks_update_column {
   /** column name */
   createdAt = "createdAt",
   /** column name */
-  eventId = "eventId",
-  /** column name */
   id = "id",
+  /** column name */
+  priority = "priority",
+  /** column name */
+  speakerlistId = "speakerlistId",
   /** column name */
   type = "type",
   /** column name */
@@ -2875,16 +3015,19 @@ export enum speaks_update_column {
 
 /** order by var_pop() on columns of table "speaks" */
 export interface speaks_var_pop_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
 /** order by var_samp() on columns of table "speaks" */
 export interface speaks_var_samp_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
 /** order by variance() on columns of table "speaks" */
 export interface speaks_variance_order_by {
+  priority?: Maybe<order_by>;
   type?: Maybe<order_by>;
 }
 
@@ -3393,6 +3536,9 @@ export const scalarsEnumsHash: import("gqty").ScalarsEnumsHash = {
   roles_constraint: true,
   roles_select_column: true,
   roles_update_column: true,
+  speakerlists_constraint: true,
+  speakerlists_select_column: true,
+  speakerlists_update_column: true,
   speaks_constraint: true,
   speaks_select_column: true,
   speaks_update_column: true,
@@ -4869,13 +5015,32 @@ export const generatedSchema = {
     group: { __type: "groups" },
     groupId: { __type: "uuid!" },
     id: { __type: "uuid!" },
-    lockSpeak: { __type: "Boolean!" },
     name: { __type: "String!" },
     poll: { __type: "polls" },
     pollId: { __type: "uuid" },
     shortName: { __type: "String!" },
-    timer: { __type: "timers" },
-    timerId: { __type: "uuid" },
+    speakerlist: { __type: "speakerlists" },
+    speakerlistId: { __type: "uuid" },
+    speakerlists: {
+      __type: "[speakerlists!]!",
+      __args: {
+        distinct_on: "[speakerlists_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speakerlists_order_by!]",
+        where: "speakerlists_bool_exp",
+      },
+    },
+    speakerlists_aggregate: {
+      __type: "speakerlists_aggregate!",
+      __args: {
+        distinct_on: "[speakerlists_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speakerlists_order_by!]",
+        where: "speakerlists_bool_exp",
+      },
+    },
   },
   events_aggregate: {
     __typename: { __type: "String!" },
@@ -4913,13 +5078,13 @@ export const generatedSchema = {
     group: { __type: "groups_bool_exp" },
     groupId: { __type: "uuid_comparison_exp" },
     id: { __type: "uuid_comparison_exp" },
-    lockSpeak: { __type: "Boolean_comparison_exp" },
     name: { __type: "String_comparison_exp" },
     poll: { __type: "polls_bool_exp" },
     pollId: { __type: "uuid_comparison_exp" },
     shortName: { __type: "String_comparison_exp" },
-    timer: { __type: "timers_bool_exp" },
-    timerId: { __type: "uuid_comparison_exp" },
+    speakerlist: { __type: "speakerlists_bool_exp" },
+    speakerlistId: { __type: "uuid_comparison_exp" },
+    speakerlists: { __type: "speakerlists_bool_exp" },
   },
   events_insert_input: {
     admissions: { __type: "admissions_arr_rel_insert_input" },
@@ -4931,13 +5096,13 @@ export const generatedSchema = {
     group: { __type: "groups_obj_rel_insert_input" },
     groupId: { __type: "uuid" },
     id: { __type: "uuid" },
-    lockSpeak: { __type: "Boolean" },
     name: { __type: "String" },
     poll: { __type: "polls_obj_rel_insert_input" },
     pollId: { __type: "uuid" },
     shortName: { __type: "String" },
-    timer: { __type: "timers_obj_rel_insert_input" },
-    timerId: { __type: "uuid" },
+    speakerlist: { __type: "speakerlists_obj_rel_insert_input" },
+    speakerlistId: { __type: "uuid" },
+    speakerlists: { __type: "speakerlists_arr_rel_insert_input" },
   },
   events_max_fields: {
     __typename: { __type: "String!" },
@@ -4949,7 +5114,7 @@ export const generatedSchema = {
     name: { __type: "String" },
     pollId: { __type: "uuid" },
     shortName: { __type: "String" },
-    timerId: { __type: "uuid" },
+    speakerlistId: { __type: "uuid" },
   },
   events_max_order_by: {
     contentId: { __type: "order_by" },
@@ -4960,7 +5125,7 @@ export const generatedSchema = {
     name: { __type: "order_by" },
     pollId: { __type: "order_by" },
     shortName: { __type: "order_by" },
-    timerId: { __type: "order_by" },
+    speakerlistId: { __type: "order_by" },
   },
   events_min_fields: {
     __typename: { __type: "String!" },
@@ -4972,7 +5137,7 @@ export const generatedSchema = {
     name: { __type: "String" },
     pollId: { __type: "uuid" },
     shortName: { __type: "String" },
-    timerId: { __type: "uuid" },
+    speakerlistId: { __type: "uuid" },
   },
   events_min_order_by: {
     contentId: { __type: "order_by" },
@@ -4983,7 +5148,7 @@ export const generatedSchema = {
     name: { __type: "order_by" },
     pollId: { __type: "order_by" },
     shortName: { __type: "order_by" },
-    timerId: { __type: "order_by" },
+    speakerlistId: { __type: "order_by" },
   },
   events_mutation_response: {
     __typename: { __type: "String!" },
@@ -5009,13 +5174,13 @@ export const generatedSchema = {
     group: { __type: "groups_order_by" },
     groupId: { __type: "order_by" },
     id: { __type: "order_by" },
-    lockSpeak: { __type: "order_by" },
     name: { __type: "order_by" },
     poll: { __type: "polls_order_by" },
     pollId: { __type: "order_by" },
     shortName: { __type: "order_by" },
-    timer: { __type: "timers_order_by" },
-    timerId: { __type: "order_by" },
+    speakerlist: { __type: "speakerlists_order_by" },
+    speakerlistId: { __type: "order_by" },
+    speakerlists_aggregate: { __type: "speakerlists_aggregate_order_by" },
   },
   events_pk_columns_input: { id: { __type: "uuid!" } },
   events_set_input: {
@@ -5024,11 +5189,10 @@ export const generatedSchema = {
     folderId: { __type: "uuid" },
     groupId: { __type: "uuid" },
     id: { __type: "uuid" },
-    lockSpeak: { __type: "Boolean" },
     name: { __type: "String" },
     pollId: { __type: "uuid" },
     shortName: { __type: "String" },
-    timerId: { __type: "uuid" },
+    speakerlistId: { __type: "uuid" },
   },
   files: {
     __typename: { __type: "String!" },
@@ -5936,6 +6100,14 @@ export const generatedSchema = {
       __args: { where: "roles_bool_exp!" },
     },
     delete_roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
+    delete_speakerlists: {
+      __type: "speakerlists_mutation_response",
+      __args: { where: "speakerlists_bool_exp!" },
+    },
+    delete_speakerlists_by_pk: {
+      __type: "speakerlists",
+      __args: { id: "uuid!" },
+    },
     delete_speaks: {
       __type: "speaks_mutation_response",
       __args: { where: "speaks_bool_exp!" },
@@ -6192,6 +6364,20 @@ export const generatedSchema = {
       __args: {
         object: "roles_insert_input!",
         on_conflict: "roles_on_conflict",
+      },
+    },
+    insert_speakerlists: {
+      __type: "speakerlists_mutation_response",
+      __args: {
+        objects: "[speakerlists_insert_input!]!",
+        on_conflict: "speakerlists_on_conflict",
+      },
+    },
+    insert_speakerlists_one: {
+      __type: "speakerlists",
+      __args: {
+        object: "speakerlists_insert_input!",
+        on_conflict: "speakerlists_on_conflict",
       },
     },
     insert_speaks: {
@@ -6475,6 +6661,20 @@ export const generatedSchema = {
       __args: {
         _set: "roles_set_input",
         pk_columns: "roles_pk_columns_input!",
+      },
+    },
+    update_speakerlists: {
+      __type: "speakerlists_mutation_response",
+      __args: {
+        _set: "speakerlists_set_input",
+        where: "speakerlists_bool_exp!",
+      },
+    },
+    update_speakerlists_by_pk: {
+      __type: "speakerlists",
+      __args: {
+        _set: "speakerlists_set_input",
+        pk_columns: "speakerlists_pk_columns_input!",
       },
     },
     update_speaks: {
@@ -7142,6 +7342,27 @@ export const generatedSchema = {
       },
     },
     roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
+    speakerlists: {
+      __type: "[speakerlists!]!",
+      __args: {
+        distinct_on: "[speakerlists_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speakerlists_order_by!]",
+        where: "speakerlists_bool_exp",
+      },
+    },
+    speakerlists_aggregate: {
+      __type: "speakerlists_aggregate!",
+      __args: {
+        distinct_on: "[speakerlists_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speakerlists_order_by!]",
+        where: "speakerlists_bool_exp",
+      },
+    },
+    speakerlists_by_pk: { __type: "speakerlists", __args: { id: "uuid!" } },
     speaks: {
       __type: "[speaks!]!",
       __args: {
@@ -7320,11 +7541,146 @@ export const generatedSchema = {
     membershipId: { __type: "uuid" },
     role: { __type: "String" },
   },
+  speakerlists: {
+    __typename: { __type: "String!" },
+    event: { __type: "events" },
+    eventId: { __type: "uuid!" },
+    id: { __type: "uuid!" },
+    locked: { __type: "Boolean!" },
+    name: { __type: "String!" },
+    speakers: {
+      __type: "[speaks!]!",
+      __args: {
+        distinct_on: "[speaks_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speaks_order_by!]",
+        where: "speaks_bool_exp",
+      },
+    },
+    speakers_aggregate: {
+      __type: "speaks_aggregate!",
+      __args: {
+        distinct_on: "[speaks_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speaks_order_by!]",
+        where: "speaks_bool_exp",
+      },
+    },
+    timer: { __type: "timers" },
+    timerId: { __type: "uuid!" },
+  },
+  speakerlists_aggregate: {
+    __typename: { __type: "String!" },
+    aggregate: { __type: "speakerlists_aggregate_fields" },
+    nodes: { __type: "[speakerlists!]!" },
+  },
+  speakerlists_aggregate_fields: {
+    __typename: { __type: "String!" },
+    count: {
+      __type: "Int",
+      __args: { columns: "[speakerlists_select_column!]", distinct: "Boolean" },
+    },
+    max: { __type: "speakerlists_max_fields" },
+    min: { __type: "speakerlists_min_fields" },
+  },
+  speakerlists_aggregate_order_by: {
+    count: { __type: "order_by" },
+    max: { __type: "speakerlists_max_order_by" },
+    min: { __type: "speakerlists_min_order_by" },
+  },
+  speakerlists_arr_rel_insert_input: {
+    data: { __type: "[speakerlists_insert_input!]!" },
+    on_conflict: { __type: "speakerlists_on_conflict" },
+  },
+  speakerlists_bool_exp: {
+    _and: { __type: "[speakerlists_bool_exp]" },
+    _not: { __type: "speakerlists_bool_exp" },
+    _or: { __type: "[speakerlists_bool_exp]" },
+    event: { __type: "events_bool_exp" },
+    eventId: { __type: "uuid_comparison_exp" },
+    id: { __type: "uuid_comparison_exp" },
+    locked: { __type: "Boolean_comparison_exp" },
+    name: { __type: "String_comparison_exp" },
+    speakers: { __type: "speaks_bool_exp" },
+    timer: { __type: "timers_bool_exp" },
+    timerId: { __type: "uuid_comparison_exp" },
+  },
+  speakerlists_insert_input: {
+    event: { __type: "events_obj_rel_insert_input" },
+    eventId: { __type: "uuid" },
+    id: { __type: "uuid" },
+    locked: { __type: "Boolean" },
+    name: { __type: "String" },
+    speakers: { __type: "speaks_arr_rel_insert_input" },
+    timer: { __type: "timers_obj_rel_insert_input" },
+    timerId: { __type: "uuid" },
+  },
+  speakerlists_max_fields: {
+    __typename: { __type: "String!" },
+    eventId: { __type: "uuid" },
+    id: { __type: "uuid" },
+    name: { __type: "String" },
+    timerId: { __type: "uuid" },
+  },
+  speakerlists_max_order_by: {
+    eventId: { __type: "order_by" },
+    id: { __type: "order_by" },
+    name: { __type: "order_by" },
+    timerId: { __type: "order_by" },
+  },
+  speakerlists_min_fields: {
+    __typename: { __type: "String!" },
+    eventId: { __type: "uuid" },
+    id: { __type: "uuid" },
+    name: { __type: "String" },
+    timerId: { __type: "uuid" },
+  },
+  speakerlists_min_order_by: {
+    eventId: { __type: "order_by" },
+    id: { __type: "order_by" },
+    name: { __type: "order_by" },
+    timerId: { __type: "order_by" },
+  },
+  speakerlists_mutation_response: {
+    __typename: { __type: "String!" },
+    affected_rows: { __type: "Int!" },
+    returning: { __type: "[speakerlists!]!" },
+  },
+  speakerlists_obj_rel_insert_input: {
+    data: { __type: "speakerlists_insert_input!" },
+    on_conflict: { __type: "speakerlists_on_conflict" },
+  },
+  speakerlists_on_conflict: {
+    constraint: { __type: "speakerlists_constraint!" },
+    update_columns: { __type: "[speakerlists_update_column!]!" },
+    where: { __type: "speakerlists_bool_exp" },
+  },
+  speakerlists_order_by: {
+    event: { __type: "events_order_by" },
+    eventId: { __type: "order_by" },
+    id: { __type: "order_by" },
+    locked: { __type: "order_by" },
+    name: { __type: "order_by" },
+    speakers_aggregate: { __type: "speaks_aggregate_order_by" },
+    timer: { __type: "timers_order_by" },
+    timerId: { __type: "order_by" },
+  },
+  speakerlists_pk_columns_input: { id: { __type: "uuid!" } },
+  speakerlists_set_input: {
+    eventId: { __type: "uuid" },
+    id: { __type: "uuid" },
+    locked: { __type: "Boolean" },
+    name: { __type: "String" },
+    timerId: { __type: "uuid" },
+  },
   speaks: {
     __typename: { __type: "String!" },
     createdAt: { __type: "timestamptz!" },
-    eventId: { __type: "uuid!" },
     id: { __type: "uuid!" },
+    priority: { __type: "Int!" },
+    speakerlistId: { __type: "uuid" },
     type: { __type: "Int!" },
     user: { __type: "users" },
     userId: { __type: "uuid!" },
@@ -7370,25 +7726,31 @@ export const generatedSchema = {
   },
   speaks_avg_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_avg_order_by: { type: { __type: "order_by" } },
+  speaks_avg_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_bool_exp: {
     _and: { __type: "[speaks_bool_exp]" },
     _not: { __type: "speaks_bool_exp" },
     _or: { __type: "[speaks_bool_exp]" },
     createdAt: { __type: "timestamptz_comparison_exp" },
-    eventId: { __type: "uuid_comparison_exp" },
     id: { __type: "uuid_comparison_exp" },
+    priority: { __type: "Int_comparison_exp" },
+    speakerlistId: { __type: "uuid_comparison_exp" },
     type: { __type: "Int_comparison_exp" },
     user: { __type: "users_bool_exp" },
     userId: { __type: "uuid_comparison_exp" },
   },
-  speaks_inc_input: { type: { __type: "Int" } },
+  speaks_inc_input: { priority: { __type: "Int" }, type: { __type: "Int" } },
   speaks_insert_input: {
     createdAt: { __type: "timestamptz" },
-    eventId: { __type: "uuid" },
     id: { __type: "uuid" },
+    priority: { __type: "Int" },
+    speakerlistId: { __type: "uuid" },
     type: { __type: "Int" },
     user: { __type: "users_obj_rel_insert_input" },
     userId: { __type: "uuid" },
@@ -7396,30 +7758,34 @@ export const generatedSchema = {
   speaks_max_fields: {
     __typename: { __type: "String!" },
     createdAt: { __type: "timestamptz" },
-    eventId: { __type: "uuid" },
     id: { __type: "uuid" },
+    priority: { __type: "Int" },
+    speakerlistId: { __type: "uuid" },
     type: { __type: "Int" },
     userId: { __type: "uuid" },
   },
   speaks_max_order_by: {
     createdAt: { __type: "order_by" },
-    eventId: { __type: "order_by" },
     id: { __type: "order_by" },
+    priority: { __type: "order_by" },
+    speakerlistId: { __type: "order_by" },
     type: { __type: "order_by" },
     userId: { __type: "order_by" },
   },
   speaks_min_fields: {
     __typename: { __type: "String!" },
     createdAt: { __type: "timestamptz" },
-    eventId: { __type: "uuid" },
     id: { __type: "uuid" },
+    priority: { __type: "Int" },
+    speakerlistId: { __type: "uuid" },
     type: { __type: "Int" },
     userId: { __type: "uuid" },
   },
   speaks_min_order_by: {
     createdAt: { __type: "order_by" },
-    eventId: { __type: "order_by" },
     id: { __type: "order_by" },
+    priority: { __type: "order_by" },
+    speakerlistId: { __type: "order_by" },
     type: { __type: "order_by" },
     userId: { __type: "order_by" },
   },
@@ -7439,8 +7805,9 @@ export const generatedSchema = {
   },
   speaks_order_by: {
     createdAt: { __type: "order_by" },
-    eventId: { __type: "order_by" },
     id: { __type: "order_by" },
+    priority: { __type: "order_by" },
+    speakerlistId: { __type: "order_by" },
     type: { __type: "order_by" },
     user: { __type: "users_order_by" },
     userId: { __type: "order_by" },
@@ -7448,46 +7815,75 @@ export const generatedSchema = {
   speaks_pk_columns_input: { id: { __type: "uuid!" } },
   speaks_set_input: {
     createdAt: { __type: "timestamptz" },
-    eventId: { __type: "uuid" },
     id: { __type: "uuid" },
+    priority: { __type: "Int" },
+    speakerlistId: { __type: "uuid" },
     type: { __type: "Int" },
     userId: { __type: "uuid" },
   },
   speaks_stddev_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_stddev_order_by: { type: { __type: "order_by" } },
+  speaks_stddev_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_stddev_pop_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_stddev_pop_order_by: { type: { __type: "order_by" } },
+  speaks_stddev_pop_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_stddev_samp_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_stddev_samp_order_by: { type: { __type: "order_by" } },
+  speaks_stddev_samp_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_sum_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Int" },
     type: { __type: "Int" },
   },
-  speaks_sum_order_by: { type: { __type: "order_by" } },
+  speaks_sum_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_var_pop_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_var_pop_order_by: { type: { __type: "order_by" } },
+  speaks_var_pop_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_var_samp_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_var_samp_order_by: { type: { __type: "order_by" } },
+  speaks_var_samp_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   speaks_variance_fields: {
     __typename: { __type: "String!" },
+    priority: { __type: "Float" },
     type: { __type: "Float" },
   },
-  speaks_variance_order_by: { type: { __type: "order_by" } },
+  speaks_variance_order_by: {
+    priority: { __type: "order_by" },
+    type: { __type: "order_by" },
+  },
   subscription: {
     __typename: { __type: "String!" },
     admissions: {
@@ -7860,6 +8256,27 @@ export const generatedSchema = {
       },
     },
     roles_by_pk: { __type: "roles", __args: { id: "uuid!" } },
+    speakerlists: {
+      __type: "[speakerlists!]!",
+      __args: {
+        distinct_on: "[speakerlists_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speakerlists_order_by!]",
+        where: "speakerlists_bool_exp",
+      },
+    },
+    speakerlists_aggregate: {
+      __type: "speakerlists_aggregate!",
+      __args: {
+        distinct_on: "[speakerlists_select_column!]",
+        limit: "Int",
+        offset: "Int",
+        order_by: "[speakerlists_order_by!]",
+        where: "speakerlists_bool_exp",
+      },
+    },
+    speakerlists_by_pk: { __type: "speakerlists", __args: { id: "uuid!" } },
     speaks: {
       __type: "[speaks!]!",
       __args: {
@@ -9675,7 +10092,6 @@ export interface events {
   group?: Maybe<groups>;
   groupId: ScalarsEnums["uuid"];
   id: ScalarsEnums["uuid"];
-  lockSpeak: ScalarsEnums["Boolean"];
   name: ScalarsEnums["String"];
   /**
    * An object relationship
@@ -9686,8 +10102,58 @@ export interface events {
   /**
    * An object relationship
    */
-  timer?: Maybe<timers>;
-  timerId?: Maybe<ScalarsEnums["uuid"]>;
+  speakerlist?: Maybe<speakerlists>;
+  speakerlistId?: Maybe<ScalarsEnums["uuid"]>;
+  /**
+   * An array relationship
+   */
+  speakerlists: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<speakerlists_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<speakerlists_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<speakerlists_bool_exp>;
+  }) => Array<speakerlists>;
+  /**
+   * An aggregated array relationship
+   */
+  speakerlists_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<speakerlists_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<speakerlists_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<speakerlists_bool_exp>;
+  }) => speakerlists_aggregate;
 }
 
 /**
@@ -9725,7 +10191,7 @@ export interface events_max_fields {
   name?: Maybe<ScalarsEnums["String"]>;
   pollId?: Maybe<ScalarsEnums["uuid"]>;
   shortName?: Maybe<ScalarsEnums["String"]>;
-  timerId?: Maybe<ScalarsEnums["uuid"]>;
+  speakerlistId?: Maybe<ScalarsEnums["uuid"]>;
 }
 
 /**
@@ -9741,7 +10207,7 @@ export interface events_min_fields {
   name?: Maybe<ScalarsEnums["String"]>;
   pollId?: Maybe<ScalarsEnums["uuid"]>;
   shortName?: Maybe<ScalarsEnums["String"]>;
-  timerId?: Maybe<ScalarsEnums["uuid"]>;
+  speakerlistId?: Maybe<ScalarsEnums["uuid"]>;
 }
 
 /**
@@ -10613,6 +11079,12 @@ export interface Mutation {
     where: roles_bool_exp;
   }) => Maybe<roles_mutation_response>;
   delete_roles_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<roles>;
+  delete_speakerlists: (args: {
+    where: speakerlists_bool_exp;
+  }) => Maybe<speakerlists_mutation_response>;
+  delete_speakerlists_by_pk: (args: {
+    id: Scalars["uuid"];
+  }) => Maybe<speakerlists>;
   delete_speaks: (args: {
     where: speaks_bool_exp;
   }) => Maybe<speaks_mutation_response>;
@@ -10765,6 +11237,14 @@ export interface Mutation {
     object: roles_insert_input;
     on_conflict?: Maybe<roles_on_conflict>;
   }) => Maybe<roles>;
+  insert_speakerlists: (args: {
+    objects: Array<speakerlists_insert_input>;
+    on_conflict?: Maybe<speakerlists_on_conflict>;
+  }) => Maybe<speakerlists_mutation_response>;
+  insert_speakerlists_one: (args: {
+    object: speakerlists_insert_input;
+    on_conflict?: Maybe<speakerlists_on_conflict>;
+  }) => Maybe<speakerlists>;
   insert_speaks: (args: {
     objects: Array<speaks_insert_input>;
     on_conflict?: Maybe<speaks_on_conflict>;
@@ -10949,6 +11429,14 @@ export interface Mutation {
     _set?: Maybe<roles_set_input>;
     pk_columns: roles_pk_columns_input;
   }) => Maybe<roles>;
+  update_speakerlists: (args: {
+    _set?: Maybe<speakerlists_set_input>;
+    where: speakerlists_bool_exp;
+  }) => Maybe<speakerlists_mutation_response>;
+  update_speakerlists_by_pk: (args: {
+    _set?: Maybe<speakerlists_set_input>;
+    pk_columns: speakerlists_pk_columns_input;
+  }) => Maybe<speakerlists>;
   update_speaks: (args: {
     _inc?: Maybe<speaks_inc_input>;
     _set?: Maybe<speaks_set_input>;
@@ -11465,6 +11953,21 @@ export interface Query {
     where?: Maybe<roles_bool_exp>;
   }) => roles_aggregate;
   roles_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<roles>;
+  speakerlists: (args?: {
+    distinct_on?: Maybe<Array<speakerlists_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<speakerlists_order_by>>;
+    where?: Maybe<speakerlists_bool_exp>;
+  }) => Array<speakerlists>;
+  speakerlists_aggregate: (args?: {
+    distinct_on?: Maybe<Array<speakerlists_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<speakerlists_order_by>>;
+    where?: Maybe<speakerlists_bool_exp>;
+  }) => speakerlists_aggregate;
+  speakerlists_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<speakerlists>;
   speaks: (args?: {
     distinct_on?: Maybe<Array<speaks_select_column>>;
     limit?: Maybe<Scalars["Int"]>;
@@ -11599,13 +12102,143 @@ export interface roles_mutation_response {
 }
 
 /**
+ * columns and relationships of "speakerlists"
+ */
+export interface speakerlists {
+  __typename?: "speakerlists";
+  /**
+   * An object relationship
+   */
+  event?: Maybe<events>;
+  eventId: ScalarsEnums["uuid"];
+  id: ScalarsEnums["uuid"];
+  locked: ScalarsEnums["Boolean"];
+  name: ScalarsEnums["String"];
+  /**
+   * An array relationship
+   */
+  speakers: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<speaks_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<speaks_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<speaks_bool_exp>;
+  }) => Array<speaks>;
+  /**
+   * An aggregated array relationship
+   */
+  speakers_aggregate: (args?: {
+    /**
+     * distinct select on columns
+     */
+    distinct_on?: Maybe<Array<speaks_select_column>>;
+    /**
+     * limit the number of rows returned
+     */
+    limit?: Maybe<Scalars["Int"]>;
+    /**
+     * skip the first n rows. Use only with order_by
+     */
+    offset?: Maybe<Scalars["Int"]>;
+    /**
+     * sort the rows by one or more columns
+     */
+    order_by?: Maybe<Array<speaks_order_by>>;
+    /**
+     * filter the rows returned
+     */
+    where?: Maybe<speaks_bool_exp>;
+  }) => speaks_aggregate;
+  /**
+   * An object relationship
+   */
+  timer?: Maybe<timers>;
+  timerId: ScalarsEnums["uuid"];
+}
+
+/**
+ * aggregated selection of "speakerlists"
+ */
+export interface speakerlists_aggregate {
+  __typename?: "speakerlists_aggregate";
+  aggregate?: Maybe<speakerlists_aggregate_fields>;
+  nodes: Array<speakerlists>;
+}
+
+/**
+ * aggregate fields of "speakerlists"
+ */
+export interface speakerlists_aggregate_fields {
+  __typename?: "speakerlists_aggregate_fields";
+  count: (args?: {
+    columns?: Maybe<Array<speakerlists_select_column>>;
+    distinct?: Maybe<Scalars["Boolean"]>;
+  }) => Maybe<ScalarsEnums["Int"]>;
+  max?: Maybe<speakerlists_max_fields>;
+  min?: Maybe<speakerlists_min_fields>;
+}
+
+/**
+ * aggregate max on columns
+ */
+export interface speakerlists_max_fields {
+  __typename?: "speakerlists_max_fields";
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  timerId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * aggregate min on columns
+ */
+export interface speakerlists_min_fields {
+  __typename?: "speakerlists_min_fields";
+  eventId?: Maybe<ScalarsEnums["uuid"]>;
+  id?: Maybe<ScalarsEnums["uuid"]>;
+  name?: Maybe<ScalarsEnums["String"]>;
+  timerId?: Maybe<ScalarsEnums["uuid"]>;
+}
+
+/**
+ * response of any mutation on the table "speakerlists"
+ */
+export interface speakerlists_mutation_response {
+  __typename?: "speakerlists_mutation_response";
+  /**
+   * number of affected rows by the mutation
+   */
+  affected_rows: ScalarsEnums["Int"];
+  /**
+   * data of the affected rows by the mutation
+   */
+  returning: Array<speakerlists>;
+}
+
+/**
  * columns and relationships of "speaks"
  */
 export interface speaks {
   __typename?: "speaks";
   createdAt: ScalarsEnums["timestamptz"];
-  eventId: ScalarsEnums["uuid"];
   id: ScalarsEnums["uuid"];
+  priority: ScalarsEnums["Int"];
+  speakerlistId?: Maybe<ScalarsEnums["uuid"]>;
   type: ScalarsEnums["Int"];
   /**
    * An object relationship
@@ -11649,6 +12282,7 @@ export interface speaks_aggregate_fields {
  */
 export interface speaks_avg_fields {
   __typename?: "speaks_avg_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -11658,8 +12292,9 @@ export interface speaks_avg_fields {
 export interface speaks_max_fields {
   __typename?: "speaks_max_fields";
   createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
   id?: Maybe<ScalarsEnums["uuid"]>;
+  priority?: Maybe<ScalarsEnums["Int"]>;
+  speakerlistId?: Maybe<ScalarsEnums["uuid"]>;
   type?: Maybe<ScalarsEnums["Int"]>;
   userId?: Maybe<ScalarsEnums["uuid"]>;
 }
@@ -11670,8 +12305,9 @@ export interface speaks_max_fields {
 export interface speaks_min_fields {
   __typename?: "speaks_min_fields";
   createdAt?: Maybe<ScalarsEnums["timestamptz"]>;
-  eventId?: Maybe<ScalarsEnums["uuid"]>;
   id?: Maybe<ScalarsEnums["uuid"]>;
+  priority?: Maybe<ScalarsEnums["Int"]>;
+  speakerlistId?: Maybe<ScalarsEnums["uuid"]>;
   type?: Maybe<ScalarsEnums["Int"]>;
   userId?: Maybe<ScalarsEnums["uuid"]>;
 }
@@ -11696,6 +12332,7 @@ export interface speaks_mutation_response {
  */
 export interface speaks_stddev_fields {
   __typename?: "speaks_stddev_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -11704,6 +12341,7 @@ export interface speaks_stddev_fields {
  */
 export interface speaks_stddev_pop_fields {
   __typename?: "speaks_stddev_pop_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -11712,6 +12350,7 @@ export interface speaks_stddev_pop_fields {
  */
 export interface speaks_stddev_samp_fields {
   __typename?: "speaks_stddev_samp_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -11720,6 +12359,7 @@ export interface speaks_stddev_samp_fields {
  */
 export interface speaks_sum_fields {
   __typename?: "speaks_sum_fields";
+  priority?: Maybe<ScalarsEnums["Int"]>;
   type?: Maybe<ScalarsEnums["Int"]>;
 }
 
@@ -11728,6 +12368,7 @@ export interface speaks_sum_fields {
  */
 export interface speaks_var_pop_fields {
   __typename?: "speaks_var_pop_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -11736,6 +12377,7 @@ export interface speaks_var_pop_fields {
  */
 export interface speaks_var_samp_fields {
   __typename?: "speaks_var_samp_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -11744,6 +12386,7 @@ export interface speaks_var_samp_fields {
  */
 export interface speaks_variance_fields {
   __typename?: "speaks_variance_fields";
+  priority?: Maybe<ScalarsEnums["Float"]>;
   type?: Maybe<ScalarsEnums["Float"]>;
 }
 
@@ -12015,6 +12658,21 @@ export interface Subscription {
     where?: Maybe<roles_bool_exp>;
   }) => roles_aggregate;
   roles_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<roles>;
+  speakerlists: (args?: {
+    distinct_on?: Maybe<Array<speakerlists_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<speakerlists_order_by>>;
+    where?: Maybe<speakerlists_bool_exp>;
+  }) => Array<speakerlists>;
+  speakerlists_aggregate: (args?: {
+    distinct_on?: Maybe<Array<speakerlists_select_column>>;
+    limit?: Maybe<Scalars["Int"]>;
+    offset?: Maybe<Scalars["Int"]>;
+    order_by?: Maybe<Array<speakerlists_order_by>>;
+    where?: Maybe<speakerlists_bool_exp>;
+  }) => speakerlists_aggregate;
+  speakerlists_by_pk: (args: { id: Scalars["uuid"] }) => Maybe<speakerlists>;
   speaks: (args?: {
     distinct_on?: Maybe<Array<speaks_select_column>>;
     limit?: Maybe<Scalars["Int"]>;
@@ -12505,6 +13163,12 @@ export interface SchemaObjectTypes {
   roles_max_fields: roles_max_fields;
   roles_min_fields: roles_min_fields;
   roles_mutation_response: roles_mutation_response;
+  speakerlists: speakerlists;
+  speakerlists_aggregate: speakerlists_aggregate;
+  speakerlists_aggregate_fields: speakerlists_aggregate_fields;
+  speakerlists_max_fields: speakerlists_max_fields;
+  speakerlists_min_fields: speakerlists_min_fields;
+  speakerlists_mutation_response: speakerlists_mutation_response;
   speaks: speaks;
   speaks_aggregate: speaks_aggregate;
   speaks_aggregate_fields: speaks_aggregate_fields;
@@ -12678,6 +13342,12 @@ export type SchemaObjectTypesNames =
   | "roles_max_fields"
   | "roles_min_fields"
   | "roles_mutation_response"
+  | "speakerlists"
+  | "speakerlists_aggregate"
+  | "speakerlists_aggregate_fields"
+  | "speakerlists_max_fields"
+  | "speakerlists_min_fields"
+  | "speakerlists_mutation_response"
   | "speaks"
   | "speaks_aggregate"
   | "speaks_aggregate_fields"
@@ -12796,6 +13466,9 @@ export interface ScalarsEnums extends MakeNullable<Scalars> {
   roles_constraint: roles_constraint | undefined;
   roles_select_column: roles_select_column | undefined;
   roles_update_column: roles_update_column | undefined;
+  speakerlists_constraint: speakerlists_constraint | undefined;
+  speakerlists_select_column: speakerlists_select_column | undefined;
+  speakerlists_update_column: speakerlists_update_column | undefined;
   speaks_constraint: speaks_constraint | undefined;
   speaks_select_column: speaks_select_column | undefined;
   speaks_update_column: speaks_update_column | undefined;
