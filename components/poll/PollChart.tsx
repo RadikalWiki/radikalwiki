@@ -31,11 +31,11 @@ const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
   for (let i = 0; i < poll.options?.length; i++) {
     res[i] = 0;
   }
-  for (const vote of poll.votes()) {
-    for (const index of vote.value) {
+  poll.votes()?.forEach((vote) => {
+    vote.value?.forEach((index: number) => {
       res[index] += 1;
-    }
-  }
+    });
+  });
 
   return { options: poll.options, data: [res] };
 };
@@ -50,11 +50,12 @@ export default function PollChart({
   const [session] = useSession();
   const subscription = useSubscription();
   const poll = subscription.polls_by_pk({ id: pollId });
+  console.log(poll);
   const admin = session?.roles?.includes("admin") ?? false;
   const chartData = parseData(poll, screen, admin) || [];
-  const voteCount =
-    poll?.content?.folder?.event?.admissions_aggregate().aggregate?.count();
-
+  const voteCount = poll?.content?.folder?.event
+    ?.admissions_aggregate()
+    .aggregate?.count();
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
@@ -96,8 +97,6 @@ export default function PollChart({
         <Legend position="bottom" />
         <Stack />
       </Chart>
-
-  
     </Card>
   );
 }
