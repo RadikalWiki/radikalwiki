@@ -31,11 +31,12 @@ const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
   for (let i = 0; i < poll.options?.length; i++) {
     res[i] = 0;
   }
-  poll.votes()?.forEach((vote) => {
+  for (const vote of poll.votes()) {
+    if (!vote.value) return
     vote.value?.forEach((index: number) => {
       res[index] += 1;
-    });
-  });
+    })
+  }
 
   return { options: poll.options, data: [res] };
 };
