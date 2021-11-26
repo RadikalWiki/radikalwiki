@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { PollAdmin, PollChart, PollBreadcrumbs } from "components";
+import { PollAdmin, PollChart, FolderBreadcrumbs } from "components";
 import { useRouter } from "next/router";
 
 export default function Id() {
@@ -10,7 +10,7 @@ export default function Id() {
 
   return (
     <Suspense fallback={null}>
-      <PollBreadcrumbs id={id} />
+      <FolderBreadcrumbs />
       <PollAdmin pollId={id} />
       <PollChart pollId={id} />
     </Suspense>
