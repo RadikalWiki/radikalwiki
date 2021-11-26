@@ -4,7 +4,7 @@ import { useQuery } from "gql";
 import { useRouter } from "next/router";
 import { useSession } from "hooks";
 
-export default function Vote() {
+function RawVote() {
   const router = useRouter();
   const [session] = useSession();
   const query = useQuery();
@@ -15,11 +15,15 @@ export default function Vote() {
     if (res.canVote === false && poll?.active) {
       router.push(`/poll/${res.pollId}`);
     }
-  }, [query, router, session?.event?.id]);
+  }, [query, router, session?.event?.id, poll]);
 
+  return <VoteForm />;
+}
+
+export default function Vote() {
   return (
     <Suspense fallback={null}>
-      <VoteForm />
+      <RawVote />
     </Suspense>
   );
 }
