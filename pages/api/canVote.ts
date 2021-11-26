@@ -1,4 +1,4 @@
-import { query } from "gql";
+import { query, resolved } from "gql";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
 import { createSecretKey } from "crypto";
@@ -33,11 +33,13 @@ export default async function handler(
 
   // Check if voted
   const eventId: string = req.body.input.eventId;
-  const event = query.events_by_pk({ id: eventId });
-  const admissions = event
-    ?.admissions({ where: { identity: { user: { id: { _eq: userId } } } } })
-    ?.map(({ voting, checkedIn }) => ({ voting, checkedIn }));
-  const votes = event?.poll?.votes({ where: { userId: { _eq: userId } } });
+  const event = await resolved(() => query.events_by_pk({ id: eventId }));
+  const admissions = await resolved(() =>
+    event
+      ?.admissions({ where: { identity: { user: { id: { _eq: userId } } } } })
+      ?.map(({ voting, checkedIn }) => ({ voting, checkedIn }))
+  );
+  const votes = await resolved(() => event?.poll?.votes({ where: { userId: { _eq: userId } } }));
 
   if (!votes || !admissions) return;
 
