@@ -32,7 +32,7 @@ const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
     res[i] = 0;
   }
   for (const vote of poll.votes()) {
-    if (!vote.value) return
+    if (!vote.value) return { options: [], data: [] };
     vote.value?.forEach((index: number) => {
       res[index] += 1;
     })
