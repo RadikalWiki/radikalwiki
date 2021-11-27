@@ -135,34 +135,34 @@ function ChildListCard({ id }: { id: string }) {
   const router = useRouter();
   const [session] = useSession();
 
+  if (content?.parentId && content?.folder?.mode == "candidates") return null;
+
   return (
-    (!content?.parentId || content?.folder?.mode != "candidates") && (
-      <Card elevation={3} sx={{ m: 1 }}>
-        <CardHeader
-          title={
-            content?.folder?.mode == "changes"
-              ? "Ændringsforslag"
-              : "Kandidaturer"
-          }
-          action={
-            <CardActions sx={{ p: 0 }}>
-              {session?.roles?.includes("admin") && (
-                <AutoButton
-                  text="Sorter"
-                  icon={<LowPriority />}
-                  onClick={() => router.push(`/content/${id}/sort`)}
-                />
-              )}
-              <AddChildButton contentId={id} />
-            </CardActions>
-          }
-        />
-        <Divider />
-        <Suspense fallback={null}>
-          <ChildListRaw id={id} />
-        </Suspense>
-      </Card>
-    )
+    <Card elevation={3} sx={{ m: 1 }}>
+      <CardHeader
+        title={
+          content?.folder?.mode == "changes"
+            ? "Ændringsforslag"
+            : "Kandidaturer"
+        }
+        action={
+          <CardActions sx={{ p: 0 }}>
+            {session?.roles?.includes("admin") && (
+              <AutoButton
+                text="Sorter"
+                icon={<LowPriority />}
+                onClick={() => router.push(`/content/${id}/sort`)}
+              />
+            )}
+            <AddChildButton contentId={id} />
+          </CardActions>
+        }
+      />
+      <Divider />
+      <Suspense fallback={null}>
+        <ChildListRaw id={id} />
+      </Suspense>
+    </Card>
   );
 }
 
