@@ -2,8 +2,9 @@ import { query, polls, mutation, resolved } from "gql";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
 import { createSecretKey } from "crypto";
+import content from "pages/content";
 
-const validateVote = (vote: Set<number>, poll: polls): Boolean => {
+const validateVote = (vote: Set<number>, poll: any): Boolean => {
   // Handle blank
   const [first] = vote;
   const options = [...Array(poll?.options?.length).keys()];
@@ -61,7 +62,15 @@ export default async function handler(
   //  id: pollId,
   //  userId,
   //});
-  const poll = await resolved(() => query.polls_by_pk({ id: pollId }));
+  const poll = await resolved(() => {
+    const poll = query.polls_by_pk({ id: pollId })!
+    return {
+      active: poll?.active,
+      content: poll?.content,
+      votes: poll?.votes({ where: { userId: { _eq: userId } } }),
+      options: poll?.options
+    }
+  });
   if (!poll) {
     return res
       .status(401)
