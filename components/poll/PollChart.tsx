@@ -67,7 +67,7 @@ export default function PollChart({
     .aggregate?.count();
 
   useEffect(() => {
-    if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }, { name: pollSub?.content?.name ?? "", url: `/poll/${pollId}`, icon: "poll" }] : [] });
+    if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }, { name: pollSub?.content?.name ?? "", url: `/content/${pollSub?.content?.id}` }, { name: "Afstemning", url: `/poll/${pollId}`, icon: "poll" }] : [] });
   }, [folder]);
 
   if (poll == null) return null;
