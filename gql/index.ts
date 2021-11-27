@@ -53,6 +53,8 @@ const subscriptionsClient =
           url.protocol = url.protocol.replace("http", "ws");
           return url.href;
         },
+        lazy: true,
+        reconnect: true,
       })
     : undefined;
 
@@ -67,21 +69,10 @@ export const client = createClient<
   subscriptionsClient,
 });
 
-const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
+const { query, mutation, mutate, subscription, resolved, refetch, track } =
+  client;
 
-export {
-  query,
-  mutation,
-  resolved,
-}
+export { query, mutation, resolved };
 
 export const {
   graphql,
@@ -100,22 +91,23 @@ export const {
   defaults: {
     suspense: true,
     mutationSuspense: true,
+    transactionQuerySuspense: true,
     staleWhileRevalidate: true,
   },
 });
 
 subscriptionsClient?.setConnectionParams(
-    {
-      headers: process.env.HASURA_GRAPHQL_ADMIN_SECRET
-        ? {
-            "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
-          }
-        : {
-            authorization: `Bearer ${auth.getJWTToken()}`,
-          },
-    },
-    true
-  );
+  {
+    headers: process.env.HASURA_GRAPHQL_ADMIN_SECRET
+      ? {
+          "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+        }
+      : {
+          authorization: `Bearer ${auth.getJWTToken()}`,
+        },
+  },
+  true
+);
 
 auth.onTokenChanged(() => {
   subscriptionsClient?.setConnectionParams(
