@@ -16,26 +16,26 @@ import {
 import { Card, CardHeader, Typography, Box } from "@mui/material";
 import { useSession } from "hooks";
 import { polls, Maybe, useSubscription } from "gql";
+import { Poll } from "@mui/icons-material";
 
-const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
-  if (!poll || !poll.options) {
-    return { options: [], data: [] };
+const parseData = (poll: any, screen: boolean, admin: boolean) => {
+  if (!poll) {
+    return { options: undefined, data: undefined };
   }
   if (poll.active || (poll.hidden && (screen || !admin))) {
     return {
       options: ["Antal Stemmer"],
-      data: [{ 0: poll.votes_aggregate().aggregate?.count }],
+      data: [{ arg: "none", 0: [poll.count] }],
     };
   }
   let res: Record<string, any> = { arg: "none" };
   for (let i = 0; i < poll.options?.length; i++) {
     res[i] = 0;
   }
-  for (const vote of poll.votes()) {
-    if (!vote.value) return { options: [], data: [] };
+  for (const vote of poll.votes) {
     vote.value?.forEach((index: number) => {
       res[index] += 1;
-    })
+    });
   }
 
   return { options: poll.options, data: [res] };
@@ -49,13 +49,24 @@ export default function PollChart({
   screen?: boolean;
 }) {
   const [session] = useSession();
-  const subscription = useSubscription();
-  const poll = subscription.polls_by_pk({ id: pollId });
   const admin = session?.roles?.includes("admin") ?? false;
-  const chartData = parseData(poll, screen, admin) || [];
-  const voteCount = poll?.content?.folder?.event
+  const subscription = useSubscription();
+  const pollSub = subscription.polls_by_pk({ id: pollId });
+  const poll = pollSub
+    ? {
+        active: pollSub.active,
+        hidden: pollSub.hidden,
+        options: pollSub.options,
+        count: pollSub.votes_aggregate().aggregate?.count(),
+        votes: pollSub.votes().map(({ value }) => ({ value })),
+      }
+    : null;
+  const voteCount = pollSub?.content?.folder?.event
     ?.admissions_aggregate()
     .aggregate?.count();
+
+  if (poll == null) return null;
+  const chartData = parseData(poll, screen, admin) || [];
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
@@ -64,7 +75,7 @@ export default function PollChart({
           bgcolor: (theme) => theme.palette.secondary.main,
           color: (theme) => theme.palette.secondary.contrastText,
         }}
-        title={poll?.content?.name}
+        title={pollSub?.content?.name}
       />
       {chartData?.options?.map((opt: any, index: number) => (
         <Box
