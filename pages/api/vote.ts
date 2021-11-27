@@ -116,7 +116,7 @@ export default async function handler(
           pollId,
           value: parsedValue,
         },
-      })
+      })?.id
     );
   } catch (err) {
     return res.status(400).send({ message: JSON.stringify(err) });
