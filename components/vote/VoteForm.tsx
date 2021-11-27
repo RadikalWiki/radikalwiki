@@ -30,8 +30,11 @@ export default function VoteForm() {
 
   const [vote, setVote] = useState<any[]>([]);
   useEffect(() => {
-    setVote(new Array(poll?.options?.length).fill(false));
-  }, [poll]);
+    if (poll?.options?.length !== vote?.length)
+      setVote(new Array(poll?.options?.length).fill(false));
+  }, [poll?.options]);
+
+  //console.log(vote)
 
   const validate = (vote: any, submit: boolean) => {
     const selected = vote.filter((o: any) => o).length;
@@ -75,9 +78,9 @@ export default function VoteForm() {
 
     await addVotes({
       args: {
-          pollId: poll?.id,
-          value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
-        },
+        pollId: poll?.id,
+        value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
+      },
     });
     if (poll?.content?.folder?.mode == "candidates") {
       router.push(`/content/${poll?.content?.id}`);
@@ -116,7 +119,7 @@ export default function VoteForm() {
     );
   }
 
-  const Control = poll?.maxVote != 1 ? Checkbox : Radio;
+  const Control = poll?.maxVote == 1 && poll?.minVote == 1 ? Radio : Checkbox;
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
