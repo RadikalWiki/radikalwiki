@@ -33,8 +33,8 @@ export default function AddAdmissionsFab({ eventId }: { eventId?: string }) {
       <Fab
         sx={{
           position: "fixed",
-          bottom: 9,
-          right: 3,
+          bottom: t =>  t.spacing(9),
+          right: t => t.spacing(3),
         }}
         variant="extended"
         color="primary"

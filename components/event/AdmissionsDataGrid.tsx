@@ -1,5 +1,13 @@
-import { useQuery, useMutation, mutation, admissions_update_column, admissions_set_input } from "gql";
+import {
+  useQuery,
+  useMutation,
+  mutation,
+  admissions_update_column,
+  admissions_set_input,
+  order_by,
+} from "gql";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { Box } from "@mui/system";
 
 const columns: any[] = [
   { field: "displayName", headerName: "Navn", width: 200 },
@@ -23,9 +31,15 @@ const columns: any[] = [
 export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
   const query = useQuery();
   const event = query.events_by_pk({ id: eventId });
-  const [admissionUpdate] = useMutation((mutation, { id, set }: any) => {
-    mutation.update_admissions_by_pk({ pk_columns: id, _set: set } )
-  })
+  const [admissionUpdate] = useMutation(
+    (mutation, { id, set }: any) => {
+      return mutation.update_admissions_by_pk({ pk_columns: { id }, _set: set })
+        ?.id;
+    },
+    {
+      refetchQueries: [event?.admissions({ order_by: [{  identity: { displayName: order_by.asc }  }] })],
+    }
+  );
 
   const handleCellEditCommit = async ({
     id,
@@ -43,7 +57,7 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
   };
 
   const rows = event
-    ?.admissions()
+    ?.admissions({ order_by: [{  identity: { displayName: order_by.asc }  }] })
     .map(({ id, identity, voting, checkedIn }) => ({
       id,
       email: identity?.email,
@@ -52,17 +66,19 @@ export default function AdmissionsDataGrid({ eventId }: { eventId: string }) {
       checkedIn,
     }));
 
-  if (!rows) return null;
+  if (rows == undefined || rows.length == 0 || !rows[0].id) return null;
 
   return (
-    <DataGrid
-      autoHeight
-      columns={columns}
-      rows={rows}
-      components={{
-        Toolbar: GridToolbar,
-      }}
-      onCellEditCommit={handleCellEditCommit}
-    />
+    <Box sx={{ m: 1 }}>
+      <DataGrid
+        autoHeight
+        columns={columns}
+        rows={rows}
+        components={{
+          Toolbar: GridToolbar,
+        }}
+        onCellEditCommit={handleCellEditCommit}
+      />
+    </Box>
   );
 }

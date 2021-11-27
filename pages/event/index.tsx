@@ -1,4 +1,4 @@
-import React, { Fragment, ReactNode, useState } from "react";
+import React, { Fragment, ReactNode, Suspense, useState } from "react";
 import { Link as NextLink } from "comps";
 import {
   Breadcrumbs,
@@ -16,34 +16,9 @@ import { Autocomplete, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { useQuery } from "gql";
 
-export default function Index() {
-  const [state, setState] = useState("");
-  const router = useRouter();
+function IndexRaw() {
   const query = useQuery();
-
   const events = query.events().map(({ id, name }) => ({ id, name })) || [];
-  const onChange = (_: any, v: any) => {
-    const filter = events.filter(({ name }) =>
-      v.toLowerCase().includes(name?.toLowerCase())
-    );
-    if (filter.length == 1) {
-      router.push(`/event/${filter[0].id}`);
-    }
-    setState(v);
-  };
-
-  const renderInput = (params: any): ReactNode => {
-    return (
-      <Box ref={params.InputProps.ref}>
-        <TextField
-          label="Søg"
-          sx={{ width: 200, height: 60 }}
-          type="text"
-          {...params.inputProps}
-        />
-      </Box>
-    );
-  };
 
   return (
     <>
@@ -58,33 +33,28 @@ export default function Index() {
             <Event />
           </Tooltip>
         </Link>
-        <Autocomplete
-          freeSolo
-          onChange={onChange}
-          options={events}
-          renderInput={renderInput}
-        />
       </Breadcrumbs>
       <Card elevation={3} sx={{ m: 1 }}>
         <List sx={{ m: 0 }}>
-          {events?.map(
-            (event: { name: any; id: any }) =>
-              (!state ||
-                event.name.toLowerCase().includes(state.toLowerCase())) && (
-                <Fragment key={event.id}>
-                  <Divider />
-                  <ListItem
-                    button
-                    component={NextLink}
-                    href={`/event/${event.id}`}
-                  >
-                    <ListItemText primary={event.name} />
-                  </ListItem>
-                </Fragment>
-              )
-          )}
+          {events?.map(({ id = 0, name }) => (
+            <Fragment key={id}>
+              <Divider />
+              <ListItem button component={NextLink} href={`/event/${id}/admin`}>
+                <ListItemText primary={name} />
+              </ListItem>
+            </Fragment>
+          ))}
+          <Divider />
         </List>
       </Card>
     </>
+  );
+}
+
+export default function Index() {
+  return (
+    <Suspense fallback={null}>
+      <IndexRaw />
+    </Suspense>
   );
 }

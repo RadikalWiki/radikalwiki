@@ -1,11 +1,11 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Link as NextLink } from "comps";
 import { Breadcrumbs, Link, Typography, Tooltip } from "@mui/material";
 import { Event } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useQuery } from "gql";
 
-export default function Index() {
+function IndexRaw() {
   const router = useRouter();
   const { id } = router.query;
   const query = useQuery();
@@ -30,4 +30,10 @@ export default function Index() {
       </Link>
     </Breadcrumbs>
   );
+}
+
+export default function Index() {
+	return <Suspense fallback={null}>
+		<IndexRaw />
+	</Suspense>
 }

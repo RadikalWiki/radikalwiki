@@ -54,7 +54,6 @@ export default function FolderSortFab({
   const handleClick = async () => {
     const proms = elements.map(async (e: any, index: number) => {
       const set = { priority: index };
-      console.log({ id: e.id, set });
       if (e.type === "folder") {
         return updateFolder({ args: { id: e.id, set } });
       } else if (e.type === "content") {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import {
   Link as NextLink,
   AddAdmissionsFab,
@@ -15,9 +15,9 @@ import {
 } from "@mui/material";
 import { Event, SupervisorAccount } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useQuery, useMutation, admissions_insert_input } from "gql";
+import { useQuery, useMutation, admissions_insert_input, resolved } from "gql";
 
-export default function Index() {
+function IndexRaw() {
   const router = useRouter();
   const { id } = router.query;
   const query = useQuery();
@@ -33,15 +33,18 @@ export default function Index() {
   );
 
   const handleAddAdmissions = async () => {
-    const admissions = users.map((user) => ({
+    const admissions = await resolved(() => users.map((user) => ({
       eventId: id,
       email: user.identity.email,
-    }));
+    })));
     await addAdmissions({
       args: admissions,
     });
     setUsers([]);
   };
+
+
+  if (!id) return null;
 
   return (
     <>
@@ -72,7 +75,7 @@ export default function Index() {
           </Tooltip>
         </Link>
       </Breadcrumbs>
-      <Grid style={{ margin: 2 }} container spacing={2}>
+      <Grid style={{ margin: 1 }} container spacing={2}>
         <Grid item xs={6}>
           <AdmissionsTextField value={users} onChange={setUsers} />
         </Grid>
@@ -90,4 +93,10 @@ export default function Index() {
       <AddAdmissionsFab eventId={id as string} />
     </>
   );
+}
+
+export default function Index() {
+	return <Suspense fallback={null}>
+		<IndexRaw />
+	</Suspense>
 }

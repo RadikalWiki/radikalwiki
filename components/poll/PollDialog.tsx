@@ -33,7 +33,6 @@ export default function PollDialog({
   const [voteCount, setVoteCount] = React.useState<number[]>([1, 1]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    console.log(newValue);
     setVoteCount(newValue as number[]);
   };
 

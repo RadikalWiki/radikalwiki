@@ -34,7 +34,6 @@ export default function VoteForm() {
       setVote(new Array(poll?.options?.length).fill(false));
   }, [poll?.options]);
 
-  //console.log(vote)
 
   const validate = (vote: any, submit: boolean) => {
     const selected = vote.filter((o: any) => o).length;

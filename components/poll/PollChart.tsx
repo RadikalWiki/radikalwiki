@@ -51,7 +51,6 @@ export default function PollChart({
   const [session] = useSession();
   const subscription = useSubscription();
   const poll = subscription.polls_by_pk({ id: pollId });
-  console.log(poll);
   const admin = session?.roles?.includes("admin") ?? false;
   const chartData = parseData(poll, screen, admin) || [];
   const voteCount = poll?.content?.folder?.event

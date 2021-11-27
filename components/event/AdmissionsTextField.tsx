@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
-import { Autocomplete } from '@mui/material';
-import { useQuery } from "gql";
+import { Autocomplete } from "@mui/material";
+import { resolved, query, order_by } from "gql";
 
 const capitalize = (sentence: string) =>
   sentence.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
@@ -13,14 +13,23 @@ export default function AdmissionsTextField({
   value: any;
   onChange: any;
 }) {
-  const query = useQuery();
   const [options, setOptions] = useState<any[]>([]);
   const [inputValue, setInputValue] = React.useState("");
 
   useEffect(() => {
     const fetch = async () => {
       const like = `%${inputValue}%`;
-      const identities = query.identities({ limit: 10, where: { displayName: { _ilike: like } }});
+      const identities = await resolved(() =>
+        query
+          .identities({
+            limit: 10,
+            where: {
+              displayName: { _ilike: like },
+            },
+            order_by: [{ displayName: order_by.asc }],
+          })
+          .map(({ displayName, email }) => ({ displayName, email }))
+      );
       let newOptions: any[] = [];
 
       if (value) {
@@ -28,18 +37,9 @@ export default function AdmissionsTextField({
       }
 
       if (identities) {
-        newOptions = [
-          ...identities.map((identity: any) => ({ identity })),
-          ...newOptions,
-        ];
+        newOptions = [...identities, ...newOptions];
       }
 
-      newOptions = [
-        ...newOptions,
-        {
-          name: capitalize(inputValue),
-        },
-      ];
       setOptions(newOptions);
     };
     fetch();
@@ -51,7 +51,7 @@ export default function AdmissionsTextField({
       color="primary"
       options={options}
       getOptionLabel={(option) =>
-        option?.identity?.displayName ?? option.name ?? ""
+        option?.displayName ?? option.name ?? ""
       }
       defaultValue={options}
       value={value}
