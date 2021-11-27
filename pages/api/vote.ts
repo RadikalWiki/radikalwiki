@@ -72,7 +72,7 @@ export default async function handler(
     return {
       active: poll?.active,
       content: poll?.content,
-      votes: poll?.votes({ where: { userId: { _eq: userId } } }),
+      votes: poll?.votes({ where: { userId: { _eq: userId } } }).map(({ id }) => ({ id })),
       options: poll?.options,
       minVote: poll?.minVote,
       maxVote: poll?.maxVote
