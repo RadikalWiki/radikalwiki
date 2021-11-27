@@ -35,7 +35,7 @@ function IndexRaw() {
   const handleAddAdmissions = async () => {
     const admissions = await resolved(() => users.map((user) => ({
       eventId: id,
-      email: user.identity.email,
+      email: user.email,
     })));
     await addAdmissions({
       args: admissions,
