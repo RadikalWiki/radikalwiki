@@ -1,12 +1,12 @@
-import { query, mutation, resolved } from "gql";
+import { query, polls, mutation, resolved } from "gql";
 import { NextApiRequest, NextApiResponse } from "next";
 import { jwtVerify } from "jose/jwt/verify";
 import { createSecretKey } from "crypto";
 
-const validateVote = (vote: Set<number>, poll: any): Boolean => {
+const validateVote = (vote: Set<number>, poll: polls): Boolean => {
   // Handle blank
   const [first] = vote;
-  const options = [...Array(poll?.options.length).keys()];
+  const options = [...Array(poll?.options?.length).keys()];
   const blank = poll.options[options.length - 1];
   if (vote.size == 1 && first == blank) {
     return true;
@@ -14,7 +14,7 @@ const validateVote = (vote: Set<number>, poll: any): Boolean => {
   if (vote.size > 1 && [...vote.values()].includes(blank)) {
     return false;
   }
-  if (poll.minVote > vote.size || poll.maxVote < vote.size) {
+  if (!poll.minVote || !poll.maxVote || poll.minVote > vote.size || poll.maxVote < vote.size) {
     return false;
   }
   for (const v of vote.values()) {
