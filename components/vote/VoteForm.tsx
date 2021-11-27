@@ -20,9 +20,8 @@ export default function VoteForm() {
   const router = useRouter();
   const [session] = useSession();
   const subscription = useSubscription();
-  //const [addVote] = useMutation(VOTE_ACTION);
-  const [addVotes] = useMutation((mutation, args: votes_insert_input[]) => {
-    return mutation.insert_files({ objects: args })?.affected_rows;
+  const [addVotes] = useMutation((mutation, args: any) => {
+    return mutation.addVote({ vote: args }).pollId;
   });
   const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);
@@ -75,12 +74,10 @@ export default function VoteForm() {
     }
 
     await addVotes({
-      args: [
-        {
+      args: {
           pollId: poll?.id,
           value: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
         },
-      ],
     });
     if (poll?.content?.folder?.mode == "candidates") {
       router.push(`/content/${poll?.content?.id}`);
