@@ -10,7 +10,8 @@ export default function ContentHeader({ id, expand, setExpand }: { id: string, e
   const content = query.contents_by_pk({ id });
 
   useEffect(() => {
-    if (content?.id && content?.folder?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
+    if (content?.id && content?.folder?.id && content?.parent?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.parent?.name ?? "", url: `/content/${content.parentId}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
+    else if (content?.id && content?.folder?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
   }, [id, content]);
 
   return (
