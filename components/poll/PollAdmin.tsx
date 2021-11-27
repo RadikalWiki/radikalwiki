@@ -9,7 +9,7 @@ export default function PollAdmin({ pollId }: { pollId: string }) {
   const [session] = useSession();
   const router = useRouter();
   const [stopPoll] = useMutation((mutation, args) => {
-    return mutation.update_polls_by_pk({ pk_columns: { id: pollId }, _set: { active: false } })
+    return mutation.update_polls_by_pk({ pk_columns: { id: pollId }, _set: { active: false } })?.id
   });
   const subscription = useSubscription();
   const poll = subscription.polls_by_pk({ id: pollId })
