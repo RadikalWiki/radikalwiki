@@ -10,9 +10,11 @@ import { useSession } from "hooks";
 import { useRouter } from "next/router";
 
 const getState = (path: string) =>
-  path.includes("poll") || path.includes("vote")
+  path.includes("vote")
     ? "vote"
-    : path.includes("folder") || path.includes("content")
+    : path.includes("folder") ||
+      path.includes("content") ||
+      path.includes("poll")
     ? "content"
     : path.includes("speak")
     ? "speak"

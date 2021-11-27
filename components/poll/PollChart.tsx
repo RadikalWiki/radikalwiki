@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BarSeries,
   Chart,
@@ -48,10 +48,11 @@ export default function PollChart({
   pollId: string;
   screen?: boolean;
 }) {
-  const [session] = useSession();
+  const [session, setSession] = useSession();
   const admin = session?.roles?.includes("admin") ?? false;
   const subscription = useSubscription();
   const pollSub = subscription.polls_by_pk({ id: pollId });
+  const folder = subscription.polls_by_pk({ id: pollId })?.content?.folder;
   const poll = pollSub
     ? {
         active: pollSub.active,
@@ -65,8 +66,14 @@ export default function PollChart({
     ?.admissions_aggregate()
     .aggregate?.count();
 
+  useEffect(() => {
+    if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }, { name: pollSub?.content?.name ?? "", url: `/poll/${pollId}`, icon: "poll" }] : [] });
+  }, [folder]);
+
   if (poll == null) return null;
   const chartData = parseData(poll, screen, admin) || [];
+
+
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
