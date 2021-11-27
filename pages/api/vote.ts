@@ -5,20 +5,25 @@ import { createSecretKey } from "crypto";
 import content from "pages/content";
 
 const validateVote = (vote: Set<number>, poll: any): Boolean => {
+  console.log(`vote: ${vote}`)
+  console.log(`poll: ${poll}`)
   // Handle blank
   const [first] = vote;
   const options = [...Array(poll?.options?.length).keys()];
+  console.log(`options: ${options}`)
   const blank = poll.options[options.length - 1];
   if (vote.size == 1 && first == blank) {
     return true;
   }
-  if (vote.size > 1 && [...vote.values()].includes(blank)) {
+  const voteValues = [...vote.values()];
+  console.log(`voteValues: ${voteValues}`)
+  if (vote.size > 1 && voteValues.includes(blank)) {
     return false;
   }
   if (!poll.minVote || !poll.maxVote || poll.minVote > vote.size || poll.maxVote < vote.size) {
     return false;
   }
-  for (const v of vote.values()) {
+  for (const v of voteValues) {
     if (!options.includes(v)) {
       return false;
     }
@@ -68,7 +73,9 @@ export default async function handler(
       active: poll?.active,
       content: poll?.content,
       votes: poll?.votes({ where: { userId: { _eq: userId } } }),
-      options: poll?.options
+      options: poll?.options,
+      minVote: poll?.minVote,
+      maxVote: poll?.maxVote
     }
   });
   if (!poll) {
