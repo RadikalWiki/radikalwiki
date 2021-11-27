@@ -43,7 +43,8 @@ function FolderList({ id, filter }: { id: string; filter: string }) {
   const folder = query.folders_by_pk({ id });
 
   useEffect(() => {
-    if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }] : [] });
+    if (folder && folder?.parent?.parent) setSession({ path: [{ name: folder.parent?.name ?? "", url: `/folder/${folder.parentId}` }, { name: folder.name ?? "", url: `/folder/${folder.id}` }] });
+    else if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }] : [] });
   }, [id, folder]);
 
   const contents =
