@@ -24,7 +24,7 @@ function PollListRaw({ id }: { id: string }) {
   const [deletePoll] = useMutation((mutation, id: string) => {
     return mutation.delete_polls_by_pk({ id })?.id;
   }, {
-    refetchQueries: [query.contents_by_pk({ id })]
+    refetchQueries: [query.contents_by_pk({ id })?.polls()]
   });
 
   const handleDeletePoll = (id: string) => async () => {
