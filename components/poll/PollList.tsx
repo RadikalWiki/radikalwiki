@@ -34,7 +34,7 @@ function PollListRaw({ id }: { id: string }) {
   if (polls && polls.length == 0) return null;
 
   return (
-    <HeaderCard title="Afstemningsresultater">
+    <HeaderCard title="Afstemninger">
       <Divider />
       <List>
         {polls?.map(({ id = 0, votes_aggregate, createdAt }) => (
