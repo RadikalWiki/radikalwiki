@@ -11,7 +11,7 @@ import { useSession } from "hooks";
 import { useQuery } from "gql";
 import { AccountCircle, Group, Subject } from "@mui/icons-material";
 
-export default function Login() {
+function RawProfile() {
   const [session] = useSession();
   const query = useQuery();
   const id = session?.user?.id;
@@ -72,3 +72,12 @@ export default function Login() {
     </>
   );
 }
+
+export default function Profile() {
+  return (
+    <Suspense fallback={null}>
+      <RawProfile />
+    </Suspense>
+  );
+}
+
