@@ -47,7 +47,7 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": "rescript build && next build",
     "start": "next start",
     "generate": "gqty generate",
     "res:build": "rescript",
