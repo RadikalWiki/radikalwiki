@@ -47,12 +47,13 @@
   },
   "scripts": {
     "dev": "next",
-    "build": "rescript build && mv next.config.js next.config.mjs && next build",
-    "start": "rescript build && mv next.config.js next.config.mjs && next start",
-    "generate": "gqty generate",
+    "build": "yarn gen-conf && yarn gen-gqty && next build",
+    "start": "yarn gen-conf && next start",
+    "gen-gqty": "gqty generate",
+    "gen-conf": "rescript build && mv next.config.js next.config.mjs",
     "res:build": "rescript",
     "res:dev": "rescript build -w",
-    "lint": "rescript build && mv next.config.js next.config.mjs && next lint"
+    "lint": "yarn gen-conf && next lint"
   },
   "devDependencies": {
     "@gqty/cli": "^2.3.0",
@@ -70,10 +71,8 @@
       "DateTime": "string"
     },
     "introspection": {
-      "endpoint": "http://localhost:8080/v1/graphql",
-      "headers": {
-        "x-hasura-admin-secret": "123456"
-      }
+      "endpoint": "src/schema.gql"
+      
     },
     "destination": "./gql/index.ts",
     "javascriptOutput": false,

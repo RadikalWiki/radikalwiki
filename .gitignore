@@ -34,6 +34,9 @@ yarn-error.log*
 # yarn
 yarn.lock
 
+# gql
+schema.generated.ts
+
 # rescript
 lib/bs/*
 *.lock
