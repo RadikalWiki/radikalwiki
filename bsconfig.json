@@ -2,7 +2,8 @@
   "name": "radikalwiki",
   "version": "0.0.1",
   "reason": { "react-jsx": 3 },
-	"bs-dependencies": ["@rescript/react"],
+  "refmt": 3,
+  "bs-dependencies": ["@rescript/react"],
   "sources": [
     {
       "dir": "src",
