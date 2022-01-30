@@ -48,10 +48,11 @@
   "scripts": {
     "dev": "next",
     "build": "rescript build && mv next.config.js next.config.mjs && next build",
-    "start": "next start",
+    "start": "rescript build && mv next.config.js next.config.mjs && next start",
     "generate": "gqty generate",
     "res:build": "rescript",
-    "res:dev": "rescript build -w"
+    "res:dev": "rescript build -w",
+    "lint": "rescript build && mv next.config.js next.config.mjs && next lint"
   },
   "devDependencies": {
     "@gqty/cli": "^2.3.0",
