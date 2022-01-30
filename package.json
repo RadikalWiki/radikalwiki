@@ -62,5 +62,20 @@
     "eslint-config-next": "11.1.2",
     "graphql-config": "^3.3.0",
     "typescript": "^4.4.0-beta"
+  },
+  "gqty": {
+    "react": true,
+    "scalarTypes": {
+      "DateTime": "string"
+    },
+    "introspection": {
+      "endpoint": "http://localhost:8080/v1/graphql",
+      "headers": {
+        "x-hasura-admin-secret": "123456"
+      }
+    },
+    "destination": "./gql/index.ts",
+    "javascriptOutput": false,
+    "subscriptions": true
   }
 }
