@@ -39,3 +39,4 @@ lib/bs/*
 *.lock
 .merlin
 *.js
+*.mjs

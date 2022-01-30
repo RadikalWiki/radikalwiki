@@ -4,7 +4,11 @@
   "reason": { "react-jsx": 3 },
   "refmt": 3,
   "bs-dependencies": ["@rescript/react"],
+  "suffix": ".js",
   "sources": [
+    {
+      "dir": "."
+    },
     {
       "dir": "src",
       "subdirs": true
@@ -17,5 +21,8 @@
   "package-specs": {
     "module": "es6",
     "in-source": true
+  },
+  "js-post-build": {
+    "cmd": "echo"
   }
 }
