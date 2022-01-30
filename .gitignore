@@ -30,6 +30,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# next
+next-env.d.ts
+
 # rescript
 lib/bs/*
 *.lock

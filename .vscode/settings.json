@@ -1,8 +1,9 @@
 {
 	"files.exclude": {
 		"**/node_modules": true,
-		"**/lib": true,
 		"**/.next": true,
+		"**/next-env.d.ts": true,
+		"**/lib": true,
 		"**/.merlin": true,
 		"**/.bsb.lock": true,
 		"**/*.js": true
