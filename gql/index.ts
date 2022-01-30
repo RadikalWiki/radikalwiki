@@ -6,7 +6,7 @@ import { createReactClient } from "@gqty/react";
 import { createSubscriptionsClient } from "@gqty/subscriptions";
 import type { QueryFetcher } from "gqty";
 import { createClient } from "gqty";
-import { auth } from "utils/nhost";
+import { auth } from "src/nhost";
 import type {
   GeneratedSchema,
   SchemaObjectTypes,
