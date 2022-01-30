@@ -46,7 +46,7 @@
     "ws": "^7.4.6"
   },
   "scripts": {
-    "dev": "next",
+    "dev": "yarn gen-conf && next",
     "build": "yarn gen-conf && yarn gen-gqty && next build",
     "start": "yarn gen-conf && next start",
     "gen-gqty": "gqty generate",
