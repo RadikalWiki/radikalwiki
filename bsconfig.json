@@ -1,13 +1,15 @@
 {
   "name": "radikalwiki",
   "version": "0.0.1",
+  "reason": { "react-jsx": 3 },
+	"bs-dependencies": ["@rescript/react"],
   "sources": [
     {
       "dir": "src",
       "subdirs": true
     },
     {
-      "dir": "pages/api",
+      "dir": "pages",
       "subdirs": true
     }
   ],
