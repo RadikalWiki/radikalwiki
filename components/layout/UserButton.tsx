@@ -4,7 +4,7 @@ import { Link } from "comps";
 import { AccountCircle } from "@mui/icons-material";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
-import { auth } from "utils/nhost";
+import { auth } from "src/nhost";
 
 const abriviateName = (name: string) =>
   name?.split(" ").length === 1

@@ -10,7 +10,7 @@ import {
   Button,
 } from "@mui/material";
 import { useSession } from "hooks";
-import { auth } from "utils/nhost";
+import { auth } from "src/nhost";
 import { query, resolved } from "gql";
 
 export default function LoginForm({

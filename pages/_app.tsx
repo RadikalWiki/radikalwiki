@@ -8,7 +8,7 @@ import {
 import Head from "next/head";
 import { Layout } from "comps";
 import { useTheme } from "hooks";
-import { auth } from "utils/nhost";
+import { auth } from "src/nhost";
 import { NhostAuthProvider } from "@nhost/react-auth";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';

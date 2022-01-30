@@ -1,5 +1,5 @@
 import { Input } from "@mui/material";
-import { storage } from "utils/nhost";
+import { storage } from "src/nhost";
 import { join } from "path";
 import { files_insert_input, useMutation } from "gql";
 import { useSession } from "hooks";
