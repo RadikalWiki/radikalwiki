@@ -29,7 +29,7 @@ export default function Countdown({ interactive }: { interactive?: boolean }) {
     })?.affected_rows;
   });
   const subscription = useSubscription();
-  const timer = subscription.events_by_pk({ id: session?.event?.id })?.timer;
+  const timer = subscription.events_by_pk({ id: session?.event?.id })?.speakerlist?.timer;
 
   const handleTimerSet = (time: number) => {
     setTimer({

@@ -24,9 +24,8 @@ export default function SpeakerCard({
 }) {
   const [session] = useSession();
   const subscription = useSubscription();
-  const speaks = subscription.speaks({
-    order_by: [{ type: order_by.desc }],
-    where: { eventId: { _eq: session?.event?.id } },
+  const speaks = subscription.events_by_pk({ id: session?.event?.id })?.speakerlist?.speakers({
+    order_by: [{ type: order_by.desc }]
   });
   const [deleteSpeak] = useMutation((mutation, id: string) => {
     return mutation.delete_speaks_by_pk({ id })?.id;

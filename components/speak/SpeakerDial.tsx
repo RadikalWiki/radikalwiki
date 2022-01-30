@@ -19,7 +19,7 @@ export default function SpeakerDial() {
       args: [
         {
           userId: session?.user?.id,
-          eventId: session?.event?.id,
+          speakerlistId: event?.speakerlistId,
           type: type,
         },
       ],
@@ -28,7 +28,7 @@ export default function SpeakerDial() {
 
   return (
     <SpeedDial
-      hidden={event?.lockSpeak ?? true}
+      hidden={event?.speakerlist?.locked ?? true}
       ariaLabel="Kom på talerliste"
       sx={{
         position: "fixed",

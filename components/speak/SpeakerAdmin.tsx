@@ -11,7 +11,7 @@ export default function SpeakerAdmin() {
   const [deleteSpeakAll] = useMutation(
     (mutation, args) => {
       return mutation.delete_speaks({
-        where: { eventId: { _eq: session?.event?.id } }
+        where: {  speakerlistId: { _eq: event?.speakerlistId } }
       })?.affected_rows;
     }
   );
@@ -38,9 +38,9 @@ export default function SpeakerAdmin() {
         variant="contained"
         size="large"
         sx={{ color: "#fff", m: 2 }}
-        onClick={() => handleLockSpeak(!event?.lockSpeak)}
+        onClick={() => handleLockSpeak(!event?.speakerlist?.locked)}
       >
-        {event?.lockSpeak ? "Åben" : "Luk"}
+        {event?.speakerlist?.locked ? "Åben" : "Luk"}
       </Button>
 
       <Button
