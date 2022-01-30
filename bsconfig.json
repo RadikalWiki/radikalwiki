@@ -1,12 +1,18 @@
 {
   "name": "radikalwiki",
   "version": "0.0.1",
-  "sources": {
-    "dir": "pages/api",
-    "subdirs": true
-  },
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    },
+    {
+      "dir": "pages/api",
+      "subdirs": true
+    }
+  ],
   "package-specs": {
-		"module": "es6",
-		"in-source": true
-	}
+    "module": "es6",
+    "in-source": true
+  }
 }

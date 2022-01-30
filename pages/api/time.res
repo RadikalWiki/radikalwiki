@@ -1,12 +1,3 @@
-@send external json: ('a, 'b) => unit = "json"
-
-let default = (
-  req,
-  res
-) => {
-	res->json({ "time": Js.Date.make()})
-  //return res.json({
-  //  time: new Date(),
-  //});
+let default = (req, res) => {
+  res->Res.json({"time": Js.Date.make()})
 }
-
