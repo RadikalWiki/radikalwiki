@@ -8,6 +8,7 @@ import {
   SupervisorAccount,
   Lock,
   LockOpen,
+  ContentCopy,
 } from "@mui/icons-material";
 import { AddFolderDialog } from ".";
 import { useRouter } from "next/router";
@@ -86,7 +87,7 @@ export default function FolderDial({ id }: { id: string }) {
     });
 
     // Create and evoke link to file
-    const blobUrl = URL.createObjectURL(blob);
+    const blobUrl = URL.createObjectURL(blob as Blob);
     const link = document.createElement("a");
     link.href = blobUrl;
     link.download = `${folder?.name} Eksport.docx`;
@@ -164,6 +165,16 @@ export default function FolderDial({ id }: { id: string }) {
             tooltipTitle="Mappe"
             tooltipOpen
             onClick={() => setAddDialog(true)}
+          />
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                <ContentCopy />
+              </Avatar>
+            }
+            tooltipTitle="Kopier"
+            tooltipOpen
+            onClick={() => router.push(`/folder/${folder?.id}/copy`)}
           />
           <SpeedDialAction
             icon={
