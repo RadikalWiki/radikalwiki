@@ -4,5 +4,5 @@ A full open source solution for voting, organizing conference communication and 
 Built with [Next.js](https://nextjs.org), [Hasura](https://hasura.io) and [NHost](https://nhost.io).
 
 ## Showcase
-![](public/radikalwiki1.png)
-![](public/radikalwiki2.png)
+![](doc/radikalwiki1.png)
+![](doc/radikalwiki2.png)
