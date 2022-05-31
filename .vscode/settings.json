@@ -4,9 +4,5 @@
 		"**/yarn.lock": true,
 		"**/.next": true,
 		"**/next-env.d.ts": true,
-		"**/lib": true,
-		"**/.merlin": true,
-		"**/.bsb.lock": true,
-		"next.config.mjs": true,
 	}
 }
