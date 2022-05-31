@@ -1,4 +1,11 @@
-import { CardActions, Box, Divider } from "@mui/material";
+import {
+  CardActions,
+  Box,
+  Divider,
+  Popover,
+  Paper,
+  Slider,
+} from "@mui/material";
 import {
   Delete,
   Edit,
@@ -6,134 +13,165 @@ import {
   Visibility,
   VisibilityOff,
   Poll,
+  People,
+  ZoomIn,
 } from "@mui/icons-material";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
-import { useMutation, useQuery } from "gql";
 import { AutoButton, PollDialog } from "comps";
 import { useState } from "react";
+import {
+  nodes_set_input,
+  relations_constraint,
+  relations_insert_input,
+  relations_update_column,
+  useMutation,
+  useQuery,
+} from "gql";
+import { fromId } from "core/path";
 
-function ContentToolbar({ id, child }: { id: string, child: boolean }) {
-  const [session] = useSession();
+const marks = [
+  {
+    value: 50,
+    label: "50%",
+  },
+  {
+    value: 100,
+    label: "100%",
+  },
+  {
+    value: 150,
+    label: "150%",
+  },
+  {
+    value: 200,
+    label: "200%",
+  },
+  {
+    value: 250,
+    label: "250%",
+  },
+];
+export default function ContentToolbar({
+  id,
+  child,
+}: {
+  id: string;
+  child: boolean;
+}) {
+  const [_, setSession] = useSession();
   const router = useRouter();
-  const query = useQuery();
   const [openPollDialog, setOpenPollDialog] = useState(false);
-  const content = query.contents_by_pk({ id });
-  const [updateContent] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.update_contents_by_pk({
-        pk_columns: { id: args.id },
-        _set: args.set,
+  const [anchorEl, setAnchorEl] = useState<any>(null);
+  const open = Boolean(anchorEl);
+  const query = useQuery();
+  const node = query.node({ id });
+  const contextId = node?.context?.id;
+  const namespace = node?.namespace;
+  const parentId = node?.parentId;
+
+  const [updateNode] = useMutation(
+    (mutation, args: nodes_set_input) => {
+      return mutation.updateNode({
+        pk_columns: { id },
+        _set: args,
       })?.id;
     },
-    {
-      refetchQueries: [
-        query.contents_by_pk({ id }),
-        query.contents({ where: { parentId: { _eq: id } } }),
-      ],
-    }
+    { refetchQueries: [node, query.node({ id: parentId })] }
   );
+
   const [deleteContent] = useMutation(
     (mutation, id: string) => {
-      return mutation.delete_contents_by_pk({ id })?.id;
+      return mutation.deleteNode({ id })?.id;
     },
     {
-      refetchQueries: [
-        query.folders_by_pk({ id: content?.folderId })
-      ],
+      refetchQueries: [query.node({ id: parentId })],
     }
   );
-  const [updateEvent] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.update_events_by_pk({
-        pk_columns: { id: args.id },
-        _set: args.set,
+
+  const [insertRelation] = useMutation(
+    (mutation, args: relations_insert_input) => {
+      return mutation.insertRelation({
+        object: args,
+        on_conflict: {
+          constraint: relations_constraint.relations_parent_id_name_key,
+          update_columns: [relations_update_column.nodeId],
+        },
       })?.id;
     }
   );
-
-  const editable =
-    ((session?.user?.id === content?.creatorId ||
-      (content
-        ?.authors()
-        .some((a: any) => a.identity?.user?.id === session?.user?.id) &&
-        ((!content?.parent && !content?.folder?.lockContent) ||
-          (content?.parent && !content?.folder?.lockChildren)))) &&
-      !content?.published) ||
-    session?.roles?.includes("admin");
+  const set = async (name: string, nodeId: string | null) => {
+    return await insertRelation({
+      args: { parentId: contextId, name, nodeId },
+    });
+  };
 
   const handleDelete = async () => {
-    await deleteContent({
-      args: id,
-    });
+    await deleteContent({ args: id });
 
-    if (content?.parentId) {
-      router.push(`/content/${content.parentId}`);
-    } else {
-      router.push(`/folder/${content?.folderId}`);
-    }
+    const path = await fromId(parentId);
+    router.push("/" + path.join("/"));
   };
 
   const handlePublish = async () => {
-    await updateContent({
-      args: { id: id, set: { published: true } },
-    });
-  };
-
-  // TODO: properly style MUI buttons with next.js
-  const handleEdit = async () => {
-    router.push(`/content/${id}/edit`);
+    await updateNode({ args: { mutable: false } });
   };
 
   const handleAddPoll = async (_: any) => {
     setOpenPollDialog(true);
   };
 
-  const handleFocusContent = (id: any) => async (_: any) => {
-    await updateEvent({
-      args: {
-        id: session?.event?.id as string,
-        set: { contentId: id, pollId: null },
-      },
-    });
+  const handleFocus = (id: string | null) => async (_: any) => {
+    await set("active", id);
   };
 
-  const handleHide = (id: any) => async (_: any) => {
-    await updateEvent({
-      args: {
-        id: session?.event?.id as string,
-        set: { contentId: id, pollId: id },
-      },
-    });
-  };
-
-  if (!editable || !content) return null;
+  if (!(node?.mutable && node?.isOwner) && !node?.isContextOwner) return null;
 
   return (
     <>
       <CardActions>
-        {session?.roles?.includes("admin") && [
-          <AutoButton
-            key="focus"
-            text="Vis"
-            icon={<Visibility />}
-            onClick={handleFocusContent(id)}
-          />,
-          <AutoButton
-            key="hide"
-            text="Skjul"
-            icon={<VisibilityOff />}
-            onClick={handleHide(null)}
-          />,
-          !(content?.parent && content?.folder?.mode == "candidates") && (
+        {
+          /*roles.includes("writer")*/ true && [
             <AutoButton
-              key="poll"
-              text="Ny afstemning"
-              icon={<Poll />}
-              onClick={handleAddPoll}
-            />
-          ),
-        ]}
+              key="focus"
+              text="Vis"
+              icon={<Visibility />}
+              onClick={handleFocus(id)}
+            />,
+            <AutoButton
+              key="hide"
+              text="Skjul"
+              icon={<VisibilityOff />}
+              onClick={handleFocus(null)}
+            />,
+            !child && (
+              <AutoButton
+                key="zoom"
+                text="Zoom"
+                icon={<ZoomIn />}
+                onClick={(e: any) => setAnchorEl(e.currentTarget)}
+              />
+            ),
+            ["vote/policy", "vote/position", "vote/change"].includes(
+              node?.mime?.name ?? ""
+            ) && (
+              <AutoButton
+                key="poll"
+                text="Ny afstemning"
+                icon={<Poll />}
+                onClick={handleAddPoll}
+              />
+            ),
+            ["wiki/event", "wiki/group"].includes(node?.mime?.name ?? "") && (
+              <AutoButton
+                key="member"
+                text="Medlemmer"
+                icon={<People />}
+                onClick={() => router.push(`${router.asPath}?app=member`)}
+              />
+            ),
+          ]
+        }
         <Box sx={{ flexGrow: 1 }} />
         <AutoButton
           key="delete"
@@ -145,9 +183,13 @@ function ContentToolbar({ id, child }: { id: string, child: boolean }) {
           key="edit"
           text="Rediger"
           icon={<Edit />}
-          onClick={handleEdit}
+          onClick={() =>
+            router.push(
+              `${router.asPath + (child ? `/${namespace}` : "")}?app=editor`
+            )
+          }
         />
-        {!content?.published && (
+        {node?.mutable && (
           <AutoButton
             key="sent"
             text="Indsend"
@@ -157,11 +199,42 @@ function ContentToolbar({ id, child }: { id: string, child: boolean }) {
         )}
       </CardActions>
       <Divider />
-      {!child && (
-        <PollDialog id={id} open={openPollDialog} setOpen={setOpenPollDialog} />
-      )}
+      {!child && [
+        <PollDialog
+          key="poll-dialog"
+          id={id}
+          open={openPollDialog}
+          setOpen={setOpenPollDialog}
+        />,
+        <Popover
+          key="zoom-slider"
+          open={open}
+          anchorEl={anchorEl}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+          onClose={() => setAnchorEl(null)}
+        >
+          <Paper>
+            <Slider
+              sx={{ width: 200, margin: 3 }}
+              min={50}
+              max={250}
+              defaultValue={200}
+              step={50}
+              marks={marks}
+              onChange={(_, newValue) =>
+                setSession({ screen: { size: `${newValue}%` } })
+              }
+            />
+          </Paper>
+        </Popover>,
+      ]}
     </>
   );
 }
-
-export default ContentToolbar;

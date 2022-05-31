@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   BarSeries,
-  Chart,
+  Chart as DxChart,
   ValueAxis,
   Tooltip,
   Legend,
@@ -13,78 +13,75 @@ import {
   HoverState,
   Stack,
 } from "@devexpress/dx-react-chart";
-import { Card, CardHeader, Typography, Box } from "@mui/material";
-import { useSession } from "hooks";
-import { polls, Maybe, useSubscription } from "gql";
+import { Card, CardHeader, Box } from "@mui/material";
+import { nodes, Maybe, useQuery } from "gql";
 
-const parseData = (poll: Maybe<polls>, screen: boolean, admin: boolean) => {
-  if (!poll) {
-    return { options: undefined, data: undefined };
-  }
-  if (poll.active || (poll.hidden && (screen || !admin))) {
+const Chart = DxChart as any;
+
+const parseData = (poll: Maybe<nodes>, screen: boolean) => {
+  const count = poll
+    ?.children_aggregate({ where: { mime: { name: { _eq: "vote/vote" } } } })
+    .aggregate?.count();
+  const data = poll?.data();
+
+  const owner = poll?.isContextOwner;
+  const mutable = poll?.mutable;
+  const { options, hidden } =
+    data && poll?.mime?.name == "vote/poll"
+      ? data
+      : { options: [], hidden: true };
+
+  const opts = [...Array(options.length).keys()].map((opt: number) => [opt, 0]);
+  const votes = poll?.children({
+    where: { mime: { name: { _eq: "vote/vote" } } },
+  });
+  // TODO: validate
+  const acc = votes
+    ?.map(({ data }) => data())
+    .flat()
+    .reduce((acc, e) => acc.set(e, acc.get(e) + 1), new Map(opts as any));
+  const res = { arg: "none", ...[...acc.values()] };
+
+  if (mutable || (hidden && (screen || !owner))) {
     return {
       options: ["Antal Stemmer"],
-      data: [{ arg: "none", 0: [poll.votes_aggregate().aggregate?.count()] }],
+      data: [{ arg: "none", 0: count }],
     };
   }
-  let res: Record<string, any> = { arg: "none" };
-  for (let i = 0; i < poll.options?.length; i++) {
-    res[i] = 0;
-  }
-  poll.votes().map(({ value }) => {
-    value?.map((index: number) => {
-      res[index] += 1;
-    });
-  })
-
-  return { options: poll.options, data: [res] };
+  return { options, data: [res] };
 };
 
 export default function PollChart({
-  pollId,
+  id,
   screen = false,
 }: {
-  pollId: string;
+  id: string;
   screen?: boolean;
 }) {
-  const [session, setSession] = useSession();
-  const admin = session?.roles?.includes("admin") ?? false;
-  const subscription = useSubscription();
-  const poll = subscription.polls_by_pk({ id: pollId });
-  const folder = subscription.polls_by_pk({ id: pollId })?.content?.folder;
-  const voteCount = poll?.content?.folder?.event
-    ?.admissions_aggregate()
-    .aggregate?.count();
+  const query = useQuery();
+  const poll = query.node({ id });
 
-  useEffect(() => {
-    if (folder) setSession({ path: folder.parentId ? [{ name: folder.name ?? "", url: `/folder/${folder.id}` }, { name: poll?.content?.name ?? "", url: `/content/${poll?.content?.id}` }, { name: "Afstemning", url: `/poll/${pollId}`, icon: "poll" }] : [] });
-  }, [folder]);
+  const title = poll?.name;
+  const chartData = parseData(poll, screen);
 
-  if (poll == null) return null;
-  const chartData = parseData(poll, screen, admin) || [];
+  // isContextOwner is undefined during first fetch
+  if (!chartData.options.length) return null;
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
       <CardHeader
         sx={{
-          bgcolor: (theme) => theme.palette.secondary.main,
-          color: (theme) => theme.palette.secondary.contrastText,
+          bgcolor: (t) => t.palette.secondary.main,
+          color: (t) => t.palette.secondary.contrastText,
         }}
-        title={poll?.content?.name}
+        title={title}
       />
-      {chartData?.options?.map((opt: any, index: number) => (
-        <Box
-          key={index}
-          aria-label={`${opt} fik ${
-            chartData.data ? chartData.data[0][index] : 0
-          } stemmer`}
-        />
-      ))}
       <Chart data={chartData.data} rotated>
         <ValueAxis />
         <ValueScale
           modifyDomain={(domain: any) => {
-            return [0, voteCount ? voteCount : 10];
+            //return [0, voteCount ? voteCount : 20];
+            return [0, 20];
           }}
         />
 

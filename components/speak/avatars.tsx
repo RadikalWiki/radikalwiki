@@ -6,34 +6,34 @@ import {
   PanTool,
   RecordVoiceOver,
 } from "@mui/icons-material";
-import { SpeakerAvatar } from "comps/speak";
+import { SpeakAvatar } from "comps/speak";
 
-const avatars = [
-  {
+const avatars: { [id: string]: any } = {
+  0: {
     name: "Tal",
-    value: 0,
-    avatar: SpeakerAvatar(<RecordVoiceOver />, "#303f9f"),
+    priority: 0,
+    avatar: SpeakAvatar(<RecordVoiceOver />, "#303f9f"),
   },
-  {
+  1: {
     name: "Spørgsmål",
-    value: 1,
-    avatar: SpeakerAvatar(<LiveHelp />, yellow[700]),
+    priority: 1,
+    avatar: SpeakAvatar(<LiveHelp />, yellow[700]),
   },
-  {
+  2: {
     name: "Opklar",
-    value: 2,
-    avatar: SpeakerAvatar(<EmojiPeople />, green[700]),
+    priority: 2,
+    avatar: SpeakAvatar(<EmojiPeople />, green[700]),
   },
-  {
+  3: {
     name: "Misforstået",
-    value: 3,
-    avatar: SpeakerAvatar(<Announcement />, orange[700]),
+    priority: 3,
+    avatar: SpeakAvatar(<Announcement />, orange[700]),
   },
-  {
+  4: {
     name: "Procedure",
-    value: 4,
-    avatar: SpeakerAvatar(<PanTool />, red[700]),
+    priority: 4,
+    avatar: SpeakAvatar(<PanTool />, red[700]),
   },
-];
+};
 
 export default avatars;

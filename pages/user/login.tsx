@@ -1,6 +1,6 @@
 import React from "react";
-import { LoginForm } from "comps";
+import { AuthForm } from "comps";
 
 export default function Login() {
-  return <LoginForm mode="login" />;
+  return <AuthForm mode="login" />;
 }

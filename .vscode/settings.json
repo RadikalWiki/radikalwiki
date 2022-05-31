@@ -7,7 +7,6 @@
 		"**/lib": true,
 		"**/.merlin": true,
 		"**/.bsb.lock": true,
-		"**/*.js": true,
-		"**/*.mjs": true,
+		"next.config.mjs": true,
 	}
 }

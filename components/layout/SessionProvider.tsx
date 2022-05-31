@@ -1,5 +1,5 @@
-import React, { useEffect, useState, createContext, useContext } from "react";
-import { SessionContext } from "hooks/useSession";
+import React, { useState } from "react";
+import { SessionContext } from "hooks";
 
 export default function SessionProvider({ children }: { children?: any }) {
   const [session, setSession] = useState<any>(null);

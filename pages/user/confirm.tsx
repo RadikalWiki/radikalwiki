@@ -1,6 +1,6 @@
 import React from "react";
-import { LoginForm } from "comps";
+import { AuthForm } from "comps";
 
 export default function Reset() {
-  return <LoginForm mode="confirm" />;
+  return <AuthForm mode="confirm" />;
 }

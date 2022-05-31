@@ -1,6 +1,6 @@
 import React from "react";
-import { Card, Typography, Fade } from "@mui/material";
-import { useSession } from "hooks";
+import { Avatar, Card, CardHeader, Typography } from "@mui/material";
+import { SupervisorAccount } from "@mui/icons-material";
 
 export default function AdminCard({
   children,
@@ -9,15 +9,24 @@ export default function AdminCard({
   children: any;
   title: string;
 }) {
-  const [session] = useSession();
-
-  if (!session?.roles?.includes("admin")) return null;
-
   return (
-    <Card elevation={3} sx={{ m: 1, bgcolor: (theme) => theme.palette.primary.main }}>
-      <Typography variant="h5" sx={{ color: "#fff", m: 2}}>
-        {title}
-      </Typography>
+    <Card elevation={3} sx={{ m: 1, bgcolor: (t) => t.palette.primary.main }}>
+      <CardHeader
+        title={
+          <Typography variant="h5" sx={{ color: "#fff" }}>
+            {title}
+          </Typography>
+        }
+        avatar={
+          <Avatar
+            sx={{
+              bgcolor: (t) => t.palette.secondary.main,
+            }}
+          >
+            <SupervisorAccount />
+          </Avatar>
+        }
+      />
       {children}
     </Card>
   );

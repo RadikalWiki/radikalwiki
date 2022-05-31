@@ -22,10 +22,16 @@
         "./components/*"
       ],
       "hooks": [
-        "./hooks"
+        "core/hooks"
       ],
       "gql": [
-        "./gql"
+        "core/gql"
+      ],
+      "nhost": [
+        "core/nhost"
+      ],
+      "mime": [
+        "core/mime"
       ]
     },
     "skipLibCheck": true,

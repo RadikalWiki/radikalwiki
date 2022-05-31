@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { TextField } from "@mui/material";
+import { Avatar, Box, Chip, TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { query, resolved, order_by } from "gql";
+import { getIcon } from "mime";
+import { Face } from "@mui/icons-material";
 
 const capitalize = (sentence: string) =>
   sentence.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
@@ -20,32 +22,38 @@ export default function AuthorTextField({
     const fetch = async () => {
       const like = `%${inputValue}%`;
 
-      const identities = await resolved(() => {
-        return query.identities({
-          limit: 10,
-          where: { displayName: { _ilike: like } },
-          order_by: [{ displayName: order_by.asc }],
-        }).map(({ displayName, email }) => ({ displayName, email })).map((identity) => ({ identity }));
-      })
-      let newOptions: any[] = [];
+      const nodes = await resolved(() => {
+        return query
+          .nodes({
+            limit: 10,
+            where: {
+              _and: [
+                { mime: { name: { _eq: "wiki/group" } } },
+                { name: { _ilike: like } },
+              ],
+            },
+            order_by: [{ name: order_by.asc }],
+          })
+          .map(({ id, name }) => ({ name, nodeId: id, mime: "wiki/group" }));
+      });
+      const users = await resolved(() => {
+        return query
+          .users({
+            limit: 10,
+            order_by: [{ displayName: order_by.asc }],
+          })
+          .map(({ id, displayName }) => ({
+            name: displayName,
+            nodeId: id,
+          }));
+      });
 
-      if (value) {
-        newOptions = value;
-      }
-
-      if (identities) {
-        newOptions = [
-          ...identities,
-          ...newOptions,
-        ];
-      }
-
-      newOptions = [
-        ...newOptions,
-        {
-          name: capitalize(inputValue),
-        },
-      ];
+      const newOptions: any[] = ([] as any[]).concat(
+        users ? users : [],
+        nodes ? nodes : [],
+        value ? value : [],
+        inputValue ? [{ name: capitalize(inputValue) }] : []
+      );
 
       setOptions(newOptions);
     };
@@ -57,22 +65,42 @@ export default function AuthorTextField({
       multiple
       color="primary"
       options={options}
-      getOptionLabel={(option) =>
-        option?.identity?.displayName ?? option.name ?? ""
-      }
+      getOptionLabel={(option) => option?.name ?? ""}
       defaultValue={options}
       value={value}
       filterSelectedOptions
       includeInputInList
       autoComplete
       autoHighlight
-      onChange={(event, newValue) => {
+      onChange={(_, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         onChange(newValue);
       }}
-      onInputChange={(event, newInputValue) => {
+      onInputChange={(_, newInputValue) => {
         setInputValue(newInputValue);
       }}
+      renderOption={(props, option) => (
+        <Box component="li" {...props}>
+          <Chip
+            variant="outlined"
+            color="secondary"
+            icon={option?.mime ? getIcon({ name: option?.mime }) : <Face />}
+            label={option?.name}
+          />
+        </Box>
+      )}
+      renderTags={(value, getCustomizedTagProps) =>
+        value.map((option, index) => (
+          <Chip
+            variant="outlined"
+            color="secondary"
+            icon={option?.mime ? getIcon({ name: option?.mime }) : <Face />}
+            label={option?.name}
+            {...getCustomizedTagProps({ index })}
+            key={index}
+          />
+        ))
+      }
       renderInput={(params) => (
         <TextField
           {...params}

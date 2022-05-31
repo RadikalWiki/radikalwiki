@@ -10,13 +10,15 @@ export default function CSVReader({
   onFileLoaded: any;
 }) {
   const handleChangeFile = (e: any) => {
-    const reader = new FileReader();
     const files = e.target.files;
 
     if (files.length > 0) {
-      reader.onload = (e: any) => {
-        const data = parse(reader.result as string, parseOptions);
-        onFileLoaded(data?.data ?? []);
+      const reader = {
+        ...new FileReader(),
+        onload: (e: any) => {
+          const data = parse(reader.result as string, parseOptions);
+          onFileLoaded(data?.data ?? []);
+        },
       };
 
       reader.readAsText(files[0]);

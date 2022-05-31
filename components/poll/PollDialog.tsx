@@ -11,9 +11,19 @@ import {
   Slider,
   Stack,
   Typography,
+  Divider,
 } from "@mui/material";
-import { polls_insert_input, useMutation, useQuery } from "gql";
+import {
+  nodes_insert_input,
+  relations_constraint,
+  relations_insert_input,
+  relations_update_column,
+  useMutation,
+  useQuery,
+} from "gql";
 import { useSession } from "hooks";
+import { useNode } from "hooks";
+import { Add, PlayArrow } from "@mui/icons-material";
 
 export default function PollDialog({
   open,
@@ -25,10 +35,26 @@ export default function PollDialog({
   id: string;
 }) {
   const router = useRouter();
-  const [session, setSession] = useSession();
+  const [session] = useSession();
+  const { query: node, insert } = useNode({ id });
+  const contextId = node?.contextId;
 
-  const query = useQuery();
-  const content = query.contents_by_pk({ id });
+  const [insertRelation] = useMutation(
+    (mutation, args: relations_insert_input) => {
+      return mutation.insertRelation({
+        object: args,
+        on_conflict: {
+          constraint: relations_constraint.relations_parent_id_name_key,
+          update_columns: [relations_update_column.nodeId],
+        },
+      })?.id;
+    }
+  );
+  const set = async (name: string, nodeId: string | null) => {
+    return await insertRelation({
+      args: { parentId: contextId, name, nodeId },
+    });
+  };
 
   const [voteCount, setVoteCount] = React.useState<number[]>([1, 1]);
 
@@ -36,76 +62,73 @@ export default function PollDialog({
     setVoteCount(newValue as number[]);
   };
 
-  const [hidden, setHidden] = useState(content?.folder?.mode == "candidates");
-  const [addPoll] = useMutation((mutation, args: polls_insert_input) => {
-    return mutation.insert_polls_one({ object: args })?.id;
-  });
+  const [hidden, setHidden] = useState(node?.mime?.name == "vote/position");
+
   const [stopPoll] = useMutation((mutation) => {
-    return mutation.update_polls({
-      where: { content: { folder: { eventId: { _eq: session?.event?.id } } } },
-      _set: { active: false },
+    return mutation.updateNodes({
+      where: { parentId: { _eq: id } },
+      _set: { mutable: false },
     })?.affected_rows;
   });
-  const [updateEvent] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.update_events_by_pk({
-        pk_columns: { id: args.id },
-        _set: args.set,
-      })?.id;
-    }
-  );
 
-  const options =
-    content?.folder?.mode == "changes"
-      ? ["For", "Imod", "Blank"]
-      : content
-          ?.children()
-          .map(({ name }) => name)
-          .concat("Blank");
+  const options = ["vote/policy", "vote/change"].includes(
+    node?.mime?.name ?? ""
+  )
+    ? ["For", "Imod", "Blank"]
+    : node
+        ?.children({ where: { mime: { name: { _eq: "vote/candidate" } } } })
+        .map(({ name }) => name)
+        .concat("Blank");
   const optionsCount = options?.length || 0;
 
+  const mimeId = node?.mimes({ where: { name: { _eq: "vote/poll" } } })?.[0]
+    ?.id;
   const handleAddPoll = async (_: any) => {
     await stopPoll();
-    const pollId = await addPoll({
-      args: {
-        contentId: content?.id,
+    const namespace = new Date(
+      new Date().getTime() + (session?.timeDiff ?? 0)
+    ).toLocaleString();
+    const poll = await insert({
+      name: node?.name,
+      namespace,
+      mimeId,
+      data: {
         minVote: voteCount[0],
         maxVote: voteCount[1],
         hidden,
-        options: `{${options}}`,
+        options: options,
       },
     });
-    await updateEvent({
-      args: { id: session?.event?.id as string, set: { pollId } },
-    });
-    router.push(`/poll/${pollId}`);
+
+    await set("active", poll.id);
+    router.push(`${router.asPath.split("?")[0]}/${poll.namespace}`);
   };
 
-  const getMarks = (count: number) => {
-    const marks = []
-    for (let i = 0; i < count; i++) { 
-      marks.push({ value: i, label: `${i}`})
-    }
-    return marks
-  }
+  const getMarks = (count: number) =>
+    [...Array(count - 1).keys()].map((i) => ({
+      value: i + 1,
+      label: `${i + 1}`,
+    }));
 
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
       <DialogTitle>Ny Afstemning</DialogTitle>
+      <Divider />
       <DialogContent>
         <Stack spacing={2}>
-          <>
-          <Typography>Stemmeinterval</Typography>
-          <Slider
-            disabled={content?.folder?.mode == "changes"}
-            value={voteCount}
-            onChange={handleChange}
-            valueLabelDisplay="off"
-            min={1}
-            marks={getMarks(optionsCount)}
-            max={optionsCount - 1}
-          />
-          </>
+          {!["vote/policy", "vote/change"].includes(node?.mime?.name ?? "") && (
+            <>
+              <Typography>Stemmeinterval</Typography>
+              <Slider
+                value={voteCount}
+                onChange={handleChange}
+                valueLabelDisplay="off"
+                min={1}
+                marks={getMarks(optionsCount)}
+                max={optionsCount - 1}
+              />
+            </>
+          )}
           <FormControlLabel
             control={
               <Switch
@@ -119,7 +142,12 @@ export default function PollDialog({
         </Stack>
       </DialogContent>
       <DialogActions>
-        <Button variant="contained" color="primary" onClick={handleAddPoll}>
+        <Button
+          endIcon={<PlayArrow />}
+          variant="contained"
+          color="primary"
+          onClick={handleAddPoll}
+        >
           Start
         </Button>
       </DialogActions>

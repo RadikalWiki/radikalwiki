@@ -1,26 +1,33 @@
-import React from "react";
-import { NavBar, Scroll, TopBar, SessionProvider } from "comps";
-import { useAuth } from "@nhost/react-auth";
+import React, { useEffect } from "react";
+import { NavBar, Scroll, TopBar, SessionProvider, Breadcrumbs } from "comps";
+import { useAuthenticationStatus } from "@nhost/nextjs";
 import { useRouter } from "next/router";
 import { Container, Box } from "@mui/material";
 
 export default function Layout({ children }: { children?: any }) {
-  const { pathname } = useRouter();
-  const { signedIn } = useAuth();
+  const { asPath, push } = useRouter();
+  const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
-  if (["/user/login", "/user/register", "/user/reset", "/user/confirm", "/screen"].includes(pathname))
-    return <SessionProvider>{signedIn != null && children}</SessionProvider>;
+  useEffect(() => {
+    if (!asPath.match(/^\/user\/|^\/$/) && !isLoading && !isAuthenticated) {
+      push("/user/login");
+    }
+  }, [isLoading, isAuthenticated, asPath, push]);
+
+  if (asPath.match(/\?app=screen/))
+    return <SessionProvider>{isAuthenticated && children}</SessionProvider>;
 
   return (
     <SessionProvider>
       <Scroll>
         <TopBar />
         <Container sx={{ pl: 0, pr: 0 }}>
-          {signedIn != null && children}
-          <Box sx={{ p: 4 }} />
+          {isAuthenticated && !asPath.match(/^\/user\//) && <Breadcrumbs />}
+          {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && children}
+          <Box sx={{ p: 8 }} />
         </Container>
       </Scroll>
-      <NavBar />
+      {!asPath.match(/^\/user\/|^\/$/) && <NavBar />}
     </SessionProvider>
   );
 }

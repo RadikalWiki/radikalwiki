@@ -1,17 +1,12 @@
 import React, { useEffect, ComponentType } from "react";
-import {
-  CssBaseline,
-  ThemeProvider,
-  Theme,
-  StyledEngineProvider,
-} from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
 import { Layout } from "comps";
 import { useTheme } from "hooks";
-import { auth } from "src/nhost";
-import { NhostAuthProvider } from "@nhost/react-auth";
+import nhost from "nhost";
+import { NhostReactProvider } from "@nhost/react";
 import { LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 
 export default function App({
   Component,
@@ -37,18 +32,16 @@ export default function App({
         />
       </Head>
 
-      <NhostAuthProvider auth={auth}>
-        <StyledEngineProvider injectFirst>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <ThemeProvider theme={theme}>
-              <CssBaseline />
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </ThemeProvider>
-          </LocalizationProvider>
-        </StyledEngineProvider>
-      </NhostAuthProvider>
+      <NhostReactProvider nhost={nhost}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </LocalizationProvider>
+      </NhostReactProvider>
     </>
   );
 }

@@ -11,43 +11,73 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Divider,
-  Fade,
 } from "@mui/material";
 import { Cancel, HowToVote } from "@mui/icons-material";
-import { useSession } from "hooks";
 import { useMutation, useQuery } from "gql";
+import { useRouter } from "next/router";
+import { getIcon } from "mime";
 
-function PollListRaw({ id }: { id: string }) {
-  const [session] = useSession();
+function PollList({ id }: { id: string }) {
+  const router = useRouter();
   const query = useQuery();
-  const polls = query.contents_by_pk({ id })?.polls();
-  const [deletePoll] = useMutation((mutation, id: string) => {
-    return mutation.delete_polls_by_pk({ id })?.id;
-  }, {
-    refetchQueries: [query.contents_by_pk({ id })?.polls()]
+  const node = query.node({ id });
+  const polls = node?.children({
+    where: { mime: { name: { _eq: "vote/poll" } } },
   });
+  const [deletePoll] = useMutation(
+    (mutation, id: string) => {
+      return mutation.deleteNode({ id })?.id;
+    },
+    {
+      refetchQueries: [polls],
+    }
+  );
 
   const handleDeletePoll = (id: string) => async () => {
     await deletePoll({ args: id });
   };
 
+  const owner = node?.isOwner;
+
   if (polls && polls.length == 0) return null;
 
   return (
-    <HeaderCard title="Afstemninger">
+    <HeaderCard
+      avatar={
+        <Avatar
+          sx={{
+            bgcolor: (theme) => theme.palette.secondary.main,
+          }}
+        >
+          {getIcon({ name: "vote/poll" })}
+        </Avatar>
+      }
+      title="Afstemninger"
+    >
       <Divider />
       <List>
-        {polls?.map(({ id = 0, votes_aggregate, createdAt }) => (
+        {polls?.map(({ id = 0, namespace, children_aggregate, createdAt }) => (
           <Fragment key={id}>
-            <ListItem button component={NextLink} href={`/poll/${id}`}>
+            <ListItem
+              button
+              component={NextLink}
+              href={`${router.asPath}/${namespace}`}
+            >
               <Tooltip title="Antal stemmer">
                 <ListItemAvatar>
                   <Badge
-                    color="secondary"
+                    color="primary"
                     max={1000}
-                    badgeContent={votes_aggregate().aggregate?.count()}
+                    overlap="circular"
+                    badgeContent={
+                      children_aggregate().aggregate?.count() || "0"
+                    }
                   >
-                    <Avatar sx={{ backgroundColor: "#ec407a" }}>
+                    <Avatar
+                      sx={{
+                        bgcolor: (t) => t.palette.secondary.main,
+                      }}
+                    >
                       <HowToVote sx={{ color: "#fff" }} />
                     </Avatar>
                   </Badge>
@@ -56,7 +86,7 @@ function PollListRaw({ id }: { id: string }) {
               <ListItemText
                 primary={`${new Date(createdAt).toLocaleString("da-DK")}`}
               />
-              {session?.roles?.includes("admin") && (
+              {owner && (
                 <ListItemSecondaryAction>
                   <IconButton
                     onClick={handleDeletePoll(id)}
@@ -77,10 +107,10 @@ function PollListRaw({ id }: { id: string }) {
   );
 }
 
-export default function PollList({ id }: { id: string }) {
+export default function Component({ id }: { id: string }) {
   return (
-     <Suspense fallback={null}>
-       <PollListRaw id={id} />
-     </Suspense>
+    <Suspense fallback={null}>
+      <PollList id={id} />
+    </Suspense>
   );
 }

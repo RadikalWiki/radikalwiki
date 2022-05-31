@@ -14,15 +14,15 @@ export default function AutoButton({
 
   return largeScreen ? (
     <Button
-      color="primary"
-      variant="contained"
+      color="secondary"
+      variant="outlined"
       endIcon={icon}
       onClick={onClick}
     >
       {text}
     </Button>
   ) : (
-    <IconButton color="primary" onClick={onClick} size="large">
+    <IconButton color="secondary" onClick={onClick} size="large">
       <Tooltip title={text}>{icon}</Tooltip>
     </IconButton>
   );

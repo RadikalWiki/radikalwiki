@@ -1,49 +1,67 @@
-import { Avatar, Tooltip, Fade } from "@mui/material";
-import { Lock } from "@mui/icons-material";
-import {
-  order_by, useQuery,
-} from "gql";
+import { Avatar, Tooltip, Badge } from "@mui/material";
+import { LockOpen } from "@mui/icons-material";
+import { order_by, useQuery } from "gql";
+import { getIcon } from "mime";
 
-function ContentAvatar({ id }: { id: string }) {
+function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
   const query = useQuery();
-  const content = query.contents_by_pk({ id });
+  const node = query.node({ id });
 
-  const getLetter = (index: number) => {
-    let res = String.fromCharCode(65 + (index % 26));
-    if (index >= 26) {
-      res = String.fromCharCode(64 + Math.floor(index / 26)) + res;
-    }
-    return res;
-  };
+  const index =
+    node?.parent
+      ?.children({
+        where: {
+          _and: [
+            { mutable: { _eq: false } },
+            { mime: { name: { _in: ["vote/change", "vote/policy"] } } },
+          ],
+        },
+        order_by: [{ priority: order_by.asc }, { createdAt: order_by.asc }],
+      })
+      .findIndex((e: any) => e.id === node.id) ?? 0;
 
-  const index = content?.parent
-    ? content?.parent
-        ?.children({
-          where: { published: { _eq: true } },
-          order_by: [{ priority: order_by.asc }, { createdAt: order_by.asc }],
-        })
-        .findIndex((e: any) => e.id === content.id)
-    : content?.folder
-        ?.contents({
-          where: { published: { _eq: true }, parentId: { _is_null: true } },
-          order_by: [{ priority: order_by.asc }, { createdAt: order_by.asc }],
-        })
-        .findIndex((e: any) => e.id === content.id) ?? 0;
+  const avatar = (
+    <Avatar
+      sx={{
+        bgcolor: (t) =>
+          screen ? t.palette.primary.main : t.palette.secondary.main,
+      }}
+    >
+      {getIcon(node?.mime!, index)}
+    </Avatar>
+  );
 
-  return (
-    <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-      {!content?.published ? (
+  return node?.mutable ? (
+    <Badge
+      overlap="circular"
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      badgeContent={
         <Tooltip title="Ikke indsendt">
-          <Avatar>
-            <Lock color="primary" />
+          <Avatar
+            sx={{
+              width: 18,
+              height: 18,
+              bgcolor: (theme) => theme.palette.primary.main,
+            }}
+          >
+            <LockOpen
+              sx={{
+                width: 14,
+                height: 14,
+                color: "#fff",
+              }}
+            />
           </Avatar>
         </Tooltip>
-      ) : content?.parent ? (
-        index + 1
-      ) : (
-        getLetter(index)
-      )}
-    </Avatar>
+      }
+    >
+      {avatar}
+    </Badge>
+  ) : (
+    avatar
   );
 }
 

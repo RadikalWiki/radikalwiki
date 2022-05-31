@@ -2,79 +2,69 @@ import React, { useState } from "react";
 import { Avatar, Zoom } from "@mui/material";
 import { SpeedDial, SpeedDialAction } from "@mui/material";
 import {
-  Add,
   LowPriority,
   GetApp,
   SupervisorAccount,
   Lock,
   LockOpen,
 } from "@mui/icons-material";
-import { AddFolderDialog } from ".";
 import { useRouter } from "next/router";
-import { useSession } from "hooks";
-import HTMLtoDOCX from "html-to-docx";
-
-import {
-  useMutation,
-  Maybe,
-  contents,
-  authorships,
-  useQuery,
-  resolved,
-  query as q,
-  order_by,
-} from "gql";
+import { useMutation, useQuery, resolved, query as q } from "gql";
 
 export default function FolderDial({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const [session] = useSession();
-  const [addDialog, setAddDialog] = useState(false);
   const query = useQuery();
-  const folder = query.folders_by_pk({ id });
+  const folder = query.node({ id });
   const [updateFolder] = useMutation(
     (mutation, args: { id: string; set: any }) => {
-      return mutation.update_folders_by_pk({
+      return mutation.updateNode({
         pk_columns: { id: args.id },
         _set: args.set,
       })?.id;
     },
-    {
-      refetchQueries: [query.folders_by_pk({ id })],
-    }
+    { refetchQueries: [folder, query.node({ id: folder?.parentId })] }
   );
 
-  if (!session?.roles?.includes("admin")) return null;
+  if (!folder?.isContextOwner) return null;
 
   const formatContent = async (id: string, level: number): Promise<string> => {
-    if (!id) return ""
+    if (!id) return "";
     const children = await resolved(() => {
       return q
-        .contents_by_pk({ id })
+        .node({ id })
         ?.children()
         .map((content) => content.id);
     });
-    const authors = await resolved(() => {
+    const members = await resolved(() => {
       return q
-        .contents_by_pk({ id })
-        ?.authors()
-        ?.map((a) => a.identity?.displayName ?? a.name)
+        .node({ id })
+        ?.members()
+        ?.map((m) => m.name ?? m.user?.displayName)
         .join(", ");
     });
     const content = await resolved(() => {
-      const content = q.contents_by_pk({ id });
+      const content = q.node({ id });
       if (content) return { name: content.name, data: content.data };
     });
     return `<h${level}>${
       content?.name
-    }</h${level}><i>Stillet af: ${authors}</i>${content?.data}${
-      children ? "<br>" + (await Promise.all(children.map(async (id) => (await formatContent(id, level + 1))))).join("<br>") : ""
+    }</h${level}><i>Stillet af: ${members}</i>${content?.data}${
+      children
+        ? "<br>" +
+          (
+            await Promise.all(
+              children.map(async (id) => await formatContent(id, level + 1))
+            )
+          ).join("<br>")
+        : ""
     }`;
   };
 
+  /*
   const handleExport = async () => {
     const contents = await resolved(() => {
-      return q.folders_by_pk({ id: folder?.id })?.contents({
+      return q.node({ id: folder?.id })?.children({
           order_by: [{ priority: order_by.asc }],
           where: { parentId: { _is_null: true } },
         }).map(({ id }) => ({ id }))
@@ -86,7 +76,7 @@ export default function FolderDial({ id }: { id: string }) {
     });
 
     // Create and evoke link to file
-    const blobUrl = URL.createObjectURL(blob);
+    const blobUrl = URL.createObjectURL(blob as Blob);
     const link = document.createElement("a");
     link.href = blobUrl;
     link.download = `${folder?.name} Eksport.docx`;
@@ -100,23 +90,14 @@ export default function FolderDial({ id }: { id: string }) {
     );
     document.body.removeChild(link);
   };
+  */
 
   const handleLockContent = async () => {
-    const set = { lockContent: !folder?.lockContent };
+    const set = { mutable: !folder?.mutable };
     await updateFolder({
       args: { id: folder?.id, set },
     });
   };
-
-  const handleLockChildren = async () => {
-    const set = { lockChildren: !folder?.lockChildren };
-    await updateFolder({
-      args: { id: folder?.id, set },
-    });
-  };
-
-  const childName =
-    folder?.mode == "changes" ? "ændringsforslag" : "kandidaturer";
 
   return (
     <>
@@ -136,34 +117,12 @@ export default function FolderDial({ id }: { id: string }) {
           <SpeedDialAction
             icon={
               <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-                {folder?.lockContent ? <LockOpen /> : <Lock />}
+                {folder?.mutable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
-            tooltipTitle={`${folder?.lockContent ? "Lås op" : "Lås"} indhold`}
+            tooltipTitle={`${folder?.mutable ? "Lås" : "Lås op"} indhold`}
             tooltipOpen
             onClick={handleLockContent}
-          />
-          <SpeedDialAction
-            icon={
-              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-                {folder?.lockChildren ? <LockOpen /> : <Lock />}
-              </Avatar>
-            }
-            tooltipTitle={`${
-              folder?.lockChildren ? "Lås op" : "Lås"
-            } ${childName}`}
-            tooltipOpen
-            onClick={handleLockChildren}
-          />
-          <SpeedDialAction
-            icon={
-              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-                <Add />
-              </Avatar>
-            }
-            tooltipTitle="Mappe"
-            tooltipOpen
-            onClick={() => setAddDialog(true)}
           />
           <SpeedDialAction
             icon={
@@ -173,7 +132,7 @@ export default function FolderDial({ id }: { id: string }) {
             }
             tooltipTitle="Sorter"
             tooltipOpen
-            onClick={() => router.push(`/folder/${folder?.id}/sort`)}
+            onClick={() => router.push(`${router.asPath}?app=sort`)}
           />
           <SpeedDialAction
             icon={
@@ -183,15 +142,9 @@ export default function FolderDial({ id }: { id: string }) {
             }
             tooltipTitle="Eksporter"
             tooltipOpen
-            onClick={handleExport}
           />
         </SpeedDial>
       </Zoom>
-      <AddFolderDialog
-        folder={folder}
-        open={addDialog}
-        setOpen={setAddDialog}
-      />
     </>
   );
 }

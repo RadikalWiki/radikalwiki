@@ -1,30 +1,44 @@
-import { CardHeader } from "@mui/material";
+import { CardHeader, Chip, Typography } from "@mui/material";
 import { ContentAvatar, ExpandButton } from "comps";
-import { useSession } from "hooks"
 import { useQuery } from "gql";
-import { useEffect, useState } from "react";
+import { Face } from "@mui/icons-material";
+import { getIcon } from "mime";
 
-export default function ContentHeader({ id, expand, setExpand }: { id: string, expand: boolean, setExpand: Function }) {
-	const [_, setSession] = useSession();
+export default function ContentHeader({
+  id,
+  expand,
+  setExpand,
+  hideMembers = false,
+}: {
+  id: string;
+  expand: boolean;
+  setExpand: Function;
+  hideMembers?: boolean;
+}) {
   const query = useQuery();
-  const content = query.contents_by_pk({ id });
-
-  useEffect(() => {
-    if (content?.id && content?.folder?.id && content?.parent?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.parent?.name ?? "", url: `/content/${content.parentId}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
-    else if (content?.id && content?.folder?.id) setSession({ path: [{ name: content.folder?.name ?? "", url: `/folder/${content.folder?.id}` }, { name: content.name ?? "", url: `/content/${content.id}` }] });
-  }, [id, content]);
+  const node = query.node({ id });
 
   return (
     <CardHeader
-      title={content?.name}
+      title={<Typography color="secondary">{node?.name}</Typography>}
       avatar={<ContentAvatar id={id} />}
       subheader={
-        !(content?.parent && content?.folder?.mode == "candidates")
-          ? content
-              ?.authors()
-              .map((a) => a.identity?.displayName ?? a.name)
-              .join(", ")
-          : ""
+        <>
+          {!hideMembers &&
+            node
+              ?.members()
+              .map((m) => (
+                <Chip
+                  key={m.id ?? 0}
+                  icon={m.node?.mime ? getIcon(m.node?.mime) : <Face />}
+                  color="secondary"
+                  variant="outlined"
+                  size="small"
+                  sx={{ mr: 0.5 }}
+                  label={m.name ?? m.user?.displayName}
+                />
+              ))}
+        </>
       }
       action={
         <ExpandButton expand={expand} onClick={() => setExpand(!expand)} />

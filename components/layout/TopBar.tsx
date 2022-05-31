@@ -9,59 +9,64 @@ import {
   useMediaQuery,
   Box,
 } from "@mui/material";
-
 import { Menu, ArrowDropDown } from "@mui/icons-material";
-import { Drawer, UserButton, EventDialog, HideOnScroll } from "comps";
+import { Drawer, UserButton, PrefixDialog, HideOnScroll } from "comps";
 import { useSession } from "hooks";
-import { useAuth } from "@nhost/react-auth";
+import { useAuthenticationStatus } from "@nhost/react";
 
 export default function TopBar() {
   const [session] = useSession();
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [eventDialog, setEventDialog] = useState(false);
+  const [prefixDialog, setPrefixDialog] = useState(false);
+  const { isAuthenticated } = useAuthenticationStatus();
   const largeScreen = useMediaQuery("(min-width:640px)");
-  const { signedIn } = useAuth();
 
-  const name = largeScreen ? session?.event?.name : session?.event?.shortName;
+  const name = session?.prefix?.name;
 
   return (
     <>
       <HideOnScroll>
-        <AppBar elevation={2}>
+        <AppBar elevation={2} enableColorOnDark>
           <Toolbar>
-            {session && [
-              <IconButton
-                key="menu"
-                aria-label="menu"
-                edge="start"
-                color="inherit"
-                onClick={() => setOpenDrawer(!openDrawer)}
-                size="large"
-              >
-                <Menu />
-              </IconButton>,
-              <Tooltip key="tooltip" title="Vælg begivenhed">
-                <Button
+            {session &&
+              isAuthenticated && [
+                <IconButton
+                  key="menu"
+                  aria-label="menu"
+                  edge="start"
                   color="inherit"
-                  endIcon={<ArrowDropDown />}
-                  onClick={() => setEventDialog(true)}
+                  onClick={() => setOpenDrawer(!openDrawer)}
+                  size="large"
                 >
-                  <Typography color="inherit" variant="h6">
-                    {name || "Vælg begivenhed"}
-                  </Typography>
-                </Button>
-              </Tooltip>,
-            ]}
+                  <Menu />
+                </IconButton>,
+                <Tooltip key="tooltip" title="Vælg begivenhed">
+                  <Button
+                    color="inherit"
+                    endIcon={<ArrowDropDown />}
+                    onClick={() => setPrefixDialog(true)}
+                  >
+                    <Typography
+                      color="inherit"
+                      variant={largeScreen ? "h6" : undefined}
+                    >
+                      {name ?? "Vælg begivenhed"}
+                    </Typography>
+                  </Button>
+                </Tooltip>,
+              ]}
             <Box sx={{ flexGrow: 1 }} />
             <UserButton />
           </Toolbar>
         </AppBar>
       </HideOnScroll>
-      <Drawer open={openDrawer} onClick={() => setOpenDrawer(false)} />
-      {signedIn && (
-        <Suspense fallback={null}>
-          <EventDialog open={eventDialog} setOpen={setEventDialog} />
-        </Suspense>
+      {isAuthenticated && (
+        <>
+          <Suspense fallback={null}>
+            <PrefixDialog open={prefixDialog} setOpen={setPrefixDialog} />
+          </Suspense>
+          <Drawer open={openDrawer} setOpen={() => setOpenDrawer(false)} />
+        </>
       )}
       <Box sx={{ p: 4 }} />
     </>

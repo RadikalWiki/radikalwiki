@@ -11,58 +11,30 @@ import {
   InputLabel,
 } from "@mui/material";
 import { useSession } from "hooks";
-import { events, events_insert_input, folders_insert_input, query, resolved, useMutation, useQuery } from "gql";
+import { nodes_insert_input, useMutation, useQuery } from "gql";
 import { DatePicker } from "@mui/lab";
 
 export default function EventForm() {
   const router = useRouter();
-  const [session, setSession] = useSession();
+  const [_, setSession] = useSession();
   const [name, setName] = useState<string>("");
-  const [abbr, setAbbr] = useState<string>("");
   const [group, setGroup] = useState<string>("");
   const [date, setDate] = useState<string | null>();
   const query = useQuery();
-  const groups = query.groups().map(({ id, name }) => ({ id, name }))
-  const [addEvent] = useMutation(
-    (mutation, args: events_insert_input) => {
-      const event = mutation.insert_events_one({ object: args }) as events;
-      const { id, name, shortName } = event;
-      return { id, name, shortName }
-    }
-  );
-  const [addFolders] = useMutation((mutation, args: folders_insert_input) => {
-    return mutation.insert_folders_one({ object: args })?.id;
+  const groups = query
+    .nodes({ where: { mime: { name: { _eq: "wiki/group" } } } })
+    .map(({ id, name }) => ({ id, name }));
+  const [addEvent] = useMutation((mutation, args: nodes_insert_input) => {
+    const { id, name } = mutation.insertNode({ object: args })!;
+    return { id, name };
   });
-  const [updateEvent] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.update_events_by_pk({
-        pk_columns: { id: args.id },
-        _set: args.set,
-      })?.id;
-    }
-  );
 
   const handleCreate = async () => {
-    const event = await addEvent({ args: { name, shortName: abbr, groupId: group } })
-    const folderId = await addFolders({
-      args:
-      {
-        name: `${name} root`,
-        eventId: event.id,
-      },
-
-    });
-    await updateEvent({
-      args: {
-        id: event.id,
-        set: { folderId },
-      },
-    });
+    const event = await addEvent({ args: { name, parentId: group } });
     setSession({
-      event: event as any,
-      roles: ["admin"],
+      prefix: event as any,
     });
-    router.push(`/folder/${folderId}`)
+    router.push(event.id);
   };
 
   return (
@@ -81,17 +53,6 @@ export default function EventForm() {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              fullWidth
-              value={abbr}
-              onChange={(e) => setAbbr(e.target.value)}
-              label="Forkortelse"
-              placeholder="Fx HB1"
-              name="short-name"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs={12}>
             <FormControl fullWidth>
               <InputLabel>Gruppe</InputLabel>
               <Select
@@ -100,11 +61,11 @@ export default function EventForm() {
                 value={group}
                 onChange={(e) => setGroup(e.target.value)}
               >
-                {
-                  groups.map(group =>
-                    <MenuItem key={group.id} value={group.id}>{group.name}</MenuItem>
-                  )
-                }
+                {groups.map((group) => (
+                  <MenuItem key={group.id} value={group.id}>
+                    {group.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -113,8 +74,7 @@ export default function EventForm() {
               label="Dato"
               value={date}
               onChange={setDate}
-              renderInput={(params) => <TextField fullWidth
-                {...params} />}
+              renderInput={(params) => <TextField fullWidth {...params} />}
             />
           </Grid>
           <Grid item xs={12}>
