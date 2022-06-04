@@ -69,6 +69,7 @@ const subscriptionsClient =
           return url.href;
         },
         reconnect: true,
+        lazy: true,
       })
     : undefined;
 
