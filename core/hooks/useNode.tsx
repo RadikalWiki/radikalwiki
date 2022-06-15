@@ -16,7 +16,7 @@ import slugify from "slugify"
 import usePath from "./usePath";
 
 const getNamespace = (name?: string) => {
-  return name?.trim().toLocaleLowerCase().replace(" ", "_");
+  return name?.trim().toLocaleLowerCase().replaceAll(" ", "_");
 };
 
 export type Node = {
@@ -38,7 +38,7 @@ export type Node = {
 
 const useNode = (param?: { id?: string }) => {
   const path = usePath();
-  const query = useQuery() //.node({ id });
+  const query = useQuery();
   const node = param?.id ? query.node({ id: param?.id }) : query.nodes(toWhere(path))?.[0];
   const nodeContextId = node?.contextId
   const subs = useSubscription();
@@ -86,14 +86,14 @@ const useNode = (param?: { id?: string }) => {
     const nodeId = await insertNode({
       args: {
         name,
-        namespace: namespace ? getNamespace(namespace) : getNamespace(name),
+        namespace: getNamespace(namespace ?? name),
         data,
         parentId: parentId ? parentId : node?.id,
         mimeId,
         contextId: contextId ?? nodeContextId,
       },
     });
-    return { id: nodeId, namespace };
+    return { id: nodeId, namespace: getNamespace(namespace ?? name) };
   };
 
   const del = async () => {
