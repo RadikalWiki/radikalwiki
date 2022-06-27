@@ -1,5 +1,5 @@
 /* eslint-disable functional/immutable-data */
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import isHotkey from "is-hotkey";
 import { jsx } from "slate-hyperscript";
 import { Editable, withReact, useSlate, Slate, ReactEditor } from "slate-react";
@@ -18,6 +18,8 @@ import {
   ButtonGroup,
   Divider,
   FormControl,
+  IconButton,
+  InputBase,
   InputLabel,
   MenuItem,
   Paper,
@@ -39,6 +41,7 @@ import {
   FormatListNumbered,
   FormatUnderlined,
   Link,
+  LinkOff,
   Redo,
   Undo,
 } from "@mui/icons-material";
@@ -91,11 +94,15 @@ type EditorNode = {
   italic?: boolean;
   bold?: boolean;
   underline?: boolean;
+  link?: string;
 };
 
-type EditorElement = { type?: string, text: string } | SlateElement;
+type EditorElement = { type?: string; text: string } | SlateElement;
 
-const ELEMENT_TAGS: Record<string, (el?: Element) => Omit<EditorElement, "children">> = {
+const ELEMENT_TAGS: Record<
+  string,
+  (el?: Element) => Omit<EditorElement, "children">
+> = {
   BLOCKQUOTE: () => ({ type: "quote" }),
   H1: () => ({ type: "heading-one" }),
   H2: () => ({ type: "heading-two" }),
@@ -109,7 +116,6 @@ const ELEMENT_TAGS: Record<string, (el?: Element) => Omit<EditorElement, "childr
   P: () => ({ type: "paragraph" }),
   PRE: () => ({ type: "code" }),
   UL: () => ({ type: "bulleted-list" }),
-  A: (el) => ({ type: "link", link: el?.getAttribute("href") }),
 };
 
 // COMPAT: `B` is omitted here because Google Docs uses `<b>` in weird ways.
@@ -121,6 +127,7 @@ const TEXT_TAGS: Record<string, (el?: Element) => EditorNode> = {
   S: () => ({ strikethrough: true }),
   STRONG: () => ({ bold: true }),
   U: () => ({ underline: true }),
+  A: (el) => ({ link: el?.getAttribute("href") ?? "" }),
 };
 
 const deserialize = (el: any) => {
@@ -217,13 +224,12 @@ export default function SlateEditor({
         <MarkButtons />
         <ListButtons />
         <AlignButtons />
-        <Buttons />
+        <LinkButton />
       </Stack>
       <Divider />
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}
-        placeholder="Enter some rich text…"
         spellCheck
         autoFocus
         onKeyDown={(event) => {
@@ -240,38 +246,6 @@ export default function SlateEditor({
   );
 }
 
-const toggleBlock = (editor: any, format: any) => {
-  const isActive = isBlockActive(
-    editor,
-    format,
-    TEXT_ALIGN_TYPES.includes(format) ? "align" : "type"
-  );
-  const isList = LIST_TYPES.includes(format);
-
-  Transforms.unwrapNodes<EditorElement>(editor, {
-    match: (n: EditorElement) =>
-      !Editor.isEditor(n) &&
-      LIST_TYPES.includes((n as any).type) &&
-      SlateElement.isElement(n) &&
-      !TEXT_ALIGN_TYPES.includes(format),
-    split: true,
-  });
-  const newProperties: any = TEXT_ALIGN_TYPES.includes(format)
-    ? {
-        align: isActive ? undefined : format, 
-      }
-    : {
-        type: isActive ? "paragraph" : isList ? "list-item" : format,
-      };
-
-  Transforms.setNodes<SlateElement>(editor, newProperties);
-
-  if (!isActive && isList) {
-    const block = { type: format, children: [] };
-    Transforms.wrapNodes(editor, block);
-  }
-};
-
 const toggleMark = (editor: any, format: any) => {
   const isActive = isMarkActive(editor, format);
 
@@ -286,7 +260,7 @@ const currentBlocks = (
   editor: any,
   validBlocks: string[],
   blockType = "type",
-  prop?: string,
+  prop?: string
 ) => {
   const { selection } = editor;
   if (!selection) return "paragraph";
@@ -309,7 +283,9 @@ const currentBlocks = (
   return blocks.length > 0
     ? blocks
         .filter((block) => (block as any)[blockType])
-        ?.map((block) => prop ? (block as any)[prop] : (block as any)[blockType])
+        ?.map((block) =>
+          prop ? (block as any)[prop] : (block as any)[blockType]
+        )
     : undefined;
 };
 
@@ -398,12 +374,7 @@ const Element = ({ attributes, children, element }: any) => {
           {children}
         </ol>
       );
-    case 'link':
-      return (
-        <a href={element.link} {...attributes}>
-          {children}
-        </a>
-      )
+
     default:
       return (
         <p style={style} {...attributes}>
@@ -418,8 +389,23 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   const code = leaf.code ? <em>{bold}</em> : bold;
   const underline = leaf.underline ? <u>{code}</u> : code;
   const italic = leaf.italic ? <i>{underline}</i> : underline;
+  const link = leaf.link ? <a href={leaf.link}>{children}</a> : italic;
 
-  return <span {...attributes}>{italic}</span>;
+  return <span {...attributes}>{link}</span>;
+};
+
+const toggleBlock = (editor: any, format: any) => {
+  const isActive = isBlockActive(
+    editor,
+    format,
+    "type"
+  );
+
+  const newProperties: any = {
+        type: isActive ? "paragraph" : format,
+      };
+
+  Transforms.setNodes<SlateElement>(editor, newProperties);
 };
 
 const BlockSelect = () => {
@@ -429,6 +415,7 @@ const BlockSelect = () => {
       <InputLabel>Stil</InputLabel>
       <Select
         label="Stil"
+        sx={{ width: 145 }}
         value={currentBlocks(editor, STYLE_TYPES) ?? "paragraph"}
         onChange={(e) => toggleBlock(editor, e.target.value)}
       >
@@ -446,7 +433,7 @@ const HistoryButtons = () => {
   const editor = useSlate() as HistoryEditor;
 
   return (
-    <ButtonGroup color="secondary">
+    <ButtonGroup color="inherit">
       <Button
         disabled={editor.history.undos.length == 0}
         onClick={() => editor.undo()}
@@ -465,8 +452,26 @@ const HistoryButtons = () => {
 
 const ListButtons = () => {
   const editor = useSlate();
-  const handleBlock = (e: any, block: string) => {
-    toggleBlock(editor, block);
+  const handleBlock = (e: any, format: string) => {
+    const isActive = isBlockActive(editor, format, "type");
+
+    Transforms.unwrapNodes<EditorElement>(editor, {
+      match: (n: EditorElement) =>
+        !Editor.isEditor(n) &&
+        LIST_TYPES.includes((n as any).type) &&
+        SlateElement.isElement(n),
+      split: true,
+    });
+    const newProperties: any = {
+      type: isActive ? "paragraph" : "list-item",
+    };
+
+    Transforms.setNodes<SlateElement>(editor, newProperties);
+
+    if (!isActive) {
+      const block = { type: format, children: [] };
+      Transforms.wrapNodes(editor, block);
+    }
   };
 
   return (
@@ -488,7 +493,11 @@ const ListButtons = () => {
 const AlignButtons = () => {
   const editor = useSlate();
   const handleBlock = (e: any, block: string) => {
-    toggleBlock(editor, block);
+    const isActive = isBlockActive(editor, block, "align");
+    const newProperties: any = {
+      align: isActive ? undefined : block,
+    };
+    Transforms.setNodes<SlateElement>(editor, newProperties);
   };
 
   return (
@@ -521,7 +530,11 @@ const MarkButtons = () => {
     newMarks: string[]
   ) => {
     event.preventDefault();
-    newMarks.map((mark) => toggleMark(editor, mark));
+    // Symmetrical Difference
+    newMarks
+      .filter((mark) => !getMarks(marks).includes(mark))
+      .concat(getMarks(marks).filter((x) => !newMarks.includes(x)))
+      .map((mark) => toggleMark(editor, mark));
   };
 
   const getMarks = (marks: any) => {
@@ -545,8 +558,11 @@ const MarkButtons = () => {
   );
 };
 
-const Buttons = () => {
+
+
+const LinkButton = () => {
   const editor = useSlate();
+  const marks = Editor.marks(editor);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -554,15 +570,10 @@ const Buttons = () => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
-  const handleChange = (
-    event: any
-  ) => {
-    console.log(event)
+  const handleChange = (event: any) => {
     event.preventDefault();
-    //toggleMark(editor, "link", event.target.value)
-    //newMarks.map((mark) => toggleMark(editor, mark));
+    Editor.addMark(editor, "link", event.target.value);
   };
-  console.log()
 
   return (
     <>
@@ -594,14 +605,35 @@ const Buttons = () => {
           },
         ]}
       >
-        <Paper>
-          <TextField value={currentBlocks(editor, ["link"], "type", "link")?.[0] ?? ""} onChange={handleChange}></TextField>
+        <Paper
+          sx={{
+            p: "2px 4px",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            value={(marks as any)?.link ?? ""}
+            onChange={handleChange}
+          />
+          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+          <IconButton
+            sx={{ p: "10px" }}
+            color="inherit"
+            onClick={() => {
+              setAnchorEl(null);
+              Editor.removeMark(editor, "link")
+            }}
+          >
+            <LinkOff />
+          </IconButton>
         </Paper>
       </Popper>
       <ToggleButton
         value="link"
         onClick={handleClick}
-        selected={isBlockActive(editor, "link")}
+        selected={!!(marks as any)?.link}
       >
         <Link />
       </ToggleButton>
