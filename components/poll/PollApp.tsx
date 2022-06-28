@@ -13,11 +13,11 @@ export default function PollApp({
   return (
     <>
       {!screen && <PollAdmin id={query?.id} />}
-      {query?.mutable === true ? (
+      {query?.mutable ? (
         <PollChartSub screen={screen} id={query?.id} />
-      ) : query?.mutable === false ? (
+      ) : (
         <PollChart id={query?.id} screen={screen} />
-      ) : null}
+      )}
     </>
   );
 }

@@ -22,7 +22,7 @@ function PollList({ id }: { id: string }) {
   const query = useQuery();
   const node = query.node({ id });
   const polls = node?.children({
-    where: { mime: { name: { _eq: "vote/poll" } } },
+    where: { mimeId: { _eq: "vote/poll" } },
   });
   const [deletePoll] = useMutation(
     (mutation, id: string) => {

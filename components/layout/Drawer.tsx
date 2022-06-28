@@ -37,21 +37,18 @@ const DrawerList = (
   const slicedPath = fullpath.slice(0, path.length + 1);
 
   const children = node?.children({
-    order_by: [{ priority: order_by.asc }],
+    order_by: [{ index: order_by.asc }],
     where: {
       mime: {
-        name: {
-          _regex:
-            "(wiki/(folder|document|group|event)|vote/(policy|position|change|candidate))",
-        },
+        hidden: { _eq: false }
       },
     },
   });
 
-  const policies = children.filter(
-    (child) => child.mime?.name == "vote/policy"
+  const policies = children?.filter(
+    (child) => child.mimeId == "vote/policy"
   );
-  const change = children.filter((child) => child.mime?.name == "vote/change");
+  const change = children?.filter((child) => child.mimeId == "vote/change");
 
   const elements = children?.map((child, childIndex) => {
     const childPath = [...path, child.namespace];
@@ -59,18 +56,15 @@ const DrawerList = (
       childPath.length === slicedPath.length &&
       childPath.every((v, i) => v === slicedPath[i]);
     const grandChildren = child?.children({
-      order_by: [{ priority: order_by.asc }],
+      order_by: [{ index: order_by.asc }],
       where: {
         mime: {
-          name: {
-            _regex:
-              "(wiki/(folder|document|group|event)|vote/(policy|position|change|candidate))",
-          },
+          hidden: { _eq: false }
         },
       },
     });
     const someChildren = grandChildren?.length && grandChildren?.[0].namespace;
-    const mimeName = child?.mime?.name;
+    const mimeName = child?.mimeId;
 
     if (!child?.id) return;
     return (
@@ -86,7 +80,7 @@ const DrawerList = (
               <Avatar sx={{ width: 24, height: 24 }}>
                 <Typography fontSize={18}>
                   {getIcon(
-                    child.mime,
+                    child.mimeId!,
                     policies.findIndex((e) => e.id === child.id)
                   )}
                 </Typography>
@@ -98,7 +92,7 @@ const DrawerList = (
                 </Typography>
               </Avatar>
             ) : (
-              getIcon(child?.mime)
+              getIcon(child?.mimeId!)
             )}
           </ListItemIcon>
           <ListItemText>
@@ -159,7 +153,7 @@ const DrawerList = (
         component={NextLink}
         href={`/${path?.join("/")}`}
       >
-        <ListItemIcon>{getIcon(node?.mime!)}</ListItemIcon>
+        <ListItemIcon>{getIcon(node?.mimeId!)}</ListItemIcon>
         <ListItemText primary={node?.name} />
       </ListItemButton>
       {elements}

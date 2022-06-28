@@ -34,7 +34,7 @@ const ListSuspense = () => {
   const events = query.nodes({
     where: {
       _and: [
-        { mime: { name: { _eq: "wiki/event" } } },
+        { mimeId: { _eq: "wiki/event" } },
         {
           members: {
             _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
@@ -79,7 +79,7 @@ const ListSuspense = () => {
                 bgcolor: (t) => t.palette.primary.main,
               }}
             >
-              {getIcon(parent?.mime!)}
+              {getIcon(parent?.mimeId!)}
             </Avatar>
           </ListItemAvatar>
           <ListItemText primary={parent?.name} />

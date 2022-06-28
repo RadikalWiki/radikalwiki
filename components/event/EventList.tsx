@@ -6,7 +6,7 @@ import { useQuery } from "gql";
 export default function EventList() {
   const query = useQuery();
   const events = query.nodes({
-    where: { mime: { name: { _eq: "wiki/event" } } },
+    where: { mimeId: { _eq: "wiki/event" } },
   });
 
   return (

@@ -28,13 +28,13 @@ export default function AuthorTextField({
             limit: 10,
             where: {
               _and: [
-                { mime: { name: { _eq: "wiki/group" } } },
+                { mimeId: { _eq: "wiki/group" } },
                 { name: { _ilike: like } },
               ],
             },
             order_by: [{ name: order_by.asc }],
           })
-          .map(({ id, name }) => ({ name, nodeId: id, mime: "wiki/group" }));
+          .map(({ id, name }) => ({ name, nodeId: id, mimeId: "wiki/group" }));
       });
       const users = await resolved(() => {
         return query
@@ -84,7 +84,7 @@ export default function AuthorTextField({
           <Chip
             variant="outlined"
             color="secondary"
-            icon={option?.mime ? getIcon({ name: option?.mime }) : <Face />}
+            icon={option?.mimeId ? getIcon(option.mimeId) : <Face />}
             label={option?.name}
           />
         </Box>
@@ -94,7 +94,7 @@ export default function AuthorTextField({
           <Chip
             variant="outlined"
             color="secondary"
-            icon={option?.mime ? getIcon({ name: option?.mime }) : <Face />}
+            icon={option?.mimeId ? getIcon(option.mimeId) : <Face />}
             label={option?.name}
             {...getCustomizedTagProps({ index })}
             key={index}

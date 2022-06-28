@@ -12,11 +12,11 @@ function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
       ?.children({
         where: {
           _and: [
-            { mutable: { _eq: false } },
-            { mime: { name: { _in: ["vote/change", "vote/policy"] } } },
+            { attachable: { _eq: true } },
+            { mimeId: { _in: ["vote/change", "vote/policy"] } },
           ],
         },
-        order_by: [{ priority: order_by.asc }, { createdAt: order_by.asc }],
+        order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       })
       .findIndex((e: any) => e.id === node.id) ?? 0;
 
@@ -27,7 +27,7 @@ function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
           screen ? t.palette.primary.main : t.palette.secondary.main,
       }}
     >
-      {getIcon(node?.mime!, index)}
+      {getIcon(node?.mimeId!, index)}
     </Avatar>
   );
 

@@ -10,9 +10,7 @@ export default function ScreenApp() {
 
   const content = subGet("active");
   const contentId = content?.id;
-  const mime = content?.mime?.name!;
-
-  console.log(contentId);
+  const mime = content?.mimeId!;
 
   return (
     <Box sx={{ height: "100%" }}>

@@ -17,7 +17,18 @@ export default function PollAdmin({ id }: { id: string }) {
       })?.id;
     }
   );
+  
 
+  const voters = sub?.context?.permissions({
+    where: {
+      _and: [
+        { mimeId: { _eq: "vote/vote" } },
+        { insert: { _eq: true } },
+        { node: { members: { active: { _eq: true } } } },
+      ],
+    },
+  })?.length;
+  /*
   const voters = sub?.context?.mimes({
     where: {
       _and: [
@@ -33,10 +44,11 @@ export default function PollAdmin({ id }: { id: string }) {
       ],
     },
   })?.length;
+  */
 
   const handleStopPoll = async (_: any) => {
     await update({ args: { mutable: false, data: { ...data, voters } } });
-    await refetch(() => node?.children({ where: { mime: { name: { _eq: "vote/vote" } } } }).map(vote => vote.data))
+    await refetch(() => node?.children({ where: { mimeId: { _eq: "vote/vote" } } }).map(vote => vote.data))
   };
   
 

@@ -14,9 +14,9 @@ import {
 
 export default function MimeLoader() {
   const node = useNode();
-  if (!node.query?.mime?.name) return null;
+  if (!node.query?.mimeId) return null;
 
-  switch (node.query.mime.name) {
+  switch (node.query.mimeId) {
     case "wiki/folder":
       return <FolderApp />;
     case "wiki/document":

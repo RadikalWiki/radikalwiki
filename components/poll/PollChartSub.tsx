@@ -22,20 +22,20 @@ const Chart = DxChart as any;
 
 const parseData = (poll: Maybe<nodes>, screen: boolean) => {
   const count = poll
-    ?.children_aggregate({ where: { mime: { name: { _eq: "vote/vote" } } } })
+    ?.children_aggregate({ where: { mimeId:{ _eq: "vote/vote" } } })
     .aggregate?.count();
   const data = poll?.data();
 
   const owner = poll?.isContextOwner;
   const mutable = poll?.mutable;
   const { options, hidden } =
-    data && poll?.mime?.name == "vote/poll"
+    data && poll?.mimeId == "vote/poll"
       ? data
       : { options: [], hidden: true };
 
   const opts = [...Array(options.length).keys()].map((opt: number) => [opt, 0]);
   const votes = poll?.children({
-    where: { mime: { name: { _eq: "vote/vote" } } },
+    where: { mimeId: { _eq: "vote/vote" } },
   });
   const acc = votes
     ?.map(({ data }) => data())
@@ -67,7 +67,7 @@ export default function PollChartSub({
   //const voters = poll?.context?.members_aggregate().aggregate?.count() ?? 10;
 
   //const voteCount = group?.sub?.members_aggregate().aggregate?.count()
-  //poll?.context?.mimes({ where: { name: { _eq: "vote/vote" } }) members_aggregate({ where: { parent: { permissions: { _and: [{ mime: { name: { _eq: "vote/vote" } } } ] } } }}).aggregate?.count
+  //poll?.context?.mimes({ where: { name: { _eq: "vote/vote" } }) members_aggregate({ where: { parent: { permissions: { _and: [{ mimeId: { _eq: "vote/vote" } } ] } } }}).aggregate?.count
   // const voters = poll?.context?.mimes({
   //   where: {
   //     _and: [

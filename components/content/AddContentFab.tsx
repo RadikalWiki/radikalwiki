@@ -36,7 +36,7 @@ export default function AddContentFab({ id }: { id: string }) {
         id={id}
         open={open}
         setOpen={setOpen}
-        mimes={mimeChildren}
+        mimes={mimeChildren.map(mime => mime.id!)}
       />
     </>
   );

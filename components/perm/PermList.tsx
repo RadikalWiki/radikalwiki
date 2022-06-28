@@ -87,10 +87,10 @@ function MimeListElement({ mime, index }: { mime: mimes; index: number }) {
               bgcolor: (theme) => theme.palette.secondary.main,
             }}
           >
-            {getIcon(mime)}
+            {getIcon(mime?.id)}
           </Avatar>
         </ListItemAvatar>
-        <ListItemText primary={mime?.name} />
+        <ListItemText primary={mime?.id} />
         <ListItemSecondaryAction>
           <IconButton
             onClick={() => {

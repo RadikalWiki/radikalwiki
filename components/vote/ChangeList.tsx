@@ -132,8 +132,8 @@ function ChildListElement({ node, index }: { node: nodes; index: number }) {
 
 function ChildListRaw({ node }: { node?: nodes }) {
   const children = node?.children({
-    where: { mime: { name: { _eq: "vote/change" } } },
-    order_by: [{ priority: order_by.asc }],
+    where: { mimeId: { _eq: "vote/change" } },
+    order_by: [{ index: order_by.asc }],
   });
 
   return (
@@ -167,7 +167,7 @@ function ChangeList({ id }: { id: string }) {
               bgcolor: (theme) => theme.palette.secondary.main,
             }}
           >
-            {getIcon({ name: "vote/change" })}
+            {getIcon("vote/change")}
           </Avatar>
         }
         action={

@@ -29,7 +29,7 @@ export default function UserApp() {
               where: {
                 _and: [
                   { nodeId: { _eq: node?.id } },
-                  { parent: { mime: { name: { _eq: "wiki/group" } } } },
+                  { parent: { mimeId: { _eq: "wiki/group" } } },
                 ],
               },
             })
@@ -56,7 +56,7 @@ export default function UserApp() {
               where: {
                 _and: [
                   { nodeId: { _eq: node?.id } },
-                  { parent: { mime: { name: { _eq: "wiki/event" } } } },
+                  { parent: { mimeId: { _eq: "wiki/event" } } },
                 ],
               },
             })
@@ -78,7 +78,7 @@ export default function UserApp() {
       </HeaderCard>
       <HeaderCard title="Indhold" avatar={<Subject />}>
         <List>
-          {nodes?.map(({ id, name, mime, parent }) => (
+          {nodes?.map(({ id, name, mimeId, parent }) => (
             <ListItem key={id} button component={Link} href={id ?? ""}>
               <ListItemAvatar>
                 <Avatar
@@ -86,7 +86,7 @@ export default function UserApp() {
                     bgcolor: (theme) => theme.palette.secondary.main,
                   }}
                 >
-                  {getIcon(mime)}
+                  {getIcon(mimeId!)}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={name} secondary={parent?.name} />

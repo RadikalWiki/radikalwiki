@@ -22,7 +22,7 @@ export default function EventForm() {
   const [date, setDate] = useState<string | null>();
   const query = useQuery();
   const groups = query
-    .nodes({ where: { mime: { name: { _eq: "wiki/group" } } } })
+    .nodes({ where: { mimeId: { _eq: "wiki/group" } } })
     .map(({ id, name }) => ({ id, name }));
   const [addEvent] = useMutation((mutation, args: nodes_insert_input) => {
     const { id, name } = mutation.insertNode({ object: args })!;

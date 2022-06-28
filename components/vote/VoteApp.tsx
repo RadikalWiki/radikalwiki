@@ -57,7 +57,7 @@ export default function VoteApp() {
         checkUnique: node?.checkUnique({ args: { mime_name: "vote/vote" } }),
         data: node?.data(),
         mime: {
-          name: node?.mime?.name,
+          name: node?.mimeId,
 
         },
         mimeId: node?.mimes({ where: { name: { _eq: "vote/vote" }}})?.[0]?.id,
@@ -88,34 +88,28 @@ export default function VoteApp() {
   //const poll = subGet("active")
   //const poll = data;
   const canVote =
-    (sub?.context?.mimes({
+    (sub?.context?.permissions({
       where: {
-        _and: [
-          { name: { _eq: "vote/vote" } },
-          {
-            permisssions: {
-              _and: [
-                { insert: { _eq: true } },
-                {
-                  node: {
-                    members: {
-                      _and: [
-                        {
-                          _or: [
-                            { nodeId: { _eq: userId } },
-                            { email: { _eq: email } },
-                          ],
-                        },
-                        { active: { _eq: true } },
+          _and: [
+            { mimeId: { _eq: "vote/vote" } },
+            { insert: { _eq: true } },
+            {
+              node: {
+                members: {
+                  _and: [
+                    {
+                      _or: [
+                        { nodeId: { _eq: userId } },
+                        { email: { _eq: email } },
                       ],
                     },
-                  },
+                    { active: { _eq: true } },
+                  ],
                 },
-              ],
+              },
             },
-          },
-        ],
-      },
+          ],
+        },
     })?.length ?? 0) > 0;
   const checkUnique = poll?.checkUnique({ args: { mime_name: "vote/vote" } });
   const [addVote] = useMutation((mutation, args: nodes_insert_input) => {
@@ -124,7 +118,7 @@ export default function VoteApp() {
 
   const data = poll?.data();
   const { options, maxVote, minVote } =
-    data && poll?.mime?.name == "vote/poll"
+    data && poll?.mimeId == "vote/poll"
       ? data
       : { options: [], maxVote: 1, minVote: 1 };
 
@@ -166,8 +160,6 @@ export default function VoteApp() {
     return true;
   };
 
-  const mimeId = poll?.mimes({ where: { name: { _eq: "vote/vote" } } })?.[0]
-    ?.id;
   const contextId = poll?.contextId;
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -180,7 +172,7 @@ export default function VoteApp() {
     await addVote({
       args: {
         name,
-        mimeId,
+        mimeId: "vote/vote",
         parentId: poll?.id,
         contextId,
         data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
@@ -215,7 +207,7 @@ export default function VoteApp() {
     <HeaderCard
       title={canVote ? "Du har stemmeret" : "Du har ikke stemmeret"}
       subtitle={
-        (poll?.mime?.name == "vote/poll" &&
+        (poll?.mimeId == "vote/poll" &&
           canVote &&
           (checkUnique ? "Du har ikke stemt" : "Du har stemt")) ||
         ""
@@ -240,7 +232,7 @@ export default function VoteApp() {
 
   if (
     poll?.id &&
-    poll?.mime?.name == "vote/poll" &&
+    poll?.mimeId == "vote/poll" &&
     (!poll?.mutable || checkUnique === false || canVote === false)
   )
     return (
@@ -250,7 +242,7 @@ export default function VoteApp() {
       </>
     );
 
-  if (!(poll?.mutable && poll?.mime?.name == "vote/poll")) {
+  if (!(poll?.mutable && poll?.mimeId == "vote/poll")) {
     return (
       <>
         {status}

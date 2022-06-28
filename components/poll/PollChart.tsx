@@ -20,20 +20,20 @@ const Chart = DxChart as any;
 
 const parseData = (poll: Maybe<nodes>, screen: boolean) => {
   const count = poll
-    ?.children_aggregate({ where: { mime: { name: { _eq: "vote/vote" } } } })
+    ?.children_aggregate({ where: { mimeId: { _eq: "vote/vote" } } })
     .aggregate?.count();
   const data = poll?.data();
 
   const owner = poll?.isContextOwner;
   const mutable = poll?.mutable;
   const { options, hidden } =
-    data && poll?.mime?.name == "vote/poll"
+    data && poll?.mimeId == "vote/poll"
       ? data
       : { options: [], hidden: true };
 
   const opts = [...Array(options.length).keys()].map((opt: number) => [opt, 0]);
   const votes = poll?.children({
-    where: { mime: { name: { _eq: "vote/vote" } } },
+    where: { mimeId: { _eq: "vote/vote" } },
   });
   // TODO: validate
   const acc = votes

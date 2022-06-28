@@ -10,9 +10,6 @@ export default function SpeakDial({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const { sub: speakerlist, insert } = useNode({ id });
 
-  const mimeId = speakerlist?.mimes({
-    where: { name: { _eq: "speak/speak" } },
-  })?.[0]?.id;
   const parentId = speakerlist?.id;
   const handleAddSpeak = (type: string) => (_: any) => {
     setOpen(false);
@@ -22,7 +19,7 @@ export default function SpeakDial({ id }: { id: string }) {
     insert({
       name: displayName,
       namespace: `${displayName?.toLocaleLowerCase()}-${time}`,
-      mimeId: mimeId,
+      mimeId: "speak/speak",
       data: type,
       parentId,
     });

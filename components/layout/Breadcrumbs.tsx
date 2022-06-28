@@ -47,7 +47,7 @@ const BreadcrumbsLink = ({
       }}
     >
       <>
-        {getIcon(node?.mime!)}
+        {getIcon(node?.mimeId!)}
         <Collapse orientation="horizontal" in={open[index]}>
           <Typography noWrap color="secondary" sx={{ ml: 0.5 }}>
             {node?.name ?? "Ukendt"}

@@ -27,7 +27,7 @@ export default function SortFab({
         query.node({ id: folder.id }),
         query
           .node({ id: nodeId })
-          ?.children({ order_by: [{ priority: order_by.asc }] }),
+          ?.children({ order_by: [{ index: order_by.asc }] }),
       ],
       awaitRefetchQueries: true,
     }
@@ -35,7 +35,7 @@ export default function SortFab({
 
   const handleClick = async () => {
     const proms = elements.map(async (e: any, index: number) => {
-      const set = { priority: index };
+      const set = { index };
       return updateNode({ args: { id: e.id, set } });
     });
     await Promise.all(proms);

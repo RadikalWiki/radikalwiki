@@ -55,12 +55,12 @@ export default function NodeApp({ id }: { id: string }) {
   }, []);
 
   useEffect(() => {
-    const currentNode = [{ id: node?.id, name: node?.name, mime: node?.mime?.name, group: node?.mime?.name }];
+    const currentNode = [{ id: node?.id, name: node?.name, mime: node?.mimeId, group: node?.mimeId }];
     const parentNode = [{
       id: node?.parent?.id,
       name: node?.parent?.name,
-      mime: node?.parent?.mime?.name,
-      group: node?.parent?.mime?.name,
+      mime: node?.parent?.mimeId,
+      group: node?.parent?.mimeId,
     }];
     const parentLink = [{ source: node?.id, target: node?.parent?.id, value: 4 }];
     const childNodes =
@@ -68,8 +68,8 @@ export default function NodeApp({ id }: { id: string }) {
       ({
         id,
         name,
-        mime: mime?.name,
-        group: mime?.name,
+        mime: mimeId,
+        group: mimeId,
       })
       ) ?? [];
     const childLinks =
@@ -98,8 +98,7 @@ export default function NodeApp({ id }: { id: string }) {
   const handleOnClick = async (node: Node) => {
     const path = await fromId(node?.id);
     await resolved(() => {
-      const { id, name, mime } = query.nodes(toWhere(path))?.[0];
-      mime?.name
+      const { id, name, mimeId } = query.nodes(toWhere(path))?.[0];
     })
 
     router.push(`/${path.join("/")}${node.id !== id ? "?app=node" : ""}`);

@@ -153,7 +153,7 @@ export default function ContentToolbar({
               />
             ),
             ["vote/policy", "vote/position", "vote/change"].includes(
-              node?.mime?.name ?? ""
+              node?.mimeId ?? ""
             ) && (
               <AutoButton
                 key="poll"
@@ -162,7 +162,7 @@ export default function ContentToolbar({
                 onClick={handleAddPoll}
               />
             ),
-            ["wiki/event", "wiki/group"].includes(node?.mime?.name ?? "") && (
+            ["wiki/event", "wiki/group"].includes(node?.mimeId ?? "") && (
               <AutoButton
                 key="member"
                 text="Medlemmer"

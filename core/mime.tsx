@@ -13,15 +13,14 @@ import {
   Face,
   Article,
 } from "@mui/icons-material";
-import { mimes } from "gql";
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
   return index >= 26 ? String.fromCharCode(64 + Math.floor(index / 26)) + f : f;
 };
 
-const getIcon = (mime?: any, index?: number): any => {
-  switch (mime?.name) {
+const getIcon = (mimeId?: string, index?: number): any => {
+  switch (mimeId) {
     case "wiki/home":
       return <Home />;
     case "wiki/group":
@@ -51,8 +50,8 @@ const getIcon = (mime?: any, index?: number): any => {
   }
 };
 
-const getName = (mime?: mimes): string => {
-  switch (mime?.name) {
+const getName = (mimeId?: string): string => {
+  switch (mimeId) {
     case "wiki/group":
       return "Gruppe";
     case "wiki/event":

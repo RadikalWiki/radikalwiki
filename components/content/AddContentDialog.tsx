@@ -29,18 +29,18 @@ export default function AddContentDialog({
   id: string;
   open: boolean;
   setOpen: Function;
-  mimes: mimes[];
+  mimes: string[];
   initName?: string;
 }) {
   const router = useRouter();
   const [name, setName] = useState<string>(initName ?? "");
-  const [mimeId, setMimeId] = useState(mimes?.[0]?.id ?? "");
+  const [mimeId, setMimeId] = useState(mimes?.[0] ?? "");
   const { insert } = useNode({ id });
 
   const handleSubmit = async () => {
     const { namespace } = await insert({
       name,
-      mimeId: mimes.length == 1 ? mimes[0].id : mimeId!,
+      mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
     });
     if (!namespace) return;
     setOpen(false);
@@ -71,9 +71,9 @@ export default function AddContentDialog({
                 required
                 value={mimeId}
                 renderValue={(mimeId) => {
-                  const mime = mimes.filter((mime) => mime.id == mimeId)?.[0];
+                  const mime = mimes.filter((mime) => mime == mimeId)?.[0];
                   return mime ? (
-                    <MenuItem sx={{ m: -1 }} key={mime.id} value={mime.id}>
+                    <MenuItem sx={{ m: -1 }} key={mime} value={mime}>
                       <ListItemIcon>{getIcon(mime)}</ListItemIcon>
                       <ListItemText>{getName(mime)}</ListItemText>
                     </MenuItem>
@@ -82,7 +82,7 @@ export default function AddContentDialog({
                 onChange={(e) => setMimeId(e.target.value)}
               >
                 {mimes?.map((mime) => (
-                  <MenuItem key={mime?.id ?? 0} value={mime?.id}>
+                  <MenuItem key={mime ?? 0} value={mime}>
                     <ListItemIcon>{getIcon(mime)}</ListItemIcon>
                     <ListItemText>{getName(mime)}</ListItemText>
                   </MenuItem>

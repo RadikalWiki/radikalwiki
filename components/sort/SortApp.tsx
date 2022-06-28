@@ -21,14 +21,14 @@ export default function SortApp() {
   const children =
     node
       ?.children({
-        order_by: [{ priority: order_by.asc }],
+        order_by: [{ index: order_by.asc }],
       })
-      .map(({ id, name, priority, mutable, mime }) => ({
+      .map(({ id, name, index, mutable, mimeId }) => ({
         id,
         name,
-        priority,
+        index,
         mutable,
-        mime: { name: mime?.name },
+        mimeId,
       })) ?? [];
 
   useEffect(() => {

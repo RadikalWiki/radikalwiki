@@ -9,15 +9,13 @@ export default function AddVoteChildButton({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const { query: node } = useNode({ id });
 
-  const mime = node?.mimes({ where: { name: { _eq: "vote/change" } } })?.[0];
-
-  const name = node?.mime?.name == "vote/position" ? displayName : "";
+  const name = node?.mimeId == "vote/position" ? displayName : "";
 
   const handleSubmit = async () => {
     setOpen(true);
   };
 
-  if (!node?.mutable || !node.isOwner) return null;
+  if (!node?.attachable || !node?.isOwner) return null;
 
   return (
     <>
@@ -29,7 +27,7 @@ export default function AddVoteChildButton({ id }: { id: string }) {
       <AddContentDialog
         initName={name}
         id={id}
-        mimes={[mime!]}
+        mimes={["vote/change"]}
         open={open}
         setOpen={setOpen}
       />

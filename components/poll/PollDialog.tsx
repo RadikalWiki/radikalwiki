@@ -62,7 +62,7 @@ export default function PollDialog({
     setVoteCount(newValue as number[]);
   };
 
-  const [hidden, setHidden] = useState(node?.mime?.name == "vote/position");
+  const [hidden, setHidden] = useState(node?.mimeId == "vote/position");
 
   const [stopPoll] = useMutation((mutation) => {
     return mutation.updateNodes({
@@ -72,17 +72,15 @@ export default function PollDialog({
   });
 
   const options = ["vote/policy", "vote/change"].includes(
-    node?.mime?.name ?? ""
+    node?.mimeId ?? ""
   )
     ? ["For", "Imod", "Blank"]
     : node
-        ?.children({ where: { mime: { name: { _eq: "vote/candidate" } } } })
+        ?.children({ where: { mimeId: { _eq: "vote/candidate" } } })
         .map(({ name }) => name)
         .concat("Blank");
   const optionsCount = options?.length || 0;
 
-  const mimeId = node?.mimes({ where: { name: { _eq: "vote/poll" } } })?.[0]
-    ?.id;
   const handleAddPoll = async (_: any) => {
     await stopPoll();
     const namespace = new Date(
@@ -91,7 +89,7 @@ export default function PollDialog({
     const poll = await insert({
       name: node?.name,
       namespace,
-      mimeId,
+      mimeId: "vote/poll",
       data: {
         minVote: voteCount[0],
         maxVote: voteCount[1],
@@ -116,7 +114,7 @@ export default function PollDialog({
       <Divider />
       <DialogContent>
         <Stack spacing={2}>
-          {!["vote/policy", "vote/change"].includes(node?.mime?.name ?? "") && (
+          {!["vote/policy", "vote/change"].includes(node?.mimeId ?? "") && (
             <>
               <Typography>Stemmeinterval</Typography>
               <Slider

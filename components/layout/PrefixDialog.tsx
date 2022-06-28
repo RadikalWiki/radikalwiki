@@ -30,7 +30,7 @@ export default function PrefixDialog({
   const events = query.nodes({
     where: {
       _and: [
-        { mime: { name: { _eq: "wiki/event" } } },
+        { mimeId: { _eq: "wiki/event" } },
         {
           members: {
             _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
@@ -46,7 +46,7 @@ export default function PrefixDialog({
       return {
         id: node?.id,
         name: node?.name ?? "",
-        mime: node?.mime?.name!,
+        mime: node?.mimeId!,
         namespace: node?.namespace,
       };
     });

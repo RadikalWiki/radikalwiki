@@ -96,21 +96,21 @@ input String_comparison_exp {
   _similar: String
 }
 
-scalar _uuid
+scalar _text
 
 """
-Boolean expression to compare columns of type "_uuid". All fields are combined with logical 'AND'.
+Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'.
 """
-input _uuid_comparison_exp {
-  _eq: _uuid
-  _gt: _uuid
-  _gte: _uuid
-  _in: [_uuid!]
+input _text_comparison_exp {
+  _eq: _text
+  _gt: _text
+  _gte: _text
+  _in: [_text!]
   _is_null: Boolean
-  _lt: _uuid
-  _lte: _uuid
-  _neq: _uuid
-  _nin: [_uuid!]
+  _lt: _text
+  _lte: _text
+  _neq: _text
+  _nin: [_text!]
 }
 
 """
@@ -2421,14 +2421,9 @@ type mimes {
     """filter the rows returned"""
     where: mimes_bool_exp
   ): [mimes!]
-
-  """An object relationship"""
-  context: nodes
-  contextId: uuid!
   hidden: Boolean!
-  id: uuid!
-  name: String!
-  parentIds: _uuid
+  id: String!
+  parentIds: _text
 
   """
   A computed field, executes function "parents"
@@ -2449,42 +2444,6 @@ type mimes {
     """filter the rows returned"""
     where: mimes_bool_exp
   ): [mimes!]
-
-  """An array relationship"""
-  permisssions(
-    """distinct select on columns"""
-    distinct_on: [permissions_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [permissions_order_by!]
-
-    """filter the rows returned"""
-    where: permissions_bool_exp
-  ): [permissions!]!
-
-  """An aggregate relationship"""
-  permisssions_aggregate(
-    """distinct select on columns"""
-    distinct_on: [permissions_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [permissions_order_by!]
-
-    """filter the rows returned"""
-    where: permissions_bool_exp
-  ): permissions_aggregate!
   unique: Boolean!
 }
 
@@ -2515,16 +2474,6 @@ input mimes_aggregate_order_by {
 }
 
 """
-input type for inserting array relation for remote table "mimes"
-"""
-input mimes_arr_rel_insert_input {
-  data: [mimes_insert_input!]!
-
-  """upsert condition"""
-  on_conflict: mimes_on_conflict
-}
-
-"""
 Boolean expression to filter rows from the table "mimes". All fields are combined with a logical 'AND'.
 """
 input mimes_bool_exp {
@@ -2532,14 +2481,10 @@ input mimes_bool_exp {
   _not: mimes_bool_exp
   _or: [mimes_bool_exp!]
   children: mimes_bool_exp
-  context: nodes_bool_exp
-  contextId: uuid_comparison_exp
   hidden: Boolean_comparison_exp
-  id: uuid_comparison_exp
-  name: String_comparison_exp
-  parentIds: _uuid_comparison_exp
+  id: String_comparison_exp
+  parentIds: _text_comparison_exp
   parents: mimes_bool_exp
-  permisssions: permissions_bool_exp
   unique: Boolean_comparison_exp
 }
 
@@ -2548,9 +2493,6 @@ unique or primary key constraints on table "mimes"
 """
 enum mimes_constraint {
   """unique or primary key constraint"""
-  mimes_name_context_id_key
-
-  """unique or primary key constraint"""
   mimes_pkey
 }
 
@@ -2558,46 +2500,34 @@ enum mimes_constraint {
 input type for inserting data into table "mimes"
 """
 input mimes_insert_input {
-  context: nodes_obj_rel_insert_input
-  contextId: uuid
   hidden: Boolean
-  id: uuid
-  name: String
-  parentIds: _uuid
-  permisssions: permissions_arr_rel_insert_input
+  id: String
+  parentIds: _text
   unique: Boolean
 }
 
 """aggregate max on columns"""
 type mimes_max_fields {
-  contextId: uuid
-  id: uuid
-  name: String
+  id: String
 }
 
 """
 order by max() on columns of table "mimes"
 """
 input mimes_max_order_by {
-  contextId: order_by
   id: order_by
-  name: order_by
 }
 
 """aggregate min on columns"""
 type mimes_min_fields {
-  contextId: uuid
-  id: uuid
-  name: String
+  id: String
 }
 
 """
 order by min() on columns of table "mimes"
 """
 input mimes_min_order_by {
-  contextId: order_by
   id: order_by
-  name: order_by
 }
 
 """
@@ -2633,20 +2563,16 @@ input mimes_on_conflict {
 """Ordering options when selecting data from "mimes"."""
 input mimes_order_by {
   children_aggregate: mimes_aggregate_order_by
-  context: nodes_order_by
-  contextId: order_by
   hidden: order_by
   id: order_by
-  name: order_by
   parentIds: order_by
   parents_aggregate: mimes_aggregate_order_by
-  permisssions_aggregate: permissions_aggregate_order_by
   unique: order_by
 }
 
 """primary key columns input for table: mimes"""
 input mimes_pk_columns_input {
-  id: uuid!
+  id: String!
 }
 
 """
@@ -2654,16 +2580,10 @@ select columns of table "mimes"
 """
 enum mimes_select_column {
   """column name"""
-  contextId
-
-  """column name"""
   hidden
 
   """column name"""
   id
-
-  """column name"""
-  name
 
   """column name"""
   parentIds
@@ -2676,11 +2596,9 @@ enum mimes_select_column {
 input type for updating data in table "mimes"
 """
 input mimes_set_input {
-  contextId: uuid
   hidden: Boolean
-  id: uuid
-  name: String
-  parentIds: _uuid
+  id: String
+  parentIds: _text
   unique: Boolean
 }
 
@@ -2689,16 +2607,10 @@ update columns of table "mimes"
 """
 enum mimes_update_column {
   """column name"""
-  contextId
-
-  """column name"""
   hidden
 
   """column name"""
   id
-
-  """column name"""
-  name
 
   """column name"""
   parentIds
@@ -2829,7 +2741,7 @@ type mutation_root {
   """
   delete single row from the table: "mimes"
   """
-  deleteMime(id: uuid!): mimes
+  deleteMime(id: String!): mimes
 
   """
   delete data from the table: "mimes"
@@ -2851,6 +2763,19 @@ type mutation_root {
     """filter the rows which have to be deleted"""
     where: nodes_bool_exp!
   ): nodes_mutation_response
+
+  """
+  delete single row from the table: "permissions"
+  """
+  deletePermission(id: uuid!): permissions
+
+  """
+  delete data from the table: "permissions"
+  """
+  deletePermissions(
+    """filter the rows which have to be deleted"""
+    where: permissions_bool_exp!
+  ): permissions_mutation_response
 
   """
   delete single row from the table: "relations"
@@ -2877,19 +2802,6 @@ type mutation_root {
     """filter the rows which have to be deleted"""
     where: users_bool_exp!
   ): users_mutation_response
-
-  """
-  delete data from the table: "permissions"
-  """
-  delete_permissions(
-    """filter the rows which have to be deleted"""
-    where: permissions_bool_exp!
-  ): permissions_mutation_response
-
-  """
-  delete single row from the table: "permissions"
-  """
-  delete_permissions_by_pk(id: uuid!): permissions
 
   """
   insert a single row into the table: "auth.providers"
@@ -3134,6 +3046,28 @@ type mutation_root {
   ): nodes_mutation_response
 
   """
+  insert a single row into the table: "permissions"
+  """
+  insertPermission(
+    """the row to be inserted"""
+    object: permissions_insert_input!
+
+    """upsert condition"""
+    on_conflict: permissions_on_conflict
+  ): permissions
+
+  """
+  insert data into the table: "permissions"
+  """
+  insertPermissions(
+    """the rows to be inserted"""
+    objects: [permissions_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: permissions_on_conflict
+  ): permissions_mutation_response
+
+  """
   insert a single row into the table: "relations"
   """
   insertRelation(
@@ -3176,28 +3110,6 @@ type mutation_root {
     """upsert condition"""
     on_conflict: users_on_conflict
   ): users_mutation_response
-
-  """
-  insert data into the table: "permissions"
-  """
-  insert_permissions(
-    """the rows to be inserted"""
-    objects: [permissions_insert_input!]!
-
-    """upsert condition"""
-    on_conflict: permissions_on_conflict
-  ): permissions_mutation_response
-
-  """
-  insert a single row into the table: "permissions"
-  """
-  insert_permissions_one(
-    """the row to be inserted"""
-    object: permissions_insert_input!
-
-    """upsert condition"""
-    on_conflict: permissions_on_conflict
-  ): permissions
 
   """
   update single row of the table: "auth.providers"
@@ -3522,6 +3434,26 @@ type mutation_root {
   ): nodes_mutation_response
 
   """
+  update single row of the table: "permissions"
+  """
+  updatePermission(
+    """sets the columns of the filtered rows to the given values"""
+    _set: permissions_set_input
+    pk_columns: permissions_pk_columns_input!
+  ): permissions
+
+  """
+  update data of the table: "permissions"
+  """
+  updatePermissions(
+    """sets the columns of the filtered rows to the given values"""
+    _set: permissions_set_input
+
+    """filter the rows which have to be updated"""
+    where: permissions_bool_exp!
+  ): permissions_mutation_response
+
+  """
   update single row of the table: "relations"
   """
   updateRelation(
@@ -3602,32 +3534,14 @@ type mutation_root {
     """filter the rows which have to be updated"""
     where: users_bool_exp!
   ): users_mutation_response
-
-  """
-  update data of the table: "permissions"
-  """
-  update_permissions(
-    """sets the columns of the filtered rows to the given values"""
-    _set: permissions_set_input
-
-    """filter the rows which have to be updated"""
-    where: permissions_bool_exp!
-  ): permissions_mutation_response
-
-  """
-  update single row of the table: "permissions"
-  """
-  update_permissions_by_pk(
-    """sets the columns of the filtered rows to the given values"""
-    _set: permissions_set_input
-    pk_columns: permissions_pk_columns_input!
-  ): permissions
 }
 
 """
 columns and relationships of "nodes"
 """
 type nodes {
+  attachable: Boolean!
+
   """
   A computed field, executes function "check_unique"
   """
@@ -3703,6 +3617,12 @@ type nodes {
     path: String
   ): jsonb
   id: uuid!
+  index: Int!
+
+  """
+  A computed field, executes function "insert"
+  """
+  insert: Boolean
 
   """
   A computed field, executes function "is_context_owner"
@@ -3752,43 +3672,7 @@ type nodes {
 
   """An object relationship"""
   mime: mimes
-  mimeId: uuid
-
-  """An array relationship"""
-  mimes(
-    """distinct select on columns"""
-    distinct_on: [mimes_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [mimes_order_by!]
-
-    """filter the rows returned"""
-    where: mimes_bool_exp
-  ): [mimes!]!
-
-  """An aggregate relationship"""
-  mimes_aggregate(
-    """distinct select on columns"""
-    distinct_on: [mimes_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [mimes_order_by!]
-
-    """filter the rows returned"""
-    where: mimes_bool_exp
-  ): mimes_aggregate!
+  mimeId: String
   mutable: Boolean!
   name: String!
   namespace: String!
@@ -3856,7 +3740,6 @@ type nodes {
     """filter the rows returned"""
     where: permissions_bool_exp
   ): permissions_aggregate!
-  priority: Int!
 
   """
   A computed field, executes function "relation"
@@ -3918,6 +3801,11 @@ type nodes {
     """filter the rows returned"""
     where: relations_bool_exp
   ): relations_aggregate!
+
+  """
+  A computed field, executes function "select"
+  """
+  select: Boolean
 
   """
   A computed field, executes function "unique"
@@ -3989,14 +3877,14 @@ input nodes_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type nodes_avg_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by avg() on columns of table "nodes"
 """
 input nodes_avg_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """
@@ -4006,6 +3894,7 @@ input nodes_bool_exp {
   _and: [nodes_bool_exp!]
   _not: nodes_bool_exp
   _or: [nodes_bool_exp!]
+  attachable: Boolean_comparison_exp
   children: nodes_bool_exp
   context: nodes_bool_exp
   contextId: uuid_comparison_exp
@@ -4013,12 +3902,13 @@ input nodes_bool_exp {
   createdAt: timestamptz_comparison_exp
   data: jsonb_comparison_exp
   id: uuid_comparison_exp
+  index: Int_comparison_exp
+  insert: Boolean_comparison_exp
   isContextOwner: Boolean_comparison_exp
   isOwner: Boolean_comparison_exp
   members: members_bool_exp
   mime: mimes_bool_exp
-  mimeId: uuid_comparison_exp
-  mimes: mimes_bool_exp
+  mimeId: String_comparison_exp
   mutable: Boolean_comparison_exp
   name: String_comparison_exp
   namespace: String_comparison_exp
@@ -4028,8 +3918,8 @@ input nodes_bool_exp {
   parent: nodes_bool_exp
   parentId: uuid_comparison_exp
   permissions: permissions_bool_exp
-  priority: Int_comparison_exp
   relations: relations_bool_exp
+  select: Boolean_comparison_exp
   unique: String_comparison_exp
   validate: String_comparison_exp
 }
@@ -4070,23 +3960,24 @@ input nodes_delete_key_input {
 input type for incrementing numeric columns in table "nodes"
 """
 input nodes_inc_input {
-  priority: Int
+  index: Int
 }
 
 """
 input type for inserting data into table "nodes"
 """
 input nodes_insert_input {
+  attachable: Boolean
   children: nodes_arr_rel_insert_input
   context: nodes_obj_rel_insert_input
   contextId: uuid
   createdAt: timestamptz
   data: jsonb
   id: uuid
+  index: Int
   members: members_arr_rel_insert_input
   mime: mimes_obj_rel_insert_input
-  mimeId: uuid
-  mimes: mimes_arr_rel_insert_input
+  mimeId: String
   mutable: Boolean
   name: String
   namespace: String
@@ -4095,7 +3986,6 @@ input nodes_insert_input {
   parent: nodes_obj_rel_insert_input
   parentId: uuid
   permissions: permissions_arr_rel_insert_input
-  priority: Int
   relations: relations_arr_rel_insert_input
 }
 
@@ -4104,12 +3994,12 @@ type nodes_max_fields {
   contextId: uuid
   createdAt: timestamptz
   id: uuid
-  mimeId: uuid
+  index: Int
+  mimeId: String
   name: String
   namespace: String
   ownerId: uuid
   parentId: uuid
-  priority: Int
 }
 
 """
@@ -4119,12 +4009,12 @@ input nodes_max_order_by {
   contextId: order_by
   createdAt: order_by
   id: order_by
+  index: order_by
   mimeId: order_by
   name: order_by
   namespace: order_by
   ownerId: order_by
   parentId: order_by
-  priority: order_by
 }
 
 """aggregate min on columns"""
@@ -4132,12 +4022,12 @@ type nodes_min_fields {
   contextId: uuid
   createdAt: timestamptz
   id: uuid
-  mimeId: uuid
+  index: Int
+  mimeId: String
   name: String
   namespace: String
   ownerId: uuid
   parentId: uuid
-  priority: Int
 }
 
 """
@@ -4147,12 +4037,12 @@ input nodes_min_order_by {
   contextId: order_by
   createdAt: order_by
   id: order_by
+  index: order_by
   mimeId: order_by
   name: order_by
   namespace: order_by
   ownerId: order_by
   parentId: order_by
-  priority: order_by
 }
 
 """
@@ -4187,6 +4077,7 @@ input nodes_on_conflict {
 
 """Ordering options when selecting data from "nodes"."""
 input nodes_order_by {
+  attachable: order_by
   children_aggregate: nodes_aggregate_order_by
   context: nodes_order_by
   contextId: order_by
@@ -4194,12 +4085,13 @@ input nodes_order_by {
   createdAt: order_by
   data: order_by
   id: order_by
+  index: order_by
+  insert: order_by
   isContextOwner: order_by
   isOwner: order_by
   members_aggregate: members_aggregate_order_by
   mime: mimes_order_by
   mimeId: order_by
-  mimes_aggregate: mimes_aggregate_order_by
   mutable: order_by
   name: order_by
   namespace: order_by
@@ -4209,8 +4101,8 @@ input nodes_order_by {
   parent: nodes_order_by
   parentId: order_by
   permissions_aggregate: permissions_aggregate_order_by
-  priority: order_by
   relations_aggregate: relations_aggregate_order_by
+  select: order_by
   unique: order_by
   validate: order_by
 }
@@ -4230,6 +4122,9 @@ select columns of table "nodes"
 """
 enum nodes_select_column {
   """column name"""
+  attachable
+
+  """column name"""
   contextId
 
   """column name"""
@@ -4240,6 +4135,9 @@ enum nodes_select_column {
 
   """column name"""
   id
+
+  """column name"""
+  index
 
   """column name"""
   mimeId
@@ -4258,74 +4156,72 @@ enum nodes_select_column {
 
   """column name"""
   parentId
-
-  """column name"""
-  priority
 }
 
 """
 input type for updating data in table "nodes"
 """
 input nodes_set_input {
+  attachable: Boolean
   contextId: uuid
   createdAt: timestamptz
   data: jsonb
   id: uuid
-  mimeId: uuid
+  index: Int
+  mimeId: String
   mutable: Boolean
   name: String
   namespace: String
   ownerId: uuid
   parentId: uuid
-  priority: Int
 }
 
 """aggregate stddev on columns"""
 type nodes_stddev_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by stddev() on columns of table "nodes"
 """
 input nodes_stddev_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type nodes_stddev_pop_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by stddev_pop() on columns of table "nodes"
 """
 input nodes_stddev_pop_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type nodes_stddev_samp_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by stddev_samp() on columns of table "nodes"
 """
 input nodes_stddev_samp_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """aggregate sum on columns"""
 type nodes_sum_fields {
-  priority: Int
+  index: Int
 }
 
 """
 order by sum() on columns of table "nodes"
 """
 input nodes_sum_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """
@@ -4333,6 +4229,9 @@ update columns of table "nodes"
 """
 enum nodes_update_column {
   """column name"""
+  attachable
+
+  """column name"""
   contextId
 
   """column name"""
@@ -4343,6 +4242,9 @@ enum nodes_update_column {
 
   """column name"""
   id
+
+  """column name"""
+  index
 
   """column name"""
   mimeId
@@ -4361,45 +4263,42 @@ enum nodes_update_column {
 
   """column name"""
   parentId
-
-  """column name"""
-  priority
 }
 
 """aggregate var_pop on columns"""
 type nodes_var_pop_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by var_pop() on columns of table "nodes"
 """
 input nodes_var_pop_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """aggregate var_samp on columns"""
 type nodes_var_samp_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by var_samp() on columns of table "nodes"
 """
 input nodes_var_samp_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """aggregate variance on columns"""
 type nodes_variance_fields {
-  priority: Float
+  index: Float
 }
 
 """
 order by variance() on columns of table "nodes"
 """
 input nodes_variance_order_by {
-  priority: order_by
+  index: order_by
 }
 
 """column ordering options"""
@@ -4427,18 +4326,17 @@ enum order_by {
 columns and relationships of "permissions"
 """
 type permissions {
+  contextId: uuid
   delete: Boolean!
   id: uuid!
   insert: Boolean!
-
-  """An object relationship"""
-  mime: mimes
-  mimeId: uuid!
+  mimeId: String
   name: String!
 
   """An object relationship"""
   node: nodes
   nodeId: uuid
+  parents: _text
   select: Boolean!
   universal: Boolean!
   update: Boolean!
@@ -4487,14 +4385,15 @@ input permissions_bool_exp {
   _and: [permissions_bool_exp!]
   _not: permissions_bool_exp
   _or: [permissions_bool_exp!]
+  contextId: uuid_comparison_exp
   delete: Boolean_comparison_exp
   id: uuid_comparison_exp
   insert: Boolean_comparison_exp
-  mime: mimes_bool_exp
-  mimeId: uuid_comparison_exp
+  mimeId: String_comparison_exp
   name: String_comparison_exp
   node: nodes_bool_exp
   nodeId: uuid_comparison_exp
+  parents: _text_comparison_exp
   select: Boolean_comparison_exp
   universal: Boolean_comparison_exp
   update: Boolean_comparison_exp
@@ -4512,14 +4411,15 @@ enum permissions_constraint {
 input type for inserting data into table "permissions"
 """
 input permissions_insert_input {
+  contextId: uuid
   delete: Boolean
   id: uuid
   insert: Boolean
-  mime: mimes_obj_rel_insert_input
-  mimeId: uuid
+  mimeId: String
   name: String
   node: nodes_obj_rel_insert_input
   nodeId: uuid
+  parents: _text
   select: Boolean
   universal: Boolean
   update: Boolean
@@ -4527,8 +4427,9 @@ input permissions_insert_input {
 
 """aggregate max on columns"""
 type permissions_max_fields {
+  contextId: uuid
   id: uuid
-  mimeId: uuid
+  mimeId: String
   name: String
   nodeId: uuid
 }
@@ -4537,6 +4438,7 @@ type permissions_max_fields {
 order by max() on columns of table "permissions"
 """
 input permissions_max_order_by {
+  contextId: order_by
   id: order_by
   mimeId: order_by
   name: order_by
@@ -4545,8 +4447,9 @@ input permissions_max_order_by {
 
 """aggregate min on columns"""
 type permissions_min_fields {
+  contextId: uuid
   id: uuid
-  mimeId: uuid
+  mimeId: String
   name: String
   nodeId: uuid
 }
@@ -4555,6 +4458,7 @@ type permissions_min_fields {
 order by min() on columns of table "permissions"
 """
 input permissions_min_order_by {
+  contextId: order_by
   id: order_by
   mimeId: order_by
   name: order_by
@@ -4583,14 +4487,15 @@ input permissions_on_conflict {
 
 """Ordering options when selecting data from "permissions"."""
 input permissions_order_by {
+  contextId: order_by
   delete: order_by
   id: order_by
   insert: order_by
-  mime: mimes_order_by
   mimeId: order_by
   name: order_by
   node: nodes_order_by
   nodeId: order_by
+  parents: order_by
   select: order_by
   universal: order_by
   update: order_by
@@ -4606,6 +4511,9 @@ select columns of table "permissions"
 """
 enum permissions_select_column {
   """column name"""
+  contextId
+
+  """column name"""
   delete
 
   """column name"""
@@ -4622,6 +4530,9 @@ enum permissions_select_column {
 
   """column name"""
   nodeId
+
+  """column name"""
+  parents
 
   """column name"""
   select
@@ -4637,12 +4548,14 @@ enum permissions_select_column {
 input type for updating data in table "permissions"
 """
 input permissions_set_input {
+  contextId: uuid
   delete: Boolean
   id: uuid
   insert: Boolean
-  mimeId: uuid
+  mimeId: String
   name: String
   nodeId: uuid
+  parents: _text
   select: Boolean
   universal: Boolean
   update: Boolean
@@ -4652,6 +4565,9 @@ input permissions_set_input {
 update columns of table "permissions"
 """
 enum permissions_update_column {
+  """column name"""
+  contextId
+
   """column name"""
   delete
 
@@ -4669,6 +4585,9 @@ enum permissions_update_column {
 
   """column name"""
   nodeId
+
+  """column name"""
+  parents
 
   """column name"""
   select
@@ -5071,9 +4990,11 @@ type query_root {
   ): members_aggregate!
 
   """fetch data from the table: "mimes" using primary key columns"""
-  mime(id: uuid!): mimes
+  mime(id: String!): mimes
 
-  """An array relationship"""
+  """
+  fetch data from the table: "mimes"
+  """
   mimes(
     """distinct select on columns"""
     distinct_on: [mimes_select_column!]
@@ -5154,6 +5075,9 @@ type query_root {
     where: nodes_bool_exp
   ): nodes_aggregate!
 
+  """fetch data from the table: "permissions" using primary key columns"""
+  permission(id: uuid!): permissions
+
   """An array relationship"""
   permissions(
     """distinct select on columns"""
@@ -5172,8 +5096,10 @@ type query_root {
     where: permissions_bool_exp
   ): [permissions!]!
 
-  """An aggregate relationship"""
-  permissions_aggregate(
+  """
+  fetch aggregated fields from the table: "permissions"
+  """
+  permissionsAggregate(
     """distinct select on columns"""
     distinct_on: [permissions_select_column!]
 
@@ -5189,9 +5115,6 @@ type query_root {
     """filter the rows returned"""
     where: permissions_bool_exp
   ): permissions_aggregate!
-
-  """fetch data from the table: "permissions" using primary key columns"""
-  permissions_by_pk(id: uuid!): permissions
 
   """fetch data from the table: "relations" using primary key columns"""
   relation(id: uuid!): relations
@@ -5878,9 +5801,11 @@ type subscription_root {
   ): members_aggregate!
 
   """fetch data from the table: "mimes" using primary key columns"""
-  mime(id: uuid!): mimes
+  mime(id: String!): mimes
 
-  """An array relationship"""
+  """
+  fetch data from the table: "mimes"
+  """
   mimes(
     """distinct select on columns"""
     distinct_on: [mimes_select_column!]
@@ -5961,6 +5886,9 @@ type subscription_root {
     where: nodes_bool_exp
   ): nodes_aggregate!
 
+  """fetch data from the table: "permissions" using primary key columns"""
+  permission(id: uuid!): permissions
+
   """An array relationship"""
   permissions(
     """distinct select on columns"""
@@ -5979,8 +5907,10 @@ type subscription_root {
     where: permissions_bool_exp
   ): [permissions!]!
 
-  """An aggregate relationship"""
-  permissions_aggregate(
+  """
+  fetch aggregated fields from the table: "permissions"
+  """
+  permissionsAggregate(
     """distinct select on columns"""
     distinct_on: [permissions_select_column!]
 
@@ -5996,9 +5926,6 @@ type subscription_root {
     """filter the rows returned"""
     where: permissions_bool_exp
   ): permissions_aggregate!
-
-  """fetch data from the table: "permissions" using primary key columns"""
-  permissions_by_pk(id: uuid!): permissions
 
   """fetch data from the table: "relations" using primary key columns"""
   relation(id: uuid!): relations

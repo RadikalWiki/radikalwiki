@@ -1,8 +1,14 @@
 /* eslint-disable functional/immutable-data */
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import isHotkey from "is-hotkey";
 import { jsx } from "slate-hyperscript";
-import { Editable, withReact, useSlate, Slate, ReactEditor } from "slate-react";
+import { Editable, withReact, useSlate, Slate as SlateEditor, ReactEditor } from "slate-react";
 import {
   Editor,
   Transforms,
@@ -202,12 +208,14 @@ const withHtml = (editor: any) => {
   return editor;
 };
 
-export default function SlateEditor({
+export default function Slate({
   value,
   onChange,
+  readOnly = false,
 }: {
   value: any;
-  onChange: any;
+  onChange?: any;
+  readOnly: boolean;
 }) {
   const editorRef = useRef<ReactEditor>();
   if (!editorRef.current)
@@ -217,32 +225,37 @@ export default function SlateEditor({
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
 
   return (
-    <Slate editor={editor!} value={value}>
-      <Stack direction="row" spacing={1} sx={{ m: 1 }}>
-        <BlockSelect />
-        <HistoryButtons />
-        <MarkButtons />
-        <ListButtons />
-        <AlignButtons />
-        <LinkButton />
-      </Stack>
-      <Divider />
-      <Editable
-        renderElement={renderElement}
-        renderLeaf={renderLeaf}
-        spellCheck
-        autoFocus
-        onKeyDown={(event) => {
-          Object.entries(HOTKEYS).map(([hotkey, val]) => {
-            if (isHotkey(hotkey, event as any)) {
-              event.preventDefault();
-              const mark = val;
-              toggleMark(editor, mark);
-            }
-          });
-        }}
-      />
-    </Slate>
+    <SlateEditor editor={editor!} value={value} onChange={onChange}>
+      {!readOnly && (
+        <>
+          <Stack direction="row" spacing={1} sx={{ mb: 1, ml: 2 }}>
+            <BlockSelect />
+            <HistoryButtons />
+            <MarkButtons />
+            <ListButtons />
+            <AlignButtons />
+            <LinkButton />
+          </Stack>
+          <Divider />
+        </>
+      )}
+      <Box sx={{ m: 2 }}>
+        <Editable
+          renderElement={renderElement}
+          renderLeaf={renderLeaf}
+          spellCheck
+          readOnly={readOnly}
+          onKeyDown={(event) => {
+            Object.entries(HOTKEYS).map(([hotkey, mark]) => {
+              if (isHotkey(hotkey, event as any)) {
+                event.preventDefault();
+                toggleMark(editor, mark);
+              }
+            });
+          }}
+        />
+      </Box>
+    </SlateEditor>
   );
 }
 
@@ -394,20 +407,6 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   return <span {...attributes}>{link}</span>;
 };
 
-const toggleBlock = (editor: any, format: any) => {
-  const isActive = isBlockActive(
-    editor,
-    format,
-    "type"
-  );
-
-  const newProperties: any = {
-        type: isActive ? "paragraph" : format,
-      };
-
-  Transforms.setNodes<SlateElement>(editor, newProperties);
-};
-
 const BlockSelect = () => {
   const editor = useSlate();
   return (
@@ -417,7 +416,7 @@ const BlockSelect = () => {
         label="Stil"
         sx={{ width: 145 }}
         value={currentBlocks(editor, STYLE_TYPES) ?? "paragraph"}
-        onChange={(e) => toggleBlock(editor, e.target.value)}
+        onChange={(e) => Transforms.setNodes<EditorElement>(editor, { type: e.target.value as string })}
       >
         {STYLE_TYPES.map((style) => (
           <MenuItem key={style} value={style}>
@@ -529,7 +528,6 @@ const MarkButtons = () => {
     event: React.MouseEvent<HTMLElement>,
     newMarks: string[]
   ) => {
-    event.preventDefault();
     // Symmetrical Difference
     newMarks
       .filter((mark) => !getMarks(marks).includes(mark))
@@ -558,20 +556,18 @@ const MarkButtons = () => {
   );
 };
 
-
-
 const LinkButton = () => {
   const editor = useSlate();
   const marks = Editor.marks(editor);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault()
+    setAnchorEl(anchorEl ? null : e.currentTarget);
   };
 
   const handleChange = (event: any) => {
-    event.preventDefault();
     Editor.addMark(editor, "link", event.target.value);
   };
 
@@ -623,7 +619,7 @@ const LinkButton = () => {
             color="inherit"
             onClick={() => {
               setAnchorEl(null);
-              Editor.removeMark(editor, "link")
+              Editor.removeMark(editor, "link");
             }}
           >
             <LinkOff />

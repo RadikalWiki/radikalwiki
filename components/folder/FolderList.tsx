@@ -24,19 +24,17 @@ export default function FolderList({ id }: { id: string }) {
 
   const children =
     folder?.children({
-      order_by: [{ priority: order_by.asc }],
+      order_by: [{ index: order_by.asc }],
       where: {
-        mime: {
-          name: {
-            _regex:
-              "(wiki/(folder|document|group|event)|vote/(policy|position|candidate))",
-          },
+        name: {
+          _regex:
+            "(wiki/(folder|document|group|event)|vote/(policy|position|candidate))",
         },
       },
     }) ?? [];
 
   const policies = children.filter(
-    (child) => child.mime?.name == "vote/policy"
+    (child) => child.name == "vote/policy"
   );
 
   const handleOnClick = (namespace?: string) => async () => {
@@ -45,7 +43,7 @@ export default function FolderList({ id }: { id: string }) {
       const node = query.nodes(toWhere(path))?.[0];
       node.id;
       node.name;
-      node.mime?.name;
+      node.mimeId;
     });
 
     router.push(`${router.asPath}/${namespace}`);
@@ -53,7 +51,7 @@ export default function FolderList({ id }: { id: string }) {
 
   return (
     <TransitionGroup>
-      {children.map(({ id, name, namespace, mime, mutable }) => {
+      {children.map(({ id, name, namespace, mimeId, mutable }) => {
         const avatar = (
           <Avatar
             sx={{
@@ -61,7 +59,7 @@ export default function FolderList({ id }: { id: string }) {
             }}
           >
             {getIcon(
-              mime,
+              mimeId!,
               policies.findIndex((e) => e.id === id)
             )}
           </Avatar>

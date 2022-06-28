@@ -30,7 +30,7 @@ export default function ContentHeader({
               .map((m) => (
                 <Chip
                   key={m.id ?? 0}
-                  icon={m.node?.mime ? getIcon(m.node?.mime) : <Face />}
+                  icon={m.node?.mimeId ? getIcon(m.node?.mimeId) : <Face />}
                   color="secondary"
                   variant="outlined"
                   size="small"

@@ -65,7 +65,7 @@ export default function FolderDial({ id }: { id: string }) {
   const handleExport = async () => {
     const contents = await resolved(() => {
       return q.node({ id: folder?.id })?.children({
-          order_by: [{ priority: order_by.asc }],
+          order_by: [{ index: order_by.asc }],
           where: { parentId: { _is_null: true } },
         }).map(({ id }) => ({ id }))
     });
