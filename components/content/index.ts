@@ -8,5 +8,4 @@ export { default as ContentHeader } from "./ContentHeader";
 export { default as ContentToolbar } from "./ContentToolbar";
 export { default as EditorApp } from "./EditorApp";
 export { default as Editor } from "./Editor";
-export { default as Quill } from "./Quill";
 export { default as Slate } from "./Slate"
