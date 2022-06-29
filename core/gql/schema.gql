@@ -13,10 +13,15 @@ directive @cached(
   refresh: Boolean! = false
 ) on QUERY
 
+input Boolean_cast_exp {
+  String: String_comparison_exp
+}
+
 """
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
 input Boolean_comparison_exp {
+  _cast: Boolean_cast_exp
   _eq: Boolean
   _gt: Boolean
   _gte: Boolean
@@ -28,10 +33,15 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
+input Int_cast_exp {
+  String: String_comparison_exp
+}
+
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
 input Int_comparison_exp {
+  _cast: Int_cast_exp
   _eq: Int
   _gt: Int
   _gte: Int
@@ -161,7 +171,9 @@ input authProviderRequests_bool_exp {
 unique or primary key constraints on table "auth.provider_requests"
 """
 enum authProviderRequests_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   provider_requests_pkey
 }
 
@@ -345,7 +357,9 @@ input authProviders_bool_exp {
 unique or primary key constraints on table "auth.providers"
 """
 enum authProviders_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   providers_pkey
 }
 
@@ -498,7 +512,9 @@ input authRefreshTokens_bool_exp {
 unique or primary key constraints on table "auth.refresh_tokens"
 """
 enum authRefreshTokens_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "refresh_token"
+  """
   refresh_tokens_pkey
 }
 
@@ -739,7 +755,9 @@ input authRoles_bool_exp {
 unique or primary key constraints on table "auth.roles"
 """
 enum authRoles_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "role"
+  """
   roles_pkey
 }
 
@@ -906,13 +924,19 @@ input authUserProviders_bool_exp {
 unique or primary key constraints on table "auth.user_providers"
 """
 enum authUserProviders_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   user_providers_pkey
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "provider_user_id", "provider_id"
+  """
   user_providers_provider_id_provider_user_id_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "provider_id", "user_id"
+  """
   user_providers_user_id_provider_id_key
 }
 
@@ -1166,10 +1190,14 @@ input authUserRoles_bool_exp {
 unique or primary key constraints on table "auth.user_roles"
 """
 enum authUserRoles_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   user_roles_pkey
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "role", "user_id"
+  """
   user_roles_user_id_role_key
 }
 
@@ -1404,7 +1432,9 @@ input buckets_bool_exp {
 unique or primary key constraints on table "storage.buckets"
 """
 enum buckets_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   buckets_pkey
 }
 
@@ -1788,7 +1818,9 @@ input files_bool_exp {
 unique or primary key constraints on table "storage.files"
 """
 enum files_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   files_pkey
 }
 
@@ -2208,13 +2240,19 @@ input members_bool_exp {
 unique or primary key constraints on table "members"
 """
 enum members_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "email", "parent_id"
+  """
   members_parent_id_email_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "node_id", "parent_id"
+  """
   members_parent_id_node_id_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   members_pkey
 }
 
@@ -2492,7 +2530,9 @@ input mimes_bool_exp {
 unique or primary key constraints on table "mimes"
 """
 enum mimes_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   mimes_pkey
 }
 
@@ -3625,6 +3665,26 @@ type nodes {
   insert: Boolean
 
   """
+  A computed field, executes function "inserts"
+  """
+  inserts(
+    """distinct select on columns"""
+    distinct_on: [mimes_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [mimes_order_by!]
+
+    """filter the rows returned"""
+    where: mimes_bool_exp
+  ): [mimes!]
+
+  """
   A computed field, executes function "is_context_owner"
   """
   isContextOwner: Boolean
@@ -3904,6 +3964,7 @@ input nodes_bool_exp {
   id: uuid_comparison_exp
   index: Int_comparison_exp
   insert: Boolean_comparison_exp
+  inserts: mimes_bool_exp
   isContextOwner: Boolean_comparison_exp
   isOwner: Boolean_comparison_exp
   members: members_bool_exp
@@ -3928,10 +3989,14 @@ input nodes_bool_exp {
 unique or primary key constraints on table "nodes"
 """
 enum nodes_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "namespace", "parent_id"
+  """
   nodes_parent_id_namespace_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   nodes_pkey
 }
 
@@ -4087,6 +4152,7 @@ input nodes_order_by {
   id: order_by
   index: order_by
   insert: order_by
+  inserts_aggregate: mimes_aggregate_order_by
   isContextOwner: order_by
   isOwner: order_by
   members_aggregate: members_aggregate_order_by
@@ -4403,7 +4469,9 @@ input permissions_bool_exp {
 unique or primary key constraints on table "permissions"
 """
 enum permissions_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   permissions_pkey
 }
 
@@ -5276,10 +5344,14 @@ input relations_bool_exp {
 unique or primary key constraints on table "relations"
 """
 enum relations_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "name", "parent_id"
+  """
   relations_parent_id_name_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   relations_pkey
 }
 
@@ -6014,10 +6086,15 @@ type subscription_root {
 
 scalar timestamptz
 
+input timestamptz_cast_exp {
+  String: String_comparison_exp
+}
+
 """
 Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
 """
 input timestamptz_comparison_exp {
+  _cast: timestamptz_cast_exp
   _eq: timestamptz
   _gt: timestamptz
   _gte: timestamptz
@@ -6255,13 +6332,19 @@ input users_bool_exp {
 unique or primary key constraints on table "auth.users"
 """
 enum users_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "email"
+  """
   users_email_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "phone_number"
+  """
   users_phone_number_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint on columns "id"
+  """
   users_pkey
 }
 
@@ -6674,10 +6757,15 @@ enum users_update_column {
 
 scalar uuid
 
+input uuid_cast_exp {
+  String: String_comparison_exp
+}
+
 """
 Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
 """
 input uuid_comparison_exp {
+  _cast: uuid_cast_exp
   _eq: uuid
   _gt: uuid
   _gte: uuid

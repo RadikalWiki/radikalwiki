@@ -6,6 +6,8 @@ import { useNode } from "hooks";
 export default function MemberApp() {
   const { query } = useNode();
 
+  if (!query?.id) return null;
+
   return (
     <>
       <Grid container spacing={2}>

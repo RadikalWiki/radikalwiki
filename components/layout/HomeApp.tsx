@@ -17,7 +17,6 @@ const AddContentFabSuspense = () => {
 export default function HomeApp() {
   const { isAuthenticated } = useAuthenticationStatus();
   const displayName = useUserDisplayName();
-  const [session] = useSession();
 
   return (
     <Grid container spacing={1}>

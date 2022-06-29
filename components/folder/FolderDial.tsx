@@ -10,12 +10,16 @@ import {
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, resolved, query as q } from "gql";
+import { useNode } from "hooks";
 
 export default function FolderDial({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const query = useQuery();
-  const folder = query.node({ id });
+  const node = useNode({ id });
+  const query = node.query;
+  //const query = useQuery();
+  //const folder = query.node({ id });
+  /*
   const [updateFolder] = useMutation(
     (mutation, args: { id: string; set: any }) => {
       return mutation.updateNode({
@@ -25,8 +29,9 @@ export default function FolderDial({ id }: { id: string }) {
     },
     { refetchQueries: [folder, query.node({ id: folder?.parentId })] }
   );
+  */
 
-  if (!folder?.isContextOwner) return null;
+  if (!query?.isContextOwner) return null;
 
   const formatContent = async (id: string, level: number): Promise<string> => {
     if (!id) return "";
@@ -93,10 +98,7 @@ export default function FolderDial({ id }: { id: string }) {
   */
 
   const handleLockContent = async () => {
-    const set = { mutable: !folder?.mutable };
-    await updateFolder({
-      args: { id: folder?.id, set },
-    });
+    await node.update({ mutable: !query?.mutable });
   };
 
   return (
@@ -117,10 +119,10 @@ export default function FolderDial({ id }: { id: string }) {
           <SpeedDialAction
             icon={
               <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
-                {folder?.mutable ? <Lock /> : <LockOpen />}
+                {query?.mutable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
-            tooltipTitle={`${folder?.mutable ? "Lås" : "Lås op"} indhold`}
+            tooltipTitle={`${query?.mutable ? "Lås" : "Lås op"} indhold`}
             tooltipOpen
             onClick={handleLockContent}
           />

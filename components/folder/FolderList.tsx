@@ -15,35 +15,28 @@ import { order_by, resolved, useQuery } from "gql";
 import { TransitionGroup } from "react-transition-group";
 import { getIcon } from "mime";
 import { toWhere } from "core/path";
+import { useNode } from "hooks";
 
 export default function FolderList({ id }: { id: string }) {
   const router = useRouter();
-  const query = useQuery();
-
-  const folder = query.node({ id });
+  const { query } = useNode({ id });
 
   const children =
-    folder?.children({
+    query?.children({
       order_by: [{ index: order_by.asc }],
       where: {
-        name: {
-          _regex:
-            "(wiki/(folder|document|group|event)|vote/(policy|position|candidate))",
+        mime: {
+          hidden: { _eq: false },
         },
       },
     }) ?? [];
 
-  const policies = children.filter(
-    (child) => child.name == "vote/policy"
-  );
+  const policies = children.filter((child) => child.mimeId == "vote/policy");
 
   const handleOnClick = (namespace?: string) => async () => {
     const path = `${router.asPath}/${namespace}`.substring(1).split("/");
     await resolved(() => {
-      const node = query.nodes(toWhere(path))?.[0];
-      node.id;
-      node.name;
-      node.mimeId;
+      const { id, name, mimeId } = query!;
     });
 
     router.push(`${router.asPath}/${namespace}`);

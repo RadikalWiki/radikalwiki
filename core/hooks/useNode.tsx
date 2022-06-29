@@ -9,12 +9,12 @@ import {
   relations_constraint,
   relations_insert_input,
   relations_update_column,
+  resolved,
   useMutation,
   useQuery,
   useSubscription,
 } from "gql";
-import slugify from "slugify";
-import usePath from "./usePath";
+import { usePath } from "hooks";
 
 const getNamespace = (name?: string) => {
   return name?.trim().toLocaleLowerCase().replaceAll(" ", "_");
@@ -42,6 +42,10 @@ const useNode = (param?: { id?: string }) => {
   const node = param?.id
     ? query.node({ id: param?.id })
     : query.nodes(toWhere(path))?.[0];
+  const nodeId = param?.id ? param?.id : node?.id;
+  const refetchQueries = param?.id
+    ? [node]
+    : [node, query.node({ id: node?.id })];
   const nodeContextId = node?.contextId;
   const subs = useSubscription();
   const sub = param?.id
@@ -52,7 +56,7 @@ const useNode = (param?: { id?: string }) => {
       return mutation.insertNode({ object: args })?.id;
     },
     {
-      refetchQueries: [node],
+      refetchQueries,
     }
   );
   const [deleteNode] = useMutation(
@@ -60,7 +64,7 @@ const useNode = (param?: { id?: string }) => {
       return mutation.deleteNode({ id })?.id;
     },
     {
-      refetchQueries: [query],
+      refetchQueries,
     }
   );
   const [updateNode] = useMutation(
@@ -71,7 +75,7 @@ const useNode = (param?: { id?: string }) => {
       })?.id;
     },
     {
-      refetchQueries: [query],
+      refetchQueries,
     }
   );
 
@@ -90,27 +94,27 @@ const useNode = (param?: { id?: string }) => {
     parentId?: string;
     contextId?: string;
   }) => {
-    const nodeId = await insertNode({
+    const childId = await insertNode({
       args: {
         name,
         namespace: getNamespace(namespace ?? name),
         data,
-        parentId: parentId ? parentId : node?.id,
+        parentId: parentId ? parentId : nodeId,
         mimeId,
         contextId: contextId ?? nodeContextId,
       },
     });
-    return { id: nodeId, namespace: getNamespace(namespace ?? name) };
+    return { id: childId, namespace: getNamespace(namespace ?? name) };
   };
 
   const del = async () => {
-    return await deleteNode({ args: node?.id });
+    return await deleteNode({ args: nodeId });
   };
 
   const update = async (set: nodes_set_input) => {
     return await updateNode({
       args: {
-        id: node?.id,
+        id: nodeId,
         set,
       },
     });
@@ -160,17 +164,17 @@ const useNode = (param?: { id?: string }) => {
       })?.affected_rows;
     },
     {
-      refetchQueries: [query],
+      refetchQueries,
     }
   );
 
   const [deleteMembers] = useMutation(
     (mutation) => {
-      return mutation.deleteMembers({ where: { parentId: { _eq: node?.id } } })
+      return mutation.deleteMembers({ where: { parentId: { _eq: nodeId } } })
         ?.affected_rows;
     },
     {
-      refetchQueries: [node],
+      refetchQueries,
     }
   );
 
@@ -188,19 +192,19 @@ const useNode = (param?: { id?: string }) => {
       return mutation.insertMember({ object })?.id;
     },
     {
-      refetchQueries: [query],
+      refetchQueries,
     }
   );
 
   const member = {
     insert: (member: { roles: string[]; nodeId: string }) => {
-      return insertMember({ args: { ...member, parentId: node?.id } });
+      return insertMember({ args: { ...member, parentId: nodeId } });
     },
   };
 
   const [deleteChildren] = useMutation((mutation, args) => {
     return mutation.deleteNodes({
-      where: { parentId: { _eq: node?.id } },
+      where: { parentId: { _eq: nodeId } },
     })?.affected_rows;
   });
 

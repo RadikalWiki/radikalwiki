@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useMemo,
   useRef,
-  useState,
 } from "react";
 import isHotkey from "is-hotkey";
 import { jsx } from "slate-hyperscript";
@@ -51,10 +50,7 @@ import {
   Redo,
   Undo,
 } from "@mui/icons-material";
-import { AnyMxRecord } from "dns";
 import { Box } from "@mui/system";
-
-//import { Button, Icon, Toolbar } from '../components'
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -62,7 +58,6 @@ const HOTKEYS = {
   "mod+u": "underline",
   "mod+`": "code",
 };
-
 const STYLE_NAMES: Record<string, string> = {
   paragraph: "Normal Tekst",
   "heading-one": "Overskrift 1",
@@ -85,14 +80,6 @@ const STYLE_TYPES = [
 ];
 const LIST_TYPES = ["numbered-list", "bulleted-list"];
 const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
-
-/*
-TODO:
-- paste
-- block types
-- error handling
-- error
-*/
 
 type EditorNode = {
   code?: boolean;
@@ -208,12 +195,19 @@ const withHtml = (editor: any) => {
   return editor;
 };
 
+const validate = (value: any) => {
+  if (Array.isArray(value)) return value
+  else return [{ type: "paragraph", children: [{ text: '' }] }]
+}
+
 export default function Slate({
+  initValue,
   value,
   onChange,
   readOnly = false,
 }: {
-  value: any;
+  initValue: any;
+  value?: any;
   onChange?: any;
   readOnly: boolean;
 }) {
@@ -223,9 +217,13 @@ export default function Slate({
   const editor = editorRef.current;
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  if (editor && value) {
+    editor.children = validate(value);
+  }
+  const validatedValue = validate(initValue)
 
   return (
-    <SlateEditor editor={editor!} value={value} onChange={onChange}>
+    <SlateEditor editor={editor!} value={validatedValue} onChange={onChange}>
       {!readOnly && (
         <>
           <Stack direction="row" spacing={1} sx={{ mb: 1, ml: 2 }}>

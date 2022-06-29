@@ -1,11 +1,19 @@
 import React, { useState, useEffect, Suspense } from "react";
-import { AuthorTextField, Quill, ExpandButton } from "comps";
+import {
+  AuthorTextField,
+  ExpandButton,
+  AutoButton,
+  Slate,
+  FileUploader,
+  Image,
+} from "comps";
 import { useRouter } from "next/router";
 import {
   useQuery,
   useMutation,
   members_insert_input,
   members_constraint,
+  resolved,
 } from "gql";
 import {
   Box,
@@ -19,110 +27,60 @@ import {
   Collapse,
   Avatar,
   Typography,
+  Paper,
+  Button,
 } from "@mui/material";
 import { Publish, Save, Delete, Edit } from "@mui/icons-material";
-import { AutoButton } from "comps/common";
 import { fromId } from "core/path";
+import { useNode } from "hooks";
+import nhost from "nhost";
 
-const getFileUrl = (file: any) =>
-  file?.path && file?.token
-    ? `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/storage/o${file?.path}?token=${file?.token}`
-    : null;
-
-export default function Editor({ id }: { id: string }) {
+export default function Editor() {
   const router = useRouter();
-  const query = useQuery();
-  const node = query.node({ id });
-  const parentId = node?.parentId;
-
-  const [updateContent] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.updateNode({
-        pk_columns: { id: args.id },
-        _set: args.set,
-      })?.id;
-    },
-    {
-      refetchQueries: [node],
-    }
-  );
-  const [deleteContent] = useMutation(
-    (mutation, id: string) => {
-      return mutation.deleteNode({ id })?.id;
-    },
-    {
-      refetchQueries: [query.node({ id: parentId })],
-    }
-  );
-
-  const [addMember] = useMutation(
-    (mutation, args: members_insert_input) => {
-      return mutation.insertMember({
-        object: args,
-        on_conflict: {
-          constraint: members_constraint.members_parent_id_node_id_key,
-          update_columns: [],
-        },
-      })?.id;
-    },
-    {
-      refetchQueries: [node],
-    }
-  );
-
-  const [deleteMembers] = useMutation(
-    (mutation) => {
-      return mutation.deleteMembers({ where: { parentId: { _eq: id } } })
-        ?.affected_rows;
-    },
-    {
-      refetchQueries: [node],
-    }
-  );
+  const node = useNode();
+  const query = node.query;
+  const parentId = query?.parentId;
 
   const [expand, setExpand] = useState(true);
   const [name, setName] = useState("");
   const [members, setMembers] = useState<
     { nodeId: string; name?: string; email?: string }[]
   >([]);
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState<any>();
   const [image, setImage] = useState<any>();
+  const data = query?.data();
 
   useEffect(() => {
-    if (node) {
-      setName(node?.name ?? "");
-      const members = node?.members().map((member) => ({
+    if (query) {
+      setName(query?.name ?? "");
+      const members = query?.members().map((member) => ({
         nodeId: member?.nodeId,
         name: member?.name!,
         email: member?.email!,
       }));
       setMembers(members);
-      setContent(node?.data({ path: "content" }) ?? "");
-      //setImage(getFileUrl(node?.file));
+      setContent(data?.content);
+      setImage(data?.image);
     }
-  }, [node]);
+  }, [query, data]);
 
   const handleSave = (mutable?: boolean) => async () => {
-    await deleteMembers();
-    members.map(async (member) => {
-      await addMember({ args: { ...member, parentId: id } });
-    });
-    await updateContent({
-      args: {
-        id,
-        set: { name, data: { content }, mutable },
-      },
-    });
+    if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
+      await node.members.delete();
+      node.members.insert(members);
+    }
+    await node.update({ name, data: { content, image }, mutable });
     router.push(router.asPath.split("?")[0]);
   };
 
   const handleDelete = async () => {
-    await deleteContent({ args: id });
+    await node.members.delete();
+    await node.delete();
     const path = await fromId(parentId);
     router.push("/" + path.join("/"));
   };
 
-  const editable = node?.mutable && node?.isOwner;
+  const editable = query?.mutable && query?.isOwner;
 
   return (
     <>
@@ -162,23 +120,26 @@ export default function Editor({ id }: { id: string }) {
                   fullWidth
                 />
               </Grid>
-              {!["wiki/group", "wiki/event"].includes(
-                node?.mime?.name ?? ""
-              ) && (
+              {!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "") && (
                 <Grid item xs={12}>
                   <AuthorTextField value={members} onChange={setMembers} />
                 </Grid>
               )}
-              {/* <Grid item xs={12}>
+              <Grid item xs={12}>
                 <Grid container>
                   <Grid item xs={9}>
                     <FileUploader
-                      contentId={node?.id}
-                      onNewFile={(file: any) => setImage(getFileUrl(file))}
+                      contentId={query?.id}
+                      onNewFile={async ({ fileId }: { fileId: string }) => {
+                        const { presignedUrl } = await nhost.storage.getPresignedUrl({
+                          fileId,
+                        })!;
+                        setImage(presignedUrl?.url);
+                      }}
                     >
                       <Button
-                        variant="contained"
-                        color="primary"
+                        variant="outlined"
+                        color="secondary"
                         component="span"
                       >
                         Upload Billede
@@ -193,12 +154,19 @@ export default function Editor({ id }: { id: string }) {
                     </Grid>
                   )}
                 </Grid>
-              </Grid> */}
+              </Grid>
             </Grid>
           </CardContent>
         </Collapse>
+        {data && (
+          <Slate
+            initValue={data}
+            value={content}
+            onChange={setContent}
+            readOnly={false}
+          />
+        )}
       </Card>
-      <Quill value={content} onChange={setContent} />
     </>
   );
 }

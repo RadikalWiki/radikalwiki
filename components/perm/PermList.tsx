@@ -22,6 +22,7 @@ import {
 import { mimes, permissions, useQuery } from "gql";
 import { getIcon } from "mime";
 
+/*
 function PermListElement({
   perm,
   index,
@@ -153,3 +154,4 @@ export default function PermList({ id }: { id: string }) {
     </Card>
   );
 }
+*/

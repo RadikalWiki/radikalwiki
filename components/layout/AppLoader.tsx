@@ -14,8 +14,8 @@ export default function AppLoader({ app }: { app?: string }) {
     switch (app) {
       case "member":
         return <MemberApp />;
-      case "perm":
-        return <PermApp />;
+      //case "perm":
+      //  return <PermApp />;
       case "editor":
         return <EditorApp />;
       case "speak":

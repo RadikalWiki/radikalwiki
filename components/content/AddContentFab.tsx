@@ -8,10 +8,9 @@ export default function AddContentFab({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const query = useQuery();
   const parent = query.node({ id });
-  const mimeChildren =
-    parent?.mime?.children({ where: { hidden: { _eq: false } } }) ?? [];
+  const mimes = parent?.inserts()?.map(mime => mime.id!) ?? [];
 
-  if (!(parent?.mutable && parent?.isOwner) && !parent?.isContextOwner)
+  if (!mimes)
     return null;
 
   return (
@@ -36,7 +35,7 @@ export default function AddContentFab({ id }: { id: string }) {
         id={id}
         open={open}
         setOpen={setOpen}
-        mimes={mimeChildren.map(mime => mime.id!)}
+        mimes={mimes}
       />
     </>
   );

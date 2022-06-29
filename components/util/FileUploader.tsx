@@ -27,6 +27,7 @@ export default function FileUploader({
     //const newFiles = await addFiles({ args: objects });
     //if (!newFiles) return;
     //onNewFile({ id: newFiles[0].id, path, token: file.Metadata.token });
+    onNewFile({ fileId: res.fileMetadata?.id })
   };
 
   return (

@@ -131,7 +131,7 @@ export default function ContentToolbar({
     <>
       <CardActions>
         {
-          /*roles.includes("writer")*/ true && [
+          node?.isContextOwner && [
             <AutoButton
               key="focus"
               text="Vis"

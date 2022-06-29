@@ -49,7 +49,7 @@ function PollList({ id }: { id: string }) {
             bgcolor: (theme) => theme.palette.secondary.main,
           }}
         >
-          {getIcon({ name: "vote/poll" })}
+          {getIcon("vote/poll")}
         </Avatar>
       }
       title="Afstemninger"
