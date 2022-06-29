@@ -58,7 +58,8 @@ export default function Editor() {
         name: member?.name!,
         email: member?.email!,
       }));
-      setMembers(members);
+      if (members?.[0]?.nodeId || members?.[0]?.email)
+        setMembers(members);
       setContent(data?.content);
       setImage(data?.image);
     }
