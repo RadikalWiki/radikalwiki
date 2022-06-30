@@ -13,6 +13,7 @@ import { Menu, ArrowDropDown } from "@mui/icons-material";
 import { Drawer, UserButton, PrefixDialog, HideOnScroll } from "comps";
 import { useSession } from "hooks";
 import { useAuthenticationStatus } from "@nhost/react";
+import { Container } from "@mui/system";
 
 export default function TopBar() {
   const [session] = useSession();
@@ -27,37 +28,39 @@ export default function TopBar() {
     <>
       <HideOnScroll>
         <AppBar elevation={2} enableColorOnDark>
-          <Toolbar>
-            {session &&
-              isAuthenticated && [
-                <IconButton
-                  key="menu"
-                  aria-label="menu"
-                  edge="start"
-                  color="inherit"
-                  onClick={() => setOpenDrawer(!openDrawer)}
-                  size="large"
-                >
-                  <Menu />
-                </IconButton>,
-                <Tooltip key="tooltip" title="Vælg begivenhed">
-                  <Button
+          <Container>
+            <Toolbar>
+              {session &&
+                isAuthenticated && [
+                  <IconButton
+                    key="menu"
+                    aria-label="menu"
+                    edge="start"
                     color="inherit"
-                    endIcon={<ArrowDropDown />}
-                    onClick={() => setPrefixDialog(true)}
+                    onClick={() => setOpenDrawer(!openDrawer)}
+                    size="large"
                   >
-                    <Typography
+                    <Menu />
+                  </IconButton>,
+                  <Tooltip key="tooltip" title="Vælg begivenhed">
+                    <Button
                       color="inherit"
-                      variant={largeScreen ? "h6" : undefined}
+                      endIcon={<ArrowDropDown />}
+                      onClick={() => setPrefixDialog(true)}
                     >
-                      {name ?? "Vælg begivenhed"}
-                    </Typography>
-                  </Button>
-                </Tooltip>,
-              ]}
-            <Box sx={{ flexGrow: 1 }} />
-            <UserButton />
-          </Toolbar>
+                      <Typography
+                        color="inherit"
+                        variant={largeScreen ? "h6" : undefined}
+                      >
+                        {name ?? "Vælg begivenhed"}
+                      </Typography>
+                    </Button>
+                  </Tooltip>,
+                ]}
+              <Box sx={{ flexGrow: 1 }} />
+              <UserButton />
+            </Toolbar>
+          </Container>
         </AppBar>
       </HideOnScroll>
       {isAuthenticated && (
