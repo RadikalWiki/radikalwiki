@@ -11,10 +11,12 @@ import {
   HomeApp,
   CandidateApp,
 } from "comps";
+import { useRouter } from "next/router";
 
 export default function MimeLoader() {
   const node = useNode();
-  if (!node.query?.mimeId) return null;
+  const router = useRouter();
+  if (!node.query?.mimeId || !router.query.path) return null;
 
   switch (node.query.mimeId) {
     case "wiki/folder":
