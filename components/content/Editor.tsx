@@ -52,14 +52,17 @@ export default function Editor() {
 
   useEffect(() => {
     if (query) {
-      setName(query?.name ?? "");
-      const members = query?.members().map((member) => ({
-        nodeId: member?.nodeId,
-        name: member?.name!,
-        email: member?.email!,
-      }));
-      if (members?.[0]?.nodeId || members?.[0]?.email)
-        setMembers(members);
+      setName(query?.name  ?? "");
+      const fetchMembers = async () => {
+        const members = await resolved(() => query?.members().map((member) => ({
+          nodeId: member?.nodeId,
+          name: member?.name!,
+          email: member?.email!,
+        })));
+        if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
+          setMembers(members);
+      }
+      fetchMembers()
       setContent(data?.content);
       setImage(data?.image);
     }
