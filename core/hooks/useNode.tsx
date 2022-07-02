@@ -1,5 +1,7 @@
+import { UseQueryReturnValue } from "@gqty/react";
 import { toWhere } from "core/path";
 import {
+  GeneratedSchema,
   Maybe,
   members_constraint,
   members_insert_input,
@@ -17,7 +19,7 @@ import {
 import { usePath } from "hooks";
 
 const getNamespace = (name?: string) => {
-  return name?.trim().toLocaleLowerCase().replaceAll(" ", "_");
+  return name?.trim().toLocaleLowerCase().replaceAll(" ", "_").replaceAll("?", "");
 };
 
 export type Node = {
@@ -36,16 +38,15 @@ export type Node = {
   permMime: any;
 };
 
-const useNode = (param?: { id?: string }) => {
+const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<GeneratedSchema>, node?: nodes) => any[] }) => {
   const path = usePath();
   const query = useQuery();
   const node = param?.id
     ? query.node({ id: param?.id })
     : query.nodes(toWhere(path))?.[0];
   const nodeId = param?.id ? param?.id : node?.id;
-  const refetchQueries = param?.id
-    ? [node]
-    : [node, query.node({ id: node?.id })];
+  const refetchQueries = param?.refetch
+    ? [...param?.refetch(query, node!), node] : [node]
   const nodeContextId = node?.contextId;
   const subs = useSubscription();
   const sub = param?.id
