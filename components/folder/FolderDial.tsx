@@ -7,16 +7,19 @@ import {
   SupervisorAccount,
   Lock,
   LockOpen,
+  Delete,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { useMutation, useQuery, resolved, query as q } from "gql";
 import { useNode } from "hooks";
+import { fromId } from "core/path";
 
 export default function FolderDial({ id }: { id: string }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const node = useNode({ id });
   const query = node.query;
+  const parentId = query?.parentId;
   //const query = useQuery();
   //const folder = query.node({ id });
   /*
@@ -97,6 +100,13 @@ export default function FolderDial({ id }: { id: string }) {
   };
   */
 
+  const handleDelete = async () => {
+    await node.members.delete();
+    await node.delete();
+    const path = await fromId(parentId);
+    router.push("/" + path.join("/"));
+  };
+
   const handleLockContent = async () => {
     await node.update({ mutable: !query?.mutable });
   };
@@ -116,6 +126,16 @@ export default function FolderDial({ id }: { id: string }) {
           onClose={() => setOpen(false)}
           open={open}
         >
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+                {<Delete />}
+              </Avatar>
+            }
+            tooltipTitle="Slet"
+            tooltipOpen
+            onClick={handleDelete}
+          />
           <SpeedDialAction
             icon={
               <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
