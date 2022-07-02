@@ -201,12 +201,10 @@ const validate = (value: any) => {
 }
 
 export default function Slate({
-  initValue,
   value,
   onChange,
   readOnly = false,
 }: {
-  initValue: any;
   value?: any;
   onChange?: any;
   readOnly: boolean;
@@ -220,10 +218,9 @@ export default function Slate({
   if (editor && value) {
     editor.children = validate(value);
   }
-  const validatedValue = validate(initValue)
 
   return (
-    <SlateEditor editor={editor!} value={validatedValue} onChange={onChange}>
+    <SlateEditor editor={editor!} value={validate(value)} onChange={onChange}>
       {!readOnly && (
         <>
           <Stack direction="row" spacing={1} sx={{ mb: 1, ml: 2 }}>

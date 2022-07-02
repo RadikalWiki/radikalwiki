@@ -1,24 +1,38 @@
 import { Grid, Box, Paper } from "@mui/material";
 import { Slate, Image } from "comps";
+import { resolved } from "gql";
 import { useNode } from "hooks";
+import { useEffect, useState } from "react";
 
 function Content({ id, fontSize }: { id: string; fontSize: string }) {
   const { query } = useNode({ id });
-  const data = query?.data();
+  const [content, setContent] = useState<any>();
+  const [image, setImage] = useState<any>();
 
-  if (!data) return null;
+  useEffect(() => {
+    if (query) {
+      const fetch = async () => {
+        const { name, data } = await resolved(() => {
+          return { name: query.name, data: query.data() };
+        }, { noCache: true });
+        setContent(data?.content);
+        setImage(data?.image);
+      };
+      fetch()
+    }
+  }, [query]);
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={8}>
         <Box sx={{ fontSize, overflowX: "auto" }}>
-          <Slate initValue={data.content} readOnly />
+          <Slate value={content} readOnly />
         </Box>
       </Grid>
-      {data.image && (
+      {image && (
         <Grid item xs={12} sm={4}>
           <Paper sx={{ p: 1, m: 1 }}>
-            <Image alt="Billede for indhold" layout="fill" src={data.image} />
+            <Image alt="Billede for indhold" layout="fill" src={image} />
           </Paper>
         </Grid>
       )}

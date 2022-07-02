@@ -35,9 +35,11 @@ import { fromId } from "core/path";
 import { useNode } from "hooks";
 import nhost from "nhost";
 
-export default function Editor() {
+export default function Editor({ id }: { id: string }) {
   const router = useRouter();
-  const node = useNode();
+  const node = useNode({
+    id,
+  });
   const query = node.query;
   const parentId = query?.parentId;
 
@@ -48,30 +50,42 @@ export default function Editor() {
   >([]);
   const [content, setContent] = useState<any>();
   const [image, setImage] = useState<any>();
-  const data = query?.data();
 
   useEffect(() => {
     if (query) {
-      setName(query?.name  ?? "");
-      const fetchMembers = async () => {
-        const members = await resolved(() => query?.members().map((member) => ({
-          nodeId: member?.nodeId,
-          name: member?.name!,
-          email: member?.email!,
-        })));
-        if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
-          setMembers(members);
+      if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
+        const fetchMembers = async () => {
+          const members = await resolved(() =>
+            query?.members().map((member) => ({
+              nodeId: member?.nodeId,
+              name: member?.name!,
+              email: member?.email!,
+            }))
+          );
+          if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
+            setMembers(members);
+        };
+        fetchMembers();
       }
-      fetchMembers()
-      setContent(data?.content);
-      setImage(data?.image);
+      const fetch = async () => {
+        const { name, data } = await resolved(
+          () => {
+            return { name: query.name, data: query.data() };
+          },
+          { noCache: true }
+        );
+        setName(name ?? "");
+        setContent(data?.content);
+        setImage(data?.image);
+      };
+      fetch();
     }
-  }, [query, data]);
+  }, [query]);
 
   const handleSave = (mutable?: boolean) => async () => {
     if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
       await node.members.delete();
-      node.members.insert(members);
+      await node.members.insert(members);
     }
     await node.update({ name, data: { content, image }, mutable });
     router.push(router.asPath.split("?")[0]);
@@ -135,9 +149,10 @@ export default function Editor() {
                     <FileUploader
                       contentId={query?.id}
                       onNewFile={async ({ fileId }: { fileId: string }) => {
-                        const { presignedUrl } = await nhost.storage.getPresignedUrl({
-                          fileId,
-                        })!;
+                        const { presignedUrl } =
+                          await nhost.storage.getPresignedUrl({
+                            fileId,
+                          })!;
                         setImage(presignedUrl?.url);
                       }}
                     >
@@ -162,13 +177,8 @@ export default function Editor() {
             </Grid>
           </CardContent>
         </Collapse>
-        {data && (
-          <Slate
-            initValue={data}
-            value={content}
-            onChange={setContent}
-            readOnly={false}
-          />
+        {content && (
+          <Slate value={content} onChange={setContent} readOnly={false} />
         )}
       </Card>
     </>
