@@ -215,12 +215,13 @@ export default function Slate({
   const editor = editorRef.current;
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
   const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
-  if (editor && value) {
-    editor.children = validate(value);
+  const validated = validate(value);
+  if (editor) {
+    editor.children = validated;
   }
 
   return (
-    <SlateEditor editor={editor!} value={validate(value)} onChange={onChange}>
+    <SlateEditor editor={editor!} value={validated} onChange={onChange}>
       {!readOnly && (
         <>
           <Stack direction="row" spacing={1} sx={{ mb: 1, ml: 2 }}>
@@ -234,7 +235,7 @@ export default function Slate({
           <Divider />
         </>
       )}
-      <Box sx={{ m: 2 }}>
+      {(!readOnly || (validated.length !== 0 && validated[0].children[0].text !== '')) && <Box sx={{ m: 2 }}>
         <Editable
           renderElement={renderElement}
           renderLeaf={renderLeaf}
@@ -249,7 +250,7 @@ export default function Slate({
             });
           }}
         />
-      </Box>
+      </Box>}
     </SlateEditor>
   );
 }

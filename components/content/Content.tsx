@@ -12,8 +12,8 @@ function Content({ id, fontSize }: { id: string; fontSize: string }) {
   useEffect(() => {
     if (query) {
       const fetch = async () => {
-        const { name, data } = await resolved(() => {
-          return { name: query.name, data: query.data() };
+        const data = await resolved(() => {
+          return query.data();
         }, { noCache: true });
         setContent(data?.content);
         setImage(data?.image);
