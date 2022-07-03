@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from "react";
 import {
   Link as NextLink,
-  AddVoteChildButton,
+  AddChangeButton,
   Content,
   ContentToolbar,
   AutoButton,
@@ -179,7 +179,7 @@ function ChangeList({ id }: { id: string }) {
                 onClick={() => router.push(`${router.asPath}?app=sort`)}
               />
             )}
-            <AddVoteChildButton id={id} />
+            <AddChangeButton id={id} />
           </CardActions>
         }
       />

@@ -1,4 +1,4 @@
-export { default as AddVoteChildButton } from "./AddVoteChildButton";
+export { default as AddChangeButton } from "./AddChangeButton";
 export { default as ChangeList } from "./ChangeList";
 export { default as PolicyApp } from "./PolicyApp";
 export { default as PositionApp } from "./PositionApp";
