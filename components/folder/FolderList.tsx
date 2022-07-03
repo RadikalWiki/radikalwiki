@@ -16,8 +16,10 @@ import { TransitionGroup } from "react-transition-group";
 import { getIcon } from "mime";
 import { toWhere } from "core/path";
 import { useNode } from "hooks";
+import { useUserId } from "@nhost/react";
 
 export default function FolderList({ id }: { id: string }) {
+  const userId = useUserId();
   const router = useRouter();
   const { query } = useNode({ id });
 
@@ -25,9 +27,20 @@ export default function FolderList({ id }: { id: string }) {
     query?.children({
       order_by: [{ index: order_by.asc }],
       where: {
-        mime: {
-          hidden: { _eq: false },
-        },
+        _and: [
+          {
+            _or: [
+              { mutable: { _eq: false } },
+              { ownerId: { _eq: userId } },
+              { members: { nodeId: { _eq: userId } } },
+            ]
+          },
+          {
+            mime: {
+              hidden: { _eq: false },
+            },
+          },
+        ],
       },
     }) ?? [];
 
