@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
-import { order_by, resolved, useQuery } from "gql";
+import { order_by, query, resolved, useQuery } from "gql";
 import { TransitionGroup } from "react-transition-group";
 import { getIcon } from "mime";
 import { toWhere } from "core/path";
@@ -21,10 +21,10 @@ import { useUserId } from "@nhost/react";
 export default function FolderList({ id }: { id: string }) {
   const userId = useUserId();
   const router = useRouter();
-  const { query } = useNode({ id });
+  const node = useNode({ id });
 
   const children =
-    query?.children({
+    node.query?.children({
       order_by: [{ index: order_by.asc }],
       where: {
         _and: [
@@ -49,7 +49,10 @@ export default function FolderList({ id }: { id: string }) {
   const handleOnClick = (namespace?: string) => async () => {
     const path = `${router.asPath}/${namespace}`.substring(1).split("/");
     await resolved(() => {
-      const { id, name, mimeId } = query!;
+      const node = query?.nodes(toWhere(path))?.[0];
+      node.id;
+      node.name;
+      node.mimeId;
     });
 
     router.push(`${router.asPath}/${namespace}`);
