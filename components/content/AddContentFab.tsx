@@ -10,7 +10,7 @@ export default function AddContentFab({ id }: { id: string }) {
   const parent = query.node({ id });
   const mimes = parent?.inserts()?.map(mime => mime.id!) ?? [];
 
-  if (!mimes)
+  if (!mimes.length)
     return null;
 
   return (
