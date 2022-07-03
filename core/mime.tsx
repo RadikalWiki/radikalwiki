@@ -13,6 +13,8 @@ import {
   Face,
   Article,
 } from "@mui/icons-material";
+import { Skeleton } from "@mui/material";
+import { Suspense } from "react";
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
@@ -46,7 +48,7 @@ const getIcon = (mimeId?: string, index?: number): any => {
     case "vote/poll":
       return <Poll />;
     default:
-      return <HelpOutline />;
+      return <Skeleton variant="circular" width={24} height={24} />
   }
 };
 
