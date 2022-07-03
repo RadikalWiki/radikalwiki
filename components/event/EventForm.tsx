@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useSession } from "hooks";
 import { nodes_insert_input, useMutation, useQuery } from "gql";
-import { DatePicker } from "@mui/lab";
+import { DatePicker } from "@mui/x-date-pickers";
 
 export default function EventForm() {
   const router = useRouter();
