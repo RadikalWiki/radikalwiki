@@ -1,5 +1,5 @@
 import React from "react";
-import { FolderApp, ContentApp, PollList } from "comps";
+import { FolderApp, ContentApp, PollList, CandidateList } from "comps";
 import { useNode } from "hooks";
 
 export default function PositionApp() {
@@ -7,7 +7,7 @@ export default function PositionApp() {
   return (
     <>
       <ContentApp />
-      <FolderApp />
+      <CandidateList />
       <PollList id={query?.id} />
     </>
   );
