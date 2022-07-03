@@ -50,9 +50,9 @@ export default function FolderList({ id }: { id: string }) {
     const path = `${router.asPath}/${namespace}`.substring(1).split("/");
     await resolved(() => {
       const node = query?.nodes(toWhere(path))?.[0];
-      node.id;
-      node.name;
-      node.mimeId;
+      node?.id;
+      node?.name;
+      node?.mimeId;
     });
 
     router.push(`${router.asPath}/${namespace}`);
