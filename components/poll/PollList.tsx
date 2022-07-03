@@ -46,7 +46,7 @@ function PollList({ id }: { id: string }) {
       avatar={
         <Avatar
           sx={{
-            bgcolor: (theme) => theme.palette.secondary.main,
+            bgcolor: (t) => t.palette.secondary.main,
           }}
         >
           {getIcon("vote/poll")}

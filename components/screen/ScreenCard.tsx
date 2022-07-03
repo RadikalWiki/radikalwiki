@@ -29,8 +29,8 @@ export default function ContentCard({
           subheaderTypographyProps={{ color: "inherit" }}
           avatar={<ContentAvatar id={id} screen />}
           sx={{
-            bgcolor: (theme) => theme.palette.secondary.main,
-            color: (theme) => theme.palette.secondary.contrastText,
+            bgcolor: (t) => t.palette.secondary.main,
+            color: (t) => t.palette.secondary.contrastText,
           }}
           action={[
             <ExpandButton key="expand" onClick={() => setExpand(!expand)} />,

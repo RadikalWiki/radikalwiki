@@ -64,7 +64,7 @@ export default function FolderList({ id }: { id: string }) {
         const avatar = (
           <Avatar
             sx={{
-              bgcolor: (theme) => theme.palette.secondary.main,
+              bgcolor: (t) => t.palette.secondary.main,
             }}
           >
             {getIcon(
@@ -90,7 +90,7 @@ export default function FolderList({ id }: { id: string }) {
                           sx={{
                             width: 18,
                             height: 18,
-                            bgcolor: (theme) => theme.palette.primary.main,
+                            bgcolor: (t) => t.palette.primary.main,
                           }}
                         >
                           <LockOpen

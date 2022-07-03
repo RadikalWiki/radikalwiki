@@ -91,8 +91,8 @@ export default function SortApp() {
                             <ListItemAvatar>
                               <Avatar
                                 sx={{
-                                  bgcolor: (theme) =>
-                                    theme.palette.secondary.main,
+                                  bgcolor: (t) =>
+                                    t.palette.secondary.main,
                                 }}
                               >
                                 {getIcon(e.mimeId)}

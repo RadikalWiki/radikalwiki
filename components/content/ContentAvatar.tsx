@@ -44,7 +44,7 @@ function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
             sx={{
               width: 18,
               height: 18,
-              bgcolor: (theme) => theme.palette.primary.main,
+              bgcolor: (t) => t.palette.primary.main,
             }}
           >
             <LockOpen

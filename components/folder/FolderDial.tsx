@@ -128,7 +128,7 @@ export default function FolderDial({ id }: { id: string }) {
         >
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
                 {<Delete />}
               </Avatar>
             }
@@ -138,7 +138,7 @@ export default function FolderDial({ id }: { id: string }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
                 {query?.mutable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
@@ -148,7 +148,7 @@ export default function FolderDial({ id }: { id: string }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
                 <LowPriority />
               </Avatar>
             }
@@ -158,7 +158,7 @@ export default function FolderDial({ id }: { id: string }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (theme) => theme.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
                 <GetApp />
               </Avatar>
             }

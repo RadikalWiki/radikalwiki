@@ -61,7 +61,7 @@ function ChildListElement({ node, index }: { node: nodes; index: number }) {
                     sx={{
                       width: 18,
                       height: 18,
-                      bgcolor: (theme) => theme.palette.primary.main,
+                      bgcolor: (t) => t.palette.primary.main,
                     }}
                   >
                     <LockOpen
@@ -86,7 +86,7 @@ function ChildListElement({ node, index }: { node: nodes; index: number }) {
           ) : (
             <Avatar
               sx={{
-                bgcolor: (theme) => theme.palette.secondary.main,
+                bgcolor: (t) => t.palette.secondary.main,
               }}
             >
               {index + 1}
@@ -164,7 +164,7 @@ function ChangeList({ id }: { id: string }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (theme) => theme.palette.secondary.main,
+              bgcolor: (t) => t.palette.secondary.main,
             }}
           >
             {getIcon("vote/change")}

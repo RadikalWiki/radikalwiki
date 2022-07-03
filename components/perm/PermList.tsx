@@ -85,7 +85,7 @@ function MimeListElement({ mime, index }: { mime: mimes; index: number }) {
         <ListItemAvatar>
           <Avatar
             sx={{
-              bgcolor: (theme) => theme.palette.secondary.main,
+              bgcolor: (t) => t.palette.secondary.main,
             }}
           >
             {getIcon(mime?.id)}
@@ -140,7 +140,7 @@ export default function PermList({ id }: { id: string }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (theme) => theme.palette.secondary.main,
+              bgcolor: (t) => t.palette.secondary.main,
             }}
           >
             <Policy />

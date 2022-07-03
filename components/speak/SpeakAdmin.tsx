@@ -83,7 +83,7 @@ export default function SpeakAdmin({
           color="secondary"
           value={timeBox}
           sx={{
-            bgcolor: (theme) => theme.palette.secondary.main,
+            bgcolor: (t) => t.palette.secondary.main,
             borderColor: "white",
             m: 2,
           }}
