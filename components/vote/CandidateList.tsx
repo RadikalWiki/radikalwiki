@@ -54,8 +54,8 @@ export default function CandidateList() {
           const image = child.data()?.image;
           return (
             <ImageListItem
+              key={child.id ?? 0}
               sx={{ borderRadius: "70px" }}
-              key={child.id}
               onClick={handleOnClick(child.namespace)}
             >
               {image ? (
