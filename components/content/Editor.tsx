@@ -177,9 +177,7 @@ export default function Editor({ id }: { id: string }) {
             </Grid>
           </CardContent>
         </Collapse>
-        {content && (
-          <Slate value={content} onChange={setContent} readOnly={false} />
-        )}
+        <Slate value={content} onChange={setContent} readOnly={false} />
       </Card>
     </>
   );
