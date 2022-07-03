@@ -10,16 +10,16 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { order_by, useQuery } from "gql";
+import { order_by, resolved, useQuery } from "gql";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getIcon } from "mime";
 import { useNode } from "hooks";
 
 export default function SortApp() {
   const [list, setList] = useState<any[]>([]);
-  const { query: node } = useNode();
+  const { query } = useNode();
   const children =
-    node
+    query
       ?.children({
         order_by: [{ index: order_by.asc }],
       })
@@ -32,8 +32,31 @@ export default function SortApp() {
       })) ?? [];
 
   useEffect(() => {
-    setList(children);
-  }, [node]);
+    if (query) {
+      const fetch = async () => {
+        const children = await resolved(
+          () => {
+            return (
+              query
+                ?.children({
+                  order_by: [{ index: order_by.asc }],
+                })
+                .map(({ id, name, index, mutable, mimeId }) => ({
+                  id,
+                  name,
+                  index,
+                  mutable,
+                  mimeId,
+                })) ?? []
+            );
+          },
+          { noCache: true }
+        );
+        setList(children);
+      };
+      fetch();
+    }
+  }, [query]);
 
   const handleDragEnd = ({ source, destination }: any) => {
     if (destination === undefined || destination === null) return;
@@ -46,8 +69,6 @@ export default function SortApp() {
     setList(res);
   };
 
-  if (!list?.[0]?.id) return null;
-
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -55,7 +76,7 @@ export default function SortApp() {
           <Droppable droppableId="drop1">
             {(provided, snapshot) => (
               <List ref={provided.innerRef} sx={{ m: 0 }}>
-                {list.map((e, index: number) => {
+                {list?.[0]?.id && list.map((e, index: number) => {
                   return (
                     <Draggable key={e.id} draggableId={e.id} index={index}>
                       {(provided, snapshot) => (
@@ -74,7 +95,7 @@ export default function SortApp() {
                                     theme.palette.secondary.main,
                                 }}
                               >
-                                {getIcon(e.mime)}
+                                {getIcon(e.mimeId)}
                               </Avatar>
                             </ListItemAvatar>
                             <ListItemText
@@ -95,7 +116,7 @@ export default function SortApp() {
           </Droppable>
         </Card>
       </DragDropContext>
-      <SortFab folder={node} elements={list} />
+      <SortFab folder={query} elements={list} />
     </>
   );
 }
