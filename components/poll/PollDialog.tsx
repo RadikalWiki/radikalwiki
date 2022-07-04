@@ -85,7 +85,7 @@ export default function PollDialog({
     await stopPoll();
     const namespace = new Date(
       new Date().getTime() + (session?.timeDiff ?? 0)
-    ).toLocaleString();
+    ).toLocaleString().replaceAll("/", "");
     const poll = await insert({
       name: node?.name,
       namespace,
