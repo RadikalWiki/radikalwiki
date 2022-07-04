@@ -113,9 +113,11 @@ export default function Breadcrumbs() {
 
   const sliced = path.slice(0, prefix.length);
   const start =
-    sliced.length === prefix.length && sliced.every((v, i) => v === prefix[i])
+    prefix.length !== 0 && sliced.length === prefix.length && sliced.every((v, i) => v === prefix[i])
       ? prefix.length
       : 1;
+
+  console.log(start)
 
   const home = <HomeLink path={path} open={open} setOpen={setOpen} />;
   const links = range(start, path.length).map((index) => (
