@@ -58,6 +58,43 @@ const BreadcrumbsLink = ({
   );
 };
 
+const HomeLink = ({
+  path,
+  open,
+  setOpen,
+}: {
+  path: string[];
+  open: boolean[];
+  setOpen: Function;
+}) => {
+  return (
+    <Link
+      underline="none"
+      key={-1}
+      component={NextLink}
+      sx={{ alignItems: "center", display: "flex" }}
+      color="primary"
+      href="/"
+      onMouseEnter={() => {
+        const newOpen = [
+          true,
+          ...new Array(path.length ? path.length : 0).fill(false),
+        ];
+        setOpen(newOpen);
+      }}
+    >
+      <>
+        {getIcon("wiki/home")}
+        <Collapse orientation="horizontal" in={open[0]}>
+          <Typography noWrap color="secondary" sx={{ ml: 0.5 }}>
+            {"Hjem"}
+          </Typography>
+        </Collapse>
+      </>
+    </Link>
+  );
+};
+
 const range = (start: number, end: number) =>
   Array.from(Array(end + 1).keys()).slice(start);
 
@@ -78,7 +115,9 @@ export default function Breadcrumbs() {
   const start =
     sliced.length === prefix.length && sliced.every((v, i) => v === prefix[i])
       ? prefix.length
-      : 0;
+      : 1;
+
+  const home = <HomeLink path={path} open={open} setOpen={setOpen} />;
   const links = range(start, path.length).map((index) => (
     <Suspense
       key={path.slice(0, index).join("/")}
@@ -101,7 +140,7 @@ export default function Breadcrumbs() {
         }}
         sx={{ height: 48, alignItems: "center", display: "flex" }}
       >
-        <MuiBreadcrumbs>{links}</MuiBreadcrumbs>
+        <MuiBreadcrumbs>{[home, ...links]}</MuiBreadcrumbs>
       </Box>
     </Stack>
   );
