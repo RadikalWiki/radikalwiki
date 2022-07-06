@@ -117,8 +117,6 @@ export default function Breadcrumbs() {
       ? prefix.length
       : 1;
 
-  console.log(start)
-
   const home = <HomeLink path={path} open={open} setOpen={setOpen} />;
   const links = range(start, path.length).map((index) => (
     <Suspense
