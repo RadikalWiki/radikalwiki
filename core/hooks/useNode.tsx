@@ -122,13 +122,13 @@ const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<Ge
   };
 
   const get = (name: string) => {
-    const [rel] = query?.relations({ where: { name: { _eq: name } } })!;
-    return rel.node;
+    const rel = query?.relations({ where: { name: { _eq: name } } })?.[0];
+    return rel?.node;
   };
 
   const subGet = (name: string) => {
-    const [rel] = sub?.relations({ where: { name: { _eq: name } } })!;
-    return rel.node;
+    const rel = sub?.relations({ where: { name: { _eq: name } } })?.[0];
+    return rel?.node;
   };
 
   //const subGet = (name: string) => sub?.relation({ args: { relation_name: name } })?.[0];
