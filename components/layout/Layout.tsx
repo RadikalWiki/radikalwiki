@@ -15,15 +15,14 @@ export default function Layout({ children }: { children?: any }) {
     }
   }, [isLoading, isAuthenticated, asPath, push]);
 
-  const refresh = () => nhost.auth.refreshSession()
+  const refresh = () => nhost.auth.refreshSession();
 
   useEffect(() => {
-        window.addEventListener("focus", refresh);
-        return () => {
-            window.removeEventListener("focus", refresh);
-        };
+    window.addEventListener("focus", refresh);
+    return () => {
+      window.removeEventListener("focus", refresh);
+    };
   }, []);
-
 
   if (asPath.match(/\?app=screen/))
     return <SessionProvider>{isAuthenticated && children}</SessionProvider>;
@@ -38,7 +37,7 @@ export default function Layout({ children }: { children?: any }) {
           <Box sx={{ p: 8 }} />
         </Container>
       </Scroll>
-      {!asPath.match(/^\/user\/|^\/$/) && <NavBar />}
+      {!asPath.match(/^\/user\/$/) && isAuthenticated && <NavBar />}
     </SessionProvider>
   );
 }
