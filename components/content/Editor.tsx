@@ -49,6 +49,7 @@ export default function Editor({ id }: { id: string }) {
     { nodeId: string; name?: string; email?: string }[]
   >([]);
   const [content, setContent] = useState<any>();
+  const [fileId, setFileId] = useState<any>();
   const [image, setImage] = useState<any>();
 
   useEffect(() => {
@@ -76,18 +77,27 @@ export default function Editor({ id }: { id: string }) {
         );
         setName(name ?? "");
         setContent(data?.content);
-        setImage(data?.image);
+        //const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
+        setFileId(data?.image);
       };
       fetch();
     }
   }, [query]);
+
+  useEffect(() => {
+    const fetch = async () => {
+      const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId });
+      setImage(presignedUrl?.url);
+    };
+    fetch()
+  }, [fileId]);
 
   const handleSave = (mutable?: boolean) => async () => {
     if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
       await node.members.delete();
       await node.members.insert(members);
     }
-    await node.update({ name, data: { content, image }, mutable });
+    await node.update({ name, data: { content, image: fileId }, mutable });
     router.push(router.asPath.split("?")[0]);
   };
 
@@ -149,11 +159,7 @@ export default function Editor({ id }: { id: string }) {
                     <FileUploader
                       contentId={query?.id}
                       onNewFile={async ({ fileId }: { fileId: string }) => {
-                        const { presignedUrl } =
-                          await nhost.storage.getPresignedUrl({
-                            fileId,
-                          })!;
-                        setImage(presignedUrl?.url);
+                        setFileId(fileId);
                       }}
                     >
                       <Button

@@ -15,27 +15,17 @@ import { query, resolved } from "gql";
 import { toWhere } from "core/path";
 import { Box } from "@mui/system";
 import { useUserId } from "@nhost/react";
+import nhost from "nhost";
+import { useEffect, useState } from "react";
 
 export default function CandidateList() {
   const node = useNode();
   const router = useRouter();
   const largeScreen = useMediaQuery("(min-width:640px)");
   const userId = useUserId();
+  const [images, setImages] = useState<string[]>([]);
 
-  const handleOnClick = (namespace?: string) => async () => {
-    const path = `${router.asPath}/${namespace}`.substring(1).split("/");
-    await resolved(() => {
-      const node = query?.nodes(toWhere(path))?.[0];
-      node?.id;
-      node?.name;
-      node?.mimeId;
-    });
-
-    router.push(`${router.asPath}/${namespace}`);
-  };
-  return (
-    <ImageList cols={largeScreen ? 2 : 1} sx={{ m: 1 }}>
-      {node.query
+  const children = node.query
         ?.children({
           where: {
             _and: [
@@ -49,17 +39,43 @@ export default function CandidateList() {
               },
             ],
           },
-        })
-        .map((child) => {
-          const image = child.data()?.image;
+        });
+  
+  const imageIds = children?.map(child => child.data()?.image)
+
+  useEffect(() => {
+    
+    const fetch = async () => {
+      const preUrls = await Promise.all(imageIds?.map(fileId => nhost.storage.getPresignedUrl({ fileId })) ?? []);
+      setImages(preUrls.map(preUrl => preUrl.presignedUrl?.url ?? "") ?? [])
+    };
+    fetch()
+  }, [imageIds]);
+
+  const handleOnClick = (namespace?: string) => async () => {
+    const path = `${router.asPath}/${namespace}`.substring(1).split("/");
+    await resolved(() => {
+      const node = query?.nodes(toWhere(path))?.[0];
+      node?.id;
+      node?.name;
+      node?.mimeId;
+    });
+
+    router.push(`${router.asPath}/${namespace}`);
+  };
+
+  return (
+    <ImageList cols={largeScreen ? 2 : 1} sx={{ m: 1 }}>
+      {children?.map((child, index) => {
+          const fileId = child.data()?.image;
           return (
             <ImageListItem
               key={child.id ?? 0}
               sx={{ borderRadius: "70px" }}
               onClick={handleOnClick(child.namespace)}
             >
-              {image ? (
-                <Image alt="Billede for indhold" layout="fill" src={image} />
+              {images?.[index] ? (
+                <Image alt="Billede for indhold" layout="fill" src={images?.[index]} />
               ) : (
                 <Box sx={{ height: "50px" }}></Box>
               )}

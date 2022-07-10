@@ -2,6 +2,7 @@ import { Grid, Box, Paper } from "@mui/material";
 import { Slate, Image } from "comps";
 import { resolved } from "gql";
 import { useNode } from "hooks";
+import nhost from "nhost";
 import { useEffect, useState } from "react";
 
 function Content({ id, fontSize }: { id: string; fontSize: string }) {
@@ -16,7 +17,8 @@ function Content({ id, fontSize }: { id: string; fontSize: string }) {
           return query.data();
         }, { noCache: true });
         setContent(data?.content);
-        setImage(data?.image);
+        const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
+        setImage(presignedUrl?.url);
       };
       fetch()
     }
