@@ -39,7 +39,7 @@ function PollList({ id }: { id: string }) {
 
   const owner = node?.isOwner;
 
-  if (polls && polls.length == 0) return null;
+  if (!polls?.[0]?.id) return null;
 
   return (
     <HeaderCard
