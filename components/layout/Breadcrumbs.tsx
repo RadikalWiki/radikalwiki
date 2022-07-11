@@ -70,7 +70,6 @@ const HomeLink = ({
   return (
     <Link
       underline="none"
-      key={-1}
       component={NextLink}
       sx={{ alignItems: "center", display: "flex" }}
       color="primary"
@@ -113,24 +112,28 @@ export default function Breadcrumbs() {
 
   const sliced = path.slice(0, prefix.length);
   const start =
-    prefix.length !== 0 && sliced.length === prefix.length && sliced.every((v, i) => v === prefix[i])
+    prefix.length !== 0 &&
+    sliced.length === prefix.length &&
+    sliced.every((v, i) => v === prefix[i])
       ? prefix.length
       : 1;
 
-  const home = <HomeLink path={path} open={open} setOpen={setOpen} />;
-  const links = range(start, path.length).map((index) => (
-    <Suspense
-      key={path.slice(0, index).join("/")}
-      fallback={<Skeleton variant="circular" width={20} key={0} />}
-    >
-      <BreadcrumbsLink
-        path={path}
-        open={open}
-        setOpen={setOpen}
-        index={index}
-      />
-    </Suspense>
-  ));
+  const home = <HomeLink key="/" path={path} open={open} setOpen={setOpen} />;
+  const links = range(start, path.length).map((index) => {
+    return (
+      <Suspense
+        key={path.slice(0, index).join("/")}
+        fallback={<Skeleton variant="circular" width={20} key={0} />}
+      >
+        <BreadcrumbsLink
+          path={path}
+          open={open}
+          setOpen={setOpen}
+          index={index}
+        />
+      </Suspense>
+    );
+  });
 
   return (
     <Stack sx={{ p: 2 }}>
