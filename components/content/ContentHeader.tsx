@@ -1,8 +1,44 @@
-import { CardHeader, Chip, Typography } from "@mui/material";
+import { CardHeader, Chip, Skeleton, Typography } from "@mui/material";
 import { ContentAvatar, ExpandButton } from "comps";
 import { useQuery } from "gql";
 import { Face } from "@mui/icons-material";
 import { getIcon } from "mime";
+import { Suspense } from "react";
+
+function MemberChips({ id }: { id: string }) {
+  const query = useQuery();
+  const node = query.node({ id });
+  const members = node?.members();
+  const chips =
+    members?.map(({ id, name, node, user }) => {
+      return (
+        <Chip
+          key={id ?? 0}
+          icon={node?.mimeId ? getIcon(node.mimeId) : <Face />}
+          color="secondary"
+          variant="outlined"
+          size="small"
+          sx={{ mr: 0.5 }}
+          label={name ?? user?.displayName}
+        />
+      );
+    }) ?? [];
+  return (
+    <>
+      {!members?.[0]?.id && members?.length !== 0 ? (
+        <Skeleton height={20} width={120} />
+      ) : (
+        chips
+      )}
+    </>
+  );
+}
+
+export function Title({ id }: { id: string }) {
+  const query = useQuery();
+  const node = query.node({ id });
+  return node?.name ? <Typography color="secondary">{node?.name ?? ""}</Typography> : null
+}
 
 export default function ContentHeader({
   id,
@@ -15,29 +51,21 @@ export default function ContentHeader({
   setExpand: Function;
   hideMembers?: boolean;
 }) {
-  const query = useQuery();
-  const node = query.node({ id });
-
   return (
     <CardHeader
-      title={<Typography color="secondary">{node?.name}</Typography>}
+      title={
+        <Suspense fallback={<Skeleton width={10} />}>
+          <Title id={id} />
+        </Suspense>
+      }
       avatar={<ContentAvatar id={id} />}
       subheader={
         <>
-          {!hideMembers &&
-            node
-              ?.members()
-              .map((m) => (
-                <Chip
-                  key={m.id ?? 0}
-                  icon={m.node?.mimeId ? getIcon(m.node?.mimeId) : <Face />}
-                  color="secondary"
-                  variant="outlined"
-                  size="small"
-                  sx={{ mr: 0.5 }}
-                  label={m.name ?? m.user?.displayName}
-                />
-              ))}
+          {!hideMembers && (
+            <Suspense fallback={<Skeleton width={10} />}>
+              <MemberChips id={id} />
+            </Suspense>
+          )}
         </>
       }
       action={

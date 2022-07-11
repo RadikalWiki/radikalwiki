@@ -1,9 +1,16 @@
-import { Avatar, Tooltip, Badge } from "@mui/material";
+import { Avatar, Tooltip, Badge, Skeleton } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import { order_by, useQuery } from "gql";
 import { getIcon } from "mime";
+import { Suspense } from "react";
 
-function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
+function ContentAvatarSuspense({
+  id,
+  screen,
+}: {
+  id: string;
+  screen?: boolean;
+}) {
   const query = useQuery();
   const node = query.node({ id });
 
@@ -20,7 +27,7 @@ function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
       })
       .findIndex((e: any) => e.id === node.id) ?? 0;
 
-  const avatar = (
+  const avatar = node?.mimeId ? (
     <Avatar
       sx={{
         bgcolor: (t) =>
@@ -29,7 +36,7 @@ function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
     >
       {getIcon(node?.mimeId!, index)}
     </Avatar>
-  );
+  ): <ContentAvatarSkeleton />;
 
   return node?.mutable ? (
     <Badge
@@ -65,4 +72,20 @@ function ContentAvatar({ id, screen }: { id: string; screen?: boolean }) {
   );
 }
 
-export default ContentAvatar;
+function ContentAvatarSkeleton() {
+  return <Skeleton width={40} height={40} variant="circular" animation="wave" />;
+}
+
+export default function ContentAvatar({
+  id,
+  screen,
+}: {
+  id: string;
+  screen?: boolean;
+}) {
+  return (
+    <Suspense fallback={<ContentAvatarSkeleton />}>
+      <ContentAvatarSuspense id={id} screen={screen} />
+    </Suspense>
+  );
+}
