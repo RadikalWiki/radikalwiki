@@ -10,7 +10,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { LockOpen } from "@mui/icons-material";
+import { DoNotDisturb, LockOpen } from "@mui/icons-material";
 import { order_by, query, resolved, useQuery } from "gql";
 import { TransitionGroup } from "react-transition-group";
 import { getIcon } from "mime";
@@ -117,8 +117,17 @@ export default function FolderList({ id }: { id: string }) {
         );
       })}
       {children.length == 0 && (
-        <Collapse key={id}>
+        <Collapse key={-1}>
           <ListItem button>
+            <ListItemAvatar>
+              <Avatar
+                sx={{
+                  bgcolor: (t) => t.palette.secondary.main,
+                }}
+              >
+                <DoNotDisturb />
+              </Avatar>
+            </ListItemAvatar>
             <ListItemText primary="Intet indhold" />
           </ListItem>
           <Divider />
