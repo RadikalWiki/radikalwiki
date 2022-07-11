@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   CircularProgress,
+  Collapse,
   Divider,
   IconButton,
   List,
@@ -15,6 +16,7 @@ import { getIcon } from "mime";
 import { HeaderCard } from "comps/common";
 import { Suspense } from "react";
 import { useUserEmail, useUserId } from "@nhost/react";
+import { TransitionGroup } from "react-transition-group";
 
 const ListSuspense = () => {
   const query = useQuery();
@@ -64,41 +66,49 @@ const ListSuspense = () => {
 
   return (
     <List>
-      {invites.map(({ id, parent }) => (
-        <ListItem
-          key={id ?? 0}
-          secondaryAction={
-            <IconButton onClick={handleAcceptInvite(id)}>
-              <Add />
-            </IconButton>
-          }
-        >
-          <ListItemAvatar>
-            <Avatar
-              sx={{
-                bgcolor: (t) => t.palette.primary.main,
-              }}
+      <TransitionGroup>
+        {invites.map(({ id, parent }) => {
+          return !id ? null :
+            <Collapse
+              key={id ?? 0}
             >
-              {getIcon(parent?.mimeId!)}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={parent?.name} />
-        </ListItem>
-      ))}
-      {invites.length == 0 && (
-        <ListItem>
-          <ListItemAvatar>
-            <Avatar
-              sx={{
-                bgcolor: (t) => t.palette.secondary.main,
-              }}
-            >
-              <DoNotDisturb />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Ingen invitationer" />
-        </ListItem>
-      )}
+              <ListItem
+                secondaryAction={
+                  <IconButton onClick={handleAcceptInvite(id)}>
+                    <Add />
+                  </IconButton>
+                }
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    sx={{
+                      bgcolor: (t) => t.palette.primary.main,
+                    }}
+                  >
+                    {getIcon(parent?.mimeId!)}
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={parent?.name} />
+              </ListItem>
+            </Collapse>
+        })}
+        {invites.length == 0 && (
+          <Collapse key={-1}>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar
+                  sx={{
+                    bgcolor: (t) => t.palette.secondary.main,
+                  }}
+                >
+                  <DoNotDisturb />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Ingen invitationer" />
+            </ListItem>
+          </Collapse>
+        )}
+      </TransitionGroup>
     </List>
   );
 };
