@@ -77,7 +77,6 @@ export default function Editor({ id }: { id: string }) {
         );
         setName(name ?? "");
         setContent(data?.content);
-        //const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
         setFileId(data?.image);
       };
       fetch();
@@ -89,7 +88,9 @@ export default function Editor({ id }: { id: string }) {
       const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId });
       setImage(presignedUrl?.url);
     };
-    fetch()
+    if (fileId) {
+      fetch()
+    }
   }, [fileId]);
 
   const handleSave = (mutable?: boolean) => async () => {

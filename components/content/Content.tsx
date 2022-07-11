@@ -17,8 +17,10 @@ function Content({ id, fontSize }: { id: string; fontSize: string }) {
           return query.data();
         }, { noCache: true });
         setContent(data?.content);
-        const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
-        setImage(presignedUrl?.url);
+        if (data?.image) {
+          const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
+          setImage(presignedUrl?.url);
+        }
       };
       fetch()
     }
