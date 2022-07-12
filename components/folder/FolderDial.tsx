@@ -10,9 +10,11 @@ import {
   Delete,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { resolved, query as q } from "gql";
-import { Node, useNode } from "hooks";
+import { resolved, query as q, order_by } from "gql";
+import { Node } from "hooks";
 import { fromId } from "core/path";
+import HTMLtoDOCX from "html-to-docx";
+import { toHtml } from "core/document";
 
 export default function FolderDial({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
@@ -27,8 +29,20 @@ export default function FolderDial({ node }: { node: Node }) {
     const children = await resolved(() => {
       return q
         .node({ id })
-        ?.children()
-        .map((content) => content.id);
+        ?.children({
+          order_by: [{ index: order_by.asc }],
+          where: {
+            mimeId: {
+              _in: [
+                "vote/position",
+                "vote/candidate",
+                "vote/policy",
+                "vote/change",
+              ],
+            },
+          },
+        })
+        .map(({ id }) => id);
     });
     const members = await resolved(() => {
       return q
@@ -37,13 +51,13 @@ export default function FolderDial({ node }: { node: Node }) {
         ?.map((m) => m.name ?? m.user?.displayName)
         .join(", ");
     });
-    const content = await resolved(() => {
-      const content = q.node({ id });
-      if (content) return { name: content.name, data: content.data };
+    const node = await resolved(() => {
+      const node = q.node({ id });
+      if (node) return { name: node.name, data: node.data() };
     });
     return `<h${level}>${
-      content?.name
-    }</h${level}><i>Stillet af: ${members}</i>${content?.data}${
+      node?.name
+    }</h${level}><i>Stillet af: ${members}</i>${toHtml(node?.data?.content)}${
       children
         ? "<br>" +
           (
@@ -55,15 +69,32 @@ export default function FolderDial({ node }: { node: Node }) {
     }`;
   };
 
-  /*
   const handleExport = async () => {
-    const contents = await resolved(() => {
-      return q.node({ id: folder?.id })?.children({
+    const nodes = await resolved(() => {
+      return q
+        .node({ id: query?.id })
+        ?.children({
           order_by: [{ index: order_by.asc }],
-          where: { parentId: { _is_null: true } },
-        }).map(({ id }) => ({ id }))
+          where: {
+            mimeId: {
+              _in: [
+                "vote/position",
+                "vote/candidate",
+                "vote/policy",
+                "vote/change",
+              ],
+            },
+          },
+        })
+        .map(({ id }) => ({ id }));
     });
-    const html = contents ? (await Promise.all(contents.map(async (content) => (await formatContent(content.id, 1))))).join("<br><br>") : "";
+    const html = nodes
+      ? (
+          await Promise.all(
+            nodes.map(async (content) => await formatContent(content.id, 1))
+          )
+        ).join("<br><br>")
+      : "";
 
     const blob = await HTMLtoDOCX(html as string, "", {
       table: { row: { cantSplit: true } },
@@ -72,8 +103,10 @@ export default function FolderDial({ node }: { node: Node }) {
     // Create and evoke link to file
     const blobUrl = URL.createObjectURL(blob as Blob);
     const link = document.createElement("a");
+    // eslint-disable-next-line functional/immutable-data
     link.href = blobUrl;
-    link.download = `${folder?.name} Eksport.docx`;
+    // eslint-disable-next-line functional/immutable-data
+    link.download = `${query?.name} Eksport.docx`;
     document.body.appendChild(link);
     link.dispatchEvent(
       new MouseEvent("click", {
@@ -84,7 +117,6 @@ export default function FolderDial({ node }: { node: Node }) {
     );
     document.body.removeChild(link);
   };
-  */
 
   const handleDelete = async () => {
     await node.members.delete();
@@ -164,6 +196,7 @@ export default function FolderDial({ node }: { node: Node }) {
             }
             tooltipTitle="Eksporter"
             tooltipOpen
+            onClick={handleExport}
           />
         </SpeedDial>
       </Zoom>

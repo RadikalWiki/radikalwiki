@@ -1,9 +1,9 @@
 import { Grid, Box, Paper, Collapse } from "@mui/material";
 import { Slate, Image } from "comps";
-import { resolved } from "gql";
 import { Node } from "hooks";
 import nhost from "nhost";
 import { useEffect, useState } from "react";
+import { toHtml } from "core/document";
 
 function Content({ node, fontSize }: { node: Node; fontSize: string }) {
   const query = node.query;
