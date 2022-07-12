@@ -9,7 +9,7 @@ export default function AddContentFab({ node }: { node: Node }) {
   const parent = node.query;
   const mimes = parent?.inserts()?.map(mime => mime.id!) ?? [];
 
-  if (!mimes?.[0])
+  if (!parent?.attachable || !mimes?.[0])
     return null;
 
   return (

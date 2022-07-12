@@ -93,6 +93,10 @@ export default function FolderDial({ node }: { node: Node }) {
     router.push("/" + path.join("/"));
   };
 
+  const handleLockChildren = async () => {
+    await node.update({ set: { attachable: !query?.attachable } });
+  };
+
   const handleLockContent = async () => {
     await node.update({ set: { mutable: !query?.mutable } });
   };
@@ -121,6 +125,16 @@ export default function FolderDial({ node }: { node: Node }) {
             tooltipTitle="Slet"
             tooltipOpen
             onClick={handleDelete}
+          />
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+                {query?.attachable ? <Lock /> : <LockOpen />}
+              </Avatar>
+            }
+            tooltipTitle={`${query?.attachable ? "Lås" : "Lås op"} indsend`}
+            tooltipOpen
+            onClick={handleLockChildren}
           />
           <SpeedDialAction
             icon={

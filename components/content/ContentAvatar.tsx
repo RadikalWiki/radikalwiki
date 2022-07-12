@@ -12,7 +12,7 @@ function ContentAvatarSuspense({ node }: { node: Node }) {
       ?.children({
         where: {
           _and: [
-            { attachable: { _eq: true } },
+            { mutable: { _eq: false } },
             { mimeId: { _in: ["vote/change", "vote/policy"] } },
           ],
         },
