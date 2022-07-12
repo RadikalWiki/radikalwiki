@@ -10,26 +10,15 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { order_by, resolved, useQuery } from "gql";
+import { order_by, resolved } from "gql";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getIcon } from "mime";
 import { useNode } from "hooks";
 
 export default function SortApp() {
   const [list, setList] = useState<any[]>([]);
-  const { query } = useNode();
-  const children =
-    query
-      ?.children({
-        order_by: [{ index: order_by.asc }],
-      })
-      .map(({ id, name, index, mutable, mimeId }) => ({
-        id,
-        name,
-        index,
-        mutable,
-        mimeId,
-      })) ?? [];
+  const node = useNode();
+  const query = node.query;
 
   useEffect(() => {
     if (query) {
@@ -116,7 +105,7 @@ export default function SortApp() {
           </Droppable>
         </Card>
       </DragDropContext>
-      <SortFab folder={query} elements={list} />
+      <SortFab node={node} elements={list} />
     </>
   );
 }

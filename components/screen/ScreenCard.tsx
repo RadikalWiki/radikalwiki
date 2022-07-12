@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { Card, CardHeader, Collapse, Typography } from "@mui/material";
-import { useQuery } from "gql";
 import { Content, ExpandButton } from "comps";
-import { useSession } from "hooks";
+import { Node, useNode, useSession } from "hooks";
 import { ContentAvatar } from "comps/content";
 
 export default function ContentCard({
-  id,
+  node,
   expanded,
 }: {
-  id: string;
+  node: Node;
   expanded?: boolean;
 }) {
   const [session] = useSession();
-  const query = useQuery();
-  const node = query.node({ id });
+  const query = node.query; 
   const [expand, setExpand] = useState(expanded ?? true);
 
   return (
@@ -23,11 +21,11 @@ export default function ContentCard({
         <CardHeader
           title={
             <Typography variant="h5" sx={{ color: "#fff" }}>
-              {node?.name}
+              {query?.name}
             </Typography>
           }
           subheaderTypographyProps={{ color: "inherit" }}
-          avatar={<ContentAvatar id={id} screen />}
+          avatar={<ContentAvatar node={node} />}
           sx={{
             bgcolor: (t) => t.palette.secondary.main,
             color: (t) => t.palette.secondary.contrastText,
@@ -37,7 +35,7 @@ export default function ContentCard({
           ]}
         />
         <Collapse in={expand}>
-          <Content id={id} fontSize={session?.screen?.size ?? "200%"} />
+          <Content node={node} fontSize={session?.screen?.size ?? "200%"} />
         </Collapse>
       </Card>
     </>

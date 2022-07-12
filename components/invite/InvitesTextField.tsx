@@ -5,33 +5,20 @@ import {
   resolved,
   query,
   order_by,
-  useMutation,
-  members_insert_input,
 } from "gql";
+import { Node, useNode } from "hooks";
 
-export default function InvitesTextField({ id }: { id: string }) {
-  const node = query.node({ id });
+export default function InvitesTextField({ node }: { node: Node }) {
   const [users, setUsers] = useState<any[]>([]);
 
-  const [addInvites] = useMutation(
-    (mutation, args: members_insert_input[]) => {
-      return mutation.insertMembers({ objects: args })?.affected_rows;
-    },
-    {
-      refetchQueries: [
-        node?.members({ order_by: [{ user: { displayName: order_by.asc } }] }),
-      ],
-    }
-  );
-
   const handleAddInvites = async () => {
-    const args = users.map((user) => ({
+    const invites = users.map((user) => ({
       name: user.name,
       email: user.email,
       nodeId: user.userId,
-      parentId: id,
+      parentId: node.id,
     }));
-    await addInvites({ args });
+    await node.members.insert(invites);
     setUsers([]);
   };
 

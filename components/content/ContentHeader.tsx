@@ -1,14 +1,12 @@
 import { CardHeader, Chip, Skeleton, Typography } from "@mui/material";
 import { ContentAvatar, ExpandButton } from "comps";
-import { useQuery } from "gql";
 import { Face } from "@mui/icons-material";
 import { getIcon } from "mime";
 import { Suspense } from "react";
+import { Node, useNode } from "hooks";
 
-function MemberChips({ id }: { id: string }) {
-  const query = useQuery();
-  const node = query.node({ id });
-  const members = node?.members();
+function MemberChips({ node }: { node: Node }) {
+  const members = node.query?.members();
   const chips =
     members?.map(({ id, name, node, user }) => {
       return (
@@ -34,19 +32,17 @@ function MemberChips({ id }: { id: string }) {
   );
 }
 
-export function Title({ id }: { id: string }) {
-  const query = useQuery();
-  const node = query.node({ id });
-  return node?.name ? <Typography color="secondary">{node?.name ?? ""}</Typography> : null
+function Title({ node }: { node: Node }) {
+  return node.query?.name ? <Typography color="secondary">{node.query?.name ?? ""}</Typography> : null
 }
 
 export default function ContentHeader({
-  id,
+  node,
   expand,
   setExpand,
   hideMembers = false,
 }: {
-  id: string;
+  node: Node;
   expand: boolean;
   setExpand: Function;
   hideMembers?: boolean;
@@ -55,15 +51,15 @@ export default function ContentHeader({
     <CardHeader
       title={
         <Suspense fallback={<Skeleton width={10} />}>
-          <Title id={id} />
+          <Title node={node} />
         </Suspense>
       }
-      avatar={<ContentAvatar id={id} />}
+      avatar={<ContentAvatar node={node} />}
       subheader={
         <>
           {!hideMembers && (
             <Suspense fallback={<Skeleton width={10} />}>
-              <MemberChips id={id} />
+              <MemberChips node={node} />
             </Suspense>
           )}
         </>

@@ -5,6 +5,7 @@ import {
   Maybe,
   members_constraint,
   members_insert_input,
+  members_set_input,
   nodes,
   nodes_insert_input,
   nodes_set_input,
@@ -19,55 +20,66 @@ import {
 import { usePath } from "hooks";
 
 const getNamespace = (name?: string) => {
-  return name?.trim().toLocaleLowerCase().replaceAll(" ", "_").replaceAll("?", "");
+  return name
+    ?.trim()
+    .toLocaleLowerCase()
+    .replaceAll(" ", "_")
+    .replaceAll("?", "");
 };
 
 export type Node = {
-  node: Maybe<nodes>;
-  sub: Maybe<nodes>;
-  get: any;
-  subGet: any;
+  id: string;
+  query: Maybe<nodes> | undefined;
+  sub: Maybe<nodes> | undefined;
+  get: (name: string) => Maybe<nodes> | undefined;
+  subGet: (name: string) => Maybe<nodes> | undefined;
   set: any;
   insert: any;
-  del: any;
+  delete: any;
   update: any;
   members: any;
   member: any;
-  children: any;
-  perm: any;
-  permMime: any;
+  children: {
+    delete: any;
+  };
 };
 
-const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<GeneratedSchema>, node?: nodes) => any[] }) => {
+const useNode = (param?: {
+  id?: string;
+  refetch?: (
+    query: UseQueryReturnValue<GeneratedSchema>,
+    node?: nodes
+  ) => any[];
+}) => {
   const path = usePath();
   const query = useQuery();
   const node = param?.id
     ? query.node({ id: param?.id })
     : query.nodes(toWhere(path))?.[0];
   const nodeId = param?.id ? param?.id : node?.id;
+  const parentId = node?.parentId;
+  const parentQueries = [
+    query.nodes(toWhere(path.slice(0, -1))),
+    query.node({ id: parentId }),
+  ];
   const refetchQueries = param?.refetch
-    ? [...param?.refetch(query, node!), node] : [node]
+    ? [...param?.refetch(query, node!), node, node?.data, ...parentQueries]
+    : [node, node?.data, ...parentQueries];
   const nodeContextId = node?.contextId;
   const subs = useSubscription();
+  const opts = {
+    refetchQueries,
+    awaitRefetchQueries: true,
+  };
   const sub = param?.id
     ? subs.node({ id: param?.id })
     : subs.nodes(toWhere(path))?.[0];
-  const [insertNode] = useMutation(
-    (mutation, args: nodes_insert_input) => {
-      return mutation.insertNode({ object: args })?.id;
-    },
-    {
-      refetchQueries,
-    }
-  );
-  const [deleteNode] = useMutation(
-    (mutation, id: string) => {
-      return mutation.deleteNode({ id })?.id;
-    },
-    {
-      refetchQueries,
-    }
-  );
+  const [insertNode] = useMutation((mutation, args: nodes_insert_input) => {
+    return mutation.insertNode({ object: args })?.id;
+  }, opts);
+  const [deleteNode] = useMutation((mutation, id: string) => {
+    return mutation.deleteNode({ id })?.id;
+  }, opts);
   const [updateNode] = useMutation(
     (mutation, args: { id: string; set: nodes_set_input }) => {
       return mutation.updateNode({
@@ -75,9 +87,7 @@ const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<Ge
         _set: args.set,
       })?.id;
     },
-    {
-      refetchQueries,
-    }
+    opts
   );
 
   const insert = async ({
@@ -108,21 +118,21 @@ const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<Ge
     return { id: childId, namespace: getNamespace(namespace ?? name) };
   };
 
-  const del = async () => {
-    return await deleteNode({ args: nodeId });
+  const del = (param?: { id?: string }) => {
+    return deleteNode({ args: param?.id ?? nodeId });
   };
 
-  const update = async (set: nodes_set_input) => {
-    return await updateNode({
+  const update = ({ id, set }: { id?: string; set: nodes_set_input }) => {
+    return updateNode({
       args: {
-        id: nodeId,
+        id: id ?? nodeId,
         set,
       },
     });
   };
 
   const get = (name: string) => {
-    const rel = query?.relations({ where: { name: { _eq: name } } })?.[0];
+    const rel = node?.relations({ where: { name: { _eq: name } } })?.[0];
     return rel?.node;
   };
 
@@ -164,20 +174,13 @@ const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<Ge
         },
       })?.affected_rows;
     },
-    {
-      refetchQueries,
-    }
+    opts
   );
 
-  const [deleteMembers] = useMutation(
-    (mutation) => {
-      return mutation.deleteMembers({ where: { parentId: { _eq: nodeId } } })
-        ?.affected_rows;
-    },
-    {
-      refetchQueries,
-    }
-  );
+  const [deleteMembers] = useMutation((mutation) => {
+    return mutation.deleteMembers({ where: { parentId: { _eq: nodeId } } })
+      ?.affected_rows;
+  }, opts);
 
   const members = {
     insert: (members: members_insert_input[]) => {
@@ -192,26 +195,44 @@ const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<Ge
     (mutation, object: members_insert_input) => {
       return mutation.insertMember({ object })?.id;
     },
-    {
-      refetchQueries,
-    }
+    opts
+  );
+
+  const [deleteMember] = useMutation((mutation, id: string) => {
+    return mutation.deleteMember({ id })?.id;
+  }, opts);
+
+  const [updateMember] = useMutation(
+    (mutation, args: { id: string; set: members_set_input }) => {
+      return mutation.updateMember({
+        pk_columns: { id: args.id },
+        _set: args.set,
+      })?.id;
+    },
+    opts
   );
 
   const member = {
     insert: (member: { roles: string[]; nodeId: string }) => {
       return insertMember({ args: { ...member, parentId: nodeId } });
     },
+    delete: (id: string) => {
+      return deleteMember({ args: id });
+    },
+    update: (id: string, set: members_set_input) => {
+      return updateMember({ args: { id, set } });
+    },
   };
 
-  const [deleteChildren] = useMutation((mutation, args) => {
+  const [deleteChildren] = useMutation((mutation) => {
     return mutation.deleteNodes({
       where: { parentId: { _eq: nodeId } },
     })?.affected_rows;
   });
 
   const children = {
-    delete: async () => {
-      return await deleteChildren();
+    delete: () => {
+      return deleteChildren();
     },
   };
 
@@ -237,6 +258,7 @@ const useNode = (param?: { id?: string, refetch?: (query: UseQueryReturnValue<Ge
   */
 
   return {
+    id: nodeId,
     query: node,
     sub,
     get,

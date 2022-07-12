@@ -1,33 +1,18 @@
 import React, { Suspense, useEffect, useState } from "react";
 import {
-  Avatar,
-  Card,
-  CardHeader,
-  Collapse,
   Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-  Paper,
-  Tooltip,
-  Typography,
 } from "@mui/material";
-import { Cancel, DoNotTouch, Lock, LockOpen } from "@mui/icons-material";
-import { useMutation, order_by } from "gql";
-import { useNode, useSession } from "hooks";
-import { avatars, SpeakDial, SpeakAdmin } from "comps";
-import { TransitionGroup } from "react-transition-group";
+import { useNode, useScreen, useSession } from "hooks";
+import { SpeakDial, SpeakAdmin } from "comps";
 import SpeakCard from "./SpeakCard";
 
-export default function SpeakApp({ screen }: { screen?: boolean }) {
+export default function SpeakApp() {
+  const screen = useScreen();
   const [session] = useSession();
   const [time, setTime] = useState(0);
-  const { sub, subGet } = useNode();
+  const node = useNode();
 
-  const speakerlist = subGet("speakerlist");
+  const speakerlist = node.subGet("speakerlist");
 
   const data = speakerlist?.data();
 
@@ -46,23 +31,23 @@ export default function SpeakApp({ screen }: { screen?: boolean }) {
     return () => clearInterval(interval);
   }, [time, data?.time, data?.updatedAt, session?.timeDiff]);
 
-  const owner = sub?.isContextOwner;
+  const owner = node.sub?.isContextOwner;
 
   return (
     <>
       <Grid container justifyContent="center">
         {!screen && owner && (
           <Grid item xs={12} md={6}>
-            <SpeakAdmin speakerlist={speakerlist!} time={time} />
+            <SpeakAdmin node={node} time={time} />
           </Grid>
         )}
         <Grid item xs={12} md={!screen ? 6 : 12}>
-          <SpeakCard speakerlist={speakerlist!} time={time} />
+          <SpeakCard node={node} time={time} />
         </Grid>
       </Grid>
       {!screen && speakerlist?.id && (
         <Suspense fallback={null}>
-          <SpeakDial id={speakerlist?.id} />{" "}
+          <SpeakDial node={node} />
         </Suspense>
       )}
     </>

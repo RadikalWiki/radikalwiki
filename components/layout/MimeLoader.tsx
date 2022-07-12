@@ -13,8 +13,8 @@ import {
 } from "comps";
 import { useRouter } from "next/router";
 
-export default function MimeLoader() {
-  const node = useNode();
+export default function MimeLoader(param?: { id?: string }) {
+  const node = useNode({ id: param?.id });
   const router = useRouter();
   if (!node.query?.mimeId || !router.query.path) return null;
 

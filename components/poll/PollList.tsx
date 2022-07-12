@@ -13,31 +13,21 @@ import {
   Divider,
 } from "@mui/material";
 import { Cancel, HowToVote } from "@mui/icons-material";
-import { useMutation, useQuery } from "gql";
 import { useRouter } from "next/router";
 import { getIcon } from "mime";
+import { Node, useNode } from "hooks";
 
-function PollList({ id }: { id: string }) {
+function PollListSuspense({ node }: { node: Node }) {
   const router = useRouter();
-  const query = useQuery();
-  const node = query.node({ id });
-  const polls = node?.children({
+  const query = node.query;
+  const polls = query?.children({
     where: { mimeId: { _eq: "vote/poll" } },
   });
-  const [deletePoll] = useMutation(
-    (mutation, id: string) => {
-      return mutation.deleteNode({ id })?.id;
-    },
-    {
-      refetchQueries: [polls],
-    }
-  );
-
   const handleDeletePoll = (id: string) => async () => {
-    await deletePoll({ args: id });
+    await node.delete({ id });
   };
 
-  const owner = node?.isOwner;
+  const owner = query?.isOwner;
 
   if (!polls?.[0]?.id) return null;
 
@@ -107,10 +97,10 @@ function PollList({ id }: { id: string }) {
   );
 }
 
-export default function Component({ id }: { id: string }) {
+export default function PollList({ node }: { node: Node }) {
   return (
     <Suspense fallback={null}>
-      <PollList id={id} />
+      <PollListSuspense node={node} />
     </Suspense>
   );
 }

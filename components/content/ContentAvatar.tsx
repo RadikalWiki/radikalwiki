@@ -1,21 +1,14 @@
 import { Avatar, Tooltip, Badge, Skeleton } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
-import { order_by, useQuery } from "gql";
+import { order_by } from "gql";
 import { getIcon } from "mime";
 import { Suspense } from "react";
+import { Node, useScreen } from "hooks";
 
-function ContentAvatarSuspense({
-  id,
-  screen,
-}: {
-  id: string;
-  screen?: boolean;
-}) {
-  const query = useQuery();
-  const node = query.node({ id });
-
+function ContentAvatarSuspense({ node }: { node: Node }) {
+  const screen = useScreen();
   const index =
-    node?.parent
+    node.query?.parent
       ?.children({
         where: {
           _and: [
@@ -25,20 +18,22 @@ function ContentAvatarSuspense({
         },
         order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       })
-      .findIndex((e: any) => e.id === node.id) ?? 0;
+      .findIndex((e: any) => e.id === node.query?.id) ?? 0;
 
-  const avatar = node?.mimeId ? (
+  const avatar = node.query?.mimeId ? (
     <Avatar
       sx={{
         bgcolor: (t) =>
           screen ? t.palette.primary.main : t.palette.secondary.main,
       }}
     >
-      {getIcon(node?.mimeId!, index)}
+      {getIcon(node.query?.mimeId!, index)}
     </Avatar>
-  ): <ContentAvatarSkeleton />;
+  ) : (
+    <ContentAvatarSkeleton />
+  );
 
-  return node?.mutable ? (
+  return node.query?.mutable ? (
     <Badge
       overlap="circular"
       anchorOrigin={{
@@ -73,19 +68,15 @@ function ContentAvatarSuspense({
 }
 
 function ContentAvatarSkeleton() {
-  return <Skeleton width={40} height={40} variant="circular" animation="wave" />;
+  return (
+    <Skeleton width={40} height={40} variant="circular" animation="wave" />
+  );
 }
 
-export default function ContentAvatar({
-  id,
-  screen,
-}: {
-  id: string;
-  screen?: boolean;
-}) {
+export default function ContentAvatar({ node }: { node: Node }) {
   return (
     <Suspense fallback={<ContentAvatarSkeleton />}>
-      <ContentAvatarSuspense id={id} screen={screen} />
+      <ContentAvatarSuspense node={node} />
     </Suspense>
   );
 }

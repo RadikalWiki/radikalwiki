@@ -1,42 +1,31 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup, Divider, TextField } from "@mui/material";
 import { AdminCard } from "components";
-import { nodes, nodes_set_input, useMutation } from "gql";
 import { Clear, LockOpen, Lock, PlayArrow, Stop } from "@mui/icons-material";
+import { Node } from "hooks";
 
 export default function SpeakAdmin({
-  speakerlist,
+  node,
   time,
 }: {
-  speakerlist?: nodes;
+  node: Node;
   time: number;
 }) {
+  const speakerlist = node.subGet("speakerlist");
   const [timeBox, setTimeBox] = useState(120);
   const id = speakerlist?.id;
 
-  const [deleteSpeaks] = useMutation((mutation, _) => {
-    return mutation.deleteNodes({ where: { parentId: { _eq: id } } })
-      ?.affected_rows;
-  });
-
-  const [setSpeakerlist] = useMutation(
-    (mutation, set: nodes_set_input) => {
-      return mutation.updateNode({ pk_columns: { id }, _set: set })?.id;
-    },
-    { refetchQueries: [speakerlist] }
-  );
-
-  const handleRemoveSpeaks = (_: any) => {
-    deleteSpeaks();
+  const handleRemoveSpeaks = async (_: any) => {
+    await node.children.delete();
   };
 
   const handleLockSpeak = async (mutable: boolean) => {
-    await setSpeakerlist({ args: { mutable } });
+    await node.update({ id, set: { mutable } })
   };
 
-  const handleTimerSet = (time: number) => {
+  const handleTimerSet = async (time: number) => {
     const updatedAt = new Date();
-    setSpeakerlist({ args: { data: { time, updatedAt } } });
+    await node.update({ id, set: { time, updatedAt } })
   };
 
   const owner = speakerlist?.isOwner;

@@ -1,42 +1,22 @@
 import React from "react";
 import { Fab, Tooltip } from "@mui/material";
 import { Save } from "@mui/icons-material";
-import { order_by, useMutation, useQuery } from "gql";
 import { useRouter } from "next/router";
+import { Node } from "hooks";
 
 export default function SortFab({
-  folder,
+  node,
   elements,
-  nodeId,
 }: {
-  folder: any;
+  node: Node;
   elements: any;
-  nodeId?: string;
 }) {
   const router = useRouter();
-  const query = useQuery();
-  const [updateNode] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.updateNode({
-        pk_columns: { id: args.id },
-        _set: args.set,
-      })?.id;
-    },
-    {
-      refetchQueries: [
-        query.node({ id: folder.id }),
-        query
-          .node({ id: nodeId })
-          ?.children({ order_by: [{ index: order_by.asc }] }),
-      ],
-      awaitRefetchQueries: true,
-    }
-  );
 
   const handleClick = async () => {
-    const proms = elements.map(async (e: any, index: number) => {
+    const proms = elements.map(async ({ id }: any, index: number) => {
       const set = { index };
-      return updateNode({ args: { id: e.id, set } });
+      return node.update({ id, set });
     });
     await Promise.all(proms);
     router.push(router.asPath.split("?")[0]);

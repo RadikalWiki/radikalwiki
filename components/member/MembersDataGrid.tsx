@@ -1,37 +1,15 @@
-import { useQuery, useMutation, order_by } from "gql";
+import { order_by } from "gql";
 import {
   DataGrid,
   GridActionsCellItem,
   GridColumns,
-  GridToolbar,
 } from "@mui/x-data-grid";
 import { Box } from "@mui/system";
 import { Delete } from "@mui/icons-material";
+import { Node, useNode } from "hooks";
 
-export default function MembersDataGrid({ id }: { id: string }) {
-  const query = useQuery();
-  const node = query.node({ id });
-  const [memberUpdate] = useMutation(
-    (mutation, { id, set }: any) => {
-      return mutation.updateMember({ pk_columns: { id }, _set: set })?.id;
-    },
-    {
-      refetchQueries: [
-        node?.members({ order_by: [{ user: { displayName: order_by.asc } }] }),
-      ],
-    }
-  );
-
-  const [memberDelete] = useMutation(
-    (mutation, id: string) => {
-      return mutation.deleteMember({ id })?.id;
-    },
-    {
-      refetchQueries: [
-        node?.members({ order_by: [{ user: { displayName: order_by.asc } }] }),
-      ],
-    }
-  );
+export default function MembersDataGrid({ node }: { node: Node }) {
+  const query = node.query
 
   const columns: GridColumns = [
     {
@@ -81,7 +59,7 @@ export default function MembersDataGrid({ id }: { id: string }) {
             icon={<Delete />}
             label="Delete"
             key="delete"
-            onClick={() => memberDelete({ args: id.toString() })}
+            onClick={() => node.member.delete(id.toString())}
             color="inherit"
           />,
         ];
@@ -100,10 +78,10 @@ export default function MembersDataGrid({ id }: { id: string }) {
   }) => {
     if (typeof value != "boolean" && !["name", "email"].includes(field)) return;
     const set = { [field]: value };
-    await memberUpdate({ args: { id, set } });
+    await node.member.update(id, set);
   };
 
-  const rows = node
+  const rows = query
     ?.members({ order_by: [{ user: { displayName: order_by.asc } }] })
     .map(({ id, name, email, user, owner, hidden, active, accepted }) => ({
       id,

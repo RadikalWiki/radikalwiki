@@ -15,13 +15,6 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  useMutation,
-  useSubscription,
-  nodes_insert_input,
-  useQuery,
-  useTransactionQuery,
-} from "gql";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
 import { useNode } from "hooks";
@@ -43,78 +36,37 @@ export default function VoteApp() {
   const router = useRouter();
   const [refresh, setRefresh] = useState(false);
 
-  const { sub, subGet } = useNode();
-  const poll = subGet("active");
-
-  /*
-  const { data } = useTransactionQuery(
-    (query, args: string) => {
-      const node = query.node({ id })?.relations({ where: { name: { _eq: "active" } } })?.[0]?.node;
-      return {
-        id: node?.id,
-        mutable: node?.mutable,
-        name: node?.name,
-        checkUnique: node?.checkUnique({ args: { mime_name: "vote/vote" } }),
-        data: node?.data(),
-        mime: {
-          name: node?.mimeId,
-
-        },
-        mimeId: node?.mimes({ where: { name: { _eq: "vote/vote" }}})?.[0]?.id,
-        contextId: node?.contextId,
-      }
-    },
-    {
-      variables: id,
-      // By default is 'cache-first'
-      fetchPolicy: 'no-cache',
-      // Polling every 5 seconds
-      pollInterval: 1000,
-      // By default is `true`
-      notifyOnNetworkStatusChange: true,
-      suspense: true,
-    }
-  );
-  */
-  //const router = useRouter();
-  //const [addVotes] = useMutation((mutation, args: any) => {
-  //  return mutation.addVote({ vote: args }).pollId;
-  //});
+  const node = useNode();
+  const poll = node.subGet("active");
 
   const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);
 
-  //const { node, subGet } = useNode({ id });
-  //const poll = subGet("active")
-  //const poll = data;
   const canVote =
-    (sub?.context?.permissions({
+    (node.sub?.context?.permissions({
       where: {
-          _and: [
-            { mimeId: { _eq: "vote/vote" } },
-            { insert: { _eq: true } },
-            {
-              node: {
-                members: {
-                  _and: [
-                    {
-                      _or: [
-                        { nodeId: { _eq: userId } },
-                        { email: { _eq: email } },
-                      ],
-                    },
-                    { active: { _eq: true } },
-                  ],
-                },
+        _and: [
+          { mimeId: { _eq: "vote/vote" } },
+          { insert: { _eq: true } },
+          {
+            node: {
+              members: {
+                _and: [
+                  {
+                    _or: [
+                      { nodeId: { _eq: userId } },
+                      { email: { _eq: email } },
+                    ],
+                  },
+                  { active: { _eq: true } },
+                ],
               },
             },
-          ],
-        },
+          },
+        ],
+      },
     })?.length ?? 0) > 0;
   const checkUnique = poll?.checkUnique({ args: { mime_name: "vote/vote" } });
-  const [addVote] = useMutation((mutation, args: nodes_insert_input) => {
-    return mutation.insertNode({ object: args })?.id;
-  });
 
   const data = poll?.data();
   const { options, maxVote, minVote } =
@@ -160,7 +112,6 @@ export default function VoteApp() {
     return true;
   };
 
-  const contextId = poll?.contextId;
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     if (!validate(vote, true)) {
@@ -169,14 +120,11 @@ export default function VoteApp() {
     const name = new Date(
       new Date().getTime() + (session?.timeDiff ?? 0)
     ).toLocaleString();
-    await addVote({
-      args: {
-        name,
-        mimeId: "vote/vote",
-        parentId: poll?.id,
-        contextId,
-        data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
-      },
+    await node.insert({
+      name,
+      mimeId: "vote/vote",
+      parentId: poll?.id,
+      data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
     });
   };
 

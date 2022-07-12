@@ -1,24 +1,21 @@
 import { CardHeader, Typography } from "@mui/material";
 import { ContentAvatar, ExpandButton } from "comps";
-import { useQuery } from "gql";
+import { Node, useNode } from "hooks";
 
-export default function ContentHeader({
-  id,
+export default function EventHeader({
+  node,
   expand,
   setExpand,
 }: {
-  id: string;
+  node: Node;
   expand: boolean;
   setExpand: Function;
 }) {
-  const query = useQuery();
-  const node = query.node({ id });
-
   return (
     <CardHeader
-      title={<Typography color="secondary">{node?.name}</Typography>}
-      avatar={<ContentAvatar id={id} />}
-      subheader={node
+      title={<Typography color="secondary">{node.query?.name}</Typography>}
+      avatar={<ContentAvatar node={node} />}
+      subheader={node.query
         ?.members()
         .map((m) => m.name ?? m.user?.displayName)
         .join(", ")}

@@ -4,19 +4,18 @@ import { useNode } from "hooks";
 
 export default function PollApp({
   id,
-  screen,
 }: {
   id?: string;
-  screen?: boolean;
 }) {
-  const { query } = useNode({ id });
+  const node = useNode({ id });
+  const query = node.query;
   return (
     <>
-      {!screen && <PollAdmin id={query?.id} />}
+      {!screen && <PollAdmin node={node} />}
       {query?.mutable ? (
-        <PollChartSub screen={screen} id={query?.id} />
+        <PollChartSub node={node} />
       ) : (
-        <PollChart id={query?.id} screen={screen} />
+        <PollChart node={node} />
       )}
     </>
   );

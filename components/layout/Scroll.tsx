@@ -28,6 +28,7 @@ export default function Scroll({ children }: any) {
     <>
       <Box id="top-anchor" />
       <Box
+        id="scroll"
         sx={{
           // Disable scroll (Firefox)
           scrollbarWidth: "none",
@@ -39,7 +40,6 @@ export default function Scroll({ children }: any) {
           WebkitOverflowScrolling: "touch",
           height: "calc(100vh - 64px)",
         }}
-        id="scroll"
       >
         {children}
       </Box>

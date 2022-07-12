@@ -1,17 +1,14 @@
 import React, { Suspense } from "react";
 import { Typography, CardContent, Grid, Avatar, Divider } from "@mui/material";
 import { AddContentFab, HeaderCard } from "comps";
-import { useSession } from "hooks";
+import { useNode } from "hooks";
 import { InvitesUserList } from "comps/invite";
 import { Hail } from "@mui/icons-material";
 import { useAuthenticationStatus, useUserDisplayName } from "@nhost/react";
-import { useQuery } from "gql";
 
 const AddContentFabSuspense = () => {
-  const query = useQuery();
-  const root = query.nodes({ where: { parentId: { _is_null: true } } })?.[0];
-  if (!root?.id) return null;
-  return <AddContentFab id={root.id} />;
+  const node = useNode();
+  return <AddContentFab node={node} />;
 };
 
 export default function HomeApp() {

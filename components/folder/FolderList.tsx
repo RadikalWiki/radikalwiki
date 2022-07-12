@@ -11,17 +11,16 @@ import {
   ListItemText,
 } from "@mui/material";
 import { DoNotDisturb, LockOpen } from "@mui/icons-material";
-import { order_by, query, resolved, useQuery } from "gql";
+import { order_by, query, resolved } from "gql";
 import { TransitionGroup } from "react-transition-group";
 import { getIcon } from "mime";
 import { toWhere } from "core/path";
-import { useNode } from "hooks";
+import { Node, useNode } from "hooks";
 import { useUserId } from "@nhost/react";
 
-export default function FolderList({ id }: { id: string }) {
+export default function FolderList({ node }: { node: Node }) {
   const userId = useUserId();
   const router = useRouter();
-  const node = useNode({ id });
 
   const children =
     node.query?.children({

@@ -17,7 +17,8 @@ import {
 import { Cancel, DoNotTouch, Lock, LockOpen } from "@mui/icons-material";
 import { avatars } from "comps";
 import { TransitionGroup } from "react-transition-group";
-import { nodes, order_by, useMutation } from "gql";
+import { order_by } from "gql";
+import { Node, useScreen } from "hooks";
 
 const timeString = (time: number) => {
   const sec = String(time % 60);
@@ -29,22 +30,20 @@ const timeString = (time: number) => {
 };
 
 export default function SpeakCard({
-  speakerlist,
+  node,
   time,
 }: {
-  speakerlist?: nodes;
+  node: Node;
   time: number;
 }) {
+  const screen = useScreen();
+  const speakerlist = node.subGet("speakerlist");
   const speakers = speakerlist?.children({
     order_by: [{ data: order_by.desc }, { createdAt: order_by.asc }],
   });
 
-  const [deleteSpeak] = useMutation((mutation, id: string) => {
-    return mutation.deleteNode({ id })?.id;
-  });
-
-  const handleRemoveSpeak = (value: any) => (_: any) => {
-    deleteSpeak({ args: value });
+  const handleRemoveSpeak = (id: any) => (_: any) => {
+    node.delete({ id });
   };
 
   return (

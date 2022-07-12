@@ -4,15 +4,15 @@ import { useNode } from "hooks";
 import { Suspense } from "react";
 
 export default function FolderApp() {
-  const { query } = useNode();
+  const node = useNode();
   return (
     <Card elevation={3} sx={{ m: 1 }}>
       <List sx={{ m: 0 }}>
         <Divider />
         <Suspense fallback={null}>
-          <FolderList id={query?.id} />
-          <AddContentFab id={query?.id} />
-          <FolderDial id={query?.id} />
+          <FolderList node={node} />
+          <AddContentFab node={node} />
+          <FolderDial node={node} />
         </Suspense>
       </List>
     </Card>

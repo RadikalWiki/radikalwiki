@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { AddContentDialog, AutoButton } from "comps";
 import { PlusOne } from "@mui/icons-material";
-import { useNode } from "hooks";
+import { Node, useNode } from "hooks";
 import { useUserDisplayName } from "@nhost/react";
 
-export default function AddChangeButton({ id }: { id: string }) {
+export default function AddChangeButton({ node }: { node: Node }) {
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
-  const { query } = useNode({ id });
+  const query = node.query;
 
   const name = query?.mimeId == "vote/position" ? displayName : "";
 
@@ -26,7 +26,7 @@ export default function AddChangeButton({ id }: { id: string }) {
       />
       <AddContentDialog
         initName={name}
-        id={id}
+        node={node}
         mimes={["vote/change"]}
         open={open}
         setOpen={setOpen}

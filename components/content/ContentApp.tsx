@@ -1,23 +1,22 @@
 import { Card, Collapse, Divider } from "@mui/material";
 import { Content, ContentHeader, ContentToolbar } from "comps";
-import { useNode } from "hooks";
+import { useNode, useScreen } from "hooks";
 import { useState } from "react";
 
-export default function ContentCard({
-  screen,
+export default function ContentApp({
   hideMembers = false,
 }: {
-  screen?: boolean;
   hideMembers?: boolean;
 }) {
-  const { query } = useNode();
+  const screen = useScreen()
+  const node = useNode();
   const [expand, setExpand] = useState(true);
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>
       {!screen && (
         <ContentHeader
-          id={query?.id}
+          node={node}
           hideMembers={hideMembers}
           expand={expand}
           setExpand={setExpand}
@@ -25,8 +24,8 @@ export default function ContentCard({
       )}
       <Divider />
       <Collapse in={expand}>
-        {!screen && <ContentToolbar id={query?.id} child={false} />}
-        <Content id={query?.id} fontSize="100%" />
+        {!screen && <ContentToolbar node={node} child={false} />}
+        <Content node={node} fontSize="100%" />
       </Collapse>
     </Card>
   );

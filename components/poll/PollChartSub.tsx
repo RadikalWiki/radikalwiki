@@ -14,13 +14,13 @@ import {
   Stack,
 } from "@devexpress/dx-react-chart";
 import { Card, CardHeader, Typography, Box, CardContent } from "@mui/material";
-import { useSession } from "hooks";
+import { Node, useScreen, useSession } from "hooks";
 import { nodes, Maybe, useSubscription, String_comparison_exp } from "gql";
 import { useNode } from "hooks";
 
 const Chart = DxChart as any;
 
-const parseData = (poll: Maybe<nodes>, screen: boolean) => {
+const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
   const count = poll
     ?.children_aggregate({ where: { mimeId:{ _eq: "vote/vote" } } })
     .aggregate?.count();
@@ -53,15 +53,12 @@ const parseData = (poll: Maybe<nodes>, screen: boolean) => {
 };
 
 export default function PollChartSub({
-  id,
-  screen = false,
+  node
 }: {
-  id: string;
-  screen?: boolean;
+  node: Node;
 }) {
-  const [session] = useSession();
-  const { sub: poll } = useNode({ id: id });
-  const owner = poll?.isOwner ?? false;
+  const screen = useScreen();
+  const poll = node.sub;
 
   // Todo proper detection
   //const voters = poll?.context?.members_aggregate().aggregate?.count() ?? 10;

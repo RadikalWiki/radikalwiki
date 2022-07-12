@@ -13,81 +13,45 @@ import {
   Typography,
   Divider,
 } from "@mui/material";
-import {
-  nodes_insert_input,
-  relations_constraint,
-  relations_insert_input,
-  relations_update_column,
-  useMutation,
-  useQuery,
-} from "gql";
-import { useSession } from "hooks";
-import { useNode } from "hooks";
-import { Add, PlayArrow } from "@mui/icons-material";
+import { Node, useSession } from "hooks";
+import { PlayArrow } from "@mui/icons-material";
 
 export default function PollDialog({
+  node,
   open,
   setOpen,
-  id,
 }: {
+  node: Node;
   open: boolean;
   setOpen: Function;
-  id: string;
 }) {
   const router = useRouter();
   const [session] = useSession();
-  const { query: node, insert } = useNode({ id });
-  const contextId = node?.contextId;
+  const pollId = node.subGet("active")?.id;
+  const query = node.query;
 
-  const [insertRelation] = useMutation(
-    (mutation, args: relations_insert_input) => {
-      return mutation.insertRelation({
-        object: args,
-        on_conflict: {
-          constraint: relations_constraint.relations_parent_id_name_key,
-          update_columns: [relations_update_column.nodeId],
-        },
-      })?.id;
-    }
-  );
-  const set = async (name: string, nodeId: string | null) => {
-    return await insertRelation({
-      args: { parentId: contextId, name, nodeId },
-    });
-  };
-
+  const [hidden, setHidden] = useState(query?.mimeId == "vote/position");
   const [voteCount, setVoteCount] = React.useState<number[]>([1, 1]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setVoteCount(newValue as number[]);
   };
 
-  const [hidden, setHidden] = useState(node?.mimeId == "vote/position");
-
-  const [stopPoll] = useMutation((mutation) => {
-    return mutation.updateNodes({
-      where: { parentId: { _eq: id } },
-      _set: { mutable: false },
-    })?.affected_rows;
-  });
-
-  const options = ["vote/policy", "vote/change"].includes(
-    node?.mimeId ?? ""
-  )
+  const options = ["vote/policy", "vote/change"].includes(query?.mimeId ?? "")
     ? ["For", "Imod", "Blank"]
-    : node
+    : query
         ?.children({ where: { mimeId: { _eq: "vote/candidate" } } })
         .map(({ name }) => name)
         .concat("Blank");
   const optionsCount = options?.length || 0;
 
   const handleAddPoll = async (_: any) => {
-    await stopPoll();
-    const namespace = new Date(
-      new Date().getTime() + (session?.timeDiff ?? 0)
-    ).toLocaleString().replaceAll("/", "");
-    const poll = await insert({
-      name: node?.name,
+    if (pollId) await node.update({ id: pollId, set: { mutable: false } });
+    const namespace = new Date(new Date().getTime() + (session?.timeDiff ?? 0))
+      .toLocaleString()
+      .replaceAll("/", "");
+    const poll = await node.insert({
+      name: query?.name,
       namespace,
       mimeId: "vote/poll",
       data: {
@@ -98,7 +62,7 @@ export default function PollDialog({
       },
     });
 
-    await set("active", poll.id);
+    await node.set("active", poll.id);
     router.push(`${router.asPath.split("?")[0]}/${poll.namespace}`);
   };
 
@@ -114,7 +78,7 @@ export default function PollDialog({
       <Divider />
       <DialogContent>
         <Stack spacing={2}>
-          {!["vote/policy", "vote/change"].includes(node?.mimeId ?? "") && (
+          {!["vote/policy", "vote/change"].includes(query?.mimeId ?? "") && (
             <>
               <Typography>Stemmeinterval</Typography>
               <Slider

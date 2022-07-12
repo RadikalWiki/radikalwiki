@@ -16,18 +16,10 @@ import {
   People,
   ZoomIn,
 } from "@mui/icons-material";
-import { useSession } from "hooks";
+import { Node, useNode, useSession } from "hooks";
 import { useRouter } from "next/router";
 import { AutoButton, PollDialog } from "comps";
 import { useState } from "react";
-import {
-  nodes_set_input,
-  relations_constraint,
-  relations_insert_input,
-  relations_update_column,
-  useMutation,
-  useQuery,
-} from "gql";
 import { fromId } from "core/path";
 
 const marks = [
@@ -53,68 +45,30 @@ const marks = [
   },
 ];
 export default function ContentToolbar({
-  id,
+  node,
   child,
 }: {
-  id: string;
+  node: Node;
   child: boolean;
 }) {
+  const query = node.query;
   const [_, setSession] = useSession();
   const router = useRouter();
   const [openPollDialog, setOpenPollDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const open = Boolean(anchorEl);
-  const query = useQuery();
-  const node = query.node({ id });
-  const contextId = node?.context?.id;
-  const namespace = node?.namespace;
-  const parentId = node?.parentId;
-
-  const [updateNode] = useMutation(
-    (mutation, args: nodes_set_input) => {
-      return mutation.updateNode({
-        pk_columns: { id },
-        _set: args,
-      })?.id;
-    },
-    { refetchQueries: [node, query.node({ id: parentId })] }
-  );
-
-  const [deleteContent] = useMutation(
-    (mutation, id: string) => {
-      return mutation.deleteNode({ id })?.id;
-    },
-    {
-      refetchQueries: [query.node({ id: parentId })],
-    }
-  );
-
-  const [insertRelation] = useMutation(
-    (mutation, args: relations_insert_input) => {
-      return mutation.insertRelation({
-        object: args,
-        on_conflict: {
-          constraint: relations_constraint.relations_parent_id_name_key,
-          update_columns: [relations_update_column.nodeId],
-        },
-      })?.id;
-    }
-  );
-  const set = async (name: string, nodeId: string | null) => {
-    return await insertRelation({
-      args: { parentId: contextId, name, nodeId },
-    });
-  };
+  const parentId = query?.parentId;
+  const namespace = query?.namespace;
 
   const handleDelete = async () => {
-    await deleteContent({ args: id });
+    await node.delete();
 
     const path = await fromId(parentId);
     router.push("/" + path.join("/"));
   };
 
   const handlePublish = async () => {
-    await updateNode({ args: { mutable: false } });
+    await node.update({ set: { mutable: false } });
   };
 
   const handleAddPoll = async (_: any) => {
@@ -122,21 +76,21 @@ export default function ContentToolbar({
   };
 
   const handleFocus = (id: string | null) => async (_: any) => {
-    await set("active", id);
+    await node.set("active", id);
   };
 
-  if (!(node?.mutable && node?.isOwner) && !node?.isContextOwner) return null;
+  if (!(query?.mutable && query?.isOwner) && !query?.isContextOwner) return null;
 
   return (
     <>
       <CardActions>
         {
-          node?.isContextOwner && [
+          query?.isContextOwner && [
             <AutoButton
               key="focus"
               text="Vis"
               icon={<Visibility />}
-              onClick={handleFocus(id)}
+              onClick={handleFocus(node.id)}
             />,
             <AutoButton
               key="hide"
@@ -153,7 +107,7 @@ export default function ContentToolbar({
               />
             ),
             ["vote/policy", "vote/position", "vote/change"].includes(
-              node?.mimeId ?? ""
+              query?.mimeId ?? ""
             ) && (
               <AutoButton
                 key="poll"
@@ -162,7 +116,7 @@ export default function ContentToolbar({
                 onClick={handleAddPoll}
               />
             ),
-            ["wiki/event", "wiki/group"].includes(node?.mimeId ?? "") && (
+            ["wiki/event", "wiki/group"].includes(query?.mimeId ?? "") && (
               <AutoButton
                 key="member"
                 text="Medlemmer"
@@ -189,7 +143,7 @@ export default function ContentToolbar({
             )
           }
         />
-        {node?.mutable && (
+        {query?.mutable && (
           <AutoButton
             key="sent"
             text="Indsend"
@@ -202,7 +156,7 @@ export default function ContentToolbar({
       {!child && [
         <PollDialog
           key="poll-dialog"
-          id={id}
+          node={node}
           open={openPollDialog}
           setOpen={setOpenPollDialog}
         />,

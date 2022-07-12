@@ -8,13 +8,7 @@ import {
   Image,
 } from "comps";
 import { useRouter } from "next/router";
-import {
-  useQuery,
-  useMutation,
-  members_insert_input,
-  members_constraint,
-  resolved,
-} from "gql";
+import { resolved } from "gql";
 import {
   Box,
   Divider,
@@ -32,16 +26,14 @@ import {
 } from "@mui/material";
 import { Publish, Save, Delete, Edit } from "@mui/icons-material";
 import { fromId } from "core/path";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 import nhost from "nhost";
 
-export default function Editor({ id }: { id: string }) {
+export default function Editor({ node }: { node: Node }) {
   const router = useRouter();
-  const node = useNode({
-    id,
-  });
   const query = node.query;
   const parentId = query?.parentId;
+  const data = query?.data();
 
   const [expand, setExpand] = useState(true);
   const [name, setName] = useState("");
@@ -56,27 +48,21 @@ export default function Editor({ id }: { id: string }) {
     if (query) {
       if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
         const fetchMembers = async () => {
-          const members = await resolved(() =>
-            query?.members().map((member) => ({
-              nodeId: member?.nodeId,
-              name: member?.name!,
-              email: member?.email!,
-            }))
-          );
+          const members = await resolved(() => {
+            return query?.members().map(({ nodeId, name, email }) => ({
+              nodeId: nodeId!,
+              name: name!,
+              email: email!,
+            }));
+          });
           if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
             setMembers(members);
         };
         fetchMembers();
       }
       const fetch = async () => {
-        const { name, data } = await resolved(
-          () => {
-            return { name: query.name, data: query.data() };
-          },
-          { noCache: true }
-        );
-        setName(name ?? "");
-        setContent(data?.content);
+        setName(query.name ?? "");
+        setContent(structuredClone(data?.content));
         setFileId(data?.image);
       };
       fetch();
@@ -89,7 +75,7 @@ export default function Editor({ id }: { id: string }) {
       setImage(presignedUrl?.url);
     };
     if (fileId) {
-      fetch()
+      fetch();
     }
   }, [fileId]);
 
@@ -98,7 +84,9 @@ export default function Editor({ id }: { id: string }) {
       await node.members.delete();
       await node.members.insert(members);
     }
-    await node.update({ name, data: { content, image: fileId }, mutable });
+    await node.update({
+      set: { name, data: { content, image: fileId }, mutable },
+    });
     router.push(router.asPath.split("?")[0]);
   };
 
@@ -184,7 +172,7 @@ export default function Editor({ id }: { id: string }) {
             </Grid>
           </CardContent>
         </Collapse>
-        <Slate value={content} onChange={setContent} readOnly={false} />
+        <Slate value={content} onChange={(value: any) => setContent(structuredClone(value))} readOnly={false} />
       </Card>
     </>
   );

@@ -1,46 +1,19 @@
 import React from "react";
 import { Fab } from "@mui/material";
 import { GroupAdd } from "@mui/icons-material";
-import {
-  members_constraint,
-  members_insert_input,
-  order_by,
-  useMutation,
-  useQuery,
-} from "gql";
 import { CSVReader } from "comps";
+import { Node, useNode } from "hooks";
 
-export default function InvitesFab({ id }: { id?: string }) {
-  const query = useQuery();
-  const node = query.node({ id });
-  const [addInvites] = useMutation(
-    (mutation, args: members_insert_input[]) => {
-      return mutation.insertMembers({
-        objects: args,
-        on_conflict: {
-          constraint: members_constraint.members_parent_id_email_key,
-          update_columns: [],
-        },
-      })?.affected_rows;
-    },
-    {
-      refetchQueries: [
-        node?.members({ order_by: [{ user: { displayName: order_by.asc } }] }),
-      ],
-    }
-  );
-
+export default function InvitesFab({ node }: { node: Node }) {
   const handleFile = async (fileData: any) => {
     const invites = fileData
       .filter((r: any) => r?.email)
       .map((r: any) => ({
         name: `${r.fornavn} ${r.efternavn}`,
         email: r?.email?.toLowerCase(),
-        parentId: id,
+        parentId: node.id,
       }));
-    await addInvites({
-      args: invites,
-    });
+    await node.members.insert(invites);
   };
 
   const parseOptions = {

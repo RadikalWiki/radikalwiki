@@ -10,29 +10,15 @@ import {
   Delete,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useMutation, useQuery, resolved, query as q } from "gql";
-import { useNode } from "hooks";
+import { resolved, query as q } from "gql";
+import { Node, useNode } from "hooks";
 import { fromId } from "core/path";
 
-export default function FolderDial({ id }: { id: string }) {
+export default function FolderDial({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const node = useNode({ id });
   const query = node.query;
   const parentId = query?.parentId;
-  //const query = useQuery();
-  //const folder = query.node({ id });
-  /*
-  const [updateFolder] = useMutation(
-    (mutation, args: { id: string; set: any }) => {
-      return mutation.updateNode({
-        pk_columns: { id: args.id },
-        _set: args.set,
-      })?.id;
-    },
-    { refetchQueries: [folder, query.node({ id: folder?.parentId })] }
-  );
-  */
 
   if (!query?.isContextOwner) return null;
 
@@ -108,7 +94,7 @@ export default function FolderDial({ id }: { id: string }) {
   };
 
   const handleLockContent = async () => {
-    await node.update({ mutable: !query?.mutable });
+    await node.update({ set: { mutable: !query?.mutable } });
   };
 
   return (

@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { Add } from "@mui/icons-material";
-import { useQuery } from "gql";
 import { AddContentDialog } from "comps";
+import { Node, useNode } from "hooks";
 
-export default function AddContentFab({ id }: { id: string }) {
+export default function AddContentFab({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
-  const query = useQuery();
-  const parent = query.node({ id });
+  const parent = node.query;
   const mimes = parent?.inserts()?.map(mime => mime.id!) ?? [];
 
   if (!mimes?.[0])
@@ -32,7 +31,7 @@ export default function AddContentFab({ id }: { id: string }) {
         </Fab>
       </Zoom>
       <AddContentDialog
-        id={id}
+        node={node}
         open={open}
         setOpen={setOpen}
         mimes={mimes}

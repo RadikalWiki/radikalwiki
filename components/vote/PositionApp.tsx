@@ -3,14 +3,14 @@ import { FolderApp, ContentApp, PollList, CandidateList, AddContentFab, FolderDi
 import { useNode } from "hooks";
 
 export default function PositionApp() {
-  const { query } = useNode();
+  const node = useNode();
   return (
     <>
       <ContentApp />
       <CandidateList />
-      <PollList id={query?.id} />
-      <AddContentFab id={query?.id} />
-      <FolderDial id={query?.id} />
+      <PollList node={node} />
+      <AddContentFab node={node} />
+      <FolderDial node={node} />
     </>
   );
 }

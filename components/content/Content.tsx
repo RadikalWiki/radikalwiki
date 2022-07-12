@@ -1,22 +1,19 @@
-import { Grid, Box, Paper } from "@mui/material";
+import { Grid, Box, Paper, Collapse } from "@mui/material";
 import { Slate, Image } from "comps";
 import { resolved } from "gql";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 import nhost from "nhost";
 import { useEffect, useState } from "react";
 
-function Content({ id, fontSize }: { id: string; fontSize: string }) {
-  const { query } = useNode({ id });
-  const [content, setContent] = useState<any>();
+function Content({ node, fontSize }: { node: Node; fontSize: string }) {
+  const query = node.query;
   const [image, setImage] = useState<any>();
+  const [content, setContent] = useState<string>();
+  const data = query?.data();
 
   useEffect(() => {
     if (query) {
       const fetch = async () => {
-        const data = await resolved(() => {
-          return query.data();
-        }, { noCache: true });
-        setContent(data?.content);
         if (data?.image) {
           const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
           setImage(presignedUrl?.url);
@@ -24,13 +21,16 @@ function Content({ id, fontSize }: { id: string; fontSize: string }) {
       };
       fetch()
     }
-  }, [query]);
+    setContent(structuredClone(data?.content))
+  }, [query, data]);
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={8}>
         <Box sx={{ fontSize, overflowX: "auto" }}>
-          <Slate value={content} readOnly />
+          <Collapse in={!!content} >
+            <Slate value={content} readOnly />
+          </Collapse>
         </Box>
       </Grid>
       {image && (

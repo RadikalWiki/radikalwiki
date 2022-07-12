@@ -17,16 +17,16 @@ import {
 import { mimes } from "gql";
 import { useRouter } from "next/router";
 import { getIcon, getName } from "mime";
-import { useNode } from "hooks";
+import { Node, useNode } from "hooks";
 
 export default function AddContentDialog({
-  id,
+  node,
   open,
   setOpen,
   mimes,
   initName,
 }: {
-  id: string;
+  node: Node;
   open: boolean;
   setOpen: Function;
   mimes: string[];
@@ -35,10 +35,9 @@ export default function AddContentDialog({
   const router = useRouter();
   const [name, setName] = useState<string>(initName ?? "");
   const [mimeId, setMimeId] = useState(mimes?.[0] ?? "");
-  const { insert } = useNode({ id });
 
   const handleSubmit = async () => {
-    const { namespace } = await insert({
+    const { namespace } = await node.insert({
       name,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
     });

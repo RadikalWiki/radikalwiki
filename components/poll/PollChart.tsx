@@ -13,12 +13,13 @@ import {
   HoverState,
   Stack,
 } from "@devexpress/dx-react-chart";
-import { Card, CardHeader, Box } from "@mui/material";
-import { nodes, Maybe, useQuery } from "gql";
+import { Card, CardHeader } from "@mui/material";
+import { nodes, Maybe } from "gql";
+import { Node, useNode } from "hooks";
 
 const Chart = DxChart as any;
 
-const parseData = (poll: Maybe<nodes>, screen: boolean) => {
+const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
   const count = poll
     ?.children_aggregate({ where: { mimeId: { _eq: "vote/vote" } } })
     .aggregate?.count();
@@ -52,14 +53,13 @@ const parseData = (poll: Maybe<nodes>, screen: boolean) => {
 };
 
 export default function PollChart({
-  id,
+  node,
   screen = false,
 }: {
-  id: string;
+  node: Node;
   screen?: boolean;
 }) {
-  const query = useQuery();
-  const poll = query.node({ id });
+  const poll = node.query;
 
   const title = poll?.name;
   const chartData = parseData(poll, screen);
