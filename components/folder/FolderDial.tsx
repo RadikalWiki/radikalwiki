@@ -15,6 +15,7 @@ import { Node } from "hooks";
 import { fromId } from "core/path";
 import HTMLtoDOCX from "html-to-docx";
 import { toHtml } from "core/document";
+import { getLetter } from "mime";
 
 export default function FolderDial({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,21 @@ export default function FolderDial({ node }: { node: Node }) {
 
   const formatContent = async (id: string, level: number): Promise<string> => {
     if (!id) return "";
+    const index =
+      (
+        await resolved(() =>
+          q.node({ id })?.parent?.children({
+            where: {
+              _and: [
+                { mutable: { _eq: false } },
+                { mimeId: { _in: ["vote/change", "vote/policy"] } },
+              ],
+            },
+            order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
+          })
+        )
+      )?.findIndex((e: any) => e.id === id) ?? 0;
+
     const children = await resolved(() => {
       return q
         .node({ id })
@@ -53,9 +69,17 @@ export default function FolderDial({ node }: { node: Node }) {
     });
     const node = await resolved(() => {
       const node = q.node({ id });
-      if (node) return { name: node.name, data: node.data() };
+      if (node)
+        return { name: node.name, data: node.data(), mimeId: node.mimeId };
     });
-    return `<h${level}>${
+
+    const prefix =
+      node?.mimeId == "vote/policy"
+        ? `${getLetter(index)}: `
+        : node?.mimeId == "vote/change"
+        ? `${index + 1}: `
+        : "";
+    return `<h${level}>${prefix}${
       node?.name
     }</h${level}><i>Stillet af: ${members}</i>${toHtml(node?.data?.content)}${
       children
@@ -88,10 +112,11 @@ export default function FolderDial({ node }: { node: Node }) {
         })
         .map(({ id }) => ({ id }));
     });
+
     const html = nodes
       ? (
           await Promise.all(
-            nodes.map(async (content) => await formatContent(content.id, 1))
+            nodes.map(async (content) => await formatContent(content.id, 2))
           )
         ).join("<br><br>")
       : "";

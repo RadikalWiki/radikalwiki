@@ -79,4 +79,4 @@ const getName = (mimeId?: string): string => {
   }
 };
 
-export { getIcon, getName };
+export { getLetter, getIcon, getName };
