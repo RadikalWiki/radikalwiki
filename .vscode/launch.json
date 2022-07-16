@@ -25,6 +25,13 @@
           "path": "${workspaceFolder}"
         }
       ]
+    },
+    {
+      "type": "pwa-chrome",
+      "name": "Chromium",
+      "request": "attach",
+      "url": "http://localhost:3000",
+      "port": 9220
     }
   ],
   "compounds": [
