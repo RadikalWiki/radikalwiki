@@ -38,7 +38,7 @@ export default function FolderDial({ node }: { node: Node }) {
               ],
             },
             order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
-          })
+          }).map(({ id }) => ({ id }))
         )
       )?.findIndex((e: any) => e.id === id) ?? 0;
 
