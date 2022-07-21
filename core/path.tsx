@@ -15,7 +15,8 @@ const toWhere = (path: string[], root = true): any => {
 const fromId = async (id?: string): Promise<string[]> => {
   return await resolved(async () => {
     const node = query.node({ id });
-    const { parentId, namespace } = node!;
+    const parentId = node?.parentId;
+    const namespace = node?.namespace;
     if (!parentId) return [];
     return (await fromId(parentId)).concat(namespace ? [namespace] : []);
   });

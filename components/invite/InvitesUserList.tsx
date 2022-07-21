@@ -1,4 +1,11 @@
-import { useQuery, useMutation, members_set_input, useSubscription } from "gql";
+import {
+  useQuery,
+  useMutation,
+  members_set_input,
+  useSubscription,
+  useRefetch,
+  client,
+} from "gql";
 import {
   Avatar,
   Box,
@@ -17,8 +24,10 @@ import { HeaderCard } from "comps/common";
 import { Suspense } from "react";
 import { useUserEmail, useUserId } from "@nhost/react";
 import { TransitionGroup } from "react-transition-group";
+import { fromId, toWhere } from "core/path";
 
 const ListSuspense = () => {
+  const refetch = useRefetch();
   const query = useQuery();
   const sub = useSubscription();
   const userId = useUserId();
@@ -62,16 +71,17 @@ const ListSuspense = () => {
     await updateMember({
       args: { id, set: { accepted: true, nodeId: userId } },
     });
+    // Delete cache
+    // eslint-disable-next-line functional/immutable-data
+    client.cache.query = {};
   };
 
   return (
     <List>
       <TransitionGroup>
         {invites.map(({ id, parent }) => {
-          return !id ? null :
-            <Collapse
-              key={id ?? 0}
-            >
+          return !id ? null : (
+            <Collapse key={id ?? 0}>
               <ListItem
                 secondaryAction={
                   <IconButton onClick={handleAcceptInvite(id)}>
@@ -91,6 +101,7 @@ const ListSuspense = () => {
                 <ListItemText primary={parent?.name} />
               </ListItem>
             </Collapse>
+          );
         })}
         {invites.length == 0 && (
           <Collapse key={-1}>
