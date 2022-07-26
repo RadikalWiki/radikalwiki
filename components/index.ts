@@ -2,6 +2,7 @@ export * from "./admin";
 export * from "./common";
 export * from "./content";
 export * from "./event";
+export * from "./file";
 export * from "./folder";
 export * from "./group";
 export * from "./layout";

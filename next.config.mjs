@@ -5,10 +5,23 @@ const nextConfig = {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
-    }
-    
-    return config
-  },
-}
+    };
+    config.module.rules.unshift({
+      test: /pdf\.worker\.(min\.)?js/,
+      use: [
+        {
+          loader: "file-loader",
+          options: {
+            name: "[contenthash].[ext]",
+            publicPath: "_next/static/worker",
+            outputPath: "static/worker",
+          },
+        },
+      ],
+    });
 
-export default nextConfig
+    return config;
+  },
+};
+
+export default nextConfig;

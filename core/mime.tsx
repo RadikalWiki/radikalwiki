@@ -12,6 +12,7 @@ import {
   Poll,
   Face,
   Article,
+  UploadFile,
 } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
 import { Suspense } from "react";
@@ -33,6 +34,8 @@ const getIcon = (mimeId?: string, index?: number): any => {
       return <Folder />;
     case "wiki/document":
       return <Article />;
+    case "wiki/file":
+      return <UploadFile />;
     case "wiki/user":
       return <Person />;
     case "text/plain":
@@ -62,6 +65,8 @@ const getName = (mimeId?: string): string => {
       return "Mappe";
     case "wiki/document":
       return "Dokument";
+    case "wiki/file":
+      return "Fil";
     case "wiki/user":
       return "Person";
     case "text/plain":

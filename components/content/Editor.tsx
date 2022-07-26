@@ -146,19 +146,11 @@ export default function Editor({ node }: { node: Node }) {
                 <Grid container>
                   <Grid item xs={9}>
                     <FileUploader
-                      contentId={query?.id}
+                      text="Upload Billede"
                       onNewFile={async ({ fileId }: { fileId: string }) => {
                         setFileId(fileId);
                       }}
-                    >
-                      <Button
-                        variant="outlined"
-                        color="secondary"
-                        component="span"
-                      >
-                        Upload Billede
-                      </Button>
-                    </FileUploader>
+                    />
                   </Grid>
                   {image && (
                     <Grid item xs={3}>
@@ -172,7 +164,11 @@ export default function Editor({ node }: { node: Node }) {
             </Grid>
           </CardContent>
         </Collapse>
-        <Slate value={content} onChange={(value: any) => setContent(structuredClone(value))} readOnly={false} />
+        <Slate
+          value={content}
+          onChange={(value: any) => setContent(structuredClone(value))}
+          readOnly={false}
+        />
       </Card>
     </>
   );

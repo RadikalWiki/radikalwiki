@@ -10,6 +10,7 @@ import {
   PositionApp,
   HomeApp,
   CandidateApp,
+  FileApp
 } from "comps";
 import { useRouter } from "next/router";
 
@@ -23,6 +24,8 @@ export default function MimeLoader(param?: { id?: string }) {
       return <FolderApp />;
     case "wiki/document":
       return <ContentApp />;
+    case "wiki/file":
+      return <FileApp />;
     case "wiki/group":
       return <GroupApp />;
     case "wiki/event":

@@ -79,53 +79,52 @@ export default function ContentToolbar({
     await node.set("active", id);
   };
 
-  if (!(query?.mutable && query?.isOwner) && !query?.isContextOwner) return null;
+  if (!(query?.mutable && query?.isOwner) && !query?.isContextOwner)
+    return null;
 
   return (
     <>
       <CardActions>
-        {
-          query?.isContextOwner && [
+        {query?.isContextOwner && [
+          <AutoButton
+            key="focus"
+            text="Vis"
+            icon={<Visibility />}
+            onClick={handleFocus(node.id)}
+          />,
+          <AutoButton
+            key="hide"
+            text="Skjul"
+            icon={<VisibilityOff />}
+            onClick={handleFocus(null)}
+          />,
+          !child && (
             <AutoButton
-              key="focus"
-              text="Vis"
-              icon={<Visibility />}
-              onClick={handleFocus(node.id)}
-            />,
+              key="zoom"
+              text="Zoom"
+              icon={<ZoomIn />}
+              onClick={(e: any) => setAnchorEl(e.currentTarget)}
+            />
+          ),
+          ["vote/policy", "vote/position", "vote/change"].includes(
+            query?.mimeId ?? ""
+          ) && (
             <AutoButton
-              key="hide"
-              text="Skjul"
-              icon={<VisibilityOff />}
-              onClick={handleFocus(null)}
-            />,
-            !child && (
-              <AutoButton
-                key="zoom"
-                text="Zoom"
-                icon={<ZoomIn />}
-                onClick={(e: any) => setAnchorEl(e.currentTarget)}
-              />
-            ),
-            ["vote/policy", "vote/position", "vote/change"].includes(
-              query?.mimeId ?? ""
-            ) && (
-              <AutoButton
-                key="poll"
-                text="Ny afstemning"
-                icon={<Poll />}
-                onClick={handleAddPoll}
-              />
-            ),
-            ["wiki/event", "wiki/group"].includes(query?.mimeId ?? "") && (
-              <AutoButton
-                key="member"
-                text="Medlemmer"
-                icon={<People />}
-                onClick={() => router.push(`${router.asPath}?app=member`)}
-              />
-            ),
-          ]
-        }
+              key="poll"
+              text="Ny afstemning"
+              icon={<Poll />}
+              onClick={handleAddPoll}
+            />
+          ),
+          ["wiki/event", "wiki/group"].includes(query?.mimeId ?? "") && (
+            <AutoButton
+              key="member"
+              text="Medlemmer"
+              icon={<People />}
+              onClick={() => router.push(`${router.asPath}?app=member`)}
+            />
+          ),
+        ]}
         <Box sx={{ flexGrow: 1 }} />
         <AutoButton
           key="delete"
@@ -133,7 +132,7 @@ export default function ContentToolbar({
           icon={<Delete />}
           onClick={handleDelete}
         />
-        <AutoButton
+        {query?.mimeId !== "wiki/file" && <AutoButton
           key="edit"
           text="Rediger"
           icon={<Edit />}
@@ -142,7 +141,7 @@ export default function ContentToolbar({
               `${router.asPath + (child ? `/${namespace}` : "")}?app=editor`
             )
           }
-        />
+        />}
         {query?.mutable && (
           <AutoButton
             key="sent"
@@ -154,12 +153,16 @@ export default function ContentToolbar({
       </CardActions>
       <Divider />
       {!child && [
-        <PollDialog
-          key="poll-dialog"
-          node={node}
-          open={openPollDialog}
-          setOpen={setOpenPollDialog}
-        />,
+        ["vote/policy", "vote/position", "vote/change"].includes(
+          query?.mimeId ?? ""
+        ) && (
+          <PollDialog
+            key="poll-dialog"
+            node={node}
+            open={openPollDialog}
+            setOpen={setOpenPollDialog}
+          />
+        ),
         <Popover
           key="zoom-slider"
           open={open}

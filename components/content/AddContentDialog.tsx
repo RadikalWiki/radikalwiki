@@ -13,11 +13,14 @@ import {
   Stack,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { mimes } from "gql";
 import { useRouter } from "next/router";
 import { getIcon, getName } from "mime";
 import { Node, useNode } from "hooks";
+import { FileUploader } from "comps";
+import { SelectionType } from "gqty";
 
 export default function AddContentDialog({
   node,
@@ -35,11 +38,15 @@ export default function AddContentDialog({
   const router = useRouter();
   const [name, setName] = useState<string>(initName ?? "");
   const [mimeId, setMimeId] = useState(mimes?.[0] ?? "");
+  const [fileId, setFileId] = useState<any>();
+  const [type, setType] = useState<any>();
+  const [fileName, setFileName] = useState<string>();
 
   const handleSubmit = async () => {
     const { namespace } = await node.insert({
       name,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
+      data: fileId ? { fileId, type } : undefined,
     });
     if (!namespace) return;
     setOpen(false);
@@ -89,6 +96,29 @@ export default function AddContentDialog({
               </Select>
             </FormControl>
           )}
+          {mimeId == "wiki/file" && (
+            <>
+              <FileUploader
+                text="Upload Fil"
+                onNewFile={async ({
+                  fileId,
+                  file,
+                }: {
+                  fileId: string;
+                  file: any;
+                }) => {
+                  setFileId(fileId);
+                  setType(file.type);
+                  setFileName(file.name);
+                }}
+              />
+              {fileName && (
+                <Typography
+                  sx={{ mt: 1 }}
+                >{`Fil uploadet: ${fileName}`}</Typography>
+              )}
+            </>
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -100,7 +130,11 @@ export default function AddContentDialog({
           Anuller
         </Button>
         <Button
-          disabled={!(name && (mimes.length == 1 || mimeId))}
+          disabled={
+            !name ||
+            (mimes.length !== 1 && !mimeId) ||
+            (mimeId == "wiki/file" && !fileId)
+          }
           onClick={handleSubmit}
           color="secondary"
           variant="outlined"
