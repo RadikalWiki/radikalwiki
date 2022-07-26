@@ -23,27 +23,11 @@ import { gridRowsLoadingSelector } from "@mui/x-data-grid";
 // eslint-disable-next-line functional/immutable-data
 pdfjs.GlobalWorkerOptions.workerSrc = `/${workerSrc}`;
 
-export default function PdfViewer({ node, fontSize }: { node: Node; fontSize: string }) {
-  const query = node.query;
-  const [file, setFile] = useState<any>(null);
+export default function PdfViewer({ file }: { file: any }) {
   const [numPages, setNumPages] = useState(1);
   const [height, setHeight] = useState(600);
   const [pageNumber, setPageNumber] = useState(1);
-  const data = query?.data();
 
-  useEffect(() => {
-    if (query) {
-      const fetch = async () => {
-        if (data?.fileId) {
-          const { presignedUrl } = await nhost.storage.getPresignedUrl({
-            fileId: data?.fileId,
-          });
-          setFile(presignedUrl?.url);
-        }
-      };
-      fetch();
-    }
-  }, [query, data]);
   const loading = <Box sx={{ display: 'flex', alignItems: "center", justifyContent: 'center', height: `${height}px` }}><CircularProgress /></Box>;
 
   return (
