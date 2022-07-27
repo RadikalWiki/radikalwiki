@@ -1,8 +1,5 @@
 import {
-  Grid,
   Box,
-  Paper,
-  Collapse,
   MobileStepper,
   Button,
   Typography,
@@ -10,15 +7,11 @@ import {
   Divider,
   CircularProgress,
 } from "@mui/material";
-import { Slate, Image } from "comps";
-import { Node } from "hooks";
-import nhost from "nhost";
-import { useEffect, useState } from "react";
-import { toHtml } from "core/document";
+import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import workerSrc from "core/pdf-worker";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
-import { gridRowsLoadingSelector } from "@mui/x-data-grid";
+// @ts-ignore 
+import workerSrc from "core/pdf-worker";
 
 // eslint-disable-next-line functional/immutable-data
 pdfjs.GlobalWorkerOptions.workerSrc = `/${workerSrc}`;
