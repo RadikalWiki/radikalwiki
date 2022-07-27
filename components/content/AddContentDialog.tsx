@@ -57,7 +57,14 @@ export default function AddContentDialog({
           : undefined,
     });
     if (!namespace) return;
+
+    // Reset fields
     setOpen(false);
+    setTitel(initTitel ?? "")
+    setText("")
+    setFileId(undefined)
+    setFileName(undefined)
+    
     if (redirect) router.push(`${router.asPath}/${namespace}`);
   };
 
