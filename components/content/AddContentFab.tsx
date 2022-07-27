@@ -35,6 +35,7 @@ export default function AddContentFab({ node }: { node: Node }) {
         open={open}
         setOpen={setOpen}
         mimes={mimes}
+        redirect
       />
     </>
   );

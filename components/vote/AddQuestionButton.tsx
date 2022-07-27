@@ -2,35 +2,29 @@ import React, { useState } from "react";
 import { AddContentDialog, AutoButton } from "comps";
 import { PlusOne } from "@mui/icons-material";
 import { Node, useNode } from "hooks";
-import { useUserDisplayName } from "@nhost/react";
 
-export default function AddChangeButton({ node }: { node: Node }) {
-  const displayName = useUserDisplayName();
+export default function AddQuestionButton({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
   const query = node.query;
-
-  const name = query?.mimeId == "vote/position" ? displayName : "";
 
   const handleSubmit = async () => {
     setOpen(true);
   };
 
-  if (!query?.inserts()?.some(mime => mime.id == "vote/change")) return null;
+  if (!query?.inserts()?.some(mime => mime.id == "vote/question")) return null;
 
   return (
     <>
       <AutoButton
-        text="Ændringsforslag"
+        text="Spørgsmål"
         icon={<PlusOne />}
         onClick={handleSubmit}
       />
       <AddContentDialog
-        initTitel={name}
         node={node}
-        mimes={["vote/change"]}
+        mimes={["vote/question"]}
         open={open}
         setOpen={setOpen}
-        redirect
       />
     </>
   );

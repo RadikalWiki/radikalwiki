@@ -13,6 +13,7 @@ import {
   Face,
   Article,
   UploadFile,
+  QuestionMark,
 } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
 import { Suspense } from "react";
@@ -46,6 +47,8 @@ const getIcon = (mimeId?: string, index?: number): any => {
       return <HowToReg />;
     case "vote/candidate":
       return <Face />;
+    case "vote/question":
+      return <QuestionMark />;
     case "vote/change":
       return index !== undefined ? index + 1 : <RateReview />;
     case "vote/poll":
@@ -79,6 +82,8 @@ const getName = (mimeId?: string): string => {
       return "Ændringsforslag";
     case "vote/candidate":
       return "Kandidatur";
+    case "vote/question":
+      return "Spørgsmål";
     default:
       return "Ukendt";
   }

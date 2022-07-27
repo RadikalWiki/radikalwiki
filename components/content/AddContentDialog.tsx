@@ -27,16 +27,19 @@ export default function AddContentDialog({
   open,
   setOpen,
   mimes,
-  initName,
+  initTitel,
+  redirect,
 }: {
   node: Node;
   open: boolean;
   setOpen: Function;
   mimes: string[];
-  initName?: string;
+  initTitel?: string;
+  redirect?: boolean;
 }) {
   const router = useRouter();
-  const [name, setName] = useState<string>(initName ?? "");
+  const [titel, setTitel] = useState<string>(initTitel ?? "");
+  const [text, setText] = useState<string>("");
   const [mimeId, setMimeId] = useState(mimes?.[0] ?? "");
   const [fileId, setFileId] = useState<any>();
   const [type, setType] = useState<any>();
@@ -44,13 +47,18 @@ export default function AddContentDialog({
 
   const handleSubmit = async () => {
     const { namespace } = await node.insert({
-      name,
+      name: titel,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
-      data: fileId ? { fileId, type } : undefined,
+      data:
+        mimeId == "wiki/file"
+          ? { fileId, type }
+          : mimeId == "vote/question"
+          ? { text }
+          : undefined,
     });
     if (!namespace) return;
     setOpen(false);
-    router.push(`${router.asPath}/${namespace}`);
+    if (redirect) router.push(`${router.asPath}/${namespace}`);
   };
 
   return (
@@ -64,10 +72,10 @@ export default function AddContentDialog({
             sx={{ mt: 1 }}
             autoFocus
             required
-            label="Navn"
+            label="Titel"
             fullWidth
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={titel}
+            onChange={(e) => setTitel(e.target.value)}
           />
           {mimes.length > 1 && (
             <FormControl required fullWidth>
@@ -97,6 +105,19 @@ export default function AddContentDialog({
               </Select>
             </FormControl>
           )}
+          {mimeId == "vote/question" && (
+            <TextField
+              sx={{ mt: 1 }}
+              autoFocus
+              required
+              label={getName(mimeId)}
+              placeholder={`Indsæt ${getName(mimeId)}`}
+              fullWidth
+              multiline
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          )}
           {mimeId == "wiki/file" && (
             <>
               <FileUploader
@@ -111,8 +132,7 @@ export default function AddContentDialog({
                   setFileId(fileId);
                   setType(file.type);
                   setFileName(file.name);
-                  console.log(file.name)
-                  setName(file.name.split(".").slice(0,-1).join("."));
+                  setTitel(file.name.split(".").slice(0, -1).join("."));
                 }}
               />
               {fileName && (
@@ -134,9 +154,10 @@ export default function AddContentDialog({
         </Button>
         <Button
           disabled={
-            !name ||
+            !titel ||
             (mimes.length !== 1 && !mimeId) ||
-            (mimeId == "wiki/file" && !fileId)
+            (mimeId == "wiki/file" && !fileId) ||
+            (mimeId == "vote/question" && !text)
           }
           onClick={handleSubmit}
           color="secondary"

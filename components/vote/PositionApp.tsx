@@ -1,5 +1,5 @@
 import React from "react";
-import { FolderApp, ContentApp, PollList, CandidateList, AddContentFab, FolderDial } from "comps";
+import { ContentApp, PollList, CandidateList, AddContentFab, FolderDial, QuestionList } from "comps";
 import { useNode } from "hooks";
 
 export default function PositionApp() {
@@ -8,6 +8,7 @@ export default function PositionApp() {
     <>
       <ContentApp />
       <CandidateList />
+      <QuestionList node={node} />
       <PollList node={node} />
       <AddContentFab node={node} />
       <FolderDial node={node} />
