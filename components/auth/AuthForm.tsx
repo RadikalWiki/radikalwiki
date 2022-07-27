@@ -90,6 +90,7 @@ export default function LoginForm({
 
   const onLogin = async () => {
     setLoading(true);
+    const timeFetch = fetch("/api/time");
     const { session, error } = await auth.signIn({
       email: email.toLowerCase(),
       password,
@@ -116,9 +117,9 @@ export default function LoginForm({
       setLoading(false);
       return;
     }
-    const res = await fetch("/api/time");
-    const { time } = await res.json();
     setSession(null);
+
+    const { time } = await (await timeFetch).json();
     setSession({
       timeDiff: new Date().getTime() - new Date(time).getTime(),
     });
