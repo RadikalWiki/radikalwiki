@@ -11,7 +11,7 @@ import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 // @ts-ignore 
-import workerSrc from "core/pdf-worker";
+import workerSrc from "core/PdfWorker";
 
 // eslint-disable-next-line functional/immutable-data
 pdfjs.GlobalWorkerOptions.workerSrc = `/${workerSrc}`;
