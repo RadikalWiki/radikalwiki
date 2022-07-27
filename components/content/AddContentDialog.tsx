@@ -21,6 +21,7 @@ import { getIcon, getName } from "mime";
 import { Node, useNode } from "hooks";
 import { FileUploader } from "comps";
 import { SelectionType } from "gqty";
+import { v4 as uuid } from 'uuid';
 
 export default function AddContentDialog({
   node,
@@ -48,6 +49,7 @@ export default function AddContentDialog({
   const handleSubmit = async () => {
     const { namespace } = await node.insert({
       name: titel,
+      namespace: "vote/question" ? uuid() : undefined,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
       data:
         mimeId == "wiki/file"
@@ -60,11 +62,11 @@ export default function AddContentDialog({
 
     // Reset fields
     setOpen(false);
-    setTitel(initTitel ?? "")
-    setText("")
-    setFileId(undefined)
-    setFileName(undefined)
-    
+    setTitel(initTitel ?? "");
+    setText("");
+    setFileId(undefined);
+    setFileName(undefined);
+
     if (redirect) router.push(`${router.asPath}/${namespace}`);
   };
 
@@ -75,15 +77,17 @@ export default function AddContentDialog({
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
-          <TextField
-            sx={{ mt: 1 }}
-            autoFocus
-            required
-            label="Titel"
-            fullWidth
-            value={titel}
-            onChange={(e) => setTitel(e.target.value)}
-          />
+          {mimeId !== "vote/question" && (
+            <TextField
+              sx={{ mt: 1 }}
+              autoFocus
+              required
+              label="Titel"
+              fullWidth
+              value={titel}
+              onChange={(e) => setTitel(e.target.value)}
+            />
+          )}
           {mimes.length > 1 && (
             <FormControl required fullWidth>
               <InputLabel required>Type</InputLabel>
@@ -118,9 +122,8 @@ export default function AddContentDialog({
               autoFocus
               required
               label={getName(mimeId)}
-              placeholder={`Indsæt ${getName(mimeId)}`}
+              placeholder={`Indsæt ${getName(mimeId).toLowerCase()}`}
               fullWidth
-              multiline
               value={text}
               onChange={(e) => setText(e.target.value)}
             />
@@ -161,7 +164,7 @@ export default function AddContentDialog({
         </Button>
         <Button
           disabled={
-            !titel ||
+            (mimeId != "vote/question" && !titel) ||
             (mimes.length !== 1 && !mimeId) ||
             (mimeId == "wiki/file" && !fileId) ||
             (mimeId == "vote/question" && !text)
