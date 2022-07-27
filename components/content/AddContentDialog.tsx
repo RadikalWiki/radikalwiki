@@ -49,7 +49,7 @@ export default function AddContentDialog({
   const handleSubmit = async () => {
     const { namespace } = await node.insert({
       name: titel,
-      namespace: "vote/question" ? uuid() : undefined,
+      namespace: mimeId == "vote/question" ? uuid() : undefined,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
       data:
         mimeId == "wiki/file"
