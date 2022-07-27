@@ -66,6 +66,7 @@ export default function AddContentDialog({
             required
             label="Navn"
             fullWidth
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
           {mimes.length > 1 && (
@@ -110,6 +111,8 @@ export default function AddContentDialog({
                   setFileId(fileId);
                   setType(file.type);
                   setFileName(file.name);
+                  console.log(file.name)
+                  setName(file.name.split(".").slice(0,-1).join("."));
                 }}
               />
               {fileName && (
