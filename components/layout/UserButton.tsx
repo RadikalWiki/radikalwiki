@@ -14,6 +14,7 @@ import {
   Brightness7,
   Face,
   HowToReg,
+  LockReset,
   Login,
   Logout,
 } from "@mui/icons-material";
@@ -53,7 +54,7 @@ export default function UserButton() {
     setAnchorEl(null);
   };
 
-  const handleLogin = (mode: "login" | "register") => () => {
+  const handleUser = (mode: "login" | "register" | "reset-password") => () => {
     setAnchorEl(null);
     router.push(`/user/${mode}`);
   };
@@ -101,6 +102,12 @@ export default function UserButton() {
           //     {session?.theme === "dark" ? "Lys" : "Mørk"}
           //   </ListItemText>
           // </MenuItem>,
+          <MenuItem key="reset" onClick={handleUser("reset-password")}>
+            <ListItemIcon>
+              <LockReset />
+            </ListItemIcon>
+            <ListItemText>Sæt Kodeord</ListItemText>
+          </MenuItem>,
           <MenuItem key="logout" onClick={handleLogout}>
             <ListItemIcon>
               <Logout />
@@ -108,13 +115,13 @@ export default function UserButton() {
             <ListItemText>Log ud</ListItemText>
           </MenuItem>,
         ]) || [
-          <MenuItem key="login" onClick={handleLogin("login")}>
+          <MenuItem key="login" onClick={handleUser("login")}>
             <ListItemIcon>
               <Login />
             </ListItemIcon>
             <ListItemText>Log ind</ListItemText>
           </MenuItem>,
-          <MenuItem key="register" onClick={handleLogin("register")}>
+          <MenuItem key="register" onClick={handleUser("register")}>
             <ListItemIcon>
               <HowToReg />
             </ListItemIcon>

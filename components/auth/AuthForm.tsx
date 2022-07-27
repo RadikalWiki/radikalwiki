@@ -13,21 +13,20 @@ import {
 } from "@mui/material";
 import { useSession } from "hooks";
 import { auth } from "nhost";
-import { HowToReg, LockReset, Login } from "@mui/icons-material";
+import { Email, HowToReg, LockReset, Login } from "@mui/icons-material";
+import { useAuthenticationStatus } from "@nhost/react";
 
-export default function LoginForm({
-  mode,
-}: {
-  mode: "login" | "register" | "reset" | "confirm";
-}) {
+type Mode = "login" | "register" | "login-email" | "reset-password";
+
+export default function LoginForm({ mode }: { mode: Mode }) {
   const router = useRouter();
+  const { isAuthenticated } = useAuthenticationStatus();
   const [session, setSession] = useSession();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
-  const [ticket, setTicket] = useState("");
   const [errorName, setNameError] = useState(false);
   const [errorEmail, setEmailError] = useState(false);
   const [errorNameMsg, setNameErrorMsg] = useState("");
@@ -81,11 +80,6 @@ export default function LoginForm({
       setPasswordError(true);
       setPasswordErrorMsg("Kodeord er ikke ens");
     }
-  };
-
-  const onTicketChange = (e: any) => {
-    const ticket = e.target.value;
-    setTicket(ticket);
   };
 
   const onLogin = async () => {
@@ -144,19 +138,23 @@ export default function LoginForm({
     }
   };
 
-  const onReset = async () => {
+  const onResetPassword = async () => {
     if (["login", "register"].includes(mode)) {
-      router.push("/user/reset");
-    } else if (mode === "confirm") {
+      router.push("/user/reset-password");
+    } else if (mode === "reset-password") {
       // TODO: add error handling
       await auth.changePassword({ newPassword: password });
-      router.push("/user/login");
-    } else {
-      // TODO: add error handling
-      await auth.resetPassword({ email: email.toLowerCase() });
-      router.push("/user/confirm");
+      router.push("/");
     }
   };
+
+  const onLoginEmail = async () => {
+    // TODO: add error handling
+    await auth.resetPassword({ email: email.toLowerCase() });
+    router.push("/user/login-email");
+  };
+
+  console.log(isAuthenticated);
 
   return (
     <Container sx={{ padding: 3 }} maxWidth="xs">
@@ -167,6 +165,8 @@ export default function LoginForm({
               <Login />
             ) : mode === "register" ? (
               <HowToReg />
+            ) : mode === "login-email" ? (
+              <Email />
             ) : (
               <LockReset />
             )}
@@ -176,9 +176,9 @@ export default function LoginForm({
               ? "Log Ind"
               : mode === "register"
               ? "Registrer"
-              : mode === "reset"
-              ? "Gendan Kodeord"
-              : "Bekræft Gendannelse"}
+              : mode === "login-email"
+              ? "Log Ind med E-mail"
+              : "Sæt Kodeord"}
           </Typography>
           {mode === "register" && (
             <TextField
@@ -191,21 +191,23 @@ export default function LoginForm({
               onChange={onNameChange}
             />
           )}
-          <TextField
-            fullWidth
-            error={errorEmail}
-            helperText={errorEmailMsg}
-            label="Email"
-            name="email"
-            variant="outlined"
-            onChange={onEmailChange}
-          />
-          {mode !== "reset" && (
+          {mode !== "reset-password" && (
+            <TextField
+              fullWidth
+              error={errorEmail}
+              helperText={errorEmailMsg}
+              label="Email"
+              name="email"
+              variant="outlined"
+              onChange={onEmailChange}
+            />
+          )}
+          {mode !== "login-email" && (
             <TextField
               fullWidth
               error={errorPassword}
               helperText={errorPasswordMsg}
-              label={mode == "confirm" ? "Nyt kodeord" : "Kodeord"}
+              label={mode == "reset-password" ? "Nyt kodeord" : "Kodeord"}
               name="password"
               type="password"
               variant="outlined"
@@ -221,18 +223,6 @@ export default function LoginForm({
               type="password"
               variant="outlined"
               onChange={onPasswordRepeatChange}
-            />
-          )}
-          {mode === "confirm" && (
-            <TextField
-              fullWidth
-              error={errorPassword}
-              helperText={errorPasswordMsg}
-              label="Kode fra e-mail"
-              name="email-code"
-              type="password"
-              variant="outlined"
-              onChange={onTicketChange}
             />
           )}
           {mode === "login" && (
@@ -267,8 +257,7 @@ export default function LoginForm({
               )}
             </Box>
           )}
-
-          {!["reset", "confirm"].includes(mode) && (
+          {!["reset-password", "login-email"].includes(mode) && (
             <Button
               disabled={
                 mode !== "login" && (errorName || errorEmail || errorPassword)
@@ -282,16 +271,26 @@ export default function LoginForm({
               Registrer
             </Button>
           )}
-
-          {!["register"].includes(mode) && (
+          {!["register"].includes(mode) && isAuthenticated && (
             <Button
               color={mode === "login" ? "secondary" : "primary"}
               fullWidth
               variant="contained"
               startIcon={<LockReset />}
-              onClick={onReset}
+              onClick={onResetPassword}
             >
-              Gendan Kodeord
+              Sæt Kodeord
+            </Button>
+          )}
+          {!["register", "reset-password"].includes(mode) && (
+            <Button
+              color={mode === "login" ? "secondary" : "primary"}
+              fullWidth
+              variant="contained"
+              startIcon={<Email />}
+              onClick={onLoginEmail}
+            >
+              Log Ind med E-mail
             </Button>
           )}
         </Stack>
