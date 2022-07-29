@@ -154,8 +154,6 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     router.push("/user/login-email");
   };
 
-  console.log(isAuthenticated);
-
   return (
     <Container sx={{ padding: 3 }} maxWidth="xs">
       <form>

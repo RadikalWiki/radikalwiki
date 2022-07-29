@@ -2,6 +2,7 @@ import { Node } from "hooks";
 import dynamic from "next/dynamic";
 import nhost from "nhost";
 import { useEffect, useState } from "react";
+import { SpreadSheetViewer } from "comps";
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
   ssr: false,
@@ -28,6 +29,9 @@ export default function FileLoader({ node }: { node: Node }) {
       return <PdfViewer file={file} />;
     default:
   }
+
+  if (data?.type?.includes("spreadsheet"))
+    return <SpreadSheetViewer file={file} />
 
   return null;
 }
