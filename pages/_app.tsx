@@ -25,7 +25,7 @@ export default function App({
   }, []);
   const theme = useTheme();
 
-  if (!checkVersion()) return <OldBrowser />;
+  if (typeof window !== "undefined" && !checkVersion()) return <OldBrowser />;
  
   return (
     <>
