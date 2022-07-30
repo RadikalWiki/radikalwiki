@@ -39,6 +39,7 @@ export default function SpeakCard({
   const screen = useScreen();
   const speakerlist = node.subGet("speakerlist");
   const speakers = speakerlist?.children({
+    where: { mimeId: { _eq: "speak/speak" } },
     order_by: [{ data: order_by.desc }, { createdAt: order_by.asc }],
   });
 

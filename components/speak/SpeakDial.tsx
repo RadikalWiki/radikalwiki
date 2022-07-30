@@ -9,6 +9,9 @@ export default function SpeakDial({ node }: { node: Node }) {
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
 
+  const speakerlist = node.subGet("speakerlist");
+  const id = speakerlist?.id;
+
   const handleAddSpeak = (type: string) => (_: any) => {
     setOpen(false);
     const time = new Date(
@@ -16,6 +19,7 @@ export default function SpeakDial({ node }: { node: Node }) {
     ).toLocaleString();
     node.insert({
       name: displayName,
+      parentId: id,
       namespace: `${displayName?.toLocaleLowerCase()}-${time}`,
       mimeId: "speak/speak",
       data: type
@@ -37,7 +41,7 @@ export default function SpeakDial({ node }: { node: Node }) {
     >
       {Object.entries(avatars).map(
         ([key, action]) =>
-          (node.sub?.mutable || key !== "0") && (
+          (speakerlist?.mutable || key !== "0") && (
             <SpeedDialAction
               key={key}
               icon={action.avatar}

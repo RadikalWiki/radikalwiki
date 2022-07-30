@@ -7,6 +7,7 @@ import {
   members_insert_input,
   members_set_input,
   nodes,
+  nodes_bool_exp,
   nodes_insert_input,
   nodes_set_input,
   relations_constraint,
@@ -41,6 +42,9 @@ export type Node = {
   member: any;
   children: {
     delete: any;
+  };
+  context: {
+    set: any;
   };
 };
 
@@ -141,10 +145,6 @@ const useNode = (param?: {
     return rel?.node;
   };
 
-  //const subGet = (name: string) => sub?.relation({ args: { relation_name: name } })?.[0];
-  //const get = (name: string) => query?.relations({ where: { name: { _eq: name } } })[0].node;
-  //const subGet = (name: string) => sub?.relations({ where: { name: { _eq: name } } })[0].node;
-
   const [insertRelation] = useMutation(
     (mutation, args: relations_insert_input) => {
       return mutation.insertRelation({
@@ -156,8 +156,8 @@ const useNode = (param?: {
       })?.id;
     }
   );
-  const set = async (name: string, nodeId: string | null) => {
-    return await insertRelation({ args: { parentId: node?.id, name, nodeId } });
+  const set = (name: string, nodeId: string | null) => {
+    return insertRelation({ args: { parentId: node?.id, name, nodeId } });
   };
 
   const [insertMembers] = useMutation(
@@ -224,16 +224,20 @@ const useNode = (param?: {
     },
   };
 
-  const [deleteChildren] = useMutation((mutation) => {
-    return mutation.deleteNodes({
-      where: { parentId: { _eq: nodeId } },
-    })?.affected_rows;
+  const [deleteChildren] = useMutation((mutation, where: nodes_bool_exp) => {
+    return mutation.deleteNodes({ where })?.affected_rows;
   });
 
   const children = {
-    delete: () => {
-      return deleteChildren();
+    delete: (args: nodes_bool_exp) => {
+      return deleteChildren({ args });
     },
+  };
+
+  const context = {
+    id: nodeContextId,
+    set: (name: string, nodeId: string | null) =>
+      insertRelation({ args: { parentId: nodeContextId, name, nodeId } }),
   };
 
   /*
@@ -270,6 +274,7 @@ const useNode = (param?: {
     members,
     member,
     children,
+    context,
   };
 };
 

@@ -14,9 +14,9 @@ import {
   Article,
   UploadFile,
   QuestionMark,
+  InterpreterMode,
 } from "@mui/icons-material";
 import { Skeleton } from "@mui/material";
-import { Suspense } from "react";
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
@@ -53,6 +53,8 @@ const getIcon = (mimeId?: string, index?: number): any => {
       return index !== undefined ? index + 1 : <RateReview />;
     case "vote/poll":
       return <Poll />;
+    case "speak/list":
+      return <InterpreterMode />;
     default:
       return <Skeleton variant="circular" width={24} height={24} />
   }
@@ -84,6 +86,8 @@ const getName = (mimeId?: string): string => {
       return "Kandidatur";
     case "vote/question":
       return "Spørgsmål";
+    case "speak/list":
+      return "Talerliste";
     default:
       return "Ukendt";
   }

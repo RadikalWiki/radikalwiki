@@ -16,16 +16,23 @@ export default function SpeakAdmin({
   const id = speakerlist?.id;
 
   const handleRemoveSpeaks = async (_: any) => {
-    await node.children.delete();
+    await node.children.delete({
+      _and: [
+        { mimeId: { _eq: "speak/speak" } },
+        {
+          parentId: { _eq: id },
+        },
+      ],
+    });
   };
 
   const handleLockSpeak = async (mutable: boolean) => {
-    await node.update({ id, set: { mutable } })
+    await node.update({ id, set: { mutable } });
   };
 
   const handleTimerSet = async (time: number) => {
     const updatedAt = new Date();
-    await node.update({ id, set: { time, updatedAt } })
+    await node.update({ id, set: { data: { time, updatedAt } } });
   };
 
   const owner = speakerlist?.isOwner;
