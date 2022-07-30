@@ -151,7 +151,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
   const onLoginEmail = async () => {
     // TODO: add error handling
     await auth.resetPassword({ email: email.toLowerCase() });
-    router.push("/user/login-email");
+    router.push("/");
   };
 
   return (
