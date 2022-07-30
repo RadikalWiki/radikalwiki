@@ -1,11 +1,9 @@
 import React from "react";
 import { InvitesTextField, InvitesFab, MembersDataGrid } from "comps";
 import { Grid } from "@mui/material";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 
-export default function MemberApp() {
-  const node = useNode();
-
+export default function MemberApp({ node }: { node: Node }) {
   if (!node?.id) return null;
 
   return (

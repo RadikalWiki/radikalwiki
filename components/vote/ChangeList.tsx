@@ -35,7 +35,7 @@ import {
 } from "@mui/material";
 import { nodes, order_by } from "gql";
 import { getIcon } from "mime";
-import { Node, useNode } from "hooks";
+import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
 function ChildListElement({ id, index }: { id: string; index: number }) {
@@ -174,7 +174,10 @@ function ChildListRaw({ node }: { node: Node }) {
 }
 
 export default function ChangeList({ node }: { node: Node }) {
+  const screen = useScreen();
   const router = useRouter();
+
+  if (screen) return null;
 
   return (
     <Card elevation={3} sx={{ m: 1 }}>

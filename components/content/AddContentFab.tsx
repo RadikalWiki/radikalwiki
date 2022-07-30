@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import { Fab, Zoom } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { AddContentDialog } from "comps";
-import { Node, useNode } from "hooks";
+import { Node, useNode, useScreen } from "hooks";
 
 export default function AddContentFab({ node }: { node: Node }) {
+  const screen = useScreen();
   const [open, setOpen] = useState(false);
   const parent = node.query;
-  const mimes = parent?.inserts()?.map(mime => mime.id!) ?? [];
+  const mimes = parent?.inserts({ where: { hidden: { _eq: false } } })?.map(mime => mime.id!) ?? [];
 
-  if (!parent?.attachable || !mimes?.[0])
+  if (screen || !parent?.attachable || !mimes?.[0])
     return null;
 
   return (

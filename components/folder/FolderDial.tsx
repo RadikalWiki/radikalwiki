@@ -11,19 +11,20 @@ import {
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { resolved, query as q, order_by } from "gql";
-import { Node } from "hooks";
+import { Node, useScreen } from "hooks";
 import { fromId } from "core/path";
 import HTMLtoDOCX from "html-to-docx";
 import { toHtml } from "core/document";
 import { getLetter } from "mime";
 
 export default function FolderDial({ node }: { node: Node }) {
+  const screen = useScreen();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const query = node.query;
   const parentId = query?.parentId;
 
-  if (!query?.isContextOwner) return null;
+  if (screen || !query?.isContextOwner) return null;
 
   const formatContent = async (id: string, level: number): Promise<string> => {
     if (!id) return "";

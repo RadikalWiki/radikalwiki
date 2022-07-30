@@ -1,12 +1,11 @@
 import React from "react";
 import { ChangeList, ContentApp, PollList, FolderDial } from "comps";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 
-export default function PolicyApp() {
-  const node = useNode();
+export default function PolicyApp({ node }: { node: Node }) {
   return (
     <>
-      <ContentApp />
+      <ContentApp node={node} />
       <ChangeList node={node} />
       <PollList node={node} />
       <FolderDial node={node} />

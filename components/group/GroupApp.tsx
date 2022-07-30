@@ -1,10 +1,11 @@
 import { FolderApp, ContentApp } from "comps";
+import { Node } from "hooks";
 
-export default function GroupApp() {
+export default function GroupApp({ node }: { node: Node }) {
   return (
     <>
-      <ContentApp hideMembers />
-      <FolderApp />
+      <ContentApp node={node} hideMembers />
+      <FolderApp node={node} />
     </>
   );
 }

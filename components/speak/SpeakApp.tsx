@@ -2,15 +2,13 @@ import React, { Suspense, useEffect, useState } from "react";
 import {
   Grid,
 } from "@mui/material";
-import { useNode, useScreen, useSession } from "hooks";
-import { SpeakDial, SpeakAdmin } from "comps";
-import SpeakCard from "./SpeakCard";
+import { Node, useScreen, useSession } from "hooks";
+import { SpeakDial, SpeakAdmin, SpeakCard } from "comps";
 
-export default function SpeakApp() {
+export default function SpeakApp({ node }: { node: Node }) {
   const screen = useScreen();
   const [session] = useSession();
   const [time, setTime] = useState(0);
-  const node = useNode();
 
   const speakerlist = node.subGet("speakerlist");
 

@@ -15,7 +15,7 @@ import {
 import { Cancel, HowToVote } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { getIcon } from "mime";
-import { Node, useNode } from "hooks";
+import { Node, useNode, useScreen } from "hooks";
 
 function PollListSuspense({ node }: { node: Node }) {
   const router = useRouter();
@@ -98,6 +98,9 @@ function PollListSuspense({ node }: { node: Node }) {
 }
 
 export default function PollList({ node }: { node: Node }) {
+  const screen = useScreen();
+
+  if (screen) return null;
   return (
     <Suspense fallback={null}>
       <PollListSuspense node={node} />

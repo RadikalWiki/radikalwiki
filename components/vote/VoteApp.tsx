@@ -17,7 +17,7 @@ import {
 } from "@mui/material";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 import { PollApp, PollChartSub } from "comps/poll";
 import { HeaderCard } from "comps/common";
 import {
@@ -28,15 +28,15 @@ import {
   Refresh,
 } from "@mui/icons-material";
 import { useUserEmail, useUserId } from "@nhost/react";
+import { MimeLoader } from "comps/layout";
 
-export default function VoteApp() {
+export default function VoteApp({ node }: { node: Node }) {
   const [session] = useSession();
   const userId = useUserId();
   const email = useUserEmail();
   const router = useRouter();
   const [refresh, setRefresh] = useState(false);
 
-  const node = useNode();
   const poll = node.subGet("active");
 
   const [helperText, setHelperText] = useState("");
@@ -163,7 +163,7 @@ export default function VoteApp() {
     return (
       <>
         {status}
-        <PollApp id={poll?.id} />{" "}
+        <MimeLoader id={poll?.id} mimeId={poll?.mimeId} />
       </>
     );
 

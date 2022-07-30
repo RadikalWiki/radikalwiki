@@ -1,7 +1,6 @@
-import { useNode } from "hooks";
+import { Node } from "hooks";
 //import { PermList } from ".";
 
-export default function PermApp() {
-  const { query } = useNode();
+export default function PermApp({ node }: { node: Node }) {
   //return <PermList id={query?.id} />;
 }

@@ -3,7 +3,7 @@ import { ContentAvatar, ExpandButton } from "comps";
 import { Face } from "@mui/icons-material";
 import { getIcon } from "mime";
 import { Suspense } from "react";
-import { Node, useNode } from "hooks";
+import { Node, useNode, useScreen } from "hooks";
 
 function MemberChips({ node }: { node: Node }) {
   const members = node.query?.members();
@@ -33,7 +33,16 @@ function MemberChips({ node }: { node: Node }) {
 }
 
 function Title({ node }: { node: Node }) {
-  return node.query?.name ? <Typography color="secondary">{node.query?.name ?? ""}</Typography> : null
+  const screen = useScreen();
+  return node.query?.name ? (
+    screen ? (
+      <Typography variant="h5" sx={{ color: "#fff" }}>
+        {node.query?.name}
+      </Typography>
+    ) : (
+      <Typography color="secondary">{node.query?.name ?? ""}</Typography>
+    )
+  ) : null;
 }
 
 export default function ContentHeader({
@@ -47,6 +56,7 @@ export default function ContentHeader({
   setExpand: Function;
   hideMembers?: boolean;
 }) {
+  const screen = useScreen();
   return (
     <CardHeader
       title={
@@ -57,12 +67,18 @@ export default function ContentHeader({
       avatar={<ContentAvatar node={node} />}
       subheader={
         <>
-          {!hideMembers && (
+          {!hideMembers && !screen && (
             <Suspense fallback={<Skeleton width={10} />}>
               <MemberChips node={node} />
             </Suspense>
           )}
         </>
+      }
+      sx={
+        screen ? {
+          bgcolor: (t) => t.palette.secondary.main,
+          color: (t) => t.palette.secondary.contrastText,
+        } : undefined
       }
       action={
         <ExpandButton expand={expand} onClick={() => setExpand(!expand)} />

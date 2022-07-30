@@ -1,4 +1,4 @@
-import { useNode } from "hooks";
+import { Node, useNode } from "hooks";
 import {
   FolderApp,
   ContentApp,
@@ -14,33 +14,33 @@ import {
 } from "comps";
 import { useRouter } from "next/router";
 
-export default function MimeLoader(param?: { id?: string }) {
+export default function MimeLoader(param?: { id?: string, mimeId?: string }) {
   const node = useNode({ id: param?.id });
   const router = useRouter();
-  if (!node.query?.mimeId || !router.query.path) return null;
+  if ((!node?.mimeId && !param?.mimeId) || !router.query.path) return null;
 
-  switch (node.query.mimeId) {
+  switch (param?.mimeId ?? node.mimeId) {
     case "wiki/folder":
-      return <FolderApp />;
+      return <FolderApp node={node} />;
     case "wiki/document":
-      return <ContentApp />;
+      return <ContentApp node={node} />;
     case "wiki/file":
-      return <FileApp />;
+      return <FileApp node={node}/>;
     case "wiki/group":
-      return <GroupApp />;
+      return <GroupApp node={node}/>;
     case "wiki/event":
-      return <EventApp />;
+      return <EventApp node={node} />;
     case "wiki/user":
-      return <UserApp />;
+      return <UserApp node={node} />;
     case "vote/policy":
     case "vote/change":
-      return <PolicyApp />;
+      return <PolicyApp node={node} />;
     case "vote/position":
-      return <PositionApp />;
+      return <PositionApp node={node} />;
     case "vote/candidate":
-      return <CandidateApp />;
+      return <CandidateApp node={node} />;
     case "vote/poll":
-      return <PollApp />;
+      return <PollApp node={node} />;
     case "wiki/home":
       return <HomeApp />;
     default:

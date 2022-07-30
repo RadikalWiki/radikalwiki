@@ -36,7 +36,7 @@ import {
 } from "@mui/material";
 import { nodes, order_by } from "gql";
 import { getIcon } from "mime";
-import { Node, useNode } from "hooks";
+import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
 function ChildListElement({ node, child, index }: { node: Node, child?: nodes; index: number }) {
@@ -94,6 +94,7 @@ function ChildListElement({ node, child, index }: { node: Node, child?: nodes; i
 }
 
 export default function QuestionList({ node }: { node: Node }) {
+  const screen = useScreen();
   const router = useRouter();
   const children = node.query?.children({
     where: { mimeId: { _eq: "vote/question" } },
@@ -115,7 +116,7 @@ export default function QuestionList({ node }: { node: Node }) {
         }
         action={
           <CardActions sx={{ p: 0 }}>
-            {node.query?.isContextOwner && (
+            {node.query?.isContextOwner && !screen && (
               <AutoButton
                 text="Sorter"
                 icon={<LowPriority />}

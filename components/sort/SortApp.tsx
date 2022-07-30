@@ -13,11 +13,10 @@ import {
 import { order_by, resolved } from "gql";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getIcon } from "mime";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 
-export default function SortApp() {
+export default function SortApp({ node }: { node: Node }) {
   const [list, setList] = useState<any[]>([]);
-  const node = useNode();
   const query = node.query;
 
   useEffect(() => {

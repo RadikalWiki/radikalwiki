@@ -8,24 +8,27 @@ import {
   PermApp,
   HomeApp,
 } from "comps";
+import { useNode } from "hooks";
 
 export default function AppLoader({ app }: { app?: string }) {
+  const node = useNode();
+
   if (app) {
     switch (app) {
       case "member":
-        return <MemberApp />;
+        return <MemberApp node={node} />;
       //case "perm":
-      //  return <PermApp />;
+      //  return <PermApp node={node} />;
       case "editor":
-        return <EditorApp />;
+        return <EditorApp node={node} />;
       case "speak":
-        return <SpeakApp />;
+        return <SpeakApp node={node} />;
       case "sort":
-        return <SortApp />;
+        return <SortApp node={node} />;
       case "vote":
-        return <VoteApp />;
+        return <VoteApp node={node} />;
       case "screen":
-        return <ScreenApp />;
+        return <ScreenApp node={node} />;
       case "home":
         return <HomeApp />;
       default:

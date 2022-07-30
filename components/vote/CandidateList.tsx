@@ -7,7 +7,7 @@ import {
   ListSubheader,
   useMediaQuery,
 } from "@mui/material";
-import { useNode } from "hooks";
+import { Node, useScreen } from "hooks";
 import { getIcon } from "mime";
 import { Image } from "comps";
 import { useRouter } from "next/router";
@@ -18,9 +18,9 @@ import { useUserId } from "@nhost/react";
 import nhost from "nhost";
 import { useEffect, useState } from "react";
 
-export default function CandidateList() {
-  const node = useNode();
+export default function CandidateList({ node }: { node: Node }) {
   const router = useRouter();
+  const screen = useScreen();
   const largeScreen = useMediaQuery("(min-width:640px)");
   const userId = useUserId();
   const [images, setImages] = useState<string[]>([]);
@@ -52,6 +52,9 @@ export default function CandidateList() {
       fetch()
     }
   }, [imageIds]);
+
+
+  if (screen) return null;
 
   const handleOnClick = (namespace?: string) => async () => {
     const path = `${router.asPath}/${namespace}`.substring(1).split("/");

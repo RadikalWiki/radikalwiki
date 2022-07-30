@@ -263,6 +263,7 @@ const useNode = (param?: {
 
   return {
     id: nodeId,
+    mimeId: node?.mimeId,
     query: node,
     sub,
     get,

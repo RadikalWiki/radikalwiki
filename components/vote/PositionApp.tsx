@@ -1,13 +1,12 @@
 import React from "react";
 import { ContentApp, PollList, CandidateList, AddContentFab, FolderDial, QuestionList } from "comps";
-import { useNode } from "hooks";
+import { Node } from "hooks";
 
-export default function PositionApp() {
-  const node = useNode();
+export default function PositionApp({ node }: { node: Node }) {
   return (
     <>
-      <ContentApp />
-      <CandidateList />
+      <ContentApp node={node} />
+      <CandidateList node={node} />
       <QuestionList node={node} />
       <PollList node={node} />
       <AddContentFab node={node} />
