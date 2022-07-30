@@ -29,8 +29,6 @@ export default function AppLoader({ app }: { app?: string }) {
         return <VoteApp node={node} />;
       case "screen":
         return <ScreenApp node={node} />;
-      case "home":
-        return <HomeApp />;
       default:
     }
   }
