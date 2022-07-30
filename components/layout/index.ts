@@ -13,3 +13,4 @@ export { default as SessionProvider } from './SessionProvider';
 export { default as TopBar } from './TopBar';
 export { default as UserApp } from './UserApp';
 export { default as UserButton } from './UserButton';
+export { default as OldBrowser } from './OldBrowser';
