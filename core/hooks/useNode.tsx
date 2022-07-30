@@ -25,7 +25,8 @@ const getNamespace = (name?: string) => {
     ?.trim()
     .toLocaleLowerCase()
     .replaceAll(" ", "_")
-    .replaceAll("?", "");
+    .replaceAll("?", "")
+    .replaceAll(":", "")
 };
 
 export type Node = {
