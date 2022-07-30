@@ -1,12 +1,13 @@
 import React from "react";
 import { PollAdmin, PollChart, PollChartSub } from "components";
-import { useNode } from "hooks";
+import { useNode, useScreen } from "hooks";
 
 export default function PollApp({
   id,
 }: {
   id?: string;
 }) {
+  const screen = useScreen();
   const node = useNode({ id });
   const query = node.query;
   return (

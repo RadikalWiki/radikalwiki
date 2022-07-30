@@ -62,7 +62,7 @@ export default function PollDialog({
       },
     });
 
-    await node.set("active", poll.id);
+    await node.context.set("active", poll.id);
     router.push(`${router.asPath.split("?")[0]}/${poll.namespace}`);
   };
 

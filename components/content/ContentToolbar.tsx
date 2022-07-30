@@ -59,6 +59,7 @@ export default function ContentToolbar({
   const open = Boolean(anchorEl);
   const parentId = query?.parentId;
   const namespace = query?.namespace;
+  const inserts = query?.inserts()?.map(mime => mime.id)
 
   const handleDelete = async () => {
     await node.delete();
@@ -71,12 +72,12 @@ export default function ContentToolbar({
     await node.update({ set: { mutable: false } });
   };
 
-  const handleAddPoll = async (_: any) => {
+  const handleAddPoll = (_: any) => {
     setOpenPollDialog(true);
   };
 
   const handleFocus = (id: string | null) => async (_: any) => {
-    await node.set("active", id);
+    await node.context.set("active", id);
   };
 
   if (!(query?.mutable && query?.isOwner) && !query?.isContextOwner)
@@ -106,9 +107,7 @@ export default function ContentToolbar({
               onClick={(e: any) => setAnchorEl(e.currentTarget)}
             />
           ),
-          ["vote/policy", "vote/position", "vote/change"].includes(
-            query?.mimeId ?? ""
-          ) && (
+          inserts?.includes("vote/poll") && (
             <AutoButton
               key="poll"
               text="Ny afstemning"
@@ -153,9 +152,7 @@ export default function ContentToolbar({
       </CardActions>
       <Divider />
       {!child && [
-        ["vote/policy", "vote/position", "vote/change"].includes(
-          query?.mimeId ?? ""
-        ) && (
+        inserts?.includes("vote/poll") && (
           <PollDialog
             key="poll-dialog"
             node={node}

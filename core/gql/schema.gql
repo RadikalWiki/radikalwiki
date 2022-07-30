@@ -13,15 +13,10 @@ directive @cached(
   refresh: Boolean! = false
 ) on QUERY
 
-input Boolean_cast_exp {
-  String: String_comparison_exp
-}
-
 """
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
 input Boolean_comparison_exp {
-  _cast: Boolean_cast_exp
   _eq: Boolean
   _gt: Boolean
   _gte: Boolean
@@ -33,15 +28,10 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
-input Int_cast_exp {
-  String: String_comparison_exp
-}
-
 """
 Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
 """
 input Int_comparison_exp {
-  _cast: Int_cast_exp
   _eq: Int
   _gt: Int
   _gte: Int
@@ -124,7 +114,7 @@ input _text_comparison_exp {
 }
 
 """
-columns and relationships of "auth.provider_requests"
+Oauth requests, inserted before redirecting to the provider's site. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type authProviderRequests {
   id: uuid!
@@ -283,7 +273,7 @@ enum authProviderRequests_update_column {
 }
 
 """
-columns and relationships of "auth.providers"
+List of available Oauth providers. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type authProviders {
   id: String!
@@ -446,7 +436,7 @@ enum authProviders_update_column {
 }
 
 """
-columns and relationships of "auth.refresh_tokens"
+User refresh tokens. Hasura auth uses them to rotate new access tokens as long as the refresh token is not expired. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type authRefreshTokens {
   createdAt: timestamptz!
@@ -644,7 +634,7 @@ enum authRefreshTokens_update_column {
 }
 
 """
-columns and relationships of "auth.roles"
+Persistent Hasura roles for users. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type authRoles {
   role: String!
@@ -846,7 +836,355 @@ enum authRoles_update_column {
 }
 
 """
-columns and relationships of "auth.user_providers"
+User webauthn authenticators. Don't modify its structure as Hasura Auth relies on it to function properly.
+"""
+type authUserAuthenticators {
+  counter: bigint!
+  credentialId: String!
+  credentialPublicKey: bytea
+  id: uuid!
+  transports: String!
+
+  """An object relationship"""
+  user: users!
+  userId: uuid!
+}
+
+"""
+aggregated selection of "auth.user_authenticators"
+"""
+type authUserAuthenticators_aggregate {
+  aggregate: authUserAuthenticators_aggregate_fields
+  nodes: [authUserAuthenticators!]!
+}
+
+"""
+aggregate fields of "auth.user_authenticators"
+"""
+type authUserAuthenticators_aggregate_fields {
+  avg: authUserAuthenticators_avg_fields
+  count(columns: [authUserAuthenticators_select_column!], distinct: Boolean): Int!
+  max: authUserAuthenticators_max_fields
+  min: authUserAuthenticators_min_fields
+  stddev: authUserAuthenticators_stddev_fields
+  stddev_pop: authUserAuthenticators_stddev_pop_fields
+  stddev_samp: authUserAuthenticators_stddev_samp_fields
+  sum: authUserAuthenticators_sum_fields
+  var_pop: authUserAuthenticators_var_pop_fields
+  var_samp: authUserAuthenticators_var_samp_fields
+  variance: authUserAuthenticators_variance_fields
+}
+
+"""
+order by aggregate values of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_aggregate_order_by {
+  avg: authUserAuthenticators_avg_order_by
+  count: order_by
+  max: authUserAuthenticators_max_order_by
+  min: authUserAuthenticators_min_order_by
+  stddev: authUserAuthenticators_stddev_order_by
+  stddev_pop: authUserAuthenticators_stddev_pop_order_by
+  stddev_samp: authUserAuthenticators_stddev_samp_order_by
+  sum: authUserAuthenticators_sum_order_by
+  var_pop: authUserAuthenticators_var_pop_order_by
+  var_samp: authUserAuthenticators_var_samp_order_by
+  variance: authUserAuthenticators_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "auth.user_authenticators"
+"""
+input authUserAuthenticators_arr_rel_insert_input {
+  data: [authUserAuthenticators_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: authUserAuthenticators_on_conflict
+}
+
+"""aggregate avg on columns"""
+type authUserAuthenticators_avg_fields {
+  counter: Float
+}
+
+"""
+order by avg() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_avg_order_by {
+  counter: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "auth.user_authenticators". All fields are combined with a logical 'AND'.
+"""
+input authUserAuthenticators_bool_exp {
+  _and: [authUserAuthenticators_bool_exp!]
+  _not: authUserAuthenticators_bool_exp
+  _or: [authUserAuthenticators_bool_exp!]
+  counter: bigint_comparison_exp
+  credentialId: String_comparison_exp
+  credentialPublicKey: bytea_comparison_exp
+  id: uuid_comparison_exp
+  transports: String_comparison_exp
+  user: users_bool_exp
+  userId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "auth.user_authenticators"
+"""
+enum authUserAuthenticators_constraint {
+  """
+  unique or primary key constraint on columns "credential_id"
+  """
+  user_authenticators_credential_id_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  user_authenticators_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "auth.user_authenticators"
+"""
+input authUserAuthenticators_inc_input {
+  counter: bigint
+}
+
+"""
+input type for inserting data into table "auth.user_authenticators"
+"""
+input authUserAuthenticators_insert_input {
+  counter: bigint
+  credentialId: String
+  credentialPublicKey: bytea
+  id: uuid
+  transports: String
+  user: users_obj_rel_insert_input
+  userId: uuid
+}
+
+"""aggregate max on columns"""
+type authUserAuthenticators_max_fields {
+  counter: bigint
+  credentialId: String
+  id: uuid
+  transports: String
+  userId: uuid
+}
+
+"""
+order by max() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_max_order_by {
+  counter: order_by
+  credentialId: order_by
+  id: order_by
+  transports: order_by
+  userId: order_by
+}
+
+"""aggregate min on columns"""
+type authUserAuthenticators_min_fields {
+  counter: bigint
+  credentialId: String
+  id: uuid
+  transports: String
+  userId: uuid
+}
+
+"""
+order by min() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_min_order_by {
+  counter: order_by
+  credentialId: order_by
+  id: order_by
+  transports: order_by
+  userId: order_by
+}
+
+"""
+response of any mutation on the table "auth.user_authenticators"
+"""
+type authUserAuthenticators_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [authUserAuthenticators!]!
+}
+
+"""
+on_conflict condition type for table "auth.user_authenticators"
+"""
+input authUserAuthenticators_on_conflict {
+  constraint: authUserAuthenticators_constraint!
+  update_columns: [authUserAuthenticators_update_column!]! = []
+  where: authUserAuthenticators_bool_exp
+}
+
+"""Ordering options when selecting data from "auth.user_authenticators"."""
+input authUserAuthenticators_order_by {
+  counter: order_by
+  credentialId: order_by
+  credentialPublicKey: order_by
+  id: order_by
+  transports: order_by
+  user: users_order_by
+  userId: order_by
+}
+
+"""primary key columns input for table: authUserAuthenticators"""
+input authUserAuthenticators_pk_columns_input {
+  id: uuid!
+}
+
+"""
+select columns of table "auth.user_authenticators"
+"""
+enum authUserAuthenticators_select_column {
+  """column name"""
+  counter
+
+  """column name"""
+  credentialId
+
+  """column name"""
+  credentialPublicKey
+
+  """column name"""
+  id
+
+  """column name"""
+  transports
+
+  """column name"""
+  userId
+}
+
+"""
+input type for updating data in table "auth.user_authenticators"
+"""
+input authUserAuthenticators_set_input {
+  counter: bigint
+  credentialId: String
+  credentialPublicKey: bytea
+  id: uuid
+  transports: String
+  userId: uuid
+}
+
+"""aggregate stddev on columns"""
+type authUserAuthenticators_stddev_fields {
+  counter: Float
+}
+
+"""
+order by stddev() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_stddev_order_by {
+  counter: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type authUserAuthenticators_stddev_pop_fields {
+  counter: Float
+}
+
+"""
+order by stddev_pop() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_stddev_pop_order_by {
+  counter: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type authUserAuthenticators_stddev_samp_fields {
+  counter: Float
+}
+
+"""
+order by stddev_samp() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_stddev_samp_order_by {
+  counter: order_by
+}
+
+"""aggregate sum on columns"""
+type authUserAuthenticators_sum_fields {
+  counter: bigint
+}
+
+"""
+order by sum() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_sum_order_by {
+  counter: order_by
+}
+
+"""
+update columns of table "auth.user_authenticators"
+"""
+enum authUserAuthenticators_update_column {
+  """column name"""
+  counter
+
+  """column name"""
+  credentialId
+
+  """column name"""
+  credentialPublicKey
+
+  """column name"""
+  id
+
+  """column name"""
+  transports
+
+  """column name"""
+  userId
+}
+
+"""aggregate var_pop on columns"""
+type authUserAuthenticators_var_pop_fields {
+  counter: Float
+}
+
+"""
+order by var_pop() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_var_pop_order_by {
+  counter: order_by
+}
+
+"""aggregate var_samp on columns"""
+type authUserAuthenticators_var_samp_fields {
+  counter: Float
+}
+
+"""
+order by var_samp() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_var_samp_order_by {
+  counter: order_by
+}
+
+"""aggregate variance on columns"""
+type authUserAuthenticators_variance_fields {
+  counter: Float
+}
+
+"""
+order by variance() on columns of table "auth.user_authenticators"
+"""
+input authUserAuthenticators_variance_order_by {
+  counter: order_by
+}
+
+"""
+Active providers for a given user. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type authUserProviders {
   accessToken: String!
@@ -1120,7 +1458,7 @@ enum authUserProviders_update_column {
 }
 
 """
-columns and relationships of "auth.user_roles"
+Roles of users. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type authUserRoles {
   createdAt: timestamptz!
@@ -1326,6 +1664,23 @@ enum authUserRoles_update_column {
 
   """column name"""
   userId
+}
+
+scalar bigint
+
+"""
+Boolean expression to compare columns of type "bigint". All fields are combined with logical 'AND'.
+"""
+input bigint_comparison_exp {
+  _eq: bigint
+  _gt: bigint
+  _gte: bigint
+  _in: [bigint!]
+  _is_null: Boolean
+  _lt: bigint
+  _lte: bigint
+  _neq: bigint
+  _nin: [bigint!]
 }
 
 """
@@ -1653,8 +2008,25 @@ type buckets_variance_fields {
   minUploadFileSize: Float
 }
 
+scalar bytea
+
+"""
+Boolean expression to compare columns of type "bytea". All fields are combined with logical 'AND'.
+"""
+input bytea_comparison_exp {
+  _eq: bytea
+  _gt: bytea
+  _gte: bytea
+  _in: [bytea!]
+  _is_null: Boolean
+  _lt: bytea
+  _lte: bytea
+  _neq: bytea
+  _nin: [bytea!]
+}
+
 input checkUnique_nodes_args {
-  mime_name: String
+  mime: String
 }
 
 scalar citext
@@ -2246,6 +2618,11 @@ enum members_constraint {
   members_parent_id_email_key
 
   """
+  unique or primary key constraint on columns "email", "node_id", "name", "parent_id"
+  """
+  members_parent_id_name_email_node_id_key
+
+  """
   unique or primary key constraint on columns "node_id", "parent_id"
   """
   members_parent_id_node_id_key
@@ -2459,6 +2836,7 @@ type mimes {
     """filter the rows returned"""
     where: mimes_bool_exp
   ): [mimes!]
+  context: Boolean!
   hidden: Boolean!
   id: String!
   parentIds: _text
@@ -2519,6 +2897,7 @@ input mimes_bool_exp {
   _not: mimes_bool_exp
   _or: [mimes_bool_exp!]
   children: mimes_bool_exp
+  context: Boolean_comparison_exp
   hidden: Boolean_comparison_exp
   id: String_comparison_exp
   parentIds: _text_comparison_exp
@@ -2540,6 +2919,7 @@ enum mimes_constraint {
 input type for inserting data into table "mimes"
 """
 input mimes_insert_input {
+  context: Boolean
   hidden: Boolean
   id: String
   parentIds: _text
@@ -2603,6 +2983,7 @@ input mimes_on_conflict {
 """Ordering options when selecting data from "mimes"."""
 input mimes_order_by {
   children_aggregate: mimes_aggregate_order_by
+  context: order_by
   hidden: order_by
   id: order_by
   parentIds: order_by
@@ -2620,6 +3001,9 @@ select columns of table "mimes"
 """
 enum mimes_select_column {
   """column name"""
+  context
+
+  """column name"""
   hidden
 
   """column name"""
@@ -2636,6 +3020,7 @@ enum mimes_select_column {
 input type for updating data in table "mimes"
 """
 input mimes_set_input {
+  context: Boolean
   hidden: Boolean
   id: String
   parentIds: _text
@@ -2646,6 +3031,9 @@ input mimes_set_input {
 update columns of table "mimes"
 """
 enum mimes_update_column {
+  """column name"""
+  context
+
   """column name"""
   hidden
 
@@ -2712,6 +3100,19 @@ type mutation_root {
     """filter the rows which have to be deleted"""
     where: authRoles_bool_exp!
   ): authRoles_mutation_response
+
+  """
+  delete single row from the table: "auth.user_authenticators"
+  """
+  deleteAuthUserAuthenticator(id: uuid!): authUserAuthenticators
+
+  """
+  delete data from the table: "auth.user_authenticators"
+  """
+  deleteAuthUserAuthenticators(
+    """filter the rows which have to be deleted"""
+    where: authUserAuthenticators_bool_exp!
+  ): authUserAuthenticators_mutation_response
 
   """
   delete single row from the table: "auth.user_providers"
@@ -2930,6 +3331,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: authRoles_on_conflict
   ): authRoles_mutation_response
+
+  """
+  insert a single row into the table: "auth.user_authenticators"
+  """
+  insertAuthUserAuthenticator(
+    """the row to be inserted"""
+    object: authUserAuthenticators_insert_input!
+
+    """upsert condition"""
+    on_conflict: authUserAuthenticators_on_conflict
+  ): authUserAuthenticators
+
+  """
+  insert data into the table: "auth.user_authenticators"
+  """
+  insertAuthUserAuthenticators(
+    """the rows to be inserted"""
+    objects: [authUserAuthenticators_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: authUserAuthenticators_on_conflict
+  ): authUserAuthenticators_mutation_response
 
   """
   insert a single row into the table: "auth.user_providers"
@@ -3272,6 +3695,32 @@ type mutation_root {
     """filter the rows which have to be updated"""
     where: authRoles_bool_exp!
   ): authRoles_mutation_response
+
+  """
+  update single row of the table: "auth.user_authenticators"
+  """
+  updateAuthUserAuthenticator(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: authUserAuthenticators_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserAuthenticators_set_input
+    pk_columns: authUserAuthenticators_pk_columns_input!
+  ): authUserAuthenticators
+
+  """
+  update data of the table: "auth.user_authenticators"
+  """
+  updateAuthUserAuthenticators(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: authUserAuthenticators_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: authUserAuthenticators_set_input
+
+    """filter the rows which have to be updated"""
+    where: authUserAuthenticators_bool_exp!
+  ): authUserAuthenticators_mutation_response
 
   """
   update single row of the table: "auth.user_providers"
@@ -3656,6 +4105,11 @@ type nodes {
     """JSON select path"""
     path: String
   ): jsonb
+
+  """
+  A computed field, executes function "delete"
+  """
+  delete: Boolean
   id: uuid!
   index: Int!
 
@@ -3873,6 +4327,11 @@ type nodes {
   unique: String
 
   """
+  A computed field, executes function "update"
+  """
+  update: Boolean
+
+  """
   A computed field, executes function "validate"
   """
   validate: String
@@ -3961,6 +4420,7 @@ input nodes_bool_exp {
   contextOwners: users_bool_exp
   createdAt: timestamptz_comparison_exp
   data: jsonb_comparison_exp
+  delete: Boolean_comparison_exp
   id: uuid_comparison_exp
   index: Int_comparison_exp
   insert: Boolean_comparison_exp
@@ -3982,6 +4442,7 @@ input nodes_bool_exp {
   relations: relations_bool_exp
   select: Boolean_comparison_exp
   unique: String_comparison_exp
+  update: Boolean_comparison_exp
   validate: String_comparison_exp
 }
 
@@ -4149,6 +4610,7 @@ input nodes_order_by {
   contextOwners_aggregate: users_aggregate_order_by
   createdAt: order_by
   data: order_by
+  delete: order_by
   id: order_by
   index: order_by
   insert: order_by
@@ -4170,6 +4632,7 @@ input nodes_order_by {
   relations_aggregate: relations_aggregate_order_by
   select: order_by
   unique: order_by
+  update: order_by
   validate: order_by
 }
 
@@ -4392,6 +4855,10 @@ enum order_by {
 columns and relationships of "permissions"
 """
 type permissions {
+  active: Boolean!
+
+  """An object relationship"""
+  context: nodes
   contextId: uuid
   delete: Boolean!
   id: uuid!
@@ -4403,8 +4870,8 @@ type permissions {
   node: nodes
   nodeId: uuid
   parents: _text
+  role: String!
   select: Boolean!
-  universal: Boolean!
   update: Boolean!
 }
 
@@ -4451,6 +4918,8 @@ input permissions_bool_exp {
   _and: [permissions_bool_exp!]
   _not: permissions_bool_exp
   _or: [permissions_bool_exp!]
+  active: Boolean_comparison_exp
+  context: nodes_bool_exp
   contextId: uuid_comparison_exp
   delete: Boolean_comparison_exp
   id: uuid_comparison_exp
@@ -4460,8 +4929,8 @@ input permissions_bool_exp {
   node: nodes_bool_exp
   nodeId: uuid_comparison_exp
   parents: _text_comparison_exp
+  role: String_comparison_exp
   select: Boolean_comparison_exp
-  universal: Boolean_comparison_exp
   update: Boolean_comparison_exp
 }
 
@@ -4479,6 +4948,8 @@ enum permissions_constraint {
 input type for inserting data into table "permissions"
 """
 input permissions_insert_input {
+  active: Boolean
+  context: nodes_obj_rel_insert_input
   contextId: uuid
   delete: Boolean
   id: uuid
@@ -4488,8 +4959,8 @@ input permissions_insert_input {
   node: nodes_obj_rel_insert_input
   nodeId: uuid
   parents: _text
+  role: String
   select: Boolean
-  universal: Boolean
   update: Boolean
 }
 
@@ -4500,6 +4971,7 @@ type permissions_max_fields {
   mimeId: String
   name: String
   nodeId: uuid
+  role: String
 }
 
 """
@@ -4511,6 +4983,7 @@ input permissions_max_order_by {
   mimeId: order_by
   name: order_by
   nodeId: order_by
+  role: order_by
 }
 
 """aggregate min on columns"""
@@ -4520,6 +4993,7 @@ type permissions_min_fields {
   mimeId: String
   name: String
   nodeId: uuid
+  role: String
 }
 
 """
@@ -4531,6 +5005,7 @@ input permissions_min_order_by {
   mimeId: order_by
   name: order_by
   nodeId: order_by
+  role: order_by
 }
 
 """
@@ -4555,6 +5030,8 @@ input permissions_on_conflict {
 
 """Ordering options when selecting data from "permissions"."""
 input permissions_order_by {
+  active: order_by
+  context: nodes_order_by
   contextId: order_by
   delete: order_by
   id: order_by
@@ -4564,8 +5041,8 @@ input permissions_order_by {
   node: nodes_order_by
   nodeId: order_by
   parents: order_by
+  role: order_by
   select: order_by
-  universal: order_by
   update: order_by
 }
 
@@ -4579,6 +5056,9 @@ select columns of table "permissions"
 """
 enum permissions_select_column {
   """column name"""
+  active
+
+  """column name"""
   contextId
 
   """column name"""
@@ -4603,10 +5083,10 @@ enum permissions_select_column {
   parents
 
   """column name"""
-  select
+  role
 
   """column name"""
-  universal
+  select
 
   """column name"""
   update
@@ -4616,6 +5096,7 @@ enum permissions_select_column {
 input type for updating data in table "permissions"
 """
 input permissions_set_input {
+  active: Boolean
   contextId: uuid
   delete: Boolean
   id: uuid
@@ -4624,8 +5105,8 @@ input permissions_set_input {
   name: String
   nodeId: uuid
   parents: _text
+  role: String
   select: Boolean
-  universal: Boolean
   update: Boolean
 }
 
@@ -4633,6 +5114,9 @@ input permissions_set_input {
 update columns of table "permissions"
 """
 enum permissions_update_column {
+  """column name"""
+  active
+
   """column name"""
   contextId
 
@@ -4658,10 +5142,10 @@ enum permissions_update_column {
   parents
 
   """column name"""
-  select
+  role
 
   """column name"""
-  universal
+  select
 
   """column name"""
   update
@@ -4843,6 +5327,51 @@ type query_root {
     """filter the rows returned"""
     where: authRoles_bool_exp
   ): authRoles_aggregate!
+
+  """
+  fetch data from the table: "auth.user_authenticators" using primary key columns
+  """
+  authUserAuthenticator(id: uuid!): authUserAuthenticators
+
+  """
+  fetch data from the table: "auth.user_authenticators"
+  """
+  authUserAuthenticators(
+    """distinct select on columns"""
+    distinct_on: [authUserAuthenticators_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserAuthenticators_order_by!]
+
+    """filter the rows returned"""
+    where: authUserAuthenticators_bool_exp
+  ): [authUserAuthenticators!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_authenticators"
+  """
+  authUserAuthenticatorsAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserAuthenticators_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserAuthenticators_order_by!]
+
+    """filter the rows returned"""
+    where: authUserAuthenticators_bool_exp
+  ): authUserAuthenticators_aggregate!
 
   """
   fetch data from the table: "auth.user_providers" using primary key columns
@@ -5660,6 +6189,51 @@ type subscription_root {
   ): authRoles_aggregate!
 
   """
+  fetch data from the table: "auth.user_authenticators" using primary key columns
+  """
+  authUserAuthenticator(id: uuid!): authUserAuthenticators
+
+  """
+  fetch data from the table: "auth.user_authenticators"
+  """
+  authUserAuthenticators(
+    """distinct select on columns"""
+    distinct_on: [authUserAuthenticators_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserAuthenticators_order_by!]
+
+    """filter the rows returned"""
+    where: authUserAuthenticators_bool_exp
+  ): [authUserAuthenticators!]!
+
+  """
+  fetch aggregated fields from the table: "auth.user_authenticators"
+  """
+  authUserAuthenticatorsAggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserAuthenticators_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserAuthenticators_order_by!]
+
+    """filter the rows returned"""
+    where: authUserAuthenticators_bool_exp
+  ): authUserAuthenticators_aggregate!
+
+  """
   fetch data from the table: "auth.user_providers" using primary key columns
   """
   authUserProvider(id: uuid!): authUserProviders
@@ -6086,15 +6660,10 @@ type subscription_root {
 
 scalar timestamptz
 
-input timestamptz_cast_exp {
-  String: String_comparison_exp
-}
-
 """
 Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
 """
 input timestamptz_comparison_exp {
-  _cast: timestamptz_cast_exp
   _eq: timestamptz
   _gt: timestamptz
   _gte: timestamptz
@@ -6107,12 +6676,49 @@ input timestamptz_comparison_exp {
 }
 
 """
-columns and relationships of "auth.users"
+User account information. Don't modify its structure as Hasura Auth relies on it to function properly.
 """
 type users {
   activeMfaType: String
+
+  """An array relationship"""
+  authenticators(
+    """distinct select on columns"""
+    distinct_on: [authUserAuthenticators_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserAuthenticators_order_by!]
+
+    """filter the rows returned"""
+    where: authUserAuthenticators_bool_exp
+  ): [authUserAuthenticators!]!
+
+  """An aggregate relationship"""
+  authenticators_aggregate(
+    """distinct select on columns"""
+    distinct_on: [authUserAuthenticators_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [authUserAuthenticators_order_by!]
+
+    """filter the rows returned"""
+    where: authUserAuthenticators_bool_exp
+  ): authUserAuthenticators_aggregate!
   avatarUrl: String!
   createdAt: timestamptz!
+  currentChallenge: String
   defaultRole: String!
 
   """An object relationship"""
@@ -6299,8 +6905,10 @@ input users_bool_exp {
   _not: users_bool_exp
   _or: [users_bool_exp!]
   activeMfaType: String_comparison_exp
+  authenticators: authUserAuthenticators_bool_exp
   avatarUrl: String_comparison_exp
   createdAt: timestamptz_comparison_exp
+  currentChallenge: String_comparison_exp
   defaultRole: String_comparison_exp
   defaultRoleByRole: authRoles_bool_exp
   disabled: Boolean_comparison_exp
@@ -6374,8 +6982,10 @@ input type for inserting data into table "auth.users"
 """
 input users_insert_input {
   activeMfaType: String
+  authenticators: authUserAuthenticators_arr_rel_insert_input
   avatarUrl: String
   createdAt: timestamptz
+  currentChallenge: String
   defaultRole: String
   defaultRoleByRole: authRoles_obj_rel_insert_input
   disabled: Boolean
@@ -6408,6 +7018,7 @@ type users_max_fields {
   activeMfaType: String
   avatarUrl: String
   createdAt: timestamptz
+  currentChallenge: String
   defaultRole: String
   displayName: String
   email: citext
@@ -6433,6 +7044,7 @@ input users_max_order_by {
   activeMfaType: order_by
   avatarUrl: order_by
   createdAt: order_by
+  currentChallenge: order_by
   defaultRole: order_by
   displayName: order_by
   email: order_by
@@ -6456,6 +7068,7 @@ type users_min_fields {
   activeMfaType: String
   avatarUrl: String
   createdAt: timestamptz
+  currentChallenge: String
   defaultRole: String
   displayName: String
   email: citext
@@ -6481,6 +7094,7 @@ input users_min_order_by {
   activeMfaType: order_by
   avatarUrl: order_by
   createdAt: order_by
+  currentChallenge: order_by
   defaultRole: order_by
   displayName: order_by
   email: order_by
@@ -6532,8 +7146,10 @@ input users_on_conflict {
 """Ordering options when selecting data from "auth.users"."""
 input users_order_by {
   activeMfaType: order_by
+  authenticators_aggregate: authUserAuthenticators_aggregate_order_by
   avatarUrl: order_by
   createdAt: order_by
+  currentChallenge: order_by
   defaultRole: order_by
   defaultRoleByRole: authRoles_order_by
   disabled: order_by
@@ -6583,6 +7199,9 @@ enum users_select_column {
 
   """column name"""
   createdAt
+
+  """column name"""
+  currentChallenge
 
   """column name"""
   defaultRole
@@ -6655,6 +7274,7 @@ input users_set_input {
   activeMfaType: String
   avatarUrl: String
   createdAt: timestamptz
+  currentChallenge: String
   defaultRole: String
   disabled: Boolean
   displayName: String
@@ -6690,6 +7310,9 @@ enum users_update_column {
 
   """column name"""
   createdAt
+
+  """column name"""
+  currentChallenge
 
   """column name"""
   defaultRole
@@ -6757,15 +7380,10 @@ enum users_update_column {
 
 scalar uuid
 
-input uuid_cast_exp {
-  String: String_comparison_exp
-}
-
 """
 Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
 """
 input uuid_comparison_exp {
-  _cast: uuid_cast_exp
   _eq: uuid
   _gt: uuid
   _gte: uuid
