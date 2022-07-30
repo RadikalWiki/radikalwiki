@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
-import { NavBar, Scroll, TopBar, SessionProvider, Breadcrumbs } from "comps";
+import React, { useEffect, useState } from "react";
+import { NavBar, Scroll, TopBar, SessionProvider, Breadcrumbs, OldBrowser } from "comps";
 import { useAuthenticationStatus } from "@nhost/nextjs";
 import { useRouter } from "next/router";
 import { Container, Box } from "@mui/material";
 import nhost from "nhost";
+import { checkVersion } from "core/util"
+
 
 export default function Layout({ children }: { children?: any }) {
+  const [outdated, setOutdated] = useState(false);
   const { asPath, push } = useRouter();
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
@@ -18,15 +21,20 @@ export default function Layout({ children }: { children?: any }) {
   const refresh = () => nhost.auth.refreshSession();
 
   useEffect(() => {
+    setOutdated(typeof window !== "undefined" && !checkVersion());
     window.addEventListener("focus", refresh);
     return () => {
       window.removeEventListener("focus", refresh);
     };
   }, []);
 
+  if (outdated) {
+    return <OldBrowser />
+  }
+
   if (asPath.match(/\?app=screen/))
     return <SessionProvider>{isAuthenticated && children}</SessionProvider>;
-
+  
   return (
     <SessionProvider>
       <Scroll>

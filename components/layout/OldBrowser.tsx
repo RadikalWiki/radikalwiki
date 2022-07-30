@@ -12,7 +12,7 @@ export default function OldBrowser() {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.secondary.main,
+              bgcolor: (t) => t.palette.primary.main,
             }}
           >
             <BrowserNotSupported />
@@ -26,10 +26,10 @@ export default function OldBrowser() {
               Din browser er ikke understøttet af RadikalWiki.
             </Typography>
             <Typography sx={{ mb: 1 }}>
-							Opdater venligst din browser, eller installer en understøttet browser:
+							Opdater venligst din browser, eller installer en understøttet browser.
             </Typography>
             <Typography sx={{ mb: 1 }}>
-							Fx. <a href="https://firefox.com">Firefox 🦊</a>
+							Skamløst forslag: <a href="https://firefox.com">Firefox 🦊</a>
             </Typography>
           </>
         </CardContent>

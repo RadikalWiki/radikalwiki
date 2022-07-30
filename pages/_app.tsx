@@ -9,7 +9,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import platform from 'platform';
 import { compare } from 'compare-versions';
-import { checkVersion } from "core/util"
 
 export default function App({
   Component,
@@ -25,8 +24,6 @@ export default function App({
   }, []);
   const theme = useTheme();
 
-  if (typeof window !== "undefined" && !checkVersion()) return <OldBrowser />;
- 
   return (
     <>
       <Head>
