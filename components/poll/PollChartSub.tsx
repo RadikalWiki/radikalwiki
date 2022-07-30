@@ -16,7 +16,6 @@ import {
 import { Card, CardHeader, Typography, Box, CardContent } from "@mui/material";
 import { Node, useScreen, useSession } from "hooks";
 import { nodes, Maybe, useSubscription, String_comparison_exp } from "gql";
-import { Node } from "hooks";
 
 const Chart = DxChart as any;
 
