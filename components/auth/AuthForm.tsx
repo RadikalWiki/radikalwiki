@@ -150,8 +150,12 @@ export default function LoginForm({ mode }: { mode: Mode }) {
 
   const onLoginEmail = async () => {
     // TODO: add error handling
-    await auth.resetPassword({ email: email.toLowerCase() });
-    router.push("/");
+    if (mode == "login-email") {
+      await auth.resetPassword({ email: email.toLowerCase() });
+      router.push("/");
+    } else {
+      router.push("/user/login-email");
+    }
   };
 
   return (
