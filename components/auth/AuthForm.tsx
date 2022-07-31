@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import {
   Container,
@@ -21,7 +21,7 @@ type Mode = "login" | "register" | "login-email" | "reset-password";
 export default function LoginForm({ mode }: { mode: Mode }) {
   const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
-  const [session, setSession] = useSession();
+  const [_, setSession] = useSession();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -33,6 +33,12 @@ export default function LoginForm({ mode }: { mode: Mode }) {
   const [errorEmailMsg, setEmailErrorMsg] = useState("");
   const [errorPassword, setPasswordError] = useState(false);
   const [errorPasswordMsg, setPasswordErrorMsg] = useState("");
+
+  useEffect(() => {
+    if (["login", "register", "login-email"].includes(mode) && !loading && isAuthenticated) {
+      router.push("/")
+    }
+  }, [isAuthenticated, loading, mode])
 
   const onNameChange = (e: any) => {
     const name = e.target.value;
