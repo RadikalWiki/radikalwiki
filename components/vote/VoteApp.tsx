@@ -43,7 +43,28 @@ export default function VoteApp({ node }: { node: Node }) {
   const [error, setError] = useState(false);
 
   const checkUnique = poll?.checkUnique({ args: { mime: "vote/vote" } });
-  const canVote = poll?.inserts()?.some(mime => mime.id == "vote/vote");
+  const canVote = !!node.sub?.context?.permissions({
+      where: {
+        _and: [
+          { insert: { _eq: true } },
+          {
+            node: {
+              members: {
+                _and: [
+                  {
+                    _or: [
+                      { nodeId: { _eq: userId } },
+                      { email: { _eq: email } },
+                    ],
+                  },
+                  { active: { _eq: true } },
+                ],
+              },
+            },
+          },
+        ],
+      },
+    })?.[0]?.id;
 
   const data = poll?.data();
   const { options, maxVote, minVote } =
