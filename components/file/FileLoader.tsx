@@ -2,7 +2,7 @@ import { Node } from "hooks";
 import dynamic from "next/dynamic";
 import nhost from "nhost";
 import { useEffect, useState } from "react";
-import { SpreadSheetViewer } from "comps";
+import { SpreadSheetViewer, VideoViewer } from "comps";
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
   ssr: false,
@@ -27,6 +27,8 @@ export default function FileLoader({ node }: { node: Node }) {
   switch (data?.type) {
     case "application/pdf":
       return <PdfViewer file={file} />;
+    case "video/mp4":
+      return <VideoViewer file={file} />;
     default:
   }
 
