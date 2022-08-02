@@ -49,10 +49,11 @@ export default function Editor({ node }: { node: Node }) {
       if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
         const fetchMembers = async () => {
           const members = await resolved(() => {
-            return query?.members().map(({ nodeId, name, email }) => ({
+            return query?.members().map(({ nodeId, name, email, node }) => ({
               nodeId: nodeId!,
               name: name!,
               email: email!,
+              mimeId: node?.mimeId,
             }));
           });
           if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
@@ -82,7 +83,7 @@ export default function Editor({ node }: { node: Node }) {
   const handleSave = (mutable?: boolean) => async () => {
     if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
       await node.members.delete();
-      await node.members.insert(members);
+      await node.members.insert(members.map(member => ({ ...member, mimeId: undefined })));
     }
     await node.update({
       set: { name, data: { content, image: fileId }, mutable },
