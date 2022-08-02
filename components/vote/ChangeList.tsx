@@ -34,7 +34,7 @@ import {
   Chip,
 } from "@mui/material";
 import { order_by } from "gql";
-import { getIconFromId } from "mime";
+import { getIconFromId, MimeAvatar } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
@@ -44,8 +44,6 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  if (!id) return null; 
-
   return (
     <>
       <ListItem
@@ -54,50 +52,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
         href={`${router.asPath}/${query?.namespace}`}
       >
         <ListItemAvatar>
-          {query?.mutable ? (
-            <Badge
-              overlap="circular"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              badgeContent={
-                <Tooltip title="Ikke indsendt">
-                  <Avatar
-                    sx={{
-                      width: 18,
-                      height: 18,
-                      bgcolor: (t) => t.palette.primary.main,
-                    }}
-                  >
-                    <LockOpen
-                      sx={{
-                        width: 14,
-                        height: 14,
-                        color: "#fff",
-                      }}
-                    />
-                  </Avatar>
-                </Tooltip>
-              }
-            >
-              <Avatar
-                sx={{
-                  bgcolor: (t) => t.palette.secondary.main,
-                }}
-              >
-                {index + 1}
-              </Avatar>
-            </Badge>
-          ) : (
-            <Avatar
-              sx={{
-                bgcolor: (t) => t.palette.secondary.main,
-              }}
-            >
-              {index + 1}
-            </Avatar>
-          )}
+          <MimeAvatar node={node.query} index={index} />
         </ListItemAvatar>
         <ListItemText
           primary={query?.name}
@@ -134,25 +89,16 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
   );
 }
 
-function ChildListRaw({ node }: { node: Node }) {
+function ChildListElements({ node }: { node: Node }) {
   const children = node.query?.children({
     where: { mimeId: { _eq: "vote/change" } },
     order_by: [{ index: order_by.asc }],
   });
 
-  return (
-    <List>
-      <TransitionGroup>
-        {children?.map(({ id }, index: number) => {
-          return (
-            <Collapse key={id ?? 0}>
-              <Suspense fallback={null}>
-                <ChildListElement id={id} index={index} />
-              </Suspense>
-            </Collapse>
-          );
-        })}
-        {children?.length == 0 && (
+  if (children?.length === 0)
+    return (
+      <List>
+        <TransitionGroup>
           <Collapse key={-1}>
             <ListItem button>
               <ListItemAvatar>
@@ -167,7 +113,20 @@ function ChildListRaw({ node }: { node: Node }) {
               <ListItemText primary="Ingen ændringsforslag" />
             </ListItem>
           </Collapse>
-        )}
+        </TransitionGroup>
+      </List>
+    );
+
+  return (
+    <List>
+      <TransitionGroup>
+        {children?.map(({ id }, index) => (
+          <Collapse key={id ?? 0}>
+            <Suspense fallback={null}>
+              <ChildListElement id={id} index={index} />
+            </Suspense>
+          </Collapse>
+        ))}
       </TransitionGroup>
     </List>
   );
@@ -206,7 +165,9 @@ export default function ChangeList({ node }: { node: Node }) {
         }
       />
       <Divider />
-      <ChildListRaw node={node!} />
+      <Suspense>
+        <ChildListElements node={node} />
+      </Suspense>
     </Card>
   );
 }
