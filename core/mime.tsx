@@ -122,7 +122,7 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
     case "text/plain":
       return <Subject />;
     case "vote/policy":
-      return index !== undefined ? (
+      return index !== undefined && index !== -1 ? (
         avatar ? (
           <Typography fontSize={24} sx={{ color: "inherit" }}>
             {getLetter(index)}
@@ -142,7 +142,7 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
     case "vote/question":
       return <QuestionMark />;
     case "vote/change":
-      return index !== undefined ? (
+      return index !== undefined && index !== -1 ? (
         avatar ? (
           <Typography fontSize={24} sx={{ color: "#fff" }}>
             {index + 1}
