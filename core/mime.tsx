@@ -20,7 +20,13 @@ import MicrosoftExcelIcon from "./svg/microsoft-excel.svg";
 import MicrosoftWordIcon from "./svg/microsoft-word.svg";
 import FilePdfBoxIcon from "./svg/file-pdf-box.svg";
 import VideoBoxIcon from "./svg/video-box.svg";
-import { Avatar, Badge, Skeleton, Tooltip, Typography } from "@mui/material";
+import {
+  Avatar as MuiAvatar,
+  Badge,
+  Skeleton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Maybe, nodes } from "./gql/schema.generated";
 import { Suspense } from "react";
 import useScreen from "./hooks/useScreen";
@@ -51,25 +57,48 @@ const MimeAvatar = ({
   node?: Maybe<Partial<nodes>>;
   index?: number;
 }) => {
-  const screen = useScreen();
   return (
     <Suspense fallback={<Skeleton variant="circular" width={32} height={32} />}>
-      <Avatar sx={{ bgcolor: t => screen ? t.palette.primary.main : t.palette.secondary.main }}>
-        <Icon node={node} index={index} avatar={true} />
-      </Avatar>
+      <Avatar node={node} index={index} />
     </Suspense>
   );
 };
 
-const Icon = ({ node, index, avatar }: {
-  node?: Maybe<Partial<nodes>>,
-  index?: number,
-  avatar?: boolean
+const Icon = ({
+  node,
+  index,
+}: {
+  node?: Maybe<Partial<nodes>>;
+  index?: number;
 }) => {
   const type = node?.data?.({ path: "type" });
   const mimeId = node?.mimeId;
   const id = type ?? mimeId;
-  return avatar && node?.mutable ? (
+  return getIconFromId(id, index);
+};
+
+const Avatar = ({
+  node,
+  index,
+}: {
+  node?: Maybe<Partial<nodes>>;
+  index?: number;
+}) => {
+  const screen = useScreen();
+  const type = node?.data?.({ path: "type" });
+  const mimeId = node?.mimeId;
+  const id = type ?? mimeId;
+  const avatar = (
+    <MuiAvatar
+      sx={{
+        bgcolor: (t) =>
+          screen ? t.palette.primary.main : t.palette.secondary.main,
+      }}
+    >
+      {getIconFromId(id, index, true)}
+    </MuiAvatar>
+  );
+  return node?.mutable && !screen ? (
     <Badge
       overlap="circular"
       anchorOrigin={{
@@ -78,7 +107,7 @@ const Icon = ({ node, index, avatar }: {
       }}
       badgeContent={
         <Tooltip title="Ikke indsendt">
-          <Avatar
+          <MuiAvatar
             sx={{
               width: 18,
               height: 18,
@@ -92,14 +121,14 @@ const Icon = ({ node, index, avatar }: {
                 color: "#fff",
               }}
             />
-          </Avatar>
+          </MuiAvatar>
         </Tooltip>
       }
     >
-      {getIconFromId(id, index, avatar)}
+      {avatar}
     </Badge>
   ) : (
-    getIconFromId(id, index, avatar)
+    avatar
   );
 };
 
@@ -128,9 +157,9 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {getLetter(index)}
           </Typography>
         ) : (
-          <Avatar sx={{ width: 24, height: 24, color: "inherit" }}>
+          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit" }}>
             <Typography fontSize={18}>{getLetter(index)}</Typography>
-          </Avatar>
+          </MuiAvatar>
         )
       ) : (
         <Gavel />
@@ -148,9 +177,9 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {index + 1}
           </Typography>
         ) : (
-          <Avatar sx={{ width: 24, height: 24, color: "inherit" }}>
+          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit" }}>
             <Typography fontSize={18}>{index + 1}</Typography>
-          </Avatar>
+          </MuiAvatar>
         )
       ) : (
         <RateReview />
@@ -162,7 +191,7 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
     case "application/pdf":
       return <FilePdfBoxIcon fill="currentColor" height="24" width="24" />;
     case undefined:
-      return <Skeleton variant="circular" width={24} height={24} />
+      return <Skeleton variant="circular" width={24} height={24} />;
     default:
   }
 
@@ -209,4 +238,11 @@ const getName = (mimeId?: string): string => {
   }
 };
 
-export { MimeIcon, MimeAvatar, getLetter, Icon as getIcon, getIconFromId, getName };
+export {
+  MimeIcon,
+  MimeAvatar,
+  getLetter,
+  Icon as getIcon,
+  getIconFromId,
+  getName,
+};
