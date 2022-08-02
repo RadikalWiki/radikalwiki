@@ -12,7 +12,7 @@
     "@emotion/styled": "^11.8.1",
     "@gqty/logger": "^2.0.2",
     "@gqty/react": "^2.1.0",
-    "@gqty/subscriptions": "^2.0.0",
+    "@gqty/subscriptions": "^2.0.1",
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.2",
     "@mui/system": "^5.9.2",

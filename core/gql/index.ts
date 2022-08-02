@@ -69,7 +69,7 @@ const subscriptionsClient =
           return url.href;
         },
         reconnect: true,
-        lazy: true,
+        lazy: false,
       })
     : undefined;
 
@@ -127,33 +127,21 @@ export {
   useSubscription,
 };
 
-subscriptionsClient?.setConnectionParams(
-  {
-    headers: getHeaders(),
-  },
-  true
-);
+subscriptionsClient?.setConnectionParams({
+  headers: getHeaders(),
+});
 
 auth?.onTokenChanged(() => {
-  subscriptionsClient?.setConnectionParams(
-    {
-      headers: getHeaders(),
-    },
-    true
-  );
+  subscriptionsClient?.setConnectionParams({
+    headers: getHeaders(),
+  });
 });
 
 export * from "./schema.generated";
 
-export const getProp = (node: any, property: string) => {
-  return node?.properties({ where: { name: { _eq: property } } })[0].value;
-};
-
 if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
   import("@gqty/logger").then(({ createLogger }) => {
-    const logger = createLogger(client, {
-      // Custom options...
-    });
+    const logger = createLogger(client);
     logger.start();
   });
 }
