@@ -11,7 +11,7 @@ import { useQuery } from "gql";
 import { useSession, usePath } from "hooks";
 import { Suspense, useEffect, useState } from "react";
 import { Link as NextLink } from "comps";
-import { getIcon } from "mime";
+import { getIconFromId, MimeIcon } from "mime";
 import { toWhere } from "core/path";
 
 const BreadcrumbsLink = ({
@@ -47,7 +47,7 @@ const BreadcrumbsLink = ({
       }}
     >
       <>
-        {getIcon(node?.mimeId!)}
+        <MimeIcon node={node} />
         <Collapse orientation="horizontal" in={open[index]}>
           <Typography noWrap color="secondary" sx={{ ml: 0.5 }}>
             {node?.name ?? "Ukendt"}
@@ -83,7 +83,7 @@ const HomeLink = ({
       }}
     >
       <>
-        {getIcon("wiki/home")}
+        {getIconFromId("wiki/home")}
         <Collapse orientation="horizontal" in={open[0]}>
           <Typography noWrap color="secondary" sx={{ ml: 0.5 }}>
             {"Hjem"}
@@ -123,7 +123,7 @@ export default function Breadcrumbs() {
     return (
       <Suspense
         key={path.slice(0, index).join("/")}
-        fallback={<Skeleton variant="circular" width={20} key={0} />}
+        fallback={<Skeleton variant="circular" width={20} />}
       >
         <BreadcrumbsLink
           path={path}

@@ -1,82 +1,19 @@
-import { Avatar, Tooltip, Badge, Skeleton } from "@mui/material";
-import { LockOpen } from "@mui/icons-material";
 import { order_by } from "gql";
-import { getIcon } from "mime";
-import { Suspense } from "react";
-import { Node, useScreen } from "hooks";
+import { MimeAvatar } from "mime";
+import { Node } from "hooks";
 
-function ContentAvatarSuspense({ node }: { node: Node }) {
-  const screen = useScreen();
+export default function ContentAvatar({ node }: { node: Node }) {
   const index =
     node.query?.parent
       ?.children({
         where: {
           _and: [
             { mutable: { _eq: false } },
-            { mimeId: { _in: ["vote/change", "vote/policy"] } },
+            { mime: { icon: { _in: ["number", "letter"] } } },
           ],
         },
         order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       })
-      .findIndex((e: any) => e.id === node.query?.id) ?? 0;
-
-  const avatar = node.query?.mimeId ? (
-    <Avatar
-      sx={{
-        bgcolor: (t) =>
-          screen ? t.palette.primary.main : t.palette.secondary.main,
-      }}
-    >
-      {getIcon(node.query?.mimeId!, index)}
-    </Avatar>
-  ) : (
-    <ContentAvatarSkeleton />
-  );
-
-  return node.query?.mutable ? (
-    <Badge
-      overlap="circular"
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      badgeContent={
-        <Tooltip title="Ikke indsendt">
-          <Avatar
-            sx={{
-              width: 18,
-              height: 18,
-              bgcolor: (t) => t.palette.primary.main,
-            }}
-          >
-            <LockOpen
-              sx={{
-                width: 14,
-                height: 14,
-                color: "#fff",
-              }}
-            />
-          </Avatar>
-        </Tooltip>
-      }
-    >
-      {avatar}
-    </Badge>
-  ) : (
-    avatar
-  );
-}
-
-function ContentAvatarSkeleton() {
-  return (
-    <Skeleton width={40} height={40} variant="circular" animation="wave" />
-  );
-}
-
-export default function ContentAvatar({ node }: { node: Node }) {
-  return (
-    <Suspense fallback={<ContentAvatarSkeleton />}>
-      <ContentAvatarSuspense node={node} />
-    </Suspense>
-  );
+      .findIndex((child) => child.id === node.query?.id) ?? 0;
+  return <MimeAvatar node={node.query} index={index} />;
 }

@@ -22,7 +22,7 @@ type GraphData = {
 
 const createNodeLabel = (node: any) => {
   const { id, name, group, mime } = node;
-  const jsx = getIcon({ name: mime });
+  const jsx = getIconFromId({ name: mime });
   return renderToString(jsx);
 };
 

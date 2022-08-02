@@ -23,7 +23,7 @@ import { useSession, usePath } from "hooks";
 import { toWhere } from "core/path";
 import { Link as NextLink } from "comps";
 import { nodes, order_by, useQuery } from "gql";
-import { getIcon } from "mime";
+import { MimeIcon } from "mime";
 import { Fragment, useState, startTransition } from "react";
 
 const DrawerList = (
@@ -40,15 +40,13 @@ const DrawerList = (
     order_by: [{ index: order_by.asc }],
     where: {
       mime: {
-        hidden: { _eq: false }
+        hidden: { _eq: false },
       },
     },
   });
 
-  const policies = children?.filter(
-    (child) => child.mimeId == "vote/policy"
-  );
-  const change = children?.filter((child) => child.mimeId == "vote/change");
+  const letter = children?.filter((child) => child.mime?.icon == "letter");
+  const number = children?.filter((child) => child.mime?.icon == "number");
 
   const elements = children?.map((child, childIndex) => {
     const childPath = [...path, child.namespace];
@@ -59,12 +57,18 @@ const DrawerList = (
       order_by: [{ index: order_by.asc }],
       where: {
         mime: {
-          hidden: { _eq: false }
+          hidden: { _eq: false },
         },
       },
     });
     const someChildren = grandChildren?.length && grandChildren?.[0].namespace;
-    const mimeName = child?.mimeId;
+    const iconIndex = (
+      child?.mime?.icon == "letter"
+        ? letter
+        : child?.mime?.icon == "number"
+        ? number
+        : undefined
+    )?.findIndex((e) => e.id === child.id);
 
     if (!child?.id) return;
     return (
@@ -76,24 +80,7 @@ const DrawerList = (
           href={`${path.join("/")}/${child?.namespace}`}
         >
           <ListItemIcon>
-            {mimeName == "vote/policy" ? (
-              <Avatar sx={{ width: 24, height: 24 }}>
-                <Typography fontSize={18}>
-                  {getIcon(
-                    child.mimeId!,
-                    policies.findIndex((e) => e.id === child.id)
-                  )}
-                </Typography>
-              </Avatar>
-            ) : mimeName == "vote/change" ? (
-              <Avatar sx={{ width: 24, height: 24 }}>
-                <Typography fontSize={18}>
-                  {change.findIndex((e) => e.id === child.id) + 1}
-                </Typography>
-              </Avatar>
-            ) : (
-              getIcon(child?.mimeId!)
-            )}
+            <MimeIcon node={child} index={iconIndex} />
           </ListItemIcon>
           <ListItemText>
             <Typography>{child?.name ?? "Ukendt"}</Typography>
@@ -153,7 +140,9 @@ const DrawerList = (
         component={NextLink}
         href={`/${path?.join("/")}`}
       >
-        <ListItemIcon>{getIcon(node?.mimeId!)}</ListItemIcon>
+        <ListItemIcon>
+          <MimeIcon node={node} />
+        </ListItemIcon>
         <ListItemText primary={node?.name} />
       </ListItemButton>
       {elements}

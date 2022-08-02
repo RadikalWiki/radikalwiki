@@ -29,12 +29,11 @@ export default function SpeakApp({ node }: { node: Node }) {
     return () => clearInterval(interval);
   }, [time, data?.time, data?.updatedAt, session?.timeDiff]);
 
-  const owner = node.sub?.isContextOwner;
 
   return (
     <>
       <Grid container justifyContent="center">
-        {!screen && owner && (
+        {!screen && (
           <Grid item xs={12} md={6}>
             <SpeakAdmin node={node} time={time} />
           </Grid>

@@ -1,7 +1,7 @@
 import { CardHeader, Chip, Skeleton, Typography } from "@mui/material";
 import { ContentAvatar, ExpandButton } from "comps";
 import { Face } from "@mui/icons-material";
-import { getIcon } from "mime";
+import { getIconFromId } from "mime";
 import { Suspense } from "react";
 import { Node, useNode, useScreen } from "hooks";
 
@@ -12,7 +12,7 @@ function MemberChips({ node }: { node: Node }) {
       return (
         <Chip
           key={id ?? 0}
-          icon={node?.mimeId ? getIcon(node.mimeId) : <Face />}
+          icon={node?.mimeId ? getIconFromId(node.mimeId) : <Face />}
           color="secondary"
           variant="outlined"
           size="small"
@@ -36,7 +36,7 @@ function Title({ node }: { node: Node }) {
   const screen = useScreen();
   return node.query?.name ? (
     screen ? (
-      <Typography variant="h5" sx={{ color: "#fff" }}>
+      <Typography variant="h5" sx={{ color: "inherit" }}>
         {node.query?.name}
       </Typography>
     ) : (

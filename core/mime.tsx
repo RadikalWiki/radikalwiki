@@ -7,7 +7,6 @@ import {
   Person,
   Subject,
   RateReview,
-  HelpOutline,
   Home,
   Poll,
   Face,
@@ -15,15 +14,96 @@ import {
   UploadFile,
   QuestionMark,
   InterpreterMode,
+  LockOpen,
 } from "@mui/icons-material";
-import { Skeleton } from "@mui/material";
+import MicrosoftExcelIcon from "./svg/microsoft-excel.svg";
+import MicrosoftWordIcon from "./svg/microsoft-word.svg";
+import FilePdfBoxIcon from "./svg/file-pdf-box.svg";
+import VideoBoxIcon from "./svg/video-box.svg";
+import { Avatar, Badge, Skeleton, Tooltip, Typography } from "@mui/material";
+import { Maybe, nodes } from "./gql/schema.generated";
+import { Suspense } from "react";
+import useScreen from "./hooks/useScreen";
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
   return index >= 26 ? String.fromCharCode(64 + Math.floor(index / 26)) + f : f;
 };
 
-const getIcon = (mimeId?: string, index?: number): any => {
+const MimeIcon = ({
+  node,
+  index,
+}: {
+  node?: Maybe<Partial<nodes>>;
+  index?: number;
+}) => {
+  return (
+    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
+      <Icon node={node} index={index} />
+    </Suspense>
+  );
+};
+
+const MimeAvatar = ({
+  node,
+  index,
+}: {
+  node?: Maybe<Partial<nodes>>;
+  index?: number;
+}) => {
+  const screen = useScreen();
+  return (
+    <Suspense fallback={<Skeleton variant="circular" width={32} height={32} />}>
+      <Avatar sx={{ bgcolor: t => screen ? t.palette.primary.main : t.palette.secondary.main }}>
+        <Icon node={node} index={index} avatar={true} />
+      </Avatar>
+    </Suspense>
+  );
+};
+
+const Icon = ({ node, index, avatar }: {
+  node?: Maybe<Partial<nodes>>,
+  index?: number,
+  avatar?: boolean
+}) => {
+  const type = node?.data?.({ path: "type" });
+  const mimeId = node?.mimeId;
+  const id = type ?? mimeId;
+  return avatar && node?.mutable ? (
+    <Badge
+      overlap="circular"
+      anchorOrigin={{
+        vertical: "bottom",
+        horizontal: "right",
+      }}
+      badgeContent={
+        <Tooltip title="Ikke indsendt">
+          <Avatar
+            sx={{
+              width: 18,
+              height: 18,
+              bgcolor: (t) => t.palette.primary.main,
+            }}
+          >
+            <LockOpen
+              sx={{
+                width: 14,
+                height: 14,
+                color: "#fff",
+              }}
+            />
+          </Avatar>
+        </Tooltip>
+      }
+    >
+      {getIconFromId(id, index, avatar)}
+    </Badge>
+  ) : (
+    getIconFromId(id, index, avatar)
+  );
+};
+
+const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
   switch (mimeId) {
     case "wiki/home":
       return <Home />;
@@ -42,7 +122,19 @@ const getIcon = (mimeId?: string, index?: number): any => {
     case "text/plain":
       return <Subject />;
     case "vote/policy":
-      return index !== undefined ? getLetter(index) : <Gavel />;
+      return index !== undefined ? (
+        avatar ? (
+          <Typography fontSize={24} sx={{ color: "inherit" }}>
+            {getLetter(index)}
+          </Typography>
+        ) : (
+          <Avatar sx={{ width: 24, height: 24, color: "inherit" }}>
+            <Typography fontSize={18}>{getLetter(index)}</Typography>
+          </Avatar>
+        )
+      ) : (
+        <Gavel />
+      );
     case "vote/position":
       return <HowToReg />;
     case "vote/candidate":
@@ -50,14 +142,38 @@ const getIcon = (mimeId?: string, index?: number): any => {
     case "vote/question":
       return <QuestionMark />;
     case "vote/change":
-      return index !== undefined ? index + 1 : <RateReview />;
+      return index !== undefined ? (
+        avatar ? (
+          <Typography fontSize={24} sx={{ color: "#fff" }}>
+            {index + 1}
+          </Typography>
+        ) : (
+          <Avatar sx={{ width: 24, height: 24, color: "inherit" }}>
+            <Typography fontSize={18}>{index + 1}</Typography>
+          </Avatar>
+        )
+      ) : (
+        <RateReview />
+      );
     case "vote/poll":
       return <Poll />;
     case "speak/list":
       return <InterpreterMode />;
-    default:
+    case "application/pdf":
+      return <FilePdfBoxIcon fill="currentColor" height="24" width="24" />;
+    case undefined:
       return <Skeleton variant="circular" width={24} height={24} />
+    default:
   }
+
+  if (mimeId?.includes("video/"))
+    return <VideoBoxIcon fill="currentColor" height="24" width="24" />;
+  if (mimeId?.includes("spreadsheet"))
+    return <MicrosoftExcelIcon fill="currentColor" height="24" width="24" />;
+  if (mimeId?.includes("document"))
+    return <MicrosoftWordIcon fill="currentColor" height="24" width="24" />;
+
+  return <QuestionMark />;
 };
 
 const getName = (mimeId?: string): string => {
@@ -93,4 +209,4 @@ const getName = (mimeId?: string): string => {
   }
 };
 
-export { getLetter, getIcon, getName };
+export { MimeIcon, MimeAvatar, getLetter, Icon as getIcon, getIconFromId, getName };

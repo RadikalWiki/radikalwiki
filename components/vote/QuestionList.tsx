@@ -35,8 +35,8 @@ import {
   Chip,
 } from "@mui/material";
 import { nodes, order_by } from "gql";
-import { getIcon } from "mime";
-import { Node, useNode, useScreen } from "hooks";
+import { getIconFromId } from "mime";
+import { Node, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
 function ChildListElement({ node, child, index }: { node: Node, child?: nodes; index: number }) {
@@ -111,7 +111,7 @@ export default function QuestionList({ node }: { node: Node }) {
               bgcolor: (t) => t.palette.secondary.main,
             }}
           >
-            {getIcon("vote/question")}
+            {getIconFromId("vote/question")}
           </Avatar>
         }
         action={
@@ -130,7 +130,7 @@ export default function QuestionList({ node }: { node: Node }) {
       <Divider />
       <List>
         <TransitionGroup>
-          {children?.map((child, index: number) => {
+          {children?.map((child, index) => {
             return (
               <Collapse key={child?.id ?? 0}>
                 <Suspense fallback={null}>

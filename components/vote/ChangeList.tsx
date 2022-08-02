@@ -33,8 +33,8 @@ import {
   Typography,
   Chip,
 } from "@mui/material";
-import { nodes, order_by } from "gql";
-import { getIcon } from "mime";
+import { order_by } from "gql";
+import { getIconFromId } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
@@ -189,7 +189,7 @@ export default function ChangeList({ node }: { node: Node }) {
               bgcolor: (t) => t.palette.secondary.main,
             }}
           >
-            {getIcon("vote/change")}
+            {getIconFromId("vote/change")}
           </Avatar>
         }
         action={

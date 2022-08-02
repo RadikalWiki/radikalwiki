@@ -1,14 +1,12 @@
 import {
   Avatar,
-  IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-  ListSubheader,
   useMediaQuery,
 } from "@mui/material";
 import { Node, useScreen } from "hooks";
-import { getIcon } from "mime";
+import { getIconFromId } from "mime";
 import { Image } from "comps";
 import { useRouter } from "next/router";
 import { query, resolved } from "gql";
@@ -97,7 +95,7 @@ export default function CandidateList({ node }: { node: Node }) {
                     color: (t) => t.palette.primary.main,
                   }}
                 >
-                  {getIcon("vote/candidate")}
+                  {getIconFromId("vote/candidate")}
                 </Avatar>
               }
             />

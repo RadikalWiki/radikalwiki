@@ -45,6 +45,7 @@ export type Node = {
     delete: any;
   };
   context: {
+    id: string;
     set: any;
   };
 };

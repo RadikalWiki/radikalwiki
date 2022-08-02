@@ -60,6 +60,7 @@
   },
   "devDependencies": {
     "@gqty/cli": "^3.2.0",
+    "@svgr/webpack": "^6.3.1",
     "@types/js-cookie": "^3.0.2",
     "@types/node": "^17.0.23",
     "@types/papaparse": "^5.3.2",

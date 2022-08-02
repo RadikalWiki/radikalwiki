@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Box, Chip, TextField } from "@mui/material";
+import { Box, Chip, TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { query, resolved, order_by } from "gql";
-import { getIcon } from "mime";
+import { getIconFromId } from "mime";
 import { Face } from "@mui/icons-material";
 
 const capitalize = (sentence: string) =>
   sentence.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 
+type Option = { name?: string, mimeId?: string, nodeId?: string }
+
 export default function AuthorTextField({
   value,
   onChange,
 }: {
-  value: any;
+  value: Option[];
   onChange: any;
 }) {
-  const [options, setOptions] = useState<any[]>([]);
+  const [options, setOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function AuthorTextField({
           }));
       });
 
-      const newOptions: any[] = ([] as any[]).concat(
+      const newOptions = ([] as Option[]).concat(
         users ? users : [],
         nodes ? nodes : [],
         value ? value : [],
@@ -66,14 +68,14 @@ export default function AuthorTextField({
       color="primary"
       options={options}
       getOptionLabel={(option) => option?.name ?? ""}
-      defaultValue={options}
+      //defaultValue={options}
       value={value}
       filterSelectedOptions
       includeInputInList
       autoComplete
       autoHighlight
       onChange={(_, newValue) => {
-        setOptions(newValue ? [newValue, ...options] : options);
+        setOptions(newValue.concat(options));
         onChange(newValue);
       }}
       onInputChange={(_, newInputValue) => {
@@ -84,7 +86,7 @@ export default function AuthorTextField({
           <Chip
             variant="outlined"
             color="secondary"
-            icon={option?.mimeId ? getIcon(option.mimeId) : <Face />}
+            icon={option?.mimeId ? getIconFromId(option.mimeId) : <Face />}
             label={option?.name}
           />
         </Box>
@@ -94,7 +96,7 @@ export default function AuthorTextField({
           <Chip
             variant="outlined"
             color="secondary"
-            icon={option?.mimeId ? getIcon(option.mimeId) : <Face />}
+            icon={option?.mimeId ? getIconFromId(option.mimeId) : <Face />}
             label={option?.name}
             {...getCustomizedTagProps({ index })}
             key={index}

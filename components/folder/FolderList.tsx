@@ -13,7 +13,7 @@ import {
 import { DoNotDisturb, LockOpen } from "@mui/icons-material";
 import { order_by, query, resolved } from "gql";
 import { TransitionGroup } from "react-transition-group";
-import { getIcon } from "mime";
+import { MimeAvatar, MimeIcon } from "mime";
 import { toWhere } from "core/path";
 import { Node, useNode } from "hooks";
 import { useUserId } from "@nhost/react";
@@ -32,7 +32,7 @@ export default function FolderList({ node }: { node: Node }) {
               { mutable: { _eq: false } },
               { ownerId: { _eq: userId } },
               { members: { nodeId: { _eq: userId } } },
-            ]
+            ],
           },
           {
             mime: {
@@ -59,55 +59,19 @@ export default function FolderList({ node }: { node: Node }) {
 
   return (
     <TransitionGroup>
-      {children.map(({ id, name, namespace, mimeId, mutable }) => {
+      {children.map((node) => {
+        const { id, name, namespace } = node;
         const avatar = (
-          <Avatar
-            sx={{
-              bgcolor: (t) => t.palette.secondary.main,
-            }}
-          >
-            {getIcon(
-              mimeId!,
-              policies.findIndex((e) => e.id === id)
-            )}
-          </Avatar>
+          <MimeAvatar
+            node={node}
+            index={policies.findIndex((policy) => policy.id === id)}
+          />
         );
         return !id ? null : (
           <Collapse key={id ?? 0}>
             <ListItem button onClick={handleOnClick(namespace)}>
               <ListItemAvatar>
-                {mutable ? (
-                  <Badge
-                    overlap="circular"
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    badgeContent={
-                      <Tooltip title="Ikke indsendt">
-                        <Avatar
-                          sx={{
-                            width: 18,
-                            height: 18,
-                            bgcolor: (t) => t.palette.primary.main,
-                          }}
-                        >
-                          <LockOpen
-                            sx={{
-                              width: 14,
-                              height: 14,
-                              color: "#fff",
-                            }}
-                          />
-                        </Avatar>
-                      </Tooltip>
-                    }
-                  >
-                    {avatar}
-                  </Badge>
-                ) : (
-                  avatar
-                )}
+                {avatar}
               </ListItemAvatar>
               <ListItemText primary={name} />
             </ListItem>

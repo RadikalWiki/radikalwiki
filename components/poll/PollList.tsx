@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 import { Cancel, HowToVote } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { getIcon } from "mime";
-import { Node, useNode, useScreen } from "hooks";
+import { getIconFromId } from "mime";
+import { Node, useScreen } from "hooks";
 
 function PollListSuspense({ node }: { node: Node }) {
   const router = useRouter();
@@ -39,7 +39,7 @@ function PollListSuspense({ node }: { node: Node }) {
             bgcolor: (t) => t.palette.secondary.main,
           }}
         >
-          {getIcon("vote/poll")}
+          {getIconFromId("vote/poll")}
         </Avatar>
       }
       title="Afstemninger"

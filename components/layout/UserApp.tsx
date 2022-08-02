@@ -9,7 +9,7 @@ import {
 import { HeaderCard, Link } from "comps";
 import { useQuery } from "gql";
 import { Event, Group, Subject } from "@mui/icons-material";
-import { getIcon } from "mime";
+import { getIconFromId } from "mime";
 import { Node } from "hooks";
 
 export default function UserApp({ node }: { node: Node }) {
@@ -85,7 +85,7 @@ export default function UserApp({ node }: { node: Node }) {
                     bgcolor: (t) => t.palette.secondary.main,
                   }}
                 >
-                  {getIcon(mimeId!)}
+                  {getIconFromId(mimeId!)}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={name} secondary={parent?.name} />

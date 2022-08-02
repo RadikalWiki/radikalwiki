@@ -2838,6 +2838,7 @@ type mimes {
   ): [mimes!]
   context: Boolean!
   hidden: Boolean!
+  icon: String!
   id: String!
   parentIds: _text
 
@@ -2899,6 +2900,7 @@ input mimes_bool_exp {
   children: mimes_bool_exp
   context: Boolean_comparison_exp
   hidden: Boolean_comparison_exp
+  icon: String_comparison_exp
   id: String_comparison_exp
   parentIds: _text_comparison_exp
   parents: mimes_bool_exp
@@ -2921,6 +2923,7 @@ input type for inserting data into table "mimes"
 input mimes_insert_input {
   context: Boolean
   hidden: Boolean
+  icon: String
   id: String
   parentIds: _text
   unique: Boolean
@@ -2928,6 +2931,7 @@ input mimes_insert_input {
 
 """aggregate max on columns"""
 type mimes_max_fields {
+  icon: String
   id: String
 }
 
@@ -2935,11 +2939,13 @@ type mimes_max_fields {
 order by max() on columns of table "mimes"
 """
 input mimes_max_order_by {
+  icon: order_by
   id: order_by
 }
 
 """aggregate min on columns"""
 type mimes_min_fields {
+  icon: String
   id: String
 }
 
@@ -2947,6 +2953,7 @@ type mimes_min_fields {
 order by min() on columns of table "mimes"
 """
 input mimes_min_order_by {
+  icon: order_by
   id: order_by
 }
 
@@ -2985,6 +2992,7 @@ input mimes_order_by {
   children_aggregate: mimes_aggregate_order_by
   context: order_by
   hidden: order_by
+  icon: order_by
   id: order_by
   parentIds: order_by
   parents_aggregate: mimes_aggregate_order_by
@@ -3007,6 +3015,9 @@ enum mimes_select_column {
   hidden
 
   """column name"""
+  icon
+
+  """column name"""
   id
 
   """column name"""
@@ -3022,6 +3033,7 @@ input type for updating data in table "mimes"
 input mimes_set_input {
   context: Boolean
   hidden: Boolean
+  icon: String
   id: String
   parentIds: _text
   unique: Boolean
@@ -3036,6 +3048,9 @@ enum mimes_update_column {
 
   """column name"""
   hidden
+
+  """column name"""
+  icon
 
   """column name"""
   id
@@ -4330,11 +4345,6 @@ type nodes {
   A computed field, executes function "update"
   """
   update: Boolean
-
-  """
-  A computed field, executes function "validate"
-  """
-  validate: String
 }
 
 """
@@ -4443,7 +4453,6 @@ input nodes_bool_exp {
   select: Boolean_comparison_exp
   unique: String_comparison_exp
   update: Boolean_comparison_exp
-  validate: String_comparison_exp
 }
 
 """
@@ -4633,7 +4642,6 @@ input nodes_order_by {
   select: order_by
   unique: order_by
   update: order_by
-  validate: order_by
 }
 
 """primary key columns input for table: nodes"""

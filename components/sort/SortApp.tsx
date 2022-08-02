@@ -10,13 +10,13 @@ import {
   ListItemAvatar,
   ListItemText,
 } from "@mui/material";
-import { order_by, resolved } from "gql";
+import { nodes, order_by, resolved } from "gql";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { getIcon } from "mime";
+import { MimeIcon } from "mime";
 import { Node } from "hooks";
 
 export default function SortApp({ node }: { node: Node }) {
-  const [list, setList] = useState<any[]>([]);
+  const [list, setList] = useState<Partial<nodes>[]>([]);
   const query = node.query;
 
   useEffect(() => {
@@ -29,12 +29,13 @@ export default function SortApp({ node }: { node: Node }) {
                 ?.children({
                   order_by: [{ index: order_by.asc }],
                 })
-                .map(({ id, name, index, mutable, mimeId }) => ({
+                .map(({ id, name, index, mutable, mimeId, data }) => ({
                   id,
                   name,
                   index,
                   mutable,
                   mimeId,
+                  data,
                 })) ?? []
             );
           },
@@ -64,38 +65,39 @@ export default function SortApp({ node }: { node: Node }) {
           <Droppable droppableId="drop1">
             {(provided, snapshot) => (
               <List ref={provided.innerRef} sx={{ m: 0 }}>
-                {list?.[0]?.id && list.map((e, index: number) => {
-                  return (
-                    <Draggable key={e.id} draggableId={e.id} index={index}>
-                      {(provided, snapshot) => (
-                        <Fragment>
-                          {!snapshot.isDragging && <Divider />}
-                          <ListItem
-                            component="li"
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                          >
-                            <ListItemAvatar>
-                              <Avatar
-                                sx={{
-                                  bgcolor: (t) =>
-                                    t.palette.secondary.main,
-                                }}
-                              >
-                                {getIcon(e.mimeId)}
-                              </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary={e.name}
-                              secondary={e.subtitle}
-                            />
-                          </ListItem>
-                        </Fragment>
-                      )}
-                    </Draggable>
-                  );
-                })}
+                {list?.[0]?.id &&
+                  list.map((node, index: number) => {
+                    return (
+                      <Draggable
+                        key={node.id}
+                        draggableId={node.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <Fragment>
+                            {!snapshot.isDragging && <Divider />}
+                            <ListItem
+                              component="li"
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <ListItemAvatar>
+                                <Avatar
+                                  sx={{
+                                    bgcolor: (t) => t.palette.secondary.main,
+                                  }}
+                                >
+                                  <MimeIcon node={node} />
+                                </Avatar>
+                              </ListItemAvatar>
+                              <ListItemText primary={node.name} />
+                            </ListItem>
+                          </Fragment>
+                        )}
+                      </Draggable>
+                    );
+                  })}
                 {snapshot.isDraggingOver && <Divider />}
                 {provided.placeholder}
                 <Divider />
