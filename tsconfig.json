@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "ES6",
     "lib": [
-      "dom",
-      "esnext"
+      "DOM",
+      "ESNext"
     ],
     "jsx": "preserve",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noEmit": true,
