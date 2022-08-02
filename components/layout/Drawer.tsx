@@ -15,16 +15,20 @@ import {
 import {
   Airplay,
   ChevronLeft,
+  ConnectedTv,
   ExpandLess,
   ExpandMore,
+  FileOpen,
+  Home,
   Menu,
 } from "@mui/icons-material";
 import { useSession, usePath } from "hooks";
-import { toWhere } from "core/path";
+import { fromId, toWhere } from "core/path";
 import { Link as NextLink } from "comps";
-import { nodes, order_by, useQuery } from "gql";
+import { nodes, order_by, resolved, useQuery } from "gql";
 import { MimeIcon } from "mime";
 import { Fragment, useState, startTransition } from "react";
+import { useRouter } from "next/router";
 
 const DrawerList = (
   node: nodes,
@@ -159,6 +163,7 @@ export default function Drawer({
   open: boolean;
   setOpen: any;
 }) {
+  const router = useRouter();
   const path = usePath();
   const query = useQuery();
   const [session] = useSession();
@@ -173,6 +178,22 @@ export default function Drawer({
   const node = query.nodes(
     toWhere(session?.prefix?.path ?? path.slice(0, 1))
   )[0];
+  const contextId = node.contextId;
+
+  const handleCurrent = async () => {
+    const id = await resolved(
+      () => {
+        return query
+          .node({ id: contextId })
+          ?.relations({ where: { name: { _eq: "active" } } })?.[0]?.nodeId;
+      },
+      { noCache: true }
+    );
+    const path = await fromId(id ?? contextId);
+    await router.push("/" + path.join("/"));
+    setOpen(false);
+  };
+
   return (
     <MuiDrawer variant="persistent" open={open} onMouseLeave={() => setOpen()}>
       <List>
@@ -189,13 +210,27 @@ export default function Drawer({
           <ListItemText primary={<Typography variant="h6">Menu</Typography>} />
         </ListItem>
         <Divider />
+        <ListItemButton component={NextLink} href="/" target="_blank">
+          <ListItemIcon>
+            <Home />
+          </ListItemIcon>
+          <ListItemText primary="Hjem" />
+        </ListItemButton>
+        <Divider />
+        <ListItemButton onClick={handleCurrent}>
+          <ListItemIcon>
+            <FileOpen />
+          </ListItemIcon>
+          <ListItemText primary="Aktive Dokument" />
+        </ListItemButton>
+        <Divider />
         <ListItemButton
           component={NextLink}
           href={`/${session?.prefix?.path?.join("/")}?app=screen`}
           target="_blank"
         >
           <ListItemIcon>
-            <Airplay />
+            <ConnectedTv />
           </ListItemIcon>
           <ListItemText primary="Skærm" />
         </ListItemButton>
