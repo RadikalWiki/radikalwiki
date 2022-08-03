@@ -1,14 +1,12 @@
 import React, { useEffect, ComponentType } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
-import { Layout, OldBrowser } from "comps";
+import { Layout } from "comps";
 import { useTheme } from "hooks";
 import nhost from "nhost";
 import { NhostReactProvider } from "@nhost/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import platform from 'platform';
-import { compare } from 'compare-versions';
 
 export default function App({
   Component,
