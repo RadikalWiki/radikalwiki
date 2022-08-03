@@ -3,7 +3,7 @@ import { NavBar, Scroll, TopBar, SessionProvider, Breadcrumbs, OldBrowser } from
 import { useAuthenticationStatus } from "@nhost/nextjs";
 import { useRouter } from "next/router";
 import { Container, Box } from "@mui/material";
-import nhost from "nhost";
+import { nhost } from "nhost";
 import { checkVersion } from "core/util"
 
 

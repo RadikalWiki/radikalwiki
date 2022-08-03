@@ -12,7 +12,7 @@ import {
   Box,
 } from "@mui/material";
 import { useSession } from "hooks";
-import { auth } from "nhost";
+import { nhost } from "nhost";
 import { Email, HowToReg, LockReset, Login } from "@mui/icons-material";
 import { useAuthenticationStatus } from "@nhost/react";
 
@@ -91,7 +91,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
   const onLogin = async () => {
     setLoading(true);
     const timeFetch = fetch("/api/time");
-    const { session, error } = await auth.signIn({
+    const { session, error } = await nhost.auth.signIn({
       email: email.toLowerCase(),
       password,
     });
@@ -103,7 +103,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
       }
 
       if (error.error === "unverified-user") {
-        auth.sendVerificationEmail({ email });
+        nhost.auth.sendVerificationEmail({ email });
         setEmailError(true);
         setEmailErrorMsg(
           "Email ikke verificeret. Tjek din indbakke. Evt. også spam."
@@ -131,7 +131,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
       router.push("/user/register");
       return;
     }
-    const { error } = await auth.signUp({
+    const { error } = await nhost.auth.signUp({
       email: email.toLowerCase(),
       password,
       options: { displayName: name },
@@ -149,7 +149,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
       router.push("/user/reset-password");
     } else if (mode === "reset-password") {
       // TODO: add error handling
-      await auth.changePassword({ newPassword: password });
+      await nhost.auth.changePassword({ newPassword: password });
       router.push("/");
     }
   };
@@ -157,7 +157,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
   const onLoginEmail = async () => {
     // TODO: add error handling
     if (mode == "login-email") {
-      await auth.resetPassword({ email: email.toLowerCase() });
+      await nhost.auth.resetPassword({ email: email.toLowerCase() });
       router.push("/");
     } else {
       router.push("/user/login-email");

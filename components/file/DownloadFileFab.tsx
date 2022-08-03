@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Fab, Zoom } from "@mui/material";
-import { Add, Download } from "@mui/icons-material";
-import { AddContentDialog } from "comps";
-import { Node, useNode } from "hooks";
-import nhost from "nhost";
+import { Download } from "@mui/icons-material";
+import { Node } from "hooks";
+import { nhost } from "nhost";
 
 export default function AddContentFab({ node }: { node: Node }) {
   const data = node.query?.data();

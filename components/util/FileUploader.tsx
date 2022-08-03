@@ -1,7 +1,7 @@
 import { UploadFile } from "@mui/icons-material";
 import { Button, CircularProgress, Divider, Input } from "@mui/material";
 import { Box } from "@mui/system";
-import { storage } from "nhost";
+import { nhost } from "nhost";
 import { useState } from "react";
 
 export default function FileUploader({
@@ -15,7 +15,7 @@ export default function FileUploader({
   const handleChangeFile = async (e: any) => {
     setLoading(true);
     const file = e.target.files[0];
-    const res = await storage.upload({ file });
+    const res = await nhost.storage.upload({ file });
     onNewFile({ fileId: res.fileMetadata?.id, file });
     setLoading(false);
   };

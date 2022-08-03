@@ -20,7 +20,7 @@ import {
 } from "@mui/icons-material";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
-import { auth } from "nhost";
+import { nhost } from "nhost";
 import { useAuthenticationStatus, useUserDisplayName } from "@nhost/react";
 
 const abriviateName = (name: string) =>
@@ -49,7 +49,7 @@ export default function UserButton() {
   };
 
   const handleLogout = async () => {
-    await auth.signOut();
+    await nhost.auth.signOut();
     setSession(null);
     setAnchorEl(null);
   };

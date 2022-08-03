@@ -4,7 +4,7 @@ import type { QueryFetcher } from "gqty";
 import { createClient } from "gqty";
 import jwtDecode from "jwt-decode";
 import Cookies from "js-cookie";
-import { auth } from "nhost";
+import { nhost } from "nhost";
 import type {
   GeneratedSchema,
   SchemaObjectTypes,
@@ -20,15 +20,15 @@ const getHeaders = (): Record<string, string> =>
       }
     : {
         "Content-Type": "application/json",
-        authorization: `Bearer ${auth.getAccessToken()}`,
+        authorization: `Bearer ${nhost.auth.getAccessToken()}`,
       };
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
-  const token = auth.getAccessToken();
+  const token = nhost.auth.getAccessToken();
   const accessTokenDecrypted: any = jwtDecode(token as any);
   if (accessTokenDecrypted.exp * 1000 < Date.now()) {
     const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-    await auth.refreshSession(refreshToken);
+    await nhost.auth.refreshSession(refreshToken);
   }
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
@@ -51,7 +51,7 @@ const subscriptionsClient =
     ? createSubscriptionsClient({
         failedConnectionCallback: async () => {
           const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-          await auth.refreshSession(refreshToken);
+          await nhost.auth.refreshSession(refreshToken);
           subscriptionsClient?.setConnectionParams(
             {
               headers: getHeaders(),
@@ -131,7 +131,7 @@ subscriptionsClient?.setConnectionParams({
   headers: getHeaders(),
 });
 
-auth?.onTokenChanged(() => {
+nhost.auth?.onTokenChanged(() => {
   subscriptionsClient?.setConnectionParams({
     headers: getHeaders(),
   });

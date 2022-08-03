@@ -27,7 +27,7 @@ import {
 import { Publish, Save, Delete, Edit } from "@mui/icons-material";
 import { fromId } from "core/path";
 import { Node } from "hooks";
-import nhost from "nhost";
+import { nhost } from "nhost";
 
 export default function Editor({ node }: { node: Node }) {
   const router = useRouter();

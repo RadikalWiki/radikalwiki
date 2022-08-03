@@ -13,7 +13,7 @@ import { query, resolved } from "gql";
 import { toWhere } from "core/path";
 import { Box } from "@mui/system";
 import { useUserId } from "@nhost/react";
-import nhost from "nhost";
+import { nhost } from "nhost";
 import { useEffect, useState } from "react";
 
 export default function CandidateList({ node }: { node: Node }) {

@@ -1,6 +1,6 @@
 import { Node } from "hooks";
 import dynamic from "next/dynamic";
-import nhost from "nhost";
+import { nhost } from "nhost";
 import { useEffect, useState } from "react";
 import { VideoViewer, ImageViewer, MsOfficeViewer } from "comps";
 
