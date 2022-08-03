@@ -2,7 +2,7 @@ import { Node } from "hooks";
 import dynamic from "next/dynamic";
 import nhost from "nhost";
 import { useEffect, useState } from "react";
-import { VideoViewer, MsOfficeViewer } from "comps";
+import { VideoViewer, ImageViewer, MsOfficeViewer } from "comps";
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
   ssr: false,
@@ -11,6 +11,7 @@ const PdfViewer = dynamic(() => import("./PdfViewer"), {
 export default function FileLoader({ node }: { node: Node }) {
   const [file, setFile] = useState<any>(null);
   const data = node.query?.data();
+  console.log(data)
 
   useEffect(() => {
     const fetch = async () => {
@@ -27,6 +28,13 @@ export default function FileLoader({ node }: { node: Node }) {
   switch (data?.type) {
     case "application/pdf":
       return <PdfViewer file={file} />;
+    case "image/bmp":
+    case "image/jpg":
+    case "image/jpeg":
+    case "image/png":
+    case "image/tif":
+    case "image/tiff":
+      return <ImageViewer file={file} />;
     case "video/mp4":
       return <VideoViewer file={file} />;
     case "application/msword":

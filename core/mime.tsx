@@ -15,6 +15,7 @@ import {
   QuestionMark,
   InterpreterMode,
   LockOpen,
+  Image,
 } from "@mui/icons-material";
 import MicrosoftExcelIcon from "./svg/microsoft-excel.svg";
 import MicrosoftWordIcon from "./svg/microsoft-word.svg";
@@ -195,6 +196,8 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
     default:
   }
 
+  if (mimeId?.includes("image/"))
+    return <Image />;
   if (mimeId?.includes("video/"))
     return <VideoBoxIcon fill="currentColor" height="24" width="24" />;
   if (mimeId?.includes("spreadsheet"))
