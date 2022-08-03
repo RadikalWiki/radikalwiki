@@ -90,8 +90,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
 
   const onLogin = async () => {
     setLoading(true);
-    const timeFetch = fetch("/api/time");
-    const { session, error } = await nhost.auth.signIn({
+    const { error } = await nhost.auth.signIn({
       email: email.toLowerCase(),
       password,
     });
@@ -119,10 +118,16 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     }
     setSession(null);
 
-    const { time } = await (await timeFetch).json();
+    // Set up
     setSession({
-      timeDiff: new Date().getTime() - new Date(time).getTime(),
+      timeDiff: 0,
     });
+
+    fetch("/api/time").then(res => res.json().then(({ time }) => {
+      setSession({
+        timeDiff: new Date().getTime() - new Date(time).getTime(),
+      });
+    }));
     router.back();
   };
 
