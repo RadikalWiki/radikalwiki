@@ -34,7 +34,7 @@ import {
   Chip,
 } from "@mui/material";
 import { order_by } from "gql";
-import { getIconFromId } from "mime";
+import { getIconFromId, MimeAvatar } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
@@ -54,50 +54,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
         href={`${router.asPath}/${query?.namespace}`}
       >
         <ListItemAvatar>
-          {query?.mutable ? (
-            <Badge
-              overlap="circular"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              badgeContent={
-                <Tooltip title="Ikke indsendt">
-                  <Avatar
-                    sx={{
-                      width: 18,
-                      height: 18,
-                      bgcolor: (t) => t.palette.primary.main,
-                    }}
-                  >
-                    <LockOpen
-                      sx={{
-                        width: 14,
-                        height: 14,
-                        color: "#fff",
-                      }}
-                    />
-                  </Avatar>
-                </Tooltip>
-              }
-            >
-              <Avatar
-                sx={{
-                  bgcolor: (t) => t.palette.secondary.main,
-                }}
-              >
-                {index + 1}
-              </Avatar>
-            </Badge>
-          ) : (
-            <Avatar
-              sx={{
-                bgcolor: (t) => t.palette.secondary.main,
-              }}
-            >
-              {index + 1}
-            </Avatar>
-          )}
+          <MimeAvatar node={query} index={index} />
         </ListItemAvatar>
         <ListItemText
           primary={query?.name}
