@@ -5,7 +5,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   return res.json({
-    commit: process.env.RW_COMMIT_HASH,
+    commit: process.env.VERCEL_GIT_COMMIT_SHA,
     env: process.env.NODE_ENV,
   });
 }

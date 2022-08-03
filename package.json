@@ -51,9 +51,9 @@
     "xstate": "^4.32.1"
   },
   "scripts": {
-    "dev": "export RW_COMMIT_HASH=$(git rev-parse HEAD) && next",
-    "build": "export RW_COMMIT_HASH=$(git rev-parse HEAD) && yarn gen-gqty && next build",
-    "start": "next start",
+    "dev": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && next",
+    "build": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn gen-gqty && next build",
+    "start": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && next start",
     "gen-gqty": "gqty generate",
     "lint": "next lint"
   },
