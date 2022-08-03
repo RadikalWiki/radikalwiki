@@ -51,8 +51,8 @@
     "xstate": "^4.32.1"
   },
   "scripts": {
-    "dev": "next",
-    "build": "yarn gen-gqty && next build",
+    "dev": "export RW_COMMIT_HASH=$(git rev-parse HEAD) && next",
+    "build": "export RW_COMMIT_HASH=$(git rev-parse HEAD) && yarn gen-gqty && next build",
     "start": "next start",
     "gen-gqty": "gqty generate",
     "lint": "next lint"
