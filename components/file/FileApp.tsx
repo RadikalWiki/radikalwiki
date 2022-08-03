@@ -27,7 +27,7 @@ export default function FileApp({ node }: { node: Node }) {
           <FileLoader node={node} />
         </Collapse>
       </Card>
-      <DownloadFileFab node={node} />
+      {!screen && <DownloadFileFab node={node} />}
     </>
   );
 }
