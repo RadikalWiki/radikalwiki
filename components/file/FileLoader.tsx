@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import { nhost } from "nhost";
 import { useEffect, useState } from "react";
 import { VideoViewer, ImageViewer, MsOfficeViewer } from "comps";
+import AudioViewer from "./AudioViewer";
 
 const PdfViewer = dynamic(() => import("./PdfViewer"), {
   ssr: false,
@@ -35,6 +36,8 @@ export default function FileLoader({ node }: { node: Node }) {
     case "image/tif":
     case "image/tiff":
       return <ImageViewer file={file} />;
+    case "audio/ogg":
+      return <AudioViewer file={file} type={data?.type} />;
     case "video/mp4":
       return <VideoViewer file={file} />;
     case "application/msword":

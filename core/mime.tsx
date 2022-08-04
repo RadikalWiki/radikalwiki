@@ -16,6 +16,7 @@ import {
   InterpreterMode,
   LockOpen,
   Image,
+  MusicNote,
 } from "@mui/icons-material";
 import MicrosoftExcelIcon from "./svg/microsoft-excel.svg";
 import MicrosoftWordIcon from "./svg/microsoft-word.svg";
@@ -158,7 +159,7 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {getLetter(index)}
           </Typography>
         ) : (
-          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit" }}>
+          <MuiAvatar sx={{ width: 24, height: 24, color: "#fff" }}>
             <Typography fontSize={18}>{getLetter(index)}</Typography>
           </MuiAvatar>
         )
@@ -178,7 +179,7 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {index + 1}
           </Typography>
         ) : (
-          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit" }}>
+          <MuiAvatar sx={{ width: 24, height: 24, color: "#fff", bgcolor: "inherit" }}>
             <Typography fontSize={18}>{index + 1}</Typography>
           </MuiAvatar>
         )
@@ -198,6 +199,8 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
 
   if (mimeId?.includes("image/"))
     return <Image />;
+  if (mimeId?.includes("audio/"))
+    return <MusicNote />;
   if (mimeId?.includes("video/"))
     return <VideoBoxIcon fill="currentColor" height="24" width="24" />;
   if (mimeId?.includes("spreadsheet"))
