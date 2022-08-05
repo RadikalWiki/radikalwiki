@@ -81,7 +81,7 @@ export default function ContentHeader({
         } : undefined
       }
       action={
-        <ExpandButton expand={expand} onClick={() => setExpand(!expand)} />
+        !screen && <ExpandButton expand={expand} onClick={() => setExpand(!expand)} />
       }
     />
   );
