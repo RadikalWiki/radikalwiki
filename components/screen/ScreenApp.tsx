@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid } from "@mui/material";
-import { ScreenCard, SpeakApp, MimeLoader } from "comps";
+import { SpeakApp, MimeLoader } from "comps";
 import { Box } from "@mui/system";
 import { Node } from "hooks";
 

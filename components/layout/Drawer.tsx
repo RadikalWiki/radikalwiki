@@ -11,11 +11,20 @@ import {
   IconButton,
   Avatar,
   ListItem,
+  useMediaQuery,
+  alpha,
+  Toolbar,
+  AppBar,
+  ListItemAvatar,
+  ListSubheader,
 } from "@mui/material";
 import {
   Airplay,
   ChevronLeft,
+  Close,
   ConnectedTv,
+  Event,
+  EventBusy,
   ExpandLess,
   ExpandMore,
   FileOpen,
@@ -25,19 +34,32 @@ import {
 import { useSession, usePath } from "hooks";
 import { fromId, toWhere } from "core/path";
 import { Link as NextLink } from "comps";
-import { nodes, order_by, resolved, useQuery } from "gql";
-import { MimeIcon } from "mime";
+import { order_by, resolved, useQuery, nodes, useSubscription } from "gql";
+import { MimeAvatar, MimeIcon } from "mime";
 import { Fragment, useState, startTransition } from "react";
 import { useRouter } from "next/router";
+import { drawerWidth } from "core/constants";
+import { Box } from "@mui/system";
+import { useUserId } from "@nhost/react";
 
-const DrawerList = (
-  node: nodes,
-  path: string[],
-  fullpath: string[],
-  open: boolean[][],
-  setOpen: any,
-  index: number
-): any => {
+const DrawerList = ({
+  node,
+  path,
+  fullpath,
+  open,
+  setOpen,
+  setDrawerOpen,
+  index,
+}: {
+  node: nodes;
+  path: string[];
+  fullpath: string[];
+  open: boolean[][];
+  setOpen: Function;
+  setDrawerOpen: Function;
+  index: number;
+}) => {
+  const router = useRouter();
   const slicedPath = fullpath.slice(0, path.length + 1);
 
   const children = node?.children({
@@ -74,106 +96,192 @@ const DrawerList = (
         : undefined
     )?.findIndex((e) => e.id === child.id);
 
-    if (!child?.id) return;
+    if (!child?.id) return null;
+
     return (
       <Fragment key={child?.id ?? 0}>
         <ListItemButton
-          sx={{ pl: 3 + index }}
+          sx={{
+            pl: 2 + index,
+            color: selected ? "primary.main" : "",
+          }}
           selected={selected}
-          component={NextLink}
-          href={`${path.join("/")}/${child?.namespace}`}
+          onClick={() =>
+            startTransition(() => {
+              setDrawerOpen(false);
+              router.push(`${path.join("/")}/${child?.namespace}`);
+            })
+          }
         >
-          <ListItemIcon>
+          <ListItemIcon sx={{ color: selected ? "primary.main" : "" }}>
             <MimeIcon node={child} index={iconIndex} />
           </ListItemIcon>
           <ListItemText>
             <Typography>{child?.name ?? "Ukendt"}</Typography>
           </ListItemText>
-          <ListItemSecondaryAction>
-            <IconButton
-              onClick={() => {
-                startTransition(() => {
-                  const length = children.length;
-                  const newChildOpen = [
-                    ...new Array(childIndex).fill(false),
-                    !open[index]?.[childIndex] ?? false,
-                    ...new Array(
-                      length - childIndex ? length - childIndex : 0
-                    ).fill(false),
-                  ];
+          {!!someChildren && (
+            <ListItemSecondaryAction>
+              <IconButton
+                onClick={(e) => {
+                  e.stopPropagation();
+                  startTransition(() => {
+                    const length = children.length;
+                    const newChildOpen = [
+                      ...new Array(childIndex).fill(false),
+                      !open[index]?.[childIndex] ?? false,
+                      ...new Array(
+                        length - childIndex ? length - childIndex : 0
+                      ).fill(false),
+                    ];
 
-                  const newOpen = [
-                    ...open.slice(0, index),
-                    newChildOpen,
-                    ...open.slice(index + 1),
-                  ];
+                    const newOpen = [
+                      ...open.slice(0, index),
+                      newChildOpen,
+                      ...open.slice(index + 1),
+                    ];
 
-                  setOpen(newOpen);
-                });
-              }}
-              edge="end"
-            >
-              {!someChildren ? null : open[index]?.[childIndex] ? (
-                <ExpandLess />
-              ) : (
-                <ExpandMore />
-              )}
-            </IconButton>
-          </ListItemSecondaryAction>
+                    setOpen(newOpen);
+                    if (!someChildren) setDrawerOpen(false);
+                  });
+                }}
+                edge="end"
+              >
+                {open[index]?.[childIndex] ? <ExpandLess /> : <ExpandMore />}
+              </IconButton>
+            </ListItemSecondaryAction>
+          )}
         </ListItemButton>
 
         {someChildren ? (
           <Collapse in={open[index]?.[childIndex] ?? false}>
-            {DrawerList(
-              child,
-              path.concat([child?.namespace!]),
-              fullpath,
-              open,
-              setOpen,
-              index + 1
-            )}
+            <DrawerList
+              node={child}
+              path={path.concat([child?.namespace!])}
+              fullpath={fullpath}
+              open={open}
+              setOpen={setOpen}
+              index={index + 1}
+              setDrawerOpen={setDrawerOpen}
+            />
           </Collapse>
         ) : null}
       </Fragment>
     );
   });
-  return index == 0 ? (
-    <List>
-      <ListItemButton
-        selected
-        component={NextLink}
-        href={`/${path?.join("/")}`}
-      >
-        <ListItemIcon>
-          <MimeIcon node={node} />
-        </ListItemIcon>
-        <ListItemText primary={node?.name} />
-      </ListItemButton>
-      {elements}
-    </List>
-  ) : (
-    elements
+  return <>{elements}</>;
+};
+
+const HomeList = ({
+  setOpen,
+  setHome,
+}: {
+  setOpen: Function;
+  setHome: Function;
+}) => {
+  const router = useRouter();
+  const userId = useUserId();
+  const sub = useSubscription();
+  const query = useQuery();
+  const [_, setSession] = useSession();
+  const events = sub.nodes({
+    where: {
+      _and: [
+        { mimeId: { _eq: "wiki/event" } },
+        {
+          members: {
+            _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
+          },
+        },
+      ],
+    },
+  });
+
+  const handleEventSelect = (id: any) => async () => {
+    const prefix = await resolved(() => {
+      const node = query.node({ id });
+      return {
+        id: node?.id,
+        name: node?.name ?? "",
+        mime: node?.mimeId!,
+        namespace: node?.namespace,
+      };
+    });
+
+    const path = await fromId(id);
+    setSession({
+      prefix: {
+        ...prefix,
+        path,
+      },
+    });
+    startTransition(() => {
+      setOpen(false);
+      setHome(false);
+    });
+    router.push("/" + path.join("/"));
+  };
+
+  return (
+    <>
+      <List>
+        <ListItem key={0}>
+          <ListItemAvatar>
+            <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
+              <Event />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Begivenheder" />
+        </ListItem>
+        <Divider />
+        {events.map(({ id = 0, name }) => (
+          <ListItem
+            key={id}
+            hidden={id == 0}
+            button
+            onClick={handleEventSelect(id)}
+          >
+            <ListItemIcon>
+              <Event />
+            </ListItemIcon>
+            <ListItemText primary={name} />
+          </ListItem>
+        ))}
+        {events?.length == 0 && (
+          <ListItem key={-1}>
+            <ListItemAvatar>
+              <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
+                <EventBusy />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary="Ingen begivenheder" />
+          </ListItem>
+        )}
+      </List>
+      <Divider />
+    </>
   );
 };
+
+type DrawerState = "init" | "home" | "context";
 
 export default function Drawer({
   open,
   setOpen,
 }: {
   open: boolean;
-  setOpen: any;
+  setOpen: (val: boolean) => void;
 }) {
   const router = useRouter();
+  const [session] = useSession();
+  const largeScreen = useMediaQuery("(min-width:640px)");
   const path = usePath();
   const query = useQuery();
-  const [session] = useSession();
+  const [state, setState] = useState<DrawerState>("init");
+  const home = state === "home" || (state === "init" && path.length === 0);
 
   const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
   const prefix = session?.prefix?.path;
-  const sliced = path.slice(0, prefix?.length);
-  const show =
-    sliced.length === prefix?.length && sliced.every((v, i) => v === prefix[i]);
 
   const node = query.nodes(
     toWhere(session?.prefix?.path ?? path.slice(0, 1))
@@ -194,57 +302,133 @@ export default function Drawer({
     setOpen(false);
   };
 
+  const list = home ? (
+    <HomeList setOpen={setOpen} setHome={setState} />
+  ) : (
+    <List sx={{ pt: 0, pb: 0, width: "100%" }}>
+      <ListItemButton
+        sx={{ color: "secondary.main" }}
+        component={NextLink}
+        href={`/${session?.prefix?.path?.join("/")}?app=screen`}
+        target="_blank"
+      >
+        <ListItemIcon sx={{ color: "secondary.main" }}>
+          <ConnectedTv />
+        </ListItemIcon>
+        <ListItemText primary="Skærm" />
+      </ListItemButton>
+      <ListItemButton onClick={handleCurrent} sx={{ color: "secondary.main" }}>
+        <ListItemIcon sx={{ color: "secondary.main" }}>
+          <FileOpen />
+        </ListItemIcon>
+        <ListItemText primary="Aktuelle Punkt" />
+      </ListItemButton>
+      <Divider />
+      <DrawerList
+        node={node}
+        path={session?.prefix?.path ?? []}
+        fullpath={path}
+        open={listOpen}
+        setOpen={setListOpen}
+        setDrawerOpen={setOpen}
+        index={0}
+      />
+    </List>
+  );
+
   return (
-    <MuiDrawer variant="persistent" open={open} onMouseLeave={() => setOpen()}>
-      <List>
-        <ListItem
-          secondaryAction={
-            <IconButton onClick={() => setOpen()}>
+    <MuiDrawer
+      sx={
+        largeScreen
+          ? {
+              width: drawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: drawerWidth,
+                height: `calc(100% - 64px)`,
+                boxSizing: "border-box",
+              },
+            }
+          : {
+              position: "absolute",
+              width: "100%",
+              "& .MuiDrawer-paper": {
+                width: "100%",
+              },
+            }
+      }
+      variant={largeScreen ? "permanent" : "persistent"}
+      open={open || largeScreen}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <Box
+        sx={{
+          // Disable scroll (Firefox)
+          scrollbarWidth: "none",
+          // Disable scroll (Webkit)
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+          overflowY: "auto",
+          WebkitOverflowScrolling: "touch",
+          height: "calc(100vh - 64px)",
+        }}
+      >
+        <Toolbar
+          sx={{
+            ml: largeScreen ? -2 : 0,
+            bgcolor: "primary.main",
+            "&:hover, &:focus": {
+              bgcolor: (t) => alpha(t.palette.primary.main, 0.9),
+            },
+          }}
+        >
+          {home && state !== "init" ? (
+            <IconButton
+              sx={{ color: "#fff" }}
+              onClick={() =>
+                startTransition(() => {
+                  router.back();
+                  setState("context");
+                })
+              }
+            >
               <ChevronLeft />
             </IconButton>
-          }
-        >
-          <ListItemIcon>
-            <Menu />
-          </ListItemIcon>
-          <ListItemText primary={<Typography variant="h6">Menu</Typography>} />
-        </ListItem>
-        <Divider />
-        <ListItemButton component={NextLink} href="/" target="_blank">
-          <ListItemIcon>
-            <Home />
-          </ListItemIcon>
-          <ListItemText primary="Hjem" />
-        </ListItemButton>
-        <Divider />
-        <ListItemButton onClick={handleCurrent}>
-          <ListItemIcon>
-            <FileOpen />
-          </ListItemIcon>
-          <ListItemText primary="Aktive Dokument" />
-        </ListItemButton>
-        <Divider />
-        <ListItemButton
-          component={NextLink}
-          href={`/${session?.prefix?.path?.join("/")}?app=screen`}
-          target="_blank"
-        >
-          <ListItemIcon>
-            <ConnectedTv />
-          </ListItemIcon>
-          <ListItemText primary="Skærm" />
-        </ListItemButton>
-        <Divider />
-      </List>
-      {show &&
-        DrawerList(
-          node,
-          session?.prefix?.path ?? [],
-          path,
-          listOpen,
-          setListOpen,
-          0
-        )}
+          ) : path.length > 0 || state !== "init" ? (
+            <IconButton
+              sx={{ color: "#fff" }}
+              onClick={() =>
+                startTransition(() => {
+                  router.push("/");
+                  setState("home");
+                })
+              }
+            >
+              <Home />
+            </IconButton>
+          ) : null}
+          <Box sx={{ flexGrow: 1 }} />
+          {home ? (
+            <Avatar sx={{ bgcolor: "secondary.main" }}>
+              <Home />
+            </Avatar>
+          ) : (
+            <MimeAvatar node={node} />
+          )}
+
+          <Typography sx={{ pl: 1 }} color="#fff" variant="h6">
+            {home ? "Hjem" : node?.name}
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          {!largeScreen && (
+            <IconButton sx={{ color: "#fff" }} onClick={() => setOpen(false)}>
+              <Close />
+            </IconButton>
+          )}
+        </Toolbar>
+        {list}
+      </Box>
     </MuiDrawer>
   );
 }

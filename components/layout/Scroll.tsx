@@ -1,6 +1,7 @@
 import React from "react";
 import { Fab, useScrollTrigger, Zoom, Box } from "@mui/material";
 import { KeyboardArrowUp } from "@mui/icons-material";
+import { Container } from "@mui/system";
 
 export default function Scroll({ children }: any) {
   const trigger = useScrollTrigger({
@@ -25,7 +26,7 @@ export default function Scroll({ children }: any) {
   };
 
   return (
-    <>
+    <Container sx={{ pl: 0, pr: 0 }}>
       <Box id="top-anchor" />
       <Box
         id="scroll"
@@ -58,6 +59,6 @@ export default function Scroll({ children }: any) {
           </Fab>
         </Box>
       </Zoom>
-    </>
+    </Container>
   );
 }

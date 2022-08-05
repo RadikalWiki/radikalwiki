@@ -159,8 +159,8 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {getLetter(index)}
           </Typography>
         ) : (
-          <MuiAvatar sx={{ width: 24, height: 24, color: "#fff" }}>
-            <Typography fontSize={18}>{getLetter(index)}</Typography>
+          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit", bgcolor: "currentColor" }}>
+            <Typography sx={{ color: "#fff" }} fontSize={18}>{getLetter(index)}</Typography>
           </MuiAvatar>
         )
       ) : (
@@ -179,8 +179,8 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {index + 1}
           </Typography>
         ) : (
-          <MuiAvatar sx={{ width: 24, height: 24, color: "#fff", bgcolor: "inherit" }}>
-            <Typography fontSize={18}>{index + 1}</Typography>
+          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit", bgcolor: "currentColor" }}>
+            <Typography sx={{ color: "#fff" }} fontSize={18}>{index + 1}</Typography>
           </MuiAvatar>
         )
       ) : (

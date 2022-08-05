@@ -1,15 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { NavBar, Scroll, TopBar, SessionProvider, Breadcrumbs, OldBrowser } from "comps";
+import React, { Suspense, useEffect, useState } from "react";
+import {
+  NavBar,
+  Scroll,
+  TopBar,
+  SessionProvider,
+  Breadcrumbs,
+  OldBrowser,
+  Drawer,
+} from "comps";
 import { useAuthenticationStatus } from "@nhost/nextjs";
 import { useRouter } from "next/router";
-import { Container, Box } from "@mui/material";
+import { Container, Box, useMediaQuery, Grid } from "@mui/material";
 import { nhost } from "nhost";
-import { checkVersion } from "core/util"
-
+import { checkVersion } from "core/util";
+import { useScreen } from "hooks";
 
 export default function Layout({ children }: { children?: any }) {
   const [outdated, setOutdated] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const { asPath, push } = useRouter();
+  const largeScreen = useMediaQuery("(min-width:640px)");
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
   useEffect(() => {
@@ -29,22 +39,24 @@ export default function Layout({ children }: { children?: any }) {
   }, []);
 
   if (outdated) {
-    return <OldBrowser />
+    return <OldBrowser />;
   }
 
   if (asPath.match(/\?app=screen/))
     return <SessionProvider>{isAuthenticated && children}</SessionProvider>;
-  
+
   return (
     <SessionProvider>
-      <Scroll>
-        <TopBar />
-        <Container sx={{ pl: 0, pr: 0 }}>
-          {isAuthenticated && !asPath.match(/^\/user\//) && <Breadcrumbs />}
+      <Box sx={{ display: "flex" }}>
+        {isAuthenticated && (
+          <Drawer open={openDrawer} setOpen={() => setOpenDrawer(false)} />
+        )}
+        <Scroll>
+          <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
           {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && children}
           <Box sx={{ p: 8 }} />
-        </Container>
-      </Scroll>
+        </Scroll>
+      </Box>
       {!asPath.match(/^\/user\/$/) && isAuthenticated && <NavBar />}
     </SessionProvider>
   );

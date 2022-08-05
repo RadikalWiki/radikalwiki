@@ -12,7 +12,6 @@ const PdfViewer = dynamic(() => import("./PdfViewer"), {
 export default function FileLoader({ node }: { node: Node }) {
   const [file, setFile] = useState<any>(null);
   const data = node.query?.data();
-  console.log(data)
 
   useEffect(() => {
     const fetch = async () => {
