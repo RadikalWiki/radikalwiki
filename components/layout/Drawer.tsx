@@ -17,6 +17,7 @@ import {
   AppBar,
   ListItemAvatar,
   ListSubheader,
+  Button,
 } from "@mui/material";
 import {
   Airplay,
@@ -281,8 +282,6 @@ export default function Drawer({
 
   const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
-  const prefix = session?.prefix?.path;
-
   const node = query.nodes(
     toWhere(session?.prefix?.path ?? path.slice(0, 1))
   )[0];
@@ -375,7 +374,11 @@ export default function Drawer({
         }}
       >
         <Toolbar
+          onClick={(e) => {
+            !home && router.push(`/${(session?.prefix?.path ?? []).join("/")}`);
+          }}
           sx={{
+            cursor: "pointer",
             ml: largeScreen ? -2 : 0,
             bgcolor: "primary.main",
             "&:hover, &:focus": {
@@ -386,24 +389,26 @@ export default function Drawer({
           {home && state !== "init" ? (
             <IconButton
               sx={{ color: "#fff" }}
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 startTransition(() => {
                   router.back();
                   setState("context");
-                })
-              }
+                });
+              }}
             >
               <ChevronLeft />
             </IconButton>
           ) : path.length > 0 || state !== "init" ? (
             <IconButton
               sx={{ color: "#fff" }}
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation();
                 startTransition(() => {
                   router.push("/");
                   setState("home");
-                })
-              }
+                });
+              }}
             >
               <Home />
             </IconButton>
@@ -416,13 +421,18 @@ export default function Drawer({
           ) : (
             <MimeAvatar node={node} />
           )}
-
           <Typography sx={{ pl: 1 }} color="#fff" variant="h6">
             {home ? "Hjem" : node?.name}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {!largeScreen && (
-            <IconButton sx={{ color: "#fff" }} onClick={() => setOpen(false)}>
+            <IconButton
+              sx={{ color: "#fff" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOpen(false);
+              }}
+            >
               <Close />
             </IconButton>
           )}
