@@ -85,6 +85,7 @@ export default function SearchField() {
         .nodes({
           where: {
             _and: [
+              { mime: { hidden: { _eq: false } } },
               { contextId: { _eq: session?.prefix?.id } },
               { name: { _ilike: `%${name}%` } },
             ],
