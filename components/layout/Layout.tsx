@@ -19,7 +19,7 @@ export default function Layout({ children }: { children?: any }) {
   const [outdated, setOutdated] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const { asPath, push } = useRouter();
-  const largeScreen = useMediaQuery("(min-width:640px)");
+  const largeScreen = useMediaQuery("(min-width:1200px)");
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function Layout({ children }: { children?: any }) {
         <Scroll>
           <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
           {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && (
-            <Container sx={{ pl: 0, pr: 0 }}>
+            <Container sx={{ pl: 0, pr: 0, pt: 1 }}>
               {children}
             </Container>
           )}

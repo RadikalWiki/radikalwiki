@@ -21,7 +21,7 @@ export default function FolderApp({
   const screen = useScreen();
   if (screen && child) return null;
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       {!child && (
         <>
           <ContentHeader

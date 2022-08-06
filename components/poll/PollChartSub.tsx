@@ -86,7 +86,7 @@ export default function PollChartSub({
   if (poll?.isContextOwner == undefined) return null;
 
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <CardHeader
         sx={{
           bgcolor: (t) => t.palette.secondary.main,

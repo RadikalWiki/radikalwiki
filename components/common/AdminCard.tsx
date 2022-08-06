@@ -10,7 +10,7 @@ export default function AdminCard({
   title: string;
 }) {
   return (
-    <Card elevation={3} sx={{ m: 1, bgcolor: (t) => t.palette.primary.main }}>
+    <Card sx={{ m: 0, bgcolor: (t) => t.palette.primary.main }}>
       <CardHeader
         title={
           <Typography variant="h5" sx={{ color: "#fff" }}>

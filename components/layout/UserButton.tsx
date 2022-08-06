@@ -33,7 +33,7 @@ export default function UserButton() {
   const displayName = useUserDisplayName();
   const [session, setSession] = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
-  const largeScreen = useMediaQuery("(min-width:640px)");
+  const largeScreen = useMediaQuery("(min-width:1200px)");
   const { isAuthenticated } = useAuthenticationStatus();
 
   const handleClick = (event: any) => {

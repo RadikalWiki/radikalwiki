@@ -10,7 +10,7 @@ export default function AutoButton({
   icon: any;
   onClick: any;
 }) {
-  const largeScreen = useMediaQuery("(min-width:640px)");
+  const largeScreen = useMediaQuery("(min-width:1200px)");
 
   return largeScreen ? (
     <Button

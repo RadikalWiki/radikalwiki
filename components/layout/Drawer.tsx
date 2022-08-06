@@ -273,7 +273,7 @@ export default function Drawer({
 }) {
   const router = useRouter();
   const [session] = useSession();
-  const largeScreen = useMediaQuery("(min-width:640px)");
+  const largeScreen = useMediaQuery("(min-width:1200px)");
   const path = usePath();
   const query = useQuery();
   const [state, setState] = useState<DrawerState>("init");

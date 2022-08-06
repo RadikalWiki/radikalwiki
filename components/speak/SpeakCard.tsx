@@ -48,7 +48,7 @@ export default function SpeakCard({
   };
 
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <CardHeader
         title={
           <Typography variant="h5" sx={{ color: "#fff" }}>

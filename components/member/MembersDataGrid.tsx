@@ -96,7 +96,7 @@ export default function MembersDataGrid({ node }: { node: Node }) {
   if (rows == undefined || rows.length == 0 || !rows[0].id) return null;
 
   return (
-    <Box sx={{ m: 1 }}>
+    <Box sx={{ m: 0 }}>
       <DataGrid
         autoHeight
         columns={columns}

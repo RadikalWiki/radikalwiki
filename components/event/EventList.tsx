@@ -10,7 +10,7 @@ export default function EventList() {
   });
 
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <List sx={{ m: 0 }}>
         {events?.map(({ id = 0, name }) => (
           <Fragment key={id}>

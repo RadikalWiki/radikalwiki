@@ -61,7 +61,7 @@ export default function SortApp({ node }: { node: Node }) {
   return (
     <>
       <DragDropContext onDragEnd={handleDragEnd}>
-        <Card elevation={3} sx={{ m: 1 }}>
+        <Card sx={{ m: 0 }}>
           <Droppable droppableId="drop1">
             {(provided, snapshot) => (
               <List ref={provided.innerRef} sx={{ m: 0 }}>

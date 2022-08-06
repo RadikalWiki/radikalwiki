@@ -11,7 +11,7 @@ export default function ContentApp(param: {
   const [expand, setExpand] = useState(true);
 
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <ContentHeader
         node={param.node}
         hideMembers={param?.hideMembers}

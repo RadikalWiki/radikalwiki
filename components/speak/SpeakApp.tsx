@@ -32,7 +32,7 @@ export default function SpeakApp({ node }: { node: Node }) {
 
   return (
     <>
-      <Grid container justifyContent="center">
+      <Grid container spacing={1}>
         {!screen && (
           <Grid item xs={12} md={6}>
             <SpeakAdmin node={node} time={time} />

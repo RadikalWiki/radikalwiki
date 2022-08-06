@@ -137,7 +137,7 @@ export default function ChangeList({ node }: { node: Node }) {
   if (screen) return null;
 
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <CardHeader
         title={<Typography color="secondary"> Ændringsforslag </Typography>}
         avatar={

@@ -102,7 +102,7 @@ export default function Editor({ node }: { node: Node }) {
 
   return (
     <>
-      <Card elevation={3} sx={{ m: 1 }}>
+      <Card sx={{ m: 0 }}>
         <CardHeader
           title={<Typography color="secondary">{name}</Typography>}
           avatar={

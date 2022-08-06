@@ -15,7 +15,7 @@ export default function HeaderCard({
   action?: any;
 }) {
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <CardHeader
         action={action}
         subheader={subtitle}

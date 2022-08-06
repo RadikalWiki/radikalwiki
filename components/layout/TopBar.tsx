@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -22,8 +22,9 @@ export default function TopBar({
 }) {
   const [session] = useSession();
   const { isAuthenticated } = useAuthenticationStatus();
-  const largeScreen = useMediaQuery("(min-width:640px)");
+  const largeScreen = useMediaQuery("(min-width:1200px)");
 
+  const Con = largeScreen ? Container : Fragment;
   return (
     <>
       <HideOnScroll>
@@ -39,7 +40,7 @@ export default function TopBar({
           }
           enableColorOnDark
         >
-          <Container>
+          <Con>
             <Toolbar>
               {session &&
                 isAuthenticated && [
@@ -63,7 +64,7 @@ export default function TopBar({
               <Box sx={{ flexGrow: 1 }} />
               <UserButton />
             </Toolbar>
-          </Container>
+          </Con>
         </AppBar>
       </HideOnScroll>
       <Box sx={{ p: 4 }} />

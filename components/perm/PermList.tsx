@@ -134,7 +134,7 @@ function ChildList({ id }: { id?: string }) {
 
 export default function PermList({ id }: { id: string }) {
   return (
-    <Card elevation={3} sx={{ m: 1 }}>
+    <Card sx={{ m: 0 }}>
       <CardHeader
         title={<Typography color="secondary">Rettigheder</Typography>}
         avatar={

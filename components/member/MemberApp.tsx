@@ -1,6 +1,6 @@
 import React from "react";
 import { InvitesTextField, InvitesFab, MembersDataGrid } from "comps";
-import { Grid } from "@mui/material";
+import { Stack } from "@mui/material";
 import { Node } from "hooks";
 
 export default function MemberApp({ node }: { node: Node }) {
@@ -8,14 +8,10 @@ export default function MemberApp({ node }: { node: Node }) {
 
   return (
     <>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <InvitesTextField node={node} />
-        </Grid>
-        <Grid item xs={12}>
-          <MembersDataGrid node={node} />
-        </Grid>
-      </Grid>
+      <Stack spacing={1}>
+        <InvitesTextField node={node} />
+        <MembersDataGrid node={node} />
+      </Stack>
       <InvitesFab node={node} />
     </>
   );

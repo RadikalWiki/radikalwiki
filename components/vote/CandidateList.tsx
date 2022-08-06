@@ -19,7 +19,7 @@ import { useEffect, useState } from "react";
 export default function CandidateList({ node }: { node: Node }) {
   const router = useRouter();
   const screen = useScreen();
-  const largeScreen = useMediaQuery("(min-width:640px)");
+  const largeScreen = useMediaQuery("(min-width:1200px)");
   const userId = useUserId();
   const [images, setImages] = useState<string[]>([]);
 
@@ -67,7 +67,7 @@ export default function CandidateList({ node }: { node: Node }) {
   };
 
   return (
-    <ImageList cols={largeScreen ? 2 : 1} sx={{ m: 1 }}>
+    <ImageList cols={largeScreen ? 2 : 1} sx={{ m: 0 }}>
       {children?.map(({ id, name, namespace }, index) => {
         return !id ? null : (
           <ImageListItem

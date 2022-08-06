@@ -12,6 +12,7 @@ import {
   FormGroup,
   FormHelperText,
   Radio,
+  Stack,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -180,15 +181,15 @@ export default function VoteApp({ node }: { node: Node }) {
     (!poll?.mutable || checkUnique === false || canVote === false)
   )
     return (
-      <>
+      <Stack spacing={1}>
         {status}
         <MimeLoader id={poll?.id} mimeId={poll?.mimeId} />
-      </>
+      </Stack>
     );
 
   if (!(poll?.mutable && poll?.mimeId == "vote/poll")) {
     return (
-      <>
+      <Stack spacing={1}>
         {status}
         <HeaderCard
           title="Ingen afstemning nu"
@@ -202,14 +203,14 @@ export default function VoteApp({ node }: { node: Node }) {
             </Avatar>
           }
         />
-      </>
+      </Stack>
     );
   }
 
   return (
-    <>
+    <Stack spacing={1}>
       {status}
-      <Card elevation={3} sx={{ m: 1 }}>
+      <Card sx={{ m: 0 }}>
         <CardHeader
           sx={{
             bgcolor: (t) => t.palette.secondary.main,
@@ -249,6 +250,6 @@ export default function VoteApp({ node }: { node: Node }) {
           </form>
         </CardContent>
       </Card>
-    </>
+    </Stack>
   );
 }

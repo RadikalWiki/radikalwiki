@@ -8,8 +8,8 @@ export default function ScreenApp({ node }: { node: Node }) {
   const content = node.subGet("active");
 
   return (
-    <Box sx={{ height: "100%" }}>
-      <Grid container alignItems="stretch" justifyContent="space-evenly">
+    <Box sx={{ height: "100%", m: 1 }}>
+      <Grid container alignItems="stretch" justifyContent="space-evenly" spacing={1}>
         <Grid item xs>
           <MimeLoader id={content?.id} mimeId={content?.mimeId!} />
         </Grid>

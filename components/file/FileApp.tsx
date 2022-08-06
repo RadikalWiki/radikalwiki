@@ -14,7 +14,7 @@ export default function FileApp({ node }: { node: Node }) {
 
   return (
     <>
-      <Card elevation={3} sx={{ m: 1 }}>
+      <Card sx={{ m: 0 }}>
         <ContentHeader
           node={node}
           hideMembers
