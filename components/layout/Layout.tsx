@@ -53,7 +53,11 @@ export default function Layout({ children }: { children?: any }) {
         )}
         <Scroll>
           <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-          {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && children}
+          {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && (
+            <Container sx={{ pl: 0, pr: 0 }}>
+              {children}
+            </Container>
+          )}
           <Box sx={{ p: 8 }} />
         </Scroll>
       </Box>

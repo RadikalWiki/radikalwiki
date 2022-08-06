@@ -26,7 +26,7 @@ export default function Scroll({ children }: any) {
   };
 
   return (
-    <Container sx={{ pl: 0, pr: 0 }}>
+    <Box sx={{ width: "100%" }}>
       <Box id="top-anchor" />
       <Box
         id="scroll"
@@ -59,6 +59,6 @@ export default function Scroll({ children }: any) {
           </Fab>
         </Box>
       </Zoom>
-    </Container>
+    </Box>
   );
 }
