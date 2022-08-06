@@ -39,13 +39,19 @@ import { getIconFromId } from "mime";
 import { Node, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
-function ChildListElement({ node, child, index }: { node: Node, child?: nodes; index: number }) {
-  //const node = useNode({ id });
-  //const query = node.query;
+function ChildListElement({
+  node,
+  child,
+  index,
+}: {
+  node: Node;
+  child?: nodes;
+  index: number;
+}) {
   const router = useRouter();
-  const id = child?.id
+  const id = child?.id;
 
-  return (
+  const item = (
     <>
       <ListItem
         button
@@ -91,6 +97,8 @@ function ChildListElement({ node, child, index }: { node: Node, child?: nodes; i
       </ListItem>
     </>
   );
+
+  return child?.id ? item : null;
 }
 
 export default function QuestionList({ node }: { node: Node }) {
