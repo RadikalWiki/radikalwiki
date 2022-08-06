@@ -5,7 +5,7 @@ export default function GroupApp({ node }: { node: Node }) {
   return (
     <>
       <ContentApp node={node} hideMembers />
-      <FolderApp node={node} />
+      <FolderApp node={node} child />
     </>
   );
 }

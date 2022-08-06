@@ -9,16 +9,18 @@ import {
   Tooltip,
   ListItemAvatar,
   ListItemText,
+  Typography,
 } from "@mui/material";
 import { DoNotDisturb, LockOpen } from "@mui/icons-material";
 import { order_by, query, resolved } from "gql";
 import { TransitionGroup } from "react-transition-group";
 import { MimeAvatar, MimeIcon } from "mime";
 import { toWhere } from "core/path";
-import { Node, useNode } from "hooks";
+import { Node, useNode, useScreen } from "hooks";
 import { useUserId } from "@nhost/react";
 
 export default function FolderList({ node }: { node: Node }) {
+  const screen = useScreen();
   const userId = useUserId();
   const router = useRouter();
 
@@ -73,7 +75,7 @@ export default function FolderList({ node }: { node: Node }) {
               <ListItemAvatar>
                 {avatar}
               </ListItemAvatar>
-              <ListItemText primary={name} />
+              <ListItemText primary={<Typography>{name}</Typography>} />
             </ListItem>
             <Divider />
           </Collapse>
