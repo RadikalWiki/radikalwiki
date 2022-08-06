@@ -122,40 +122,7 @@ export default function SearchField() {
             }}
           />
         </SearchBox>
-        // <SearchBox key="search" {...params}>
-        //   <SearchIconWrapper>
-        //     <Search />
-        //   </SearchIconWrapper>
-        //   <StyledInputBase
-        //     placeholder="Søg…"
-        //     inputProps={{
-        //       endAdornment: (
-        //         <>
-        //           {loading ? (
-        //             <CircularProgress color="inherit" size={20} />
-        //           ) : null}
-        //           {params.InputProps.endAdornment}
-        //         </>
-        //       ),
-        //     }}
-        //   />
-        // </SearchBox>
       )}
     />
   );
 }
-/*
-        <TextField
-          {...params}
-          label="Asynchronous"
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
-          }}
-        />
-        */
