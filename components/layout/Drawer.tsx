@@ -117,7 +117,7 @@ const DrawerList = ({
             <MimeIcon node={child} index={iconIndex} />
           </ListItemIcon>
           <ListItemText>
-            <Typography>{child?.name ?? "Ukendt"}</Typography>
+            <Typography>{child?.name}</Typography>
           </ListItemText>
           {!!someChildren && (
             <ListItemSecondaryAction>
