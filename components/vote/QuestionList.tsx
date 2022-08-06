@@ -123,7 +123,7 @@ export default function QuestionList({ node }: { node: Node }) {
           </Avatar>
         }
         action={
-          <CardActions sx={{ p: 0 }}>
+          !screen && <CardActions sx={{ p: 0 }}>
             {node.query?.isContextOwner && !screen && (
               <AutoButton
                 text="Sorter"
