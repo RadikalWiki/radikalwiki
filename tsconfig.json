@@ -32,7 +32,10 @@
       ],
       "mime": [
         "core/mime"
-      ]
+      ],
+      "hoc": [
+        "core/hoc"
+      ],
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
