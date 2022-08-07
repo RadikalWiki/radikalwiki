@@ -48,16 +48,6 @@ export default function FolderList({ node }: { node: Node }) {
   const policies = children.filter((child) => child.mimeId == "vote/policy");
 
   const handleOnClick = (namespace?: string) => async () => {
-    const path = `${router.asPath}/${namespace}`.substring(1).split("/");
-    await resolved(() => {
-      const node = query?.nodes(toWhere(path))?.[0];
-      node?.id;
-      node?.name;
-      node?.mimeId;
-      node?.parentId;
-      node?.contextId;
-    });
-
     router.push(`${router.asPath}/${namespace}`);
   };
 

@@ -116,19 +116,8 @@ const DrawerList = ({
           selected={selected}
           onClick={() => {
             startTransition(() => {
-              resolved(() => {
-                const node = query?.nodes(
-                  toWhere([...path, child?.namespace!])
-                )?.[0];
-                node?.id;
-                node?.name;
-                node?.mimeId;
-                node?.parentId;
-                node?.contextId;
-              }).then(() => {
                 setDrawerOpen(false);
                 router.push(`${path.join("/")}/${child?.namespace}`);
-              });
             });
           }}
         >
