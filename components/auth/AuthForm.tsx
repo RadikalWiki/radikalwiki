@@ -122,13 +122,6 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     setSession({
       timeDiff: 0,
     });
-
-    fetch("/api/time").then(res => res.json().then(({ time }) => {
-      setSession({
-        timeDiff: new Date().getTime() - new Date(time).getTime(),
-      });
-    }));
-    router.back();
   };
 
   const onRegister = async () => {

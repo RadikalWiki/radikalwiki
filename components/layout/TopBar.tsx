@@ -42,8 +42,7 @@ export default function TopBar({
         >
           <Con>
             <Toolbar>
-              {session &&
-                isAuthenticated && [
+              {isAuthenticated && [
                   ...(largeScreen
                     ? []
                     : [

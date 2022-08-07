@@ -12,12 +12,13 @@ import { useRouter } from "next/router";
 import { Container, Box, useMediaQuery, Grid } from "@mui/material";
 import { nhost } from "nhost";
 import { checkVersion } from "core/util";
+import { useSession } from "hooks";
 
 export default function Layout({ children }: { children?: any }) {
   const [outdated, setOutdated] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [session, setSession] = useSession();
   const { asPath, push } = useRouter();
-  const largeScreen = useMediaQuery("(min-width:1200px)");
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
   useEffect(() => {
@@ -36,15 +37,25 @@ export default function Layout({ children }: { children?: any }) {
     };
   }, []);
 
-  if (outdated) {
-    return <OldBrowser />;
-  }
+  useEffect(() => {
+    if (session?.timeDiff === undefined) {
+      setSession({ timeDiff: 0 });
+      fetch("/api/time").then((res) =>
+        res.json().then(({ time }) => {
+          setSession({
+            timeDiff: new Date().getTime() - new Date(time).getTime(),
+          });
+        })
+      );
+    }
+  }, [session, setSession]);
 
-  if (asPath.match(/\?app=screen/))
-    return <SessionProvider>{isAuthenticated && children}</SessionProvider>;
+  if (outdated) return <OldBrowser />;
+
+  if (asPath.match(/\?app=screen/) && isAuthenticated) return children;
 
   return (
-    <SessionProvider>
+    <>
       <Box sx={{ display: "flex" }}>
         {isAuthenticated && (
           <Drawer open={openDrawer} setOpen={() => setOpenDrawer(false)} />
@@ -52,14 +63,12 @@ export default function Layout({ children }: { children?: any }) {
         <Scroll>
           <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
           {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && (
-            <Container sx={{ pl: 0, pr: 0, pt: 1 }}>
-              {children}
-            </Container>
+            <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>
           )}
           <Box sx={{ p: 8 }} />
         </Scroll>
       </Box>
       {!asPath.match(/^\/user\/$/) && isAuthenticated && <NavBar />}
-    </SessionProvider>
+    </>
   );
 }
