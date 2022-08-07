@@ -35,7 +35,14 @@ import {
 import { useSession, usePath } from "hooks";
 import { fromId, toWhere } from "core/path";
 import { Link as NextLink } from "comps";
-import { order_by, resolved, useQuery, nodes, useSubscription } from "gql";
+import {
+  order_by,
+  query,
+  resolved,
+  useQuery,
+  nodes,
+  useSubscription,
+} from "gql";
 import { MimeAvatar, MimeIcon } from "mime";
 import { Fragment, useState, startTransition } from "react";
 import { useRouter } from "next/router";
@@ -107,12 +114,23 @@ const DrawerList = ({
             color: selected ? "primary.main" : "",
           }}
           selected={selected}
-          onClick={() =>
+          onClick={() => {
             startTransition(() => {
-              setDrawerOpen(false);
-              router.push(`${path.join("/")}/${child?.namespace}`);
-            })
-          }
+              resolved(() => {
+                const node = query?.nodes(
+                  toWhere([...path, child?.namespace!])
+                )?.[0];
+                node?.id;
+                node?.name;
+                node?.mimeId;
+                node?.parentId;
+                node?.contextId;
+              }).then(() => {
+                setDrawerOpen(false);
+                router.push(`${path.join("/")}/${child?.namespace}`);
+              });
+            });
+          }}
         >
           <ListItemIcon sx={{ color: selected ? "primary.main" : "" }}>
             <MimeIcon node={child} index={iconIndex} />

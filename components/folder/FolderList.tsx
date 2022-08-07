@@ -54,6 +54,8 @@ export default function FolderList({ node }: { node: Node }) {
       node?.id;
       node?.name;
       node?.mimeId;
+      node?.parentId;
+      node?.contextId;
     });
 
     router.push(`${router.asPath}/${namespace}`);
@@ -72,9 +74,7 @@ export default function FolderList({ node }: { node: Node }) {
         return !id ? null : (
           <Collapse key={id ?? 0}>
             <ListItem button onClick={handleOnClick(namespace)}>
-              <ListItemAvatar>
-                {avatar}
-              </ListItemAvatar>
+              <ListItemAvatar>{avatar}</ListItemAvatar>
               <ListItemText primary={<Typography>{name}</Typography>} />
             </ListItem>
             <Divider />
