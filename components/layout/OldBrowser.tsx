@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import { Typography, CardContent, Avatar, Divider, List, ListItem, ListItemAvatar } from "@mui/material";
+import React from "react";
+import { Typography, CardContent, Avatar, Divider } from "@mui/material";
 import { BrowserNotSupported } from "@mui/icons-material";
 import { Container } from "@mui/system";
 import { HeaderCard } from "comps/common";

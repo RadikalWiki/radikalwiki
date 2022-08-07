@@ -1,10 +1,9 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   NavBar,
   Scroll,
   TopBar,
   SessionProvider,
-  Breadcrumbs,
   OldBrowser,
   Drawer,
 } from "comps";
@@ -13,7 +12,6 @@ import { useRouter } from "next/router";
 import { Container, Box, useMediaQuery, Grid } from "@mui/material";
 import { nhost } from "nhost";
 import { checkVersion } from "core/util";
-import { useScreen } from "hooks";
 
 export default function Layout({ children }: { children?: any }) {
   const [outdated, setOutdated] = useState(false);
