@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, startTransition, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -20,7 +20,6 @@ export default function TopBar({
   openDrawer: boolean;
   setOpenDrawer: Function;
 }) {
-  const [session] = useSession();
   const { isAuthenticated } = useAuthenticationStatus();
   const largeScreen = useMediaQuery("(min-width:1200px)");
 
@@ -33,9 +32,9 @@ export default function TopBar({
           sx={
             largeScreen && isAuthenticated
               ? {
-                  width: `calc(100% - ${drawerWidth}px)`,
-                  ml: `${drawerWidth}px`,
-                }
+                width: `calc(100% - ${drawerWidth}px)`,
+                ml: `${drawerWidth}px`,
+              }
               : {}
           }
           enableColorOnDark
@@ -43,23 +42,25 @@ export default function TopBar({
           <Con>
             <Toolbar>
               {isAuthenticated && [
-                  ...(largeScreen
-                    ? []
-                    : [
-                        <IconButton
-                          key="menu"
-                          aria-label="menu"
-                          edge="start"
-                          color="inherit"
-                          onClick={() => setOpenDrawer(!openDrawer)}
-                          size="large"
-                        >
-                          <Menu />
-                        </IconButton>,
-                      ]),
-                  ,
-                  <SearchField key="search" />,
-                ]}
+                ...(largeScreen
+                  ? []
+                  : [
+                    <IconButton
+                      key="menu"
+                      aria-label="menu"
+                      edge="start"
+                      color="inherit"
+                      onClick={() =>
+                        startTransition(() => setOpenDrawer(!openDrawer))
+                      }
+                      size="large"
+                    >
+                      <Menu />
+                    </IconButton>,
+                  ]),
+                ,
+                <SearchField key="search" />,
+              ]}
               <Box sx={{ flexGrow: 1 }} />
               <UserButton />
             </Toolbar>

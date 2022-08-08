@@ -292,7 +292,7 @@ export default function Drawer({
   const node = query.nodes(
     toWhere(session?.prefix?.path ?? path.slice(0, 1))
   )[0];
-  const contextId = node.contextId;
+  const contextId = node?.contextId;
 
   const handleCurrent = async () => {
     const id = await resolved(
