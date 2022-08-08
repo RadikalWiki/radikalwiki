@@ -1,7 +1,7 @@
 import React, { useEffect, ComponentType } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
-import { Layout } from "comps";
+import { Layout, SessionProvider } from "comps";
 import { useTheme } from "hooks";
 import { nhost } from "nhost";
 import { NhostReactProvider } from "@nhost/react";
@@ -36,9 +36,11 @@ export default function App({
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
+            <SessionProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </SessionProvider>
           </ThemeProvider>
         </LocalizationProvider>
       </NhostReactProvider>
