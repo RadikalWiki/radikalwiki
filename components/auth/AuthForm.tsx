@@ -122,6 +122,8 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     setSession({
       timeDiff: 0,
     });
+    
+    router.back();
   };
 
   const onRegister = async () => {
