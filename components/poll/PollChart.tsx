@@ -59,7 +59,7 @@ export default function PollChart({
   node: Node;
   screen?: boolean;
 }) {
-  const poll = node.query;
+  const poll = node.useQuery();
 
   const title = poll?.name;
   const chartData = parseData(poll, screen);

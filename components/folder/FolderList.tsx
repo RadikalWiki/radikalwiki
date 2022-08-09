@@ -12,9 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 import { DoNotDisturb, LockOpen } from "@mui/icons-material";
-import { order_by, query, resolved } from "gql";
+import { order_by, query as q, resolved } from "gql";
 import { TransitionGroup } from "react-transition-group";
-import { MimeAvatar, MimeIcon } from "mime";
+import { MimeAvatarId, MimeIcon } from "comps";
 import { toWhere } from "core/path";
 import { Node, useNode, useScreen } from "hooks";
 import { useUserId } from "@nhost/react";
@@ -23,9 +23,10 @@ export default function FolderList({ node }: { node: Node }) {
   const screen = useScreen();
   const userId = useUserId();
   const router = useRouter();
+  const query = node.useQuery();
 
   const children =
-    node.query?.children({
+    query?.children({
       order_by: [{ index: order_by.asc }],
       where: {
         _and: [
@@ -45,22 +46,15 @@ export default function FolderList({ node }: { node: Node }) {
       },
     }) ?? [];
 
-  const policies = children.filter((child) => child.mimeId == "vote/policy");
-
   const handleOnClick = (namespace?: string) => async () => {
     router.push(`${router.asPath}/${namespace}`);
   };
 
   return (
     <TransitionGroup>
-      {children.map((node) => {
-        const { id, name, namespace } = node;
-        const avatar = (
-          <MimeAvatar
-            node={node}
-            index={policies.findIndex((policy) => policy.id === id)}
-          />
-        );
+      {children.map((child) => {
+        const { id, name, namespace } = child;
+        const avatar = <MimeAvatarId id={id} />;
         return !id ? null : (
           <Collapse key={id ?? 0}>
             <ListItem button onClick={handleOnClick(namespace)}>

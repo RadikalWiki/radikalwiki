@@ -6,10 +6,12 @@ import { Node, useNode } from "hooks";
 import { Stop } from "@mui/icons-material";
 
 export default function PollAdmin({ node }: { node: Node }) {
-  const data = node.sub?.data();
+  const sub = node.useSubs();
+  const update = node.useUpdate();
+  const data = sub?.data();
   const refetch = useRefetch();
 
-  const voters = node.sub?.context
+  const voters = sub?.context
     ?.permissions({
       where: {
         _and: [
@@ -27,15 +29,15 @@ export default function PollAdmin({ node }: { node: Node }) {
     .reduce((total, next) => (total ?? 0) + (next ?? 0), 0);
 
   const handleStopPoll = async (_: any) => {
-    await node.update({ set: { mutable: false, data: { ...data, voters } } });
-    await refetch(() =>
-      node.query
-        ?.children({ where: { mimeId: { _eq: "vote/vote" } } })
-        .map((vote) => vote.data)
-    );
+    await update({ set: { mutable: false, data: { ...data, voters } } });
+    //await refetch(() =>
+    //  node.query
+    //    ?.children({ where: { mimeId: { _eq: "vote/vote" } } })
+    //    .map((vote) => vote.data)
+    //);
   };
 
-  if (!node.sub?.mutable || !node.sub?.isContextOwner) return null;
+  if (!sub?.mutable || !sub?.isContextOwner) return null;
 
   return (
     <AdminCard title="Administrer Afstemning">

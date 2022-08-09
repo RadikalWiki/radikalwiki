@@ -19,12 +19,13 @@ import { Node, useScreen } from "hooks";
 
 function PollListSuspense({ node }: { node: Node }) {
   const router = useRouter();
-  const query = node.query;
+  const query = node.useQuery();
+  const $delete = node.useDelete();
   const polls = query?.children({
     where: { mimeId: { _eq: "vote/poll" } },
   });
   const handleDeletePoll = (id: string) => async () => {
-    await node.delete({ id });
+    await $delete({ id });
   };
 
   const owner = query?.isOwner;

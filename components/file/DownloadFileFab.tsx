@@ -5,7 +5,7 @@ import { Node } from "hooks";
 import { nhost } from "nhost";
 
 export default function AddContentFab({ node }: { node: Node }) {
-  const data = node.query?.data();
+  const data = node.useQuery()?.data();
   const download = async () => {
     const { presignedUrl } = await nhost.storage.getPresignedUrl({
       fileId: data?.fileId,

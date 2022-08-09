@@ -15,7 +15,7 @@ import {
 import { fromId } from "core/path";
 import { nodes, query, resolved } from "gql";
 import { useSession } from "hooks";
-import { MimeIcon } from "mime";
+import { MimeIconId } from "comps";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 
@@ -165,7 +165,7 @@ export default function SearchField() {
             onClick={goto(option.id)}
           >
             <ListItemIcon>
-              <MimeIcon node={option as any} />
+              <MimeIconId id={option?.id} />
             </ListItemIcon>
             <ListItemText secondary={option.parent?.name}>
               {option.name}

@@ -37,14 +37,16 @@ export default function SpeakCard({
   time: number;
 }) {
   const screen = useScreen();
-  const speakerlist = node.subGet("speakerlist");
+  const get = node.useSubsGet();
+  const $delete = node.useDelete();
+  const speakerlist = get("speakerlist");
   const speakers = speakerlist?.children({
     where: { mimeId: { _eq: "speak/speak" } },
     order_by: [{ data: order_by.desc }, { createdAt: order_by.asc }],
   });
 
   const handleRemoveSpeak = (id: any) => (_: any) => {
-    node.delete({ id });
+    $delete({ id });
   };
 
   return (

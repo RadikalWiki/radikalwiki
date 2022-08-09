@@ -4,7 +4,7 @@ import { Node } from "hooks";
 
 export default function GroupApp({ node }: { node: Node }) {
   return (
-    <Stack spacing={0}>
+    <Stack spacing={1}>
       <ContentApp node={node} hideMembers />
       <FolderApp node={node} child />
     </Stack>

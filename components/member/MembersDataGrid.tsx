@@ -9,7 +9,8 @@ import { Delete } from "@mui/icons-material";
 import { Node, useNode } from "hooks";
 
 export default function MembersDataGrid({ node }: { node: Node }) {
-  const query = node.query
+  const query = node.useQuery()
+  const member = node.useMember()
 
   const columns: GridColumns = [
     {
@@ -59,7 +60,7 @@ export default function MembersDataGrid({ node }: { node: Node }) {
             icon={<Delete />}
             label="Delete"
             key="delete"
-            onClick={() => node.member.delete(id.toString())}
+            onClick={() => member.delete(id.toString())}
             color="inherit"
           />,
         ];
@@ -78,7 +79,7 @@ export default function MembersDataGrid({ node }: { node: Node }) {
   }) => {
     if (typeof value != "boolean" && !["name", "email"].includes(field)) return;
     const set = { [field]: value };
-    await node.member.update(id, set);
+    await member.update(id, set);
   };
 
   const rows = query

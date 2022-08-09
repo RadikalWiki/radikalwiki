@@ -10,7 +10,8 @@ export default function SpeakApp({ node }: { node: Node }) {
   const [session] = useSession();
   const [time, setTime] = useState(0);
 
-  const speakerlist = node.subGet("speakerlist");
+  const get = node.useSubsGet();
+  const speakerlist = get("speakerlist");
 
   const data = speakerlist?.data();
 

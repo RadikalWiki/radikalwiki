@@ -7,7 +7,7 @@ import { useUserDisplayName } from "@nhost/react";
 export default function AddChangeButton({ node }: { node: Node }) {
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
-  const query = node.query;
+  const query = node.useQuery();
 
   const name = query?.mimeId == "vote/position" ? displayName : "";
 

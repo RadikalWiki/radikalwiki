@@ -19,8 +19,7 @@ import {
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
 import { Node } from "hooks";
-import { PollApp, PollChartSub } from "comps/poll";
-import { HeaderCard } from "comps/common";
+import { HeaderCard, MimeLoader } from "comps";
 import {
   DoNotDisturb,
   Hail,
@@ -29,7 +28,6 @@ import {
   Refresh,
 } from "@mui/icons-material";
 import { useUserEmail, useUserId } from "@nhost/react";
-import { MimeLoader } from "comps/layout";
 
 export default function VoteApp({ node }: { node: Node }) {
   const [session] = useSession();
@@ -38,13 +36,16 @@ export default function VoteApp({ node }: { node: Node }) {
   const router = useRouter();
   const [refresh, setRefresh] = useState(false);
 
-  const poll = node.subGet("active");
+  const insert = node.useInsert();
+  const sub = node.useSubs();
+  const get = node.useGet();
+  const poll = get("active");
 
   const [helperText, setHelperText] = useState("");
   const [error, setError] = useState(false);
 
   const checkUnique = poll?.checkUnique({ args: { mime: "vote/vote" } });
-  const canVote = !!node.sub?.context?.permissions({
+  const canVote = !!sub?.context?.permissions({
     where: {
       _and: [
         { mimeId: { _eq: "vote/vote" } },
@@ -117,7 +118,7 @@ export default function VoteApp({ node }: { node: Node }) {
     const name = new Date(
       new Date().getTime() + (session?.timeDiff ?? 0)
     ).toLocaleString();
-    await node.insert({
+    await insert({
       name,
       mimeId: "vote/vote",
       parentId: poll?.id,

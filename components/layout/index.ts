@@ -3,7 +3,6 @@ export { default as AppLoader } from './AppLoader';
 export { default as MimeLoader } from './MimeLoader';
 export { default as HomeApp } from './HomeApp';
 export { default as Drawer } from './Drawer';
-export { default as Breadcrumbs } from './Breadcrumbs';
 export { default as HideOnScroll } from './HideOnScroll';
 export { default as Layout } from './Layout';
 export { default as NavBar } from './NavBar';

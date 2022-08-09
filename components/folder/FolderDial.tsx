@@ -21,7 +21,10 @@ export default function FolderDial({ node }: { node: Node }) {
   const screen = useScreen();
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const query = node.query;
+  const query = node.useQuery();
+  const nodeUpdate = node.useUpdate();
+  const nodeDelete = node.useDelete();
+  const nodeMembers= node.useMembers();
   const parentId = query?.parentId;
 
   if (screen || !query?.isContextOwner) return null;
@@ -145,18 +148,18 @@ export default function FolderDial({ node }: { node: Node }) {
   };
 
   const handleDelete = async () => {
-    await node.members.delete();
-    await node.delete();
+    await nodeMembers.delete();
+    await nodeDelete();
     const path = await fromId(parentId);
     router.push("/" + path.join("/"));
   };
 
   const handleLockChildren = async () => {
-    await node.update({ set: { attachable: !query?.attachable } });
+    await nodeUpdate({ set: { attachable: !query?.attachable } });
   };
 
   const handleLockContent = async () => {
-    await node.update({ set: { mutable: !query?.mutable } });
+    await nodeUpdate({ set: { mutable: !query?.mutable } });
   };
 
   return (

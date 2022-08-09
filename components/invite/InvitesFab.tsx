@@ -5,6 +5,7 @@ import { CSVReader } from "comps";
 import { Node, useNode } from "hooks";
 
 export default function InvitesFab({ node }: { node: Node }) {
+  const nodeMembers = node.useMembers();
   const handleFile = async (fileData: any) => {
     const invites = fileData
       .filter((r: any) => r?.email)
@@ -13,7 +14,7 @@ export default function InvitesFab({ node }: { node: Node }) {
         email: r?.email?.toLowerCase(),
         parentId: node.id,
       }));
-    await node.members.insert(invites);
+    await nodeMembers.insert(invites);
   };
 
   const parseOptions = {

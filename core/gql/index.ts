@@ -52,11 +52,11 @@ const subscriptionsClient =
         failedConnectionCallback: async () => {
           const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
           await nhost.auth.refreshSession(refreshToken);
+          console.log("failed callback")
           subscriptionsClient?.setConnectionParams(
             {
               headers: getHeaders(),
             },
-            true
           );
         },
         wsEndpoint: () => {
@@ -132,6 +132,7 @@ subscriptionsClient?.setConnectionParams({
 });
 
 nhost.auth?.onTokenChanged(() => {
+  console.log("token changed")
   subscriptionsClient?.setConnectionParams({
     headers: getHeaders(),
   });

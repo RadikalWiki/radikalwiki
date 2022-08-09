@@ -11,12 +11,15 @@ export default function SpeakAdmin({
   node: Node;
   time: number;
 }) {
-  const speakerlist = node.subGet("speakerlist");
+  const get = node.useSubsGet();
+  const speakerlist = get("speakerlist");
+  const update = node.useUpdate();
+  const children = node.useChildren();
   const [timeBox, setTimeBox] = useState(120);
   const id = speakerlist?.id;
 
-  const handleRemoveSpeaks = async (_: any) => {
-    await node.children.delete({
+  const handleRemoveSpeaks = async () => {
+    await children.delete({
       _and: [
         { mimeId: { _eq: "speak/speak" } },
         {
@@ -27,12 +30,12 @@ export default function SpeakAdmin({
   };
 
   const handleLockSpeak = async (mutable: boolean) => {
-    await node.update({ id, set: { mutable } });
+    await update({ id, set: { mutable } });
   };
 
   const handleTimerSet = async (time: number) => {
     const updatedAt = new Date();
-    await node.update({ id, set: { data: { time, updatedAt } } });
+    await update({ id, set: { data: { time, updatedAt } } });
   };
 
   const owner = speakerlist?.isOwner;

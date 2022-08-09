@@ -38,7 +38,7 @@ export default function Layout({ children }: { children?: any }) {
   }, []);
 
   useEffect(() => {
-    if (session?.timeDiff === undefined) {
+    if (session !== null && session?.timeDiff === undefined) {
       setSession({ timeDiff: 0 });
       fetch("/api/time").then((res) =>
         res.json().then(({ time }) => {

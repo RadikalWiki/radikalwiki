@@ -9,6 +9,7 @@ import {
 import { Node, useNode } from "hooks";
 
 export default function InvitesTextField({ node }: { node: Node }) {
+  const nodeMembers = node.useMembers();
   const [users, setUsers] = useState<any[]>([]);
 
   const handleAddInvites = async () => {
@@ -18,7 +19,7 @@ export default function InvitesTextField({ node }: { node: Node }) {
       nodeId: user.userId,
       parentId: node.id,
     }));
-    await node.members.insert(invites);
+    await nodeMembers.insert(invites);
     setUsers([]);
   };
 

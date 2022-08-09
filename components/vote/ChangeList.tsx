@@ -5,6 +5,7 @@ import {
   Content,
   ContentToolbar,
   AutoButton,
+  MimeAvatar,
 } from "comps";
 import { useRouter } from "next/router";
 import {
@@ -34,13 +35,13 @@ import {
   Chip,
 } from "@mui/material";
 import { order_by } from "gql";
-import { getIconFromId, MimeAvatar } from "mime";
+import { getIconFromId } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
 function ChildListElement({ id, index }: { id: string; index: number }) {
   const node = useNode({ id });
-  const query = node.query;
+  const query = node.useQuery();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -54,7 +55,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
         href={`${router.asPath}/${query?.namespace}`}
       >
         <ListItemAvatar>
-          <MimeAvatar node={query} index={index} />
+          <MimeAvatar node={node} />
         </ListItemAvatar>
         <ListItemText
           primary={query?.name}
@@ -92,7 +93,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
 }
 
 function ChildListRaw({ node }: { node: Node }) {
-  const children = node.query?.children({
+  const children = node.useQuery()?.children({
     where: { mimeId: { _eq: "vote/change" } },
     order_by: [{ index: order_by.asc }],
   });
@@ -133,6 +134,7 @@ function ChildListRaw({ node }: { node: Node }) {
 export default function ChangeList({ node }: { node: Node }) {
   const screen = useScreen();
   const router = useRouter();
+  const query = node.useQuery();
 
   if (screen) return null;
 
@@ -151,7 +153,7 @@ export default function ChangeList({ node }: { node: Node }) {
         }
         action={
           <CardActions sx={{ p: 0 }}>
-            {node.query?.isContextOwner && (
+            {query?.isContextOwner && (
               <AutoButton
                 text="Sorter"
                 icon={<LowPriority />}

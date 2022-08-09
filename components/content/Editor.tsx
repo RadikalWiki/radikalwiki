@@ -31,7 +31,10 @@ import { nhost } from "nhost";
 
 export default function Editor({ node }: { node: Node }) {
   const router = useRouter();
-  const query = node.query;
+  const query = node.useQuery();
+  const update = node.useUpdate();
+  const $delete = node.useDelete();
+  const nodeMembers = node.useMembers();
   const parentId = query?.parentId;
   const data = query?.data();
 
@@ -82,18 +85,18 @@ export default function Editor({ node }: { node: Node }) {
 
   const handleSave = (mutable?: boolean) => async () => {
     if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
-      await node.members.delete();
-      await node.members.insert(members.map(member => ({ ...member, mimeId: undefined })));
+      await nodeMembers.delete();
+      await nodeMembers.insert(members.map(member => ({ ...member, mimeId: undefined })));
     }
-    await node.update({
+    await update({
       set: { name, data: { content, image: fileId }, mutable },
     });
     router.push(router.asPath.split("?")[0]);
   };
 
   const handleDelete = async () => {
-    await node.members.delete();
-    await node.delete();
+    await nodeMembers.delete();
+    await $delete();
     const path = await fromId(parentId);
     router.push("/" + path.join("/"));
   };

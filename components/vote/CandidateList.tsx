@@ -23,7 +23,7 @@ export default function CandidateList({ node }: { node: Node }) {
   const userId = useUserId();
   const [images, setImages] = useState<string[]>([]);
 
-  const children = node.query
+  const children = node.useQuery()
     ?.children({
       where: {
         _and: [

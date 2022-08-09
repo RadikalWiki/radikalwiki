@@ -51,7 +51,11 @@ export default function ContentToolbar({
   node: Node;
   child: boolean;
 }) {
-  const query = node.query;
+  const query = node.useQuery();
+  const $delete = node.useDelete();
+  const update = node.useUpdate();
+  const context = node.useContext();
+  const set = context.useSet();
   const [_, setSession] = useSession();
   const router = useRouter();
   const [openPollDialog, setOpenPollDialog] = useState(false);
@@ -62,14 +66,14 @@ export default function ContentToolbar({
   const inserts = query?.inserts()?.map(mime => mime.id)
 
   const handleDelete = async () => {
-    await node.delete();
+    await $delete();
 
     const path = await fromId(parentId);
     router.push("/" + path.join("/"));
   };
 
   const handlePublish = async () => {
-    await node.update({ set: { mutable: false } });
+    await update({ set: { mutable: false } });
   };
 
   const handleAddPoll = (_: any) => {
@@ -77,7 +81,7 @@ export default function ContentToolbar({
   };
 
   const handleFocus = (id: string | null) => async (_: any) => {
-    await node.context.set("active", id);
+    await set("active", id);
   };
 
   if (!(query?.mutable && query?.isOwner) && !query?.isContextOwner)

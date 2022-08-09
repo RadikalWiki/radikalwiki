@@ -27,8 +27,13 @@ export default function PollDialog({
 }) {
   const router = useRouter();
   const [session] = useSession();
-  const pollId = node.subGet("active")?.id;
-  const query = node.query;
+  const get = node.useSubsGet();
+  const pollId = get("active")?.id;
+  const insert = node.useInsert();
+  const update = node.useUpdate();
+  const query = node.useQuery();
+  const context = node.useContext();
+  const contextSet = context.useSet();
 
   const [hidden, setHidden] = useState(query?.mimeId == "vote/position");
   const [voteCount, setVoteCount] = React.useState<number[]>([1, 1]);
@@ -45,12 +50,12 @@ export default function PollDialog({
         .concat("Blank");
   const optionsCount = options?.length || 0;
 
-  const handleAddPoll = async (_: any) => {
-    if (pollId) await node.update({ id: pollId, set: { mutable: false } });
+  const handleAddPoll = async () => {
+    if (pollId) await update({ id: pollId, set: { mutable: false } });
     const namespace = new Date(new Date().getTime() + (session?.timeDiff ?? 0))
       .toLocaleString()
       .replaceAll("/", "");
-    const poll = await node.insert({
+    const poll = await insert({
       name: query?.name,
       namespace,
       mimeId: "vote/poll",
@@ -62,7 +67,7 @@ export default function PollDialog({
       },
     });
 
-    await node.context.set("active", poll.id);
+    await contextSet("active", poll.id);
     router.push(`${router.asPath.split("?")[0]}/${poll.namespace}`);
   };
 

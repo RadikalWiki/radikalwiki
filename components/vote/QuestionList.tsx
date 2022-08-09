@@ -48,6 +48,7 @@ function ChildListElement({
   child?: nodes;
   index: number;
 }) {
+  const $delete = node.useDelete();
   const router = useRouter();
   const id = child?.id;
 
@@ -86,7 +87,7 @@ function ChildListElement({
             <IconButton
               color="primary"
               onClick={() => {
-                node.delete({ id });
+                $delete({ id });
               }}
               size="large"
             >
@@ -104,7 +105,8 @@ function ChildListElement({
 export default function QuestionList({ node }: { node: Node }) {
   const screen = useScreen();
   const router = useRouter();
-  const children = node.query?.children({
+  const query = node.useQuery();
+  const children = query?.children({
     where: { mimeId: { _eq: "vote/question" } },
     order_by: [{ index: order_by.asc }],
   });
@@ -124,7 +126,7 @@ export default function QuestionList({ node }: { node: Node }) {
         }
         action={
           !screen && <CardActions sx={{ p: 0 }}>
-            {node.query?.isContextOwner && !screen && (
+            {query?.isContextOwner && !screen && (
               <AutoButton
                 text="Sorter"
                 icon={<LowPriority />}

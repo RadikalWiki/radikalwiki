@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { toHtml } from "core/document";
 
 function Content({ node, fontSize }: { node: Node; fontSize: string }) {
-  const query = node.query;
+  const query = node.useQuery();
   const [image, setImage] = useState<any>();
   const [content, setContent] = useState<string>();
   const data = query?.data();

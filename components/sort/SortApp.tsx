@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Fragment, useState } from "react";
-import { SortFab } from "comps";
+import { SortFab, MimeAvatarId } from "comps";
 import {
   Avatar,
   Card,
@@ -12,12 +12,11 @@ import {
 } from "@mui/material";
 import { nodes, order_by, resolved } from "gql";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { MimeIcon } from "mime";
 import { Node } from "hooks";
 
 export default function SortApp({ node }: { node: Node }) {
   const [list, setList] = useState<Partial<nodes>[]>([]);
-  const query = node.query;
+  const query = node.useQuery();
 
   useEffect(() => {
     if (query) {
@@ -28,6 +27,7 @@ export default function SortApp({ node }: { node: Node }) {
               query
                 ?.children({
                   order_by: [{ index: order_by.asc }],
+                  where: { mime: { hidden: { _eq: false } } }
                 })
                 .map(({ id, name, index, mutable, mimeId, data }) => ({
                   id,
@@ -83,13 +83,7 @@ export default function SortApp({ node }: { node: Node }) {
                               {...provided.dragHandleProps}
                             >
                               <ListItemAvatar>
-                                <Avatar
-                                  sx={{
-                                    bgcolor: (t) => t.palette.secondary.main,
-                                  }}
-                                >
-                                  <MimeIcon node={node} />
-                                </Avatar>
+                                <MimeAvatarId id={node.id} />
                               </ListItemAvatar>
                               <ListItemText primary={node.name} />
                             </ListItem>

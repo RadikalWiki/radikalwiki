@@ -20,7 +20,6 @@ import {
   Stack,
 } from "@mui/material";
 import { mimes, permissions, useQuery } from "gql";
-import { getIcon } from "mime";
 
 /*
 function PermListElement({

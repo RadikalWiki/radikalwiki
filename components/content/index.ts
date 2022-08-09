@@ -2,7 +2,6 @@ export { default as AddContentDialog } from "./AddContentDialog";
 export { default as AddContentFab } from "./AddContentFab";
 export { default as AuthorTextField } from "./AuthorTextField";
 export { default as Content } from "./Content";
-export { default as ContentAvatar } from "./ContentAvatar";
 export { default as ContentApp } from "./ContentApp";
 export { default as ContentHeader } from "./ContentHeader";
 export { default as ContentToolbar } from "./ContentToolbar";

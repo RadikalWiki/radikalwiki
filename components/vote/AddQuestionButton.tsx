@@ -5,7 +5,7 @@ import { Node, useNode } from "hooks";
 
 export default function AddQuestionButton({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
-  const query = node.query;
+  const query = node.useQuery();
 
   const handleSubmit = async () => {
     setOpen(true);

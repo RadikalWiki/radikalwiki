@@ -1,5 +1,5 @@
 import { NumbersOutlined } from "@mui/icons-material";
-import { Card, Divider, List } from "@mui/material";
+import { Card, Collapse, Divider, List } from "@mui/material";
 import {
   AddContentFab,
   FolderDial,
@@ -31,17 +31,18 @@ export default function FolderApp({
             setExpand={setExpand}
           />
           <Divider />
-          {!screen && <ContentToolbar node={node} child={false} />}
         </>
       )}
-      <List sx={{ m: 0 }}>
-        <Suspense fallback={null}>
-          {(child || screen) && <Divider />}
-          <FolderList node={node} />
-          <AddContentFab node={node} />
-          <FolderDial node={node} />
-        </Suspense>
-      </List>
+      <Collapse in={expand}>
+        <List sx={{ m: 0 }}>
+          <Suspense fallback={null}>
+            {(child || screen) && <Divider />}
+            <FolderList node={node} />
+            <AddContentFab node={node} />
+            <FolderDial node={node} />
+          </Suspense>
+        </List>
+      </Collapse>
     </Card>
   );
 }

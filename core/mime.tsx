@@ -14,7 +14,6 @@ import {
   UploadFile,
   QuestionMark,
   InterpreterMode,
-  LockOpen,
   Image,
   MusicNote,
 } from "@mui/icons-material";
@@ -24,114 +23,13 @@ import FilePdfBoxIcon from "./svg/file-pdf-box.svg";
 import VideoBoxIcon from "./svg/video-box.svg";
 import {
   Avatar as MuiAvatar,
-  Badge,
   Skeleton,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import { Maybe, nodes } from "./gql/schema.generated";
-import { Suspense } from "react";
-import useScreen from "./hooks/useScreen";
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
   return index >= 26 ? String.fromCharCode(64 + Math.floor(index / 26)) + f : f;
-};
-
-const MimeIcon = ({
-  node,
-  index,
-}: {
-  node?: Maybe<Partial<nodes>>;
-  index?: number;
-}) => {
-  return (
-    <Suspense fallback={<Skeleton variant="circular" width={24} height={24} />}>
-      <Icon node={node} index={index} />
-    </Suspense>
-  );
-};
-
-const MimeAvatar = ({
-  node,
-  index,
-}: {
-  node?: Maybe<Partial<nodes>>;
-  index?: number;
-}) => {
-  return (
-    <Suspense fallback={<Skeleton variant="circular" width={32} height={32} />}>
-      <Avatar node={node} index={index} />
-    </Suspense>
-  );
-};
-
-const Icon = ({
-  node,
-  index,
-}: {
-  node?: Maybe<Partial<nodes>>;
-  index?: number;
-}) => {
-  const type = node?.data?.({ path: "type" });
-  const mimeId = node?.mimeId;
-  const id = type ?? mimeId;
-  return getIconFromId(id, index);
-};
-
-const Avatar = ({
-  node,
-  index,
-}: {
-  node?: Maybe<Partial<nodes>>;
-  index?: number;
-}) => {
-  const screen = useScreen();
-  const type = node?.data?.({ path: "type" });
-  const mimeId = node?.mimeId;
-  const id = type ?? mimeId;
-  const avatar = (
-    <MuiAvatar
-      sx={{
-        bgcolor: (t) =>
-          screen ? t.palette.primary.main : t.palette.secondary.main,
-      }}
-    >
-      {getIconFromId(id, index, true)}
-    </MuiAvatar>
-  );
-  return node?.mutable && !screen ? (
-    <Badge
-      overlap="circular"
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "right",
-      }}
-      badgeContent={
-        <Tooltip title="Ikke indsendt">
-          <MuiAvatar
-            sx={{
-              width: 18,
-              height: 18,
-              bgcolor: (t) => t.palette.primary.main,
-            }}
-          >
-            <LockOpen
-              sx={{
-                width: 14,
-                height: 14,
-                color: "#fff",
-              }}
-            />
-          </MuiAvatar>
-        </Tooltip>
-      }
-    >
-      {avatar}
-    </Badge>
-  ) : (
-    avatar
-  );
 };
 
 const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
@@ -159,8 +57,17 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {getLetter(index)}
           </Typography>
         ) : (
-          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit", bgcolor: "currentColor" }}>
-            <Typography sx={{ color: "#fff" }} fontSize={18}>{getLetter(index)}</Typography>
+          <MuiAvatar
+            sx={{
+              width: 24,
+              height: 24,
+              color: "inherit",
+              bgcolor: "currentColor",
+            }}
+          >
+            <Typography sx={{ color: "#fff" }} fontSize={18}>
+              {getLetter(index)}
+            </Typography>
           </MuiAvatar>
         )
       ) : (
@@ -179,8 +86,17 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
             {index + 1}
           </Typography>
         ) : (
-          <MuiAvatar sx={{ width: 24, height: 24, color: "inherit", bgcolor: "currentColor" }}>
-            <Typography sx={{ color: "#fff" }} fontSize={18}>{index + 1}</Typography>
+          <MuiAvatar
+            sx={{
+              width: 24,
+              height: 24,
+              color: "inherit",
+              bgcolor: "currentColor",
+            }}
+          >
+            <Typography sx={{ color: "#fff" }} fontSize={18}>
+              {index + 1}
+            </Typography>
           </MuiAvatar>
         )
       ) : (
@@ -197,10 +113,8 @@ const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
     default:
   }
 
-  if (mimeId?.includes("image/"))
-    return <Image />;
-  if (mimeId?.includes("audio/"))
-    return <MusicNote />;
+  if (mimeId?.includes("image/")) return <Image />;
+  if (mimeId?.includes("audio/")) return <MusicNote />;
   if (mimeId?.includes("video/"))
     return <VideoBoxIcon fill="currentColor" height="24" width="24" />;
   if (mimeId?.includes("spreadsheet"))
@@ -244,11 +158,10 @@ const getName = (mimeId?: string): string => {
   }
 };
 
+
+
 export {
-  MimeIcon,
-  MimeAvatar,
   getLetter,
-  Icon as getIcon,
   getIconFromId,
   getName,
 };

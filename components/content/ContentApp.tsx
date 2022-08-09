@@ -9,7 +9,6 @@ export default function ContentApp(param: {
 }) {
   const screen = useScreen();
   const [expand, setExpand] = useState(true);
-
   return (
     <Card sx={{ m: 0 }}>
       <ContentHeader

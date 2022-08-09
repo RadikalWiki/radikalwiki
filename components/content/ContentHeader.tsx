@@ -1,12 +1,12 @@
 import { CardHeader, Chip, Skeleton, Typography } from "@mui/material";
-import { ContentAvatar, ExpandButton } from "comps";
+import { MimeAvatar, ExpandButton } from "comps";
 import { Face } from "@mui/icons-material";
 import { getIconFromId } from "mime";
 import { Suspense } from "react";
 import { Node, useNode, useScreen } from "hooks";
 
 function MemberChips({ node }: { node: Node }) {
-  const members = node.query?.members();
+  const members = node.useQuery()?.members();
   const chips =
     members?.map(({ id, name, node, user }) => {
       return (
@@ -34,13 +34,14 @@ function MemberChips({ node }: { node: Node }) {
 
 function Title({ node }: { node: Node }) {
   const screen = useScreen();
-  return node.query?.name ? (
+  const query = node.useQuery();
+  return query?.name ? (
     screen ? (
       <Typography variant="h5" sx={{ color: "inherit" }}>
-        {node.query?.name}
+        {query?.name}
       </Typography>
     ) : (
-      <Typography color="secondary">{node.query?.name ?? ""}</Typography>
+      <Typography color="secondary">{query?.name ?? ""}</Typography>
     )
   ) : null;
 }
@@ -64,7 +65,7 @@ export default function ContentHeader({
           <Title node={node} />
         </Suspense>
       }
-      avatar={<ContentAvatar node={node} />}
+      avatar={<MimeAvatar node={node} />}
       subheader={
         <>
           {!hideMembers && !screen && (

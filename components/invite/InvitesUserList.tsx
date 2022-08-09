@@ -19,8 +19,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Add, ContactMail, DoNotDisturb } from "@mui/icons-material";
-import { MimeIcon } from "mime";
-import { HeaderCard } from "comps/common";
+import { HeaderCard, MimeIconId } from "comps";
 import { Suspense } from "react";
 import { useUserEmail, useUserId } from "@nhost/react";
 import { TransitionGroup } from "react-transition-group";
@@ -94,7 +93,7 @@ const ListSuspense = () => {
                       bgcolor: (t) => t.palette.primary.main,
                     }}
                   >
-                    <MimeIcon node={parent} />
+                    <MimeIconId id={parent?.id} />
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary={parent?.name} />

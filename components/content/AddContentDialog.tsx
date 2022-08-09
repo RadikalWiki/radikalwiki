@@ -43,9 +43,10 @@ export default function AddContentDialog({
   const [fileId, setFileId] = useState<any>();
   const [type, setType] = useState<any>();
   const [fileName, setFileName] = useState<string>();
+  const insert = node.useInsert();
 
   const handleSubmit = async () => {
-    const { namespace } = await node.insert({
+    const { namespace } = await insert({
       name: titel,
       namespace: mimeId == "vote/question" ? uuid() : undefined,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,

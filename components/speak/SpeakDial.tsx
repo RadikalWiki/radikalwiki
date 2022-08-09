@@ -9,7 +9,9 @@ export default function SpeakDial({ node }: { node: Node }) {
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
 
-  const speakerlist = node.subGet("speakerlist");
+  const get = node.useSubsGet();
+  const speakerlist = get("speakerlist");
+  const insert = node.useInsert();
   const id = speakerlist?.id;
 
   const handleAddSpeak = (type: string) => (_: any) => {
@@ -17,7 +19,7 @@ export default function SpeakDial({ node }: { node: Node }) {
     const time = new Date(
       new Date().getTime() + (session?.timeDiff ?? 0)
     ).toLocaleString();
-    node.insert({
+    insert({
       name: displayName,
       parentId: id,
       namespace: `${displayName?.toLocaleLowerCase()}-${time}`,

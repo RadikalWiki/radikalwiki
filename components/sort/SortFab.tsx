@@ -12,11 +12,12 @@ export default function SortFab({
   elements: any;
 }) {
   const router = useRouter();
+  const update = node.useUpdate();
 
   const handleClick = async () => {
     const proms = elements.map(async ({ id }: any, index: number) => {
       const set = { index };
-      return node.update({ id, set });
+      return update({ id, set });
     });
     await Promise.all(proms);
     router.push(router.asPath.split("?")[0]);

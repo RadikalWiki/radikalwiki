@@ -57,7 +57,7 @@ export default function PollChartSub({
   node: Node;
 }) {
   const screen = useScreen();
-  const poll = node.sub;
+  const poll = node.useSubs();
 
   // Todo proper detection
   //const voters = poll?.context?.members_aggregate().aggregate?.count() ?? 10;

@@ -7,7 +7,7 @@ import { Node, useNode, useScreen } from "hooks";
 export default function AddContentFab({ node }: { node: Node }) {
   const screen = useScreen();
   const [open, setOpen] = useState(false);
-  const parent = node.query;
+  const parent = node.useQuery();
   const mimes = parent?.inserts({ where: { hidden: { _eq: false } } })?.map(mime => mime.id!) ?? [];
 
   if (screen || !parent?.attachable || !mimes?.[0])
