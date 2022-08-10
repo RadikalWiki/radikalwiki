@@ -27,14 +27,14 @@ export default function Layout({ children }: { children?: any }) {
     }
   }, [isLoading, isAuthenticated, asPath, push]);
 
-  const refresh = () => nhost.auth.refreshSession();
+  //const refresh = () => nhost.auth.refreshSession();
 
   useEffect(() => {
     setOutdated(typeof window !== "undefined" && !checkVersion());
-    window.addEventListener("focus", refresh);
-    return () => {
-      window.removeEventListener("focus", refresh);
-    };
+    //window.addEventListener("focus", refresh);
+    //return () => {
+    //  window.removeEventListener("focus", refresh);
+    //};
   }, []);
 
   useEffect(() => {
