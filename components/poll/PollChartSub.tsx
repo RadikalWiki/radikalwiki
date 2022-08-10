@@ -40,7 +40,7 @@ const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
     ?.map(({ data }) => data())
     .flat()
     .reduce((acc, e) => acc.set(e, acc.get(e) + 1), new Map(opts as any));
-  const res = { arg: "none", ...[...acc.values()] };
+  const res = { arg: "none", ...[...acc?.values()] };
 
   if (mutable || (hidden && (screen || !owner))) {
     return {
@@ -83,7 +83,7 @@ export default function PollChartSub({
   const title = poll?.name;
   const chartData = parseData(poll, screen);
 
-  if (poll?.isContextOwner == undefined) return null;
+  //if (poll?.isContextOwner == undefined) return null;
 
   return (
     <Card sx={{ m: 0 }}>
