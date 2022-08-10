@@ -106,7 +106,7 @@ export default function SpeakCard({
                   )}
                   <ListItemText primary={name} />
                   {!screen &&
-                    (speakerlist?.isContextOwner || speakerlist?.isOwner) && (
+                    (isOwner || speakerlist?.isContextOwner || speakerlist?.isOwner) && (
                       <ListItemSecondaryAction>
                         <IconButton
                           onClick={handleRemoveSpeak(id)}
