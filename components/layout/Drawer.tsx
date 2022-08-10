@@ -43,18 +43,11 @@ import {
   nodes,
   useSubscription,
 } from "gql";
-import { useState, startTransition } from "react";
+import { useState, startTransition, useEffect } from "react";
 import { useRouter } from "next/router";
 import { drawerWidth } from "core/constants";
 import { Box } from "@mui/system";
 import { useUserId } from "@nhost/react";
-
-/*
-const Icon = ({ id, index }: { id: string, index?: number }) => {
-  const node = useNode({ id });
-  return <MimeIcon node={node} index={index} />
-}
-*/
 
 const DrawerElement = ({
   id,
@@ -81,24 +74,33 @@ const DrawerElement = ({
   const query = node.useQuery();
   const router = useRouter();
   const slicedPath = fullpath.slice(0, path.length);
+  const userId = useUserId();
 
-  const children = query?.children({
-    order_by: [{ index: order_by.asc }],
-    where: {
-      mime: {
-        hidden: { _eq: false },
+  const childrenAggregate = query?.children_aggregate({
+      order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
+      where: {
+        _and: [
+          {
+            _or: [
+              { mutable: { _eq: false } },
+              { ownerId: { _eq: userId } },
+              { members: { nodeId: { _eq: userId } } },
+            ],
+          },
+          {
+            mime: {
+              hidden: { _eq: false },
+            },
+          },
+        ],
       },
-    },
-  });
-
-  //const letter = children?.filter((child) => child.mime?.icon == "letter");
-  //const number = children?.filter((child) => child.mime?.icon == "number");
+    })
 
   const selected =
     path.length === slicedPath.length &&
     path.every((v, i) => v === slicedPath[i]);
 
-  const length = children?.length ?? 0;
+  const length = childrenAggregate?.aggregate?.count() ?? 0;
 
   return (
     <>
@@ -138,18 +140,22 @@ const DrawerElement = ({
                       ).fill(false),
                     ];
 
-                    const newOpen = [
+                    const newOpen = open.length > 0 ? [
                       ...open.slice(0, index),
                       newChildOpen,
                       ...open.slice(index + 1),
-                    ];
+                    ] : [...new Array(index).fill([]), newChildOpen];
 
                     setOpen(newOpen);
                   });
                 }}
                 edge="end"
               >
-                {open[index]?.[childIndex] || selected ? <ExpandLess /> : <ExpandMore />}
+                {open[index]?.[childIndex] || selected ? (
+                  <ExpandLess />
+                ) : (
+                  <ExpandMore />
+                )}
               </IconButton>
             </ListItemSecondaryAction>
           )}
@@ -160,7 +166,7 @@ const DrawerElement = ({
         mountOnEnter
         in={index === 0 || (open[index]?.[childIndex] ?? false) || selected}
       >
-        {children?.map((child, childIndex) => (
+        {length > 0 && childrenAggregate?.nodes?.map((child, childIndex) => (
           <DrawerElement
             key={child.id ?? 0}
             id={child.id}
@@ -271,25 +277,24 @@ export default function Drawer({
   setOpen: (val: boolean) => void;
 }) {
   const router = useRouter();
-  const [session] = useSession();
+  const [session, setSession] = useSession();
   const largeScreen = useMediaQuery("(min-width:1200px)");
   const path = usePath();
-  const query = useQuery();
   const home = path.length === 0;
   const node = useNode({
     where: toWhere(home ? [] : session?.prefix?.path ?? path),
   });
   const context = node.useContext();
 
-  const [listOpen, setListOpen] = useState<boolean[][]>([[]]);
+  const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
-  const contextId = node?.contextId;
+  const contextId = session?.prefix?.id ?? node?.contextId;
 
   const handleCurrent = async () => {
     const id = await resolved(
       () => {
         return query
-          .node({ id: contextId })
+          ?.node({ id: contextId })
           ?.relations({ where: { name: { _eq: "active" } } })?.[0]?.nodeId;
       },
       { noCache: true }
@@ -298,6 +303,30 @@ export default function Drawer({
     await router.push(`/${path.join("/")}`);
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (session?.prefix === undefined) {
+      Promise.all([
+        fromId(contextId),
+        resolved(() => {
+          const node = query.node({ id: contextId });
+          return {
+            id: node?.id,
+            name: node?.name ?? "",
+            mime: node?.mimeId!,
+            namespace: node?.namespace,
+          };
+        }),
+      ]).then(([path, prefix]) => {
+        setSession({
+          prefix: {
+            ...prefix,
+            path,
+          },
+        });
+      });
+    }
+  }, [session, setSession]);
 
   const list = home ? (
     <HomeList setOpen={setOpen} />
@@ -376,8 +405,8 @@ export default function Drawer({
         <Toolbar
           onClick={() => {
             if (!home) {
-              router.push(`/${(session?.prefix?.path ?? []).join("/")}`);
-              setOpen(false)
+              router.push(`/${(session?.prefix?.path ?? path).join("/")}`);
+              setOpen(false);
             }
           }}
           sx={{

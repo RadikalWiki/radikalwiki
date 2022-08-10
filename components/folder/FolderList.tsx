@@ -2,32 +2,28 @@ import React from "react";
 import { useRouter } from "next/router";
 import {
   Avatar,
-  Badge,
   Collapse,
   Divider,
   ListItem,
-  Tooltip,
   ListItemAvatar,
   ListItemText,
   Typography,
 } from "@mui/material";
-import { DoNotDisturb, LockOpen } from "@mui/icons-material";
-import { order_by, query as q, resolved } from "gql";
+import { DoNotDisturb } from "@mui/icons-material";
+import { order_by } from "gql";
 import { TransitionGroup } from "react-transition-group";
-import { MimeAvatarId, MimeIcon } from "comps";
-import { toWhere } from "core/path";
-import { Node, useNode, useScreen } from "hooks";
+import { MimeAvatarId } from "comps";
+import { Node } from "hooks";
 import { useUserId } from "@nhost/react";
 
 export default function FolderList({ node }: { node: Node }) {
-  const screen = useScreen();
   const userId = useUserId();
   const router = useRouter();
   const query = node.useQuery();
 
   const children =
     query?.children({
-      order_by: [{ index: order_by.asc }],
+      order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       where: {
         _and: [
           {

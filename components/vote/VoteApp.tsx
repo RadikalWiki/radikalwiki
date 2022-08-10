@@ -188,7 +188,6 @@ export default function VoteApp({ node }: { node: Node }) {
       </Stack>
     );
 
-  console.log(poll?.mutable)
   if (!(poll?.mutable && poll?.mimeId == "vote/poll")) {
     return (
       <Stack spacing={1}>
