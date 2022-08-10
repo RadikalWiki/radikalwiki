@@ -112,7 +112,7 @@ const DrawerElement = ({
           onClick={() => {
             startTransition(() => {
               setDrawerOpen(false);
-                router.push(`${path.join("/")}`);
+              router.push(`${path.join("/")}`);
             });
           }}
         >
@@ -158,7 +158,7 @@ const DrawerElement = ({
 
       <Collapse
         mountOnEnter
-        in={index === 0 || ((open[index]?.[childIndex] ?? false) || selected)}
+        in={index === 0 || (open[index]?.[childIndex] ?? false) || selected}
       >
         {children?.map((child, childIndex) => (
           <DrawerElement
@@ -374,8 +374,11 @@ export default function Drawer({
         }}
       >
         <Toolbar
-          onClick={(e) => {
-            !home && router.push(`/${(session?.prefix?.path ?? []).join("/")}`);
+          onClick={() => {
+            if (!home) {
+              router.push(`/${(session?.prefix?.path ?? []).join("/")}`);
+              setOpen(false)
+            }
           }}
           sx={{
             cursor: "pointer",
