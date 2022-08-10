@@ -16,7 +16,7 @@ export default function SpeakApp({ node }: { node: Node }) {
   const data = speakerlist?.data();
 
   useEffect(() => {
-    if (!session?.timeDiff) return;
+    if (!session?.timeDiff && session?.timeDiff !== 0) return;
     const now = new Date();
     const updatedAt = new Date(data?.updatedAt);
     const sec = Math.floor(
