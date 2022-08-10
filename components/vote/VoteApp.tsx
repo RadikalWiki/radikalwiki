@@ -38,7 +38,7 @@ export default function VoteApp({ node }: { node: Node }) {
 
   const insert = node.useInsert();
   const sub = node.useSubs();
-  const get = node.useGet();
+  const get = node.useSubsGet();
   const poll = get("active");
 
   const [helperText, setHelperText] = useState("");
@@ -188,6 +188,7 @@ export default function VoteApp({ node }: { node: Node }) {
       </Stack>
     );
 
+  console.log(poll?.mutable)
   if (!(poll?.mutable && poll?.mimeId == "vote/poll")) {
     return (
       <Stack spacing={1}>
