@@ -20,7 +20,7 @@ export default function ContentApp(param: {
       <Divider />
       <Collapse in={expand}>
         {!screen && <ContentToolbar node={param.node} child={false} />}
-        <Content node={param.node} fontSize="100%" />
+        <Content node={param.node} fontSize={screen ? "150%" : "100%"} />
       </Collapse>
     </Card>
   );
