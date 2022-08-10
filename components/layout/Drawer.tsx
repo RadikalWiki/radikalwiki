@@ -126,6 +126,7 @@ const DrawerElement = ({
           {length > 0 && (
             <ListItemSecondaryAction>
               <IconButton
+                disabled={selected}
                 onClick={(e) => {
                   e.stopPropagation();
                   startTransition(() => {
@@ -144,12 +145,11 @@ const DrawerElement = ({
                     ];
 
                     setOpen(newOpen);
-                    if (siblings) setDrawerOpen(false);
                   });
                 }}
                 edge="end"
               >
-                {open[index]?.[childIndex] ? <ExpandLess /> : <ExpandMore />}
+                {open[index]?.[childIndex] || selected ? <ExpandLess /> : <ExpandMore />}
               </IconButton>
             </ListItemSecondaryAction>
           )}
