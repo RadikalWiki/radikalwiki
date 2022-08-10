@@ -26,7 +26,7 @@ function Content({ node, fontSize }: { node: Node; fontSize: string }) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={8}>
+      <Grid item xs={12} sm>
         <Box sx={{ fontSize, overflowX: "auto" }}>
           <Collapse in={!!content} >
             <Slate value={content} readOnly />
