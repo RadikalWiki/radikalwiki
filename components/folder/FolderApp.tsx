@@ -21,28 +21,32 @@ export default function FolderApp({
   const screen = useScreen();
   if (screen && child) return null;
   return (
-    <Card sx={{ m: 0 }}>
-      {!child && (
-        <>
-          <ContentHeader
-            node={node}
-            hideMembers
-            expand={expand}
-            setExpand={setExpand}
-          />
-          <Divider />
-        </>
-      )}
-      <Collapse in={expand}>
-        <List sx={{ m: 0 }}>
-          <Suspense fallback={null}>
-            {(child || screen) && <Divider />}
-            <FolderList node={node} />
-            <AddContentFab node={node} />
-            <FolderDial node={node} />
-          </Suspense>
-        </List>
-      </Collapse>
-    </Card>
+    <>
+      <Card sx={{ m: 0 }}>
+        {!child && (
+          <>
+            <ContentHeader
+              node={node}
+              hideMembers
+              expand={expand}
+              setExpand={setExpand}
+            />
+            <Divider />
+          </>
+        )}
+        <Collapse in={expand}>
+          <List sx={{ m: 0 }}>
+            <Suspense fallback={null}>
+              {(child || screen) && <Divider />}
+              <FolderList node={node} />
+            </Suspense>
+          </List>
+        </Collapse>
+      </Card>
+      <Suspense fallback={null}>
+        <AddContentFab node={node} />
+        <FolderDial node={node} />
+      </Suspense>
+    </>
   );
 }
