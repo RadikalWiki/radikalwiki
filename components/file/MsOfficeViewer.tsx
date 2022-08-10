@@ -7,7 +7,7 @@ export default function MsOfficeViewer({ file }: { file: any }) {
 
   useEffect(() => {
     const scroll = document.querySelector("#scroll") ?? document.scrollingElement;
-    setHeight(`${(scroll?.scrollHeight ?? 0) - (screen ? 100 : 310)}px`);
+    setHeight(`${(scroll?.scrollHeight ?? 0) - (screen ? 100 : 210)}px`);
   }, []);
 
   return (
