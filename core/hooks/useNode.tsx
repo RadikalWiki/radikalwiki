@@ -179,7 +179,7 @@ const useNode = (param?: {
       }
     );
     return (name: string, nodeId: string | null) => {
-      return insertRelation({ args: { parentId: nodeId, name, nodeId } });
+      return insertRelation({ args: { parentId: param?.id ?? node?.id, name, nodeId } });
     };
   };
 
