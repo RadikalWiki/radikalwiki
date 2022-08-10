@@ -116,11 +116,10 @@ export default function LoginForm({ mode }: { mode: Mode }) {
       setLoading(false);
       return;
     }
-    setSession(null);
 
     // Set up
     setSession({
-      timeDiff: 0,
+      timeDiff: undefined,
     });
     
     router.back();
