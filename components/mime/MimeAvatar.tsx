@@ -1,5 +1,5 @@
 import { LockOpen } from "@mui/icons-material";
-import { Badge, Tooltip, Avatar as MuiAvatar } from "@mui/material";
+import { Badge, Tooltip, Avatar as MuiAvatar, Skeleton } from "@mui/material";
 import { order_by } from "gql";
 import { withSuspense } from "hoc";
 import { Node, useNode, useScreen } from "hooks";
@@ -24,6 +24,12 @@ const Avatar = ({ node }: { node: Node }) => {
         order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       })
       .findIndex((child) => child.id === node.id) ?? 0;
+
+  if (id === undefined) {
+    return (
+      <Skeleton variant="circular" width={40} height={40} />
+    );
+  }
 
   const avatar = (
     <MuiAvatar
@@ -71,7 +77,7 @@ const Avatar = ({ node }: { node: Node }) => {
 
 const MimeAvatar = withSuspense(Avatar, MimeSkeleton);
 const MimeAvatarId = withSuspense(({ id }: { id: string }) => {
-	const node = useNode({ id });
+  const node = useNode({ id });
   return <Avatar node={node} />;
 }, MimeSkeleton);
 
