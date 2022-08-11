@@ -204,6 +204,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               error={errorEmail}
               helperText={errorEmailMsg}
               label="Email"
+              autoComplete="username"
               name="email"
               variant="outlined"
               onChange={onEmailChange}
@@ -215,6 +216,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               error={errorPassword}
               helperText={errorPasswordMsg}
               label={mode == "reset-password" ? "Nyt kodeord" : "Kodeord"}
+              autoComplete="current-password"
               name="password"
               type="password"
               variant="outlined"
