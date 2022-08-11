@@ -19,7 +19,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Add, ContactMail, DoNotDisturb } from "@mui/icons-material";
-import { HeaderCard, MimeIconId } from "comps";
+import { HeaderCard, MimeAvatarId } from "comps";
 import { Suspense } from "react";
 import { useUserEmail, useUserId } from "@nhost/react";
 import { TransitionGroup } from "react-transition-group";
@@ -39,7 +39,7 @@ const ListSuspense = () => {
         },
       ],
     },
-  }).filter(invite => invite?.parent?.id);
+  });
   const events = query.nodes({
     where: {
       _and: [
@@ -74,50 +74,38 @@ const ListSuspense = () => {
     client.cache.query = {};
   };
 
+  console.log();
   return (
     <List>
-      <TransitionGroup>
-        {invites.map(({ id, parent }) => {
-          return !id ? null : (
-            <Collapse key={id ?? 0}>
-              <ListItem
-                secondaryAction={
-                  <IconButton onClick={handleAcceptInvite(id)}>
-                    <Add />
-                  </IconButton>
-                }
-              >
-                <ListItemAvatar>
-                  <Avatar
-                    sx={{
-                      bgcolor: (t) => t.palette.primary.main,
-                    }}
-                  >
-                    <MimeIconId id={parent?.id} />
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary={parent?.name} />
-              </ListItem>
-            </Collapse>
-          );
-        })}
-        {invites.length == 0 && (
-          <Collapse key={-1}>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar
-                  sx={{
-                    bgcolor: (t) => t.palette.secondary.main,
-                  }}
-                >
-                  <DoNotDisturb />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Ingen invitationer" />
-            </ListItem>
-          </Collapse>
-        )}
-      </TransitionGroup>
+      {invites.map(({ id = 0, parent }) => (
+        <ListItem
+          key={id}
+          secondaryAction={
+            <IconButton onClick={handleAcceptInvite(id)}>
+              <Add />
+            </IconButton>
+          }
+        >
+          <ListItemAvatar>
+            <MimeAvatarId id={parent?.id} />
+          </ListItemAvatar>
+          <ListItemText primary={parent?.name} />
+        </ListItem>
+      ))}
+      {invites.length == 0 && (
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar
+              sx={{
+                bgcolor: (t) => t.palette.secondary.main,
+              }}
+            >
+              <DoNotDisturb />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Ingen invitationer" />
+        </ListItem>
+      )}
     </List>
   );
 };
@@ -137,21 +125,8 @@ export default function InvitesUserList() {
       title="Invitationer"
     >
       <Divider />
-      <Suspense
-        fallback={
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <CircularProgress />
-          </Box>
-        }
-      >
-        <ListSuspense />
-      </Suspense>
+
+      <ListSuspense />
     </HeaderCard>
   );
 }
