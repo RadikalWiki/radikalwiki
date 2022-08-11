@@ -231,7 +231,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
   return (
     <>
       <List>
-        <ListItem key={0}>
+        <ListItem key={-1}>
           <ListItemAvatar>
             <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
               <Event />
@@ -254,7 +254,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItem>
         ))}
         {events?.length == 0 && (
-          <ListItem key={-1}>
+          <ListItem key={-2}>
             <ListItemAvatar>
               <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
                 <EventBusy />
