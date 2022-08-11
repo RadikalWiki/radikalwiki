@@ -78,33 +78,6 @@ export type Node = {
   useChildren: () => {
     delete: (where: nodes_bool_exp) => Promise<number | undefined>;
   };
-  //useChildren: () => () => Node[];
-  /*
-  id: string;
-  query: Maybe<nodes> | undefined;
-  sub: Maybe<nodes> | undefined;
-  get: (name: string) => Maybe<nodes> | undefined;
-  subGet: (name: string) => Maybe<nodes> | undefined;
-  set: any;
-  insert: any;
-  delete: any;
-  update: any;
-  members: any;
-  member: any;
-  children: {
-    delete: any;
-  };
-  context: {
-    id: string;
-    set: any;
-  };
-  */
-};
-
-const ChildNode = ({ id, Comp }: { id: string; Comp: any }) => {
-  const node = useNode({ id });
-
-  return <Comp node={node} />;
 };
 
 const useNode = (param?: {
