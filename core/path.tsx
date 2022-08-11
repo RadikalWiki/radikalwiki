@@ -13,6 +13,7 @@ const toWhere = (path: string[], root = true): any => {
 };
 
 const fromId = async (id?: string): Promise<string[]> => {
+  if (!id) return [];
   return await resolved(async () => {
     const node = query.node({ id });
     const parentId = node?.parentId;
