@@ -1,36 +1,7 @@
-import { CardHeader, Chip, Skeleton, Typography } from "@mui/material";
-import { MimeAvatar, ExpandButton } from "comps";
-import { Face } from "@mui/icons-material";
-import { getIconFromId } from "mime";
+import { CardHeader, Skeleton, Typography } from "@mui/material";
+import { MimeAvatar, ExpandButton, MemberChips } from "comps";
 import { Suspense } from "react";
-import { Node, useNode, useScreen } from "hooks";
-
-function MemberChips({ node }: { node: Node }) {
-  const members = node.useQuery()?.members();
-  const chips =
-    members?.map(({ id, name, node, user }) => {
-      return (
-        <Chip
-          key={id ?? 0}
-          icon={node?.mimeId ? getIconFromId(node.mimeId) : <Face />}
-          color="secondary"
-          variant="outlined"
-          size="small"
-          sx={{ mr: 0.5 }}
-          label={name ?? user?.displayName}
-        />
-      );
-    }) ?? [];
-  return (
-    <>
-      {!members?.[0]?.id && members?.length !== 0 ? (
-        <Skeleton height={20} width={120} />
-      ) : (
-        chips
-      )}
-    </>
-  );
-}
+import { Node, useScreen } from "hooks";
 
 function Title({ node }: { node: Node }) {
   const screen = useScreen();

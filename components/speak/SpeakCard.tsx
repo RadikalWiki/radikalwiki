@@ -45,7 +45,7 @@ export default function SpeakCard({
     order_by: [{ data: order_by.desc }, { createdAt: order_by.asc }],
   });
 
-  const handleRemoveSpeak = (id: any) => (_: any) => {
+  const handleRemoveSpeak = (id: any) => () => {
     $delete({ id });
   };
 
@@ -93,8 +93,7 @@ export default function SpeakCard({
         <TransitionGroup>
           {speakers?.map(({ id = 0, name, isOwner, data }) => {
             const avatarData = data();
-            if (!id) return null;
-            return (
+            const item = (
               <Collapse key={id}>
                 <ListItem button>
                   {avatarData && (
@@ -122,6 +121,7 @@ export default function SpeakCard({
                 </ListItem>
               </Collapse>
             );
+            return id ? item : null;
           })}
           {speakers?.length == 0 && (
             <Collapse key={-1}>

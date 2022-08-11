@@ -77,8 +77,8 @@ const ListSuspense = () => {
   console.log();
   return (
     <List>
-      {invites.map(({ id = 0, parent }) => (
-        <ListItem
+      {invites.map(({ id = 0, parent }) => {
+        const item = <ListItem
           key={id}
           secondaryAction={
             <IconButton onClick={handleAcceptInvite(id)}>
@@ -91,8 +91,10 @@ const ListSuspense = () => {
           </ListItemAvatar>
           <ListItemText primary={parent?.name} />
         </ListItem>
-      ))}
-      {invites.length == 0 && (
+
+        return parent?.id ? item : null
+      })}
+      {!invites?.[0]?.id && (
         <ListItem>
           <ListItemAvatar>
             <Avatar

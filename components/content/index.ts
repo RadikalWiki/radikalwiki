@@ -5,6 +5,7 @@ export { default as Content } from "./Content";
 export { default as ContentApp } from "./ContentApp";
 export { default as ContentHeader } from "./ContentHeader";
 export { default as ContentToolbar } from "./ContentToolbar";
+export { default as MemberChips } from "./MemberChips";
 export { default as EditorApp } from "./EditorApp";
 export { default as Editor } from "./Editor";
 export { default as Slate } from "./Slate"

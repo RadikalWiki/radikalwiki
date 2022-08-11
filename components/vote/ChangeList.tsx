@@ -6,6 +6,7 @@ import {
   ContentToolbar,
   AutoButton,
   MimeAvatar,
+  MemberChips,
 } from "comps";
 import { useRouter } from "next/router";
 import {
@@ -33,21 +34,20 @@ import {
   CardActions,
   Typography,
   Chip,
+  Skeleton,
 } from "@mui/material";
 import { order_by } from "gql";
 import { getIconFromId } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
-function ChildListElement({ id, index }: { id: string; index: number }) {
+function ChildListElement({ id }: { id: string }) {
   const node = useNode({ id });
   const query = node.useQuery();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
-  if (!id) return null; 
-
-  return (
+  const item = (
     <>
       <ListItem
         button
@@ -59,17 +59,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
         </ListItemAvatar>
         <ListItemText
           primary={query?.name}
-          secondary={query?.members().map(({ id, name, user }) => (
-            <Chip
-              key={id ?? 0}
-              icon={<Face />}
-              color="secondary"
-              variant="outlined"
-              size="small"
-              sx={{ mr: 0.5 }}
-              label={name ?? user?.displayName}
-            />
-          ))}
+          secondary={<MemberChips node={node} />}
         />
         <ListItemSecondaryAction>
           <IconButton
@@ -90,6 +80,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
       </Collapse>
     </>
   );
+  return id ? item : null;
 }
 
 function ChildListRaw({ node }: { node: Node }) {
@@ -101,12 +92,10 @@ function ChildListRaw({ node }: { node: Node }) {
   return (
     <List>
       <TransitionGroup>
-        {children?.map(({ id }, index: number) => {
+        {children?.map(({ id }) => {
           return (
             <Collapse key={id ?? 0}>
-              <Suspense fallback={null}>
-                <ChildListElement id={id} index={index} />
-              </Suspense>
+              <ChildListElement id={id} />
             </Collapse>
           );
         })}

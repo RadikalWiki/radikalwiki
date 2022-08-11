@@ -21,16 +21,14 @@ const MuiChart = DxChart as any;
 
 const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
   const count = poll
-    ?.children_aggregate({ where: { mimeId:{ _eq: "vote/vote" } } })
+    ?.children_aggregate({ where: { mimeId: { _eq: "vote/vote" } } })
     .aggregate?.count();
   const data = poll?.data();
 
   const owner = poll?.isContextOwner;
   const mutable = poll?.mutable;
   const { options, hidden } =
-    data && poll?.mimeId == "vote/poll"
-      ? data
-      : { options: [], hidden: true };
+    data && poll?.mimeId == "vote/poll" ? data : { options: [], hidden: true };
 
   const opts = [...Array(options.length).keys()].map((opt: number) => [opt, 0]);
   const votes = poll?.children({
@@ -42,18 +40,27 @@ const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
     .reduce((acc, e) => acc.set(e, acc.get(e) + 1), new Map(opts as any));
   const res = { arg: "none", ...[...(acc?.values() ?? []), count] };
 
-  console.log(mutable)
   if (mutable || (hidden && (screen || !owner))) {
     return {
-      options: [...options.map((opt: string) => `${opt} (skjult)`), "Antal Stemmer"],
-      data: [{ arg: "none", ...[...Array(options.length).keys()].map((opt: number) => 0), [options.length]: count }],
+      options: [
+        ...options.map((opt: string) => `${opt} (skjult)`),
+        "Antal Stemmer",
+      ],
+      data: [
+        {
+          arg: "none",
+          ...[...Array(options.length).keys()].map((opt: number) => 0),
+          [options.length]: count,
+        },
+      ],
     };
   }
   return { options: [...options, "Antal Stemmer"], data: [res] };
 };
 
-const Chart = ({ chartData, title }: { chartData: any, title: string }) => {
-  return  <Card sx={{ m: 0 }}>
+const Chart = ({ chartData, title }: { chartData: any; title: string }) => {
+  return (
+    <Card sx={{ m: 0 }}>
       <CardHeader
         sx={{
           bgcolor: (t) => t.palette.secondary.main,
@@ -92,13 +99,10 @@ const Chart = ({ chartData, title }: { chartData: any, title: string }) => {
         <Typography>{`${count} / ${voters} stemmer`}</Typography>
       </CardContent> */}
     </Card>
-}
+  );
+};
 
-export default function PollChartSub({
-  node
-}: {
-  node: Node;
-}) {
+export default function PollChartSub({ node }: { node: Node }) {
   const screen = useScreen();
   const poll = node.useSubs();
 
@@ -126,10 +130,9 @@ export default function PollChartSub({
   const title = poll?.name;
   const chartData = parseData(poll, screen);
 
-  console.log(chartData)
-  if (poll?.isContextOwner == undefined || chartData.options.length === 1) return null;
+  console.log(chartData);
+  if (poll?.isContextOwner == undefined || chartData.options.length === 1)
+    return null;
 
-  return (
-    <Chart chartData={chartData} title={title ?? ""} />
-  );
+  return <Chart chartData={chartData} title={title ?? ""} />;
 }

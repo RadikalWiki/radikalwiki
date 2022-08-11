@@ -77,24 +77,24 @@ const DrawerElement = ({
   const userId = useUserId();
 
   const childrenAggregate = query?.children_aggregate({
-      order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
-      where: {
-        _and: [
-          {
-            _or: [
-              { mutable: { _eq: false } },
-              { ownerId: { _eq: userId } },
-              { members: { nodeId: { _eq: userId } } },
-            ],
+    order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
+    where: {
+      _and: [
+        {
+          _or: [
+            { mutable: { _eq: false } },
+            { ownerId: { _eq: userId } },
+            { members: { nodeId: { _eq: userId } } },
+          ],
+        },
+        {
+          mime: {
+            hidden: { _eq: false },
           },
-          {
-            mime: {
-              hidden: { _eq: false },
-            },
-          },
-        ],
-      },
-    })
+        },
+      ],
+    },
+  });
 
   const selected =
     path.length === slicedPath.length &&
@@ -140,11 +140,14 @@ const DrawerElement = ({
                       ).fill(false),
                     ];
 
-                    const newOpen = open.length > 0 ? [
-                      ...open.slice(0, index),
-                      newChildOpen,
-                      ...open.slice(index + 1),
-                    ] : [...new Array(index).fill([]), newChildOpen];
+                    const newOpen =
+                      open.length > 0
+                        ? [
+                            ...open.slice(0, index),
+                            newChildOpen,
+                            ...open.slice(index + 1),
+                          ]
+                        : [...new Array(index).fill([]), newChildOpen];
 
                     setOpen(newOpen);
                   });
@@ -166,20 +169,21 @@ const DrawerElement = ({
         mountOnEnter
         in={index === 0 || (open[index]?.[childIndex] ?? false) || selected}
       >
-        {length > 0 && childrenAggregate?.nodes?.map((child, childIndex) => (
-          <DrawerElement
-            key={child.id ?? 0}
-            id={child.id}
-            path={path.concat([child?.namespace!])}
-            fullpath={fullpath}
-            open={open}
-            setOpen={setOpen}
-            index={index + 1}
-            childIndex={childIndex}
-            setDrawerOpen={setDrawerOpen}
-            siblings={length}
-          />
-        ))}
+        {length > 0 &&
+          childrenAggregate?.nodes?.map((child, childIndex) => (
+            <DrawerElement
+              key={child.id ?? 0}
+              id={child.id}
+              path={path.concat([child?.namespace!])}
+              fullpath={fullpath}
+              open={open}
+              setOpen={setOpen}
+              index={index + 1}
+              childIndex={childIndex}
+              setDrawerOpen={setDrawerOpen}
+              siblings={length}
+            />
+          ))}
       </Collapse>
     </>
   );
@@ -240,26 +244,27 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           <ListItemText primary="Begivenheder" />
         </ListItem>
         <Divider />
-        {events.map(({ id = 0, name }) => (
-          <ListItem
-            key={id}
-            hidden={id == 0}
-            button
-            onClick={handleEventSelect(id)}
-          >
-            <ListItemIcon>
-              <Event />
-            </ListItemIcon>
-            <ListItemText primary={name} />
-          </ListItem>
-        ))}
-        {events?.length == 0 && (
+        {events.map(({ id = 0, name }) => {
+          const item = (
+            <ListItem
+              key={id}
+              hidden={id == 0}
+              button
+              onClick={handleEventSelect(id)}
+            >
+              <ListItemIcon>
+                <Event />
+              </ListItemIcon>
+              <ListItemText primary={name} />
+            </ListItem>
+          );
+          return id ? item : null;
+        })}
+        {!events?.[0]?.id && (
           <ListItem key={-2}>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
-                <EventBusy />
-              </Avatar>
-            </ListItemAvatar>
+            <ListItemIcon>
+              <EventBusy />
+            </ListItemIcon>
             <ListItemText primary="Ingen begivenheder" />
           </ListItem>
         )}

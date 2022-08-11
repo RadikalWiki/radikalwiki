@@ -30,9 +30,7 @@ function PollListSuspense({ node }: { node: Node }) {
 
   const owner = query?.isOwner;
 
-  if (!polls?.[0]?.id) return null;
-
-  return (
+  const card = (
     <HeaderCard
       avatar={
         <Avatar
@@ -96,6 +94,8 @@ function PollListSuspense({ node }: { node: Node }) {
       </List>
     </HeaderCard>
   );
+
+  return polls?.[0]?.id ? card : null;
 }
 
 export default function PollList({ node }: { node: Node }) {

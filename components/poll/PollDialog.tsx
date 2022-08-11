@@ -27,6 +27,7 @@ export default function PollDialog({
 }) {
   const router = useRouter();
   const [session] = useSession();
+  const [loading, setLoading] = useState(false);
   const get = node.useSubsGet();
   const pollId = get("active")?.id;
   const insert = node.useInsert();
@@ -51,6 +52,7 @@ export default function PollDialog({
   const optionsCount = options?.length || 0;
 
   const handleAddPoll = async () => {
+    setLoading(true);
     if (pollId) await update({ id: pollId, set: { mutable: false } });
     const namespace = new Date(new Date().getTime() + (session?.timeDiff ?? 0))
       .toLocaleString()
@@ -69,6 +71,7 @@ export default function PollDialog({
 
     await contextSet("active", poll.id);
     router.push(`${router.asPath.split("?")[0]}/${poll.namespace}`);
+    setLoading(false);
   };
 
   const getMarks = (count: number) =>
@@ -113,6 +116,7 @@ export default function PollDialog({
           endIcon={<PlayArrow />}
           variant="contained"
           color="primary"
+          disabled={loading}
           onClick={handleAddPoll}
         >
           Start
