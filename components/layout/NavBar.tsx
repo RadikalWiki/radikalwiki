@@ -50,7 +50,7 @@ export default function NavBar() {
     router.push(path);
   };
 
-  if (!session?.prefix?.id) return null;
+  if ((session?.prefix?.path.length ?? 0) == 0) return null;
 
   return (
     <AppBar sx={{ position: "fixed", top: "auto", bottom: 0 }}>
@@ -62,7 +62,7 @@ export default function NavBar() {
         }}
       >
         <BottomNavigationAction
-          onClick={handleScroll(`${session.prefix.path.join("/")}?app=vote`)}
+          onClick={handleScroll(`${session?.prefix?.path.join("/")}?app=vote`)}
           value="vote"
           label="Stem"
           icon={<HowToVote />}
@@ -74,7 +74,7 @@ export default function NavBar() {
           icon={<Folder />}
         />
         <BottomNavigationAction
-          onClick={handleScroll(`${session.prefix.path.join("/")}?app=speak`)}
+          onClick={handleScroll(`${session?.prefix?.path.join("/")}?app=speak`)}
           value="speak"
           label="Tal"
           icon={<RecordVoiceOver />}
