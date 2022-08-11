@@ -17,7 +17,7 @@ import { Card, CardHeader, Typography, Box, CardContent } from "@mui/material";
 import { Node, useScreen, useSession } from "hooks";
 import { nodes, Maybe, useSubscription, String_comparison_exp } from "gql";
 
-const Chart = DxChart as any;
+const MuiChart = DxChart as any;
 
 const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
   const count = poll
@@ -40,16 +40,59 @@ const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
     ?.map(({ data }) => data())
     .flat()
     .reduce((acc, e) => acc.set(e, acc.get(e) + 1), new Map(opts as any));
-  const res = { arg: "none", ...[...acc?.values()] };
+  const res = { arg: "none", ...[...(acc?.values() ?? []), count] };
 
+  console.log(mutable)
   if (mutable || (hidden && (screen || !owner))) {
     return {
-      options: ["Antal Stemmer"],
-      data: [{ arg: "none", 0: count }],
+      options: [...options.map((opt: string) => `${opt} (skjult)`), "Antal Stemmer"],
+      data: [{ arg: "none", ...[...Array(options.length).keys()].map((opt: number) => 0), [options.length]: count }],
     };
   }
-  return { options, data: [res] };
+  return { options: [...options, "Antal Stemmer"], data: [res] };
 };
+
+const Chart = ({ chartData, title }: { chartData: any, title: string }) => {
+  return  <Card sx={{ m: 0 }}>
+      <CardHeader
+        sx={{
+          bgcolor: (t) => t.palette.secondary.main,
+          color: (t) => t.palette.secondary.contrastText,
+        }}
+        title={title}
+      />
+      {chartData?.options?.map((opt: any, index: number) => (
+        <Box key={index} />
+      ))}
+      <MuiChart data={chartData.data} rotated>
+        <ValueAxis />
+        <ValueScale
+          modifyDomain={(domain: any) => {
+            return [0, 20];
+          }}
+        />
+
+        {chartData.options?.map((opt: string, index: number) => (
+          <BarSeries
+            name={opt}
+            valueField={`${index}`}
+            argumentField="arg"
+            key={index}
+          />
+        ))}
+        <Animation />
+        <EventTracker />
+        <Tooltip />
+        <HoverState />
+        <Legend position="bottom" />
+        <Stack />
+      </MuiChart>
+      {/* 
+      <CardContent>
+        <Typography>{`${count} / ${voters} stemmer`}</Typography>
+      </CardContent> */}
+    </Card>
+}
 
 export default function PollChartSub({
   node
@@ -83,47 +126,10 @@ export default function PollChartSub({
   const title = poll?.name;
   const chartData = parseData(poll, screen);
 
-  //if (poll?.isContextOwner == undefined) return null;
+  console.log(chartData)
+  if (poll?.isContextOwner == undefined || chartData.options.length === 1) return null;
 
   return (
-    <Card sx={{ m: 0 }}>
-      <CardHeader
-        sx={{
-          bgcolor: (t) => t.palette.secondary.main,
-          color: (t) => t.palette.secondary.contrastText,
-        }}
-        title={title}
-      />
-      {chartData?.options?.map((opt: any, index: number) => (
-        <Box key={index} />
-      ))}
-      <Chart data={chartData.data} rotated>
-        <ValueAxis />
-        <ValueScale
-          modifyDomain={(domain: any) => {
-            return [0, 20];
-          }}
-        />
-
-        {chartData.options?.map((opt: string, index: number) => (
-          <BarSeries
-            name={opt}
-            valueField={`${index}`}
-            argumentField="arg"
-            key={index}
-          />
-        ))}
-        <Animation />
-        <EventTracker />
-        <Tooltip />
-        <HoverState />
-        <Legend position="bottom" />
-        <Stack />
-      </Chart>
-      {/* 
-      <CardContent>
-        <Typography>{`${count} / ${voters} stemmer`}</Typography>
-      </CardContent> */}
-    </Card>
+    <Chart chartData={chartData} title={title ?? ""} />
   );
 }

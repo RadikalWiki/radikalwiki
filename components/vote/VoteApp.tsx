@@ -35,6 +35,7 @@ export default function VoteApp({ node }: { node: Node }) {
   const email = useUserEmail();
   const router = useRouter();
   const [refresh, setRefresh] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const insert = node.useInsert();
   const sub = node.useSubs();
@@ -111,6 +112,7 @@ export default function VoteApp({ node }: { node: Node }) {
   };
 
   const handleSubmit = async (event: any) => {
+    setLoading(true);
     event.preventDefault();
     if (!validate(vote, true)) {
       return;
@@ -124,6 +126,7 @@ export default function VoteApp({ node }: { node: Node }) {
       parentId: poll?.id,
       data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
     });
+    setLoading(false);
   };
 
   const handleChangeVote = (e: any) => {
@@ -242,6 +245,7 @@ export default function VoteApp({ node }: { node: Node }) {
                 type="submit"
                 variant="contained"
                 color="primary"
+                disabled={loading}
                 endIcon={<HowToVote />}
                 sx={{ m: [1, 1, 0, 0] }}
               >
