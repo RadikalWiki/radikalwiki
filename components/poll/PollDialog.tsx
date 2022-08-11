@@ -83,7 +83,7 @@ export default function PollDialog({
       <Divider />
       <DialogContent>
         <Stack spacing={2}>
-          {!["vote/policy", "vote/change"].includes(query?.mimeId ?? "") && (
+          {!["vote/policy", "vote/change"].includes(query?.mimeId ?? "") && optionsCount > 2 && (
             <>
               <Typography>Stemmeinterval</Typography>
               <Slider
