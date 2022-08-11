@@ -1,5 +1,5 @@
 import {
-  Drawer as MuiDrawer,
+  SwipeableDrawer as MuiDrawer,
   List,
   ListItemButton,
   ListItemIcon,
@@ -388,6 +388,8 @@ export default function Drawer({
       variant={largeScreen ? "permanent" : "persistent"}
       open={open || largeScreen}
       onMouseLeave={() => setOpen(false)}
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
     >
       <Box
         sx={{
