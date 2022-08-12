@@ -3,24 +3,23 @@ import { Slate, Image } from "comps";
 import { Node } from "hooks";
 import { nhost } from "nhost";
 import { useEffect, useState } from "react";
-import { toHtml } from "core/document";
 
 function Content({ node, fontSize }: { node: Node; fontSize: string }) {
   const query = node.useQuery();
-  const [image, setImage] = useState<any>();
+  const [image, setImage] = useState<string | null>(null);
   const [content, setContent] = useState<string>();
   const data = query?.data();
 
   useEffect(() => {
-    if (query) {
-      const fetch = async () => {
-        if (data?.image) {
-          const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
-          setImage(presignedUrl?.url);
-        }
-      };
-      fetch()
-    }
+    const fetch = async () => {
+      if (data?.image) {
+        const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
+        setImage(presignedUrl?.url ?? null);
+      } else {
+        setImage(null);
+      }
+    };
+    fetch()
     setContent(structuredClone(data?.content))
   }, [query, data]);
 
