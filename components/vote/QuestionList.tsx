@@ -113,7 +113,7 @@ export default function QuestionList({ node }: { node: Node }) {
                         />
                       }
                     />
-                    {((child.ownerId == userId || query?.isContextOwner) && <ListItemSecondaryAction>
+                    {(!screen && (child.ownerId == userId || query?.isContextOwner) && <ListItemSecondaryAction>
                           <IconButton
                             color="primary"
                             onClick={() => {
