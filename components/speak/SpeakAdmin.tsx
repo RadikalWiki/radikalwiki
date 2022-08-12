@@ -38,7 +38,7 @@ export default function SpeakAdmin({
     await update({ id, set: { data: { time, updatedAt } } });
   };
 
-  const owner = speakerlist?.isOwner;
+  const owner = speakerlist?.isContextOwner;
 
   return (
     (owner && (

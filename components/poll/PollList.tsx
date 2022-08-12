@@ -28,7 +28,7 @@ function PollListSuspense({ node }: { node: Node }) {
     await $delete({ id });
   };
 
-  const owner = query?.isOwner;
+  const owner = query?.isContextOwner;
 
   const card = (
     <HeaderCard

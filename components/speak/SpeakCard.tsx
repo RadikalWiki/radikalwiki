@@ -19,6 +19,7 @@ import { avatars } from "comps";
 import { TransitionGroup } from "react-transition-group";
 import { order_by } from "gql";
 import { Node, useScreen } from "hooks";
+import { useUserId } from "@nhost/react";
 
 const timeString = (time: number) => {
   const sec = String(time % 60);
@@ -37,6 +38,7 @@ export default function SpeakCard({
   time: number;
 }) {
   const screen = useScreen();
+  const userId = useUserId();
   const get = node.useSubsGet();
   const $delete = node.useDelete();
   const speakerlist = get("speakerlist");
@@ -91,7 +93,7 @@ export default function SpeakCard({
       />
       <List>
         <TransitionGroup>
-          {speakers?.map(({ id = 0, name, isOwner, data }) => {
+          {speakers?.map(({ id = 0, name, data, ownerId }) => {
             const avatarData = data();
             const item = (
               <Collapse key={id}>
@@ -103,9 +105,9 @@ export default function SpeakCard({
                       </ListItemAvatar>
                     </Tooltip>
                   )}
-                  <ListItemText primary={name} />
+                  <ListItemText primary={<Typography variant="h5">{name}</Typography>} />
                   {!screen &&
-                    (isOwner || speakerlist?.isContextOwner || speakerlist?.isOwner) && (
+                    (userId === ownerId || speakerlist?.isContextOwner) && (
                       <ListItemSecondaryAction>
                         <IconButton
                           onClick={handleRemoveSpeak(id)}
