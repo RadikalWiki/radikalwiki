@@ -97,7 +97,7 @@ export default function SpeakCard({
             const avatarData = data();
             const item = (
               <Collapse key={id}>
-                <ListItem button>
+                <ListItem>
                   {avatarData && (
                     <Tooltip title={avatars[avatarData]?.name}>
                       <ListItemAvatar>
@@ -105,7 +105,7 @@ export default function SpeakCard({
                       </ListItemAvatar>
                     </Tooltip>
                   )}
-                  <ListItemText primary={<Typography variant="h5">{name}</Typography>} />
+                  <ListItemText primary={<Typography sx={{ fontSize: "120%" }}>{name}</Typography>} />
                   {!screen &&
                     (userId === ownerId || speakerlist?.isContextOwner) && (
                       <ListItemSecondaryAction>
