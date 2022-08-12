@@ -39,7 +39,7 @@ const ListSuspense = () => {
         },
       ],
     },
-  });
+  }).filter(invite => invite.parent?.id);
   const events = query.nodes({
     where: {
       _and: [
