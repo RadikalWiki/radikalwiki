@@ -85,47 +85,45 @@ export default function QuestionList({ node }: { node: Node }) {
           {children?.map((child, index) => {
             const item = (
               <Collapse key={child?.id ?? 0}>
-                  <ListItem
-                    button
-                    component={NextLink}
-                    href={`${router.asPath}/${child?.namespace}`}
-                  >
-                    <ListItemAvatar>
-                      <Avatar
-                        sx={{
-                          bgcolor: (t) => t.palette.secondary.main,
-                        }}
-                      >
-                        {index + 1}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={child?.data()?.text}
-                      secondary={
-                        <Chip
-                          key={child?.owner?.id}
-                          icon={<Face />}
-                          color="secondary"
-                          variant="outlined"
-                          size="small"
-                          sx={{ mr: 0.5 }}
-                          label={child?.owner?.displayName}
-                        />
-                      }
-                    />
-                    {(!screen && (child.ownerId == userId || query?.isContextOwner) && <ListItemSecondaryAction>
-                          <IconButton
-                            color="primary"
-                            onClick={() => {
-                              $delete({ id: child.id });
-                            }}
-                            size="large"
-                          >
-                            <Delete />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      )}
-                  </ListItem>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar
+                      sx={{
+                        bgcolor: (t) => t.palette.secondary.main,
+                      }}
+                    >
+                      {index + 1}
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={child?.data()?.text}
+                    secondary={
+                      <Chip
+                        key={child?.owner?.id}
+                        icon={<Face />}
+                        color="secondary"
+                        variant="outlined"
+                        size="small"
+                        sx={{ mr: 0.5 }}
+                        label={child?.owner?.displayName}
+                      />
+                    }
+                  />
+                  {!screen &&
+                    (child.ownerId == userId || query?.isContextOwner) && (
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          color="primary"
+                          onClick={() => {
+                            $delete({ id: child.id });
+                          }}
+                          size="large"
+                        >
+                          <Delete />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
+                </ListItem>
               </Collapse>
             );
             return child?.id ? item : null;
