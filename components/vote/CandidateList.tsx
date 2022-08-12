@@ -22,6 +22,7 @@ export default function CandidateList({ node }: { node: Node }) {
   const largeScreen = useMediaQuery("(min-width:1200px)");
   const userId = useUserId();
   const [images, setImages] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const children = node.useQuery()
     ?.children({
@@ -41,15 +42,17 @@ export default function CandidateList({ node }: { node: Node }) {
 
   const imageIds = children?.map(child => child.data()?.image)
 
+  
+  console.log(imageIds)
+  
   useEffect(() => {
     const fetch = async () => {
-      const preUrls = await Promise.all(imageIds?.map(fileId => nhost.storage.getPresignedUrl({ fileId })) ?? []);
-      setImages(preUrls.map(preUrl => preUrl.presignedUrl?.url ?? "") ?? [])
+      setImages([])
+      const preUrls = await Promise.all(imageIds?.filter(id => id)?.map(fileId => nhost.storage.getPresignedUrl({ fileId })) ?? []);
+      setImages(preUrls.map(preUrl => preUrl.presignedUrl?.url ?? "") ?? []);
     };
-    if (imageIds?.[0]) {
-      fetch()
-    }
-  }, [imageIds]);
+    fetch()
+  }, [JSON.stringify(imageIds)]);
 
 
   if (screen) return null;
@@ -75,7 +78,7 @@ export default function CandidateList({ node }: { node: Node }) {
             sx={{ borderRadius: "70px" }}
             onClick={handleOnClick(namespace)}
           >
-            {images?.[index] ? (
+            {!loading && images?.[index] ? (
               <Image alt="Billede for indhold" layout="fill" src={images?.[index]} />
             ) : (
               <Box sx={{ height: "50px" }}></Box>

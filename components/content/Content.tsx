@@ -12,22 +12,23 @@ function Content({ node, fontSize }: { node: Node; fontSize: string }) {
 
   useEffect(() => {
     const fetch = async () => {
+      setImage(null);
       if (data?.image) {
-        const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId: data?.image });
+        const { presignedUrl } = await nhost.storage.getPresignedUrl({
+          fileId: data?.image,
+        });
         setImage(presignedUrl?.url ?? null);
-      } else {
-        setImage(null);
       }
     };
-    fetch()
-    setContent(structuredClone(data?.content))
-  }, [query, data]);
+    fetch();
+    setContent(structuredClone(data?.content));
+  }, [data?.content, data?.image]);
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm>
         <Box sx={{ fontSize, overflowX: "auto" }}>
-          <Collapse in={!!content} >
+          <Collapse in={!!content}>
             <Slate value={content} readOnly />
           </Collapse>
         </Box>
