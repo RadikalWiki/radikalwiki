@@ -75,7 +75,7 @@ export default function CandidateList({ node }: { node: Node }) {
         return !id ? null : (
           <ImageListItem
             key={id ?? 0}
-            sx={{ borderRadius: "70px" }}
+            sx={{ borderRadius: "70px", cursor: "pointer" }}
             onClick={handleOnClick(namespace)}
           >
             {!loading && images?.[index] ? (
