@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
+  Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -19,7 +20,7 @@ import {
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
 import { Node } from "hooks";
-import { HeaderCard, MimeLoader } from "comps";
+import { HeaderCard, MimeAvatarId, MimeLoader } from "comps";
 import {
   DoNotDisturb,
   Hail,
@@ -56,7 +57,7 @@ export default function VoteApp({ node }: { node: Node }) {
             members: {
               _and: [
                 {
-                  _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
+                  _or: [{ nodeId: { _eq: userId } }],
                 },
                 { active: { _eq: true } },
               ],
@@ -68,10 +69,9 @@ export default function VoteApp({ node }: { node: Node }) {
   })?.[0]?.id;
 
   const data = poll?.data();
-  const { options, maxVote, minVote } =
-    data && poll?.mimeId == "vote/poll"
-      ? data
-      : { options: [], maxVote: 1, minVote: 1 };
+  const options = data?.options ?? [];
+  const maxVote = data?.maxVote ?? 1;
+  const minVote = data?.minVote ?? 1;
 
   const [vote, setVote] = useState<any[]>([]);
   useEffect(() => {
@@ -179,49 +179,40 @@ export default function VoteApp({ node }: { node: Node }) {
     />
   );
 
-  if (
-    poll?.id &&
-    poll?.mimeId == "vote/poll" &&
-    (!poll?.mutable || checkUnique === false || canVote === false)
-  )
-    return (
-      <Stack spacing={1}>
-        {status}
-        <MimeLoader id={poll?.id} mimeId={poll?.mimeId} />
-      </Stack>
-    );
+  const pollComp = (
+    <Stack spacing={1}>
+      {status}
+      <MimeLoader id={poll?.id} mimeId={poll?.mimeId!} />
+    </Stack>
+  );
 
-  if (!(poll?.mutable && poll?.mimeId == "vote/poll")) {
-    return (
-      <Stack spacing={1}>
-        {status}
-        <HeaderCard
-          title="Ingen afstemning nu"
-          avatar={
-            <Avatar
-              sx={{
-                bgcolor: (t) => t.palette.secondary.main,
-              }}
-            >
-              <DoNotDisturb />
-            </Avatar>
-          }
-        />
-      </Stack>
-    );
-  }
+  const noVoteComp = (
+    <Stack spacing={1}>
+      {status}
+      <HeaderCard
+        title="Ingen afstemning nu"
+        avatar={
+          <Avatar
+            sx={{
+              bgcolor: (t) => t.palette.secondary.main,
+            }}
+          >
+            <DoNotDisturb />
+          </Avatar>
+        }
+      />
+    </Stack>
+  );
 
-  return (
+  const voteComp = (
     <Stack spacing={1}>
       {status}
       <Card sx={{ m: 0 }}>
         <CardHeader
-          sx={{
-            bgcolor: (t) => t.palette.secondary.main,
-            color: (t) => t.palette.secondary.contrastText,
-          }}
           title={poll?.name}
+          avatar={<MimeAvatarId id={poll?.data()?.nodeId} />}
         />
+        <Divider />
         <CardContent>
           <form onSubmit={handleSubmit}>
             <FormControl error={error}>
@@ -257,4 +248,15 @@ export default function VoteApp({ node }: { node: Node }) {
       </Card>
     </Stack>
   );
+
+  if (
+    poll?.id &&
+    poll?.mimeId == "vote/poll" &&
+    (!poll?.mutable || checkUnique === false || canVote === false)
+  )
+    return pollComp;
+
+  if (!(poll?.mutable && poll?.mimeId == "vote/poll")) return noVoteComp;
+
+  return voteComp;
 }

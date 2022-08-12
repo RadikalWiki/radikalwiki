@@ -13,61 +13,29 @@ import {
   HoverState,
   Stack,
 } from "@devexpress/dx-react-chart";
-import { Card, CardHeader, Typography, Box, CardContent } from "@mui/material";
+import {
+  Card,
+  CardHeader,
+  Typography,
+  Box,
+  CardContent,
+  Divider,
+} from "@mui/material";
 import { Node, useScreen, useSession } from "hooks";
 import { nodes, Maybe, useSubscription, String_comparison_exp } from "gql";
+import { MimeAvatarId } from "comps/mime";
 
 const MuiChart = DxChart as any;
 
-const parseData = (poll: Maybe<nodes> | undefined, screen: boolean) => {
-  const count = poll
-    ?.children_aggregate({ where: { mimeId: { _eq: "vote/vote" } } })
-    .aggregate?.count();
-  const data = poll?.data();
-
-  const owner = poll?.isContextOwner;
-  const mutable = poll?.mutable;
-  const { options, hidden } =
-    data && poll?.mimeId == "vote/poll" ? data : { options: [], hidden: true };
-
-  const opts = [...Array(options.length).keys()].map((opt: number) => [opt, 0]);
-  const votes = poll?.children({
-    where: { mimeId: { _eq: "vote/vote" } },
-  });
-  const acc = votes
-    ?.map(({ data }) => data())
-    .flat()
-    .reduce((acc, e) => acc.set(e, acc.get(e) + 1), new Map(opts as any));
-  const res = { arg: "none", ...[...(acc?.values() ?? []), count] };
-
-  if (mutable || (hidden && (screen || !owner))) {
-    return {
-      options: [
-        ...options.map((opt: string) => `${opt} (skjult)`),
-        "Antal Stemmer",
-      ],
-      data: [
-        {
-          arg: "none",
-          ...[...Array(options.length).keys()].map((opt: number) => 0),
-          [options.length]: count,
-        },
-      ],
-    };
-  }
-  return { options: [...options, "Antal Stemmer"], data: [res] };
-};
-
 const Chart = ({ chartData, title }: { chartData: any; title: string }) => {
+  if (chartData.options.length === 1) return null;
   return (
     <Card sx={{ m: 0 }}>
       <CardHeader
-        sx={{
-          bgcolor: (t) => t.palette.secondary.main,
-          color: (t) => t.palette.secondary.contrastText,
-        }}
         title={title}
+        avatar={<MimeAvatarId id={chartData.nodeId} />}
       />
+      <Divider />
       {chartData?.options?.map((opt: any, index: number) => (
         <Box key={index} />
       ))}
@@ -126,13 +94,46 @@ export default function PollChartSub({ node }: { node: Node }) {
   //     ],
   //   },
   // });
+  const count = poll
+    ?.children_aggregate({ where: { mimeId: { _eq: "vote/vote" } } })
+    .aggregate?.count();
+  const data = poll?.data();
+
+  const owner = poll?.isContextOwner;
+  const mutable = poll?.mutable;
+  const options = data?.options ?? [];
+  const hidden = data?.hidden ?? true;
+  const nodeId = data?.nodeId;
+
+  const opts = [...Array(options.length).keys()].map((opt: number) => [opt, 0]);
+  const votes = poll?.children({
+    where: { mimeId: { _eq: "vote/vote" } },
+  });
+  const acc = votes
+    ?.map(({ data }) => data())
+    .flat()
+    .reduce((acc, e) => acc.set(e, acc.get(e) + 1), new Map(opts as any));
+  const res = { arg: "none", ...[...(acc?.values() ?? []), count] };
+
+  const chartData =
+    mutable || (hidden && (screen || !owner))
+      ? {
+          options: [
+            ...options.map((opt: string) => `${opt} (skjult)`),
+            "Antal Stemmer",
+          ],
+          data: [
+            {
+              arg: "none",
+              ...[...Array(options.length).keys()].map((opt: number) => 0),
+              [options.length]: count,
+            },
+          ],
+          nodeId,
+        }
+      : { options: [...options, "Antal Stemmer"], data: [res], nodeId };
 
   const title = poll?.name;
-  const chartData = parseData(poll, screen);
-
-  console.log(chartData);
-  if (poll?.isContextOwner == undefined || chartData.options.length === 1)
-    return null;
 
   return <Chart chartData={chartData} title={title ?? ""} />;
 }

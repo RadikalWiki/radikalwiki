@@ -33,6 +33,7 @@ export default function PollDialog({
   const insert = node.useInsert();
   const update = node.useUpdate();
   const query = node.useQuery();
+  const nodeId = query?.id;
   const context = node.useContext();
   const contextSet = context.useSet();
 
@@ -66,6 +67,7 @@ export default function PollDialog({
         maxVote: voteCount[1],
         hidden,
         options: options,
+        nodeId,
       },
     });
 
