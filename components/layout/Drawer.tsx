@@ -192,10 +192,9 @@ const DrawerElement = ({
 const HomeList = ({ setOpen }: { setOpen: Function }) => {
   const router = useRouter();
   const userId = useUserId();
-  const sub = useSubscription();
   const query = useQuery();
   const [_, setSession] = useSession();
-  const events = sub.nodes({
+  const events = query.nodes({
     where: {
       _and: [
         { mimeId: { _eq: "wiki/event" } },

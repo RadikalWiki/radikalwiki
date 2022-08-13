@@ -27,10 +27,9 @@ import { TransitionGroup } from "react-transition-group";
 const ListSuspense = () => {
   const refetch = useRefetch();
   const query = useQuery();
-  const sub = useSubscription();
   const userId = useUserId();
   const email = useUserEmail();
-  const invites = sub.members({
+  const invites = query.members({
     where: {
       _and: [
         { accepted: { _eq: false } },
