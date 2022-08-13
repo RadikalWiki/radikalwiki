@@ -6,7 +6,7 @@ const toWhere = (path: string[], root = true): any => {
     path.length > 0
       ? {
           parent: toWhere(path.slice(0, path.length - 1), false),
-          namespace: { _like: like },
+          namespace: { _eq: like },
         }
       : { parentId: { _is_null: true } };
   return root ? { where } : where;
