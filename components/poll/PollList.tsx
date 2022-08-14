@@ -19,7 +19,7 @@ import { Node, useScreen } from "hooks";
 
 function PollListSuspense({ node }: { node: Node }) {
   const router = useRouter();
-  const query = node.useSubs();
+  const query = node.useQuery();
   const $delete = node.useDelete();
   const polls = query?.children({
     where: { mimeId: { _eq: "vote/poll" } },
