@@ -4,13 +4,13 @@ import { Suspense } from "react";
 import { Box } from "@mui/system";
 import { MimeLoader, AppLoader, HomeApp } from "comps";
 
-export default function Loader({ app }: { app?: string }) {
+export default function Loader({ app, id }: { app?: string, id?: string }) {
   const router = useRouter();
 
   if (!router.query.app && app === "home") {
     return <HomeApp />;
   } else if (router.query.app || app) {
-    return <AppLoader app={(router.query.app as string) ?? app} />;
+    return <AppLoader app={(router.query.app as string) ?? app} id={id} />;
   } else {
     return (
       <Suspense

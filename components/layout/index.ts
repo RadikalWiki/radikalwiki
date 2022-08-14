@@ -14,3 +14,4 @@ export { default as UserButton } from './UserButton';
 export { default as OldBrowser } from './OldBrowser';
 export { default as SearchField } from './SearchField';
 export { default as HomeList } from './HomeList';
+export { default as PathLoader } from './PathLoader';
