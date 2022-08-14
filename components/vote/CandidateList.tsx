@@ -22,38 +22,38 @@ export default function CandidateList({ node }: { node: Node }) {
   const largeScreen = useMediaQuery("(min-width:1200px)");
   const userId = useUserId();
   const [images, setImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
 
-  const children = node.useQuery()
-    ?.children({
-      where: {
-        _and: [
-          { mimeId: { _eq: "vote/candidate" } },
-          {
-            _or: [
-              { mutable: { _eq: false } },
-              { ownerId: { _eq: userId } },
-              { members: { nodeId: { _eq: userId } } },
-            ],
-          },
-        ],
-      },
-    });
+  const children = node.useQuery()?.children({
+    where: {
+      _and: [
+        { mimeId: { _eq: "vote/candidate" } },
+        {
+          _or: [
+            { mutable: { _eq: false } },
+            { ownerId: { _eq: userId } },
+            { members: { nodeId: { _eq: userId } } },
+          ],
+        },
+      ],
+    },
+  });
 
-  const imageIds = children?.map(child => child.data()?.image)
+  const imageIds = children?.map((child) => child.data()?.image);
 
-  
-  console.log(imageIds)
-  
   useEffect(() => {
     const fetch = async () => {
-      setImages([])
-      const preUrls = await Promise.all(imageIds?.filter(id => id)?.map(fileId => nhost.storage.getPresignedUrl({ fileId })) ?? []);
-      setImages(preUrls.map(preUrl => preUrl.presignedUrl?.url ?? "") ?? []);
+      setImages([]);
+      const preUrls = await Promise.all(
+        imageIds?.map((fileId) =>
+          fileId
+            ? nhost.storage.getPresignedUrl({ fileId })
+            : Promise.resolve(null)
+        ) ?? []
+      );
+      setImages(preUrls.map((preUrl) => preUrl?.presignedUrl?.url ?? "") ?? []);
     };
-    fetch()
+    fetch();
   }, [JSON.stringify(imageIds)]);
-
 
   if (screen) return null;
 
@@ -78,8 +78,12 @@ export default function CandidateList({ node }: { node: Node }) {
             sx={{ borderRadius: "70px", cursor: "pointer" }}
             onClick={handleOnClick(namespace)}
           >
-            {!loading && images?.[index] ? (
-              <Image alt="Billede for indhold" layout="fill" src={images?.[index]} />
+            {images?.[index] ? (
+              <Image
+                alt="Billede for indhold"
+                layout="fill"
+                src={images?.[index]}
+              />
             ) : (
               <Box sx={{ height: "50px" }}></Box>
             )}
