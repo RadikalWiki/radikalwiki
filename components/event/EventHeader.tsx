@@ -1,5 +1,5 @@
 import { CardHeader, Typography } from "@mui/material";
-import { MimeAvatar, ExpandButton } from "comps";
+import { MimeAvatarNode, ExpandButton } from "comps";
 import { Node, useNode } from "hooks";
 
 export default function EventHeader({
@@ -15,7 +15,7 @@ export default function EventHeader({
   return (
     <CardHeader
       title={<Typography color="secondary">{query?.name}</Typography>}
-      avatar={<MimeAvatar node={node} />}
+      avatar={<MimeAvatarNode node={node} />}
       subheader={query
         ?.members()
         .map((m) => m.name ?? m.user?.displayName)

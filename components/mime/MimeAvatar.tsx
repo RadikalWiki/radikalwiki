@@ -1,10 +1,25 @@
 import { LockOpen } from "@mui/icons-material";
 import { Badge, Tooltip, Avatar as MuiAvatar, Skeleton } from "@mui/material";
-import { order_by } from "gql";
+import { Maybe, order_by } from "gql";
 import { withSuspense } from "hoc";
 import { Node, useNode, useScreen } from "hooks";
 import { getIconFromId } from "mime";
 import { MimeSkeleton } from "comps";
+
+const MimeAvatar = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, index?: number }) => {
+  const screen = useScreen();
+  return (
+    <MuiAvatar
+      sx={{
+        bgcolor: (t) =>
+          screen ? t.palette.primary.main : t.palette.secondary.main,
+      }}
+    >
+      {getIconFromId(mimeId, index, true)}
+    </MuiAvatar>
+  );
+};
+
 
 const Avatar = ({ node }: { node: Node }) => {
   const screen = useScreen();
@@ -75,10 +90,10 @@ const Avatar = ({ node }: { node: Node }) => {
   );
 };
 
-const MimeAvatar = withSuspense(Avatar, MimeSkeleton);
+const MimeAvatarNode = withSuspense(Avatar, MimeSkeleton);
 const MimeAvatarId = withSuspense(({ id }: { id: string }) => {
   const node = useNode({ id });
   return <Avatar node={node} />;
 }, MimeSkeleton);
 
-export { MimeAvatarId, MimeAvatar };
+export { MimeAvatar, MimeAvatarNode, MimeAvatarId };

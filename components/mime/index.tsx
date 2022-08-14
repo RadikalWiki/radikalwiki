@@ -1,3 +1,3 @@
-export { MimeAvatar, MimeAvatarId } from "./MimeAvatar";
-export { MimeIcon, MimeIconId } from "./MimeIcon";
+export { MimeAvatar, MimeAvatarId, MimeAvatarNode } from "./MimeAvatar";
+export { MimeIcon, MimeIconId, MimeIconNode } from "./MimeIcon";
 export { default as MimeSkeleton } from "./MimeSkeleton";

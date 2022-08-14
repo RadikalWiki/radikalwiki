@@ -41,7 +41,7 @@ import { getIconFromId } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
-function ChildListElement({ id }: { id: string }) {
+function ChildListElement({ id, index }: { id: string, index: number }) {
   const node = useNode({ id });
   const query = node.useQuery();
   const router = useRouter();
@@ -55,7 +55,7 @@ function ChildListElement({ id }: { id: string }) {
         href={`${router.asPath}/${query?.namespace}`}
       >
         <ListItemAvatar>
-          <MimeAvatar node={node} />
+          <MimeAvatar mimeId={query?.mimeId} index={index} />
         </ListItemAvatar>
         <ListItemText
           primary={query?.name}
@@ -92,10 +92,10 @@ function ChildListRaw({ node }: { node: Node }) {
   return (
     <List>
       <TransitionGroup>
-        {children?.map(({ id }) => {
+        {children?.map(({ id }, index) => {
           return (
             <Collapse key={id ?? 0}>
-              <ChildListElement id={id} />
+              <ChildListElement id={id} index={index} />
             </Collapse>
           );
         })}

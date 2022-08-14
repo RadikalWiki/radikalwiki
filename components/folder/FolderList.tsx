@@ -10,16 +10,18 @@ import {
   Typography,
 } from "@mui/material";
 import { DoNotDisturb } from "@mui/icons-material";
-import { order_by } from "gql";
+import { nodes, order_by } from "gql";
 import { TransitionGroup } from "react-transition-group";
-import { MimeAvatarId } from "comps";
+import { MimeAvatar } from "comps";
 import { Node } from "hooks";
 import { useUserId } from "@nhost/react";
+import { getIconFromId } from "mime";
 
 export default function FolderList({ node }: { node: Node }) {
   const userId = useUserId();
   const router = useRouter();
   const query = node.useQuery();
+
 
   const children =
     query?.children({
@@ -46,11 +48,25 @@ export default function FolderList({ node }: { node: Node }) {
     router.push(`${router.asPath}/${namespace}`);
   };
 
+  const number = children.filter((child) => child.mime?.icon == "number");
+  const letter = children.filter((child) => child.mime?.icon == "letter");
+  const findIndex = (id: string) => {
+    const numberIndex = number.findIndex(elem => elem.id === id)
+    if (numberIndex !== -1)
+      return numberIndex;
+    const letterIndex = letter.findIndex(elem => elem.id === id)
+    if (letterIndex !== -1)
+      return letterIndex
+    return undefined;
+  }
+
   return (
     <TransitionGroup>
-      {children.map((child) => {
-        const { id, name, namespace } = child;
-        const avatar = <MimeAvatarId id={id} />;
+      {children.map(({ id, mimeId, name, namespace }) => {
+        const avatar = <MimeAvatar
+          mimeId={mimeId}
+          index={findIndex(id)}
+        />
         return !id ? null : (
           <Collapse key={id ?? 0}>
             <ListItem button onClick={handleOnClick(namespace)}>

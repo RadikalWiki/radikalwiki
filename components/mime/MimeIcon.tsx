@@ -1,8 +1,12 @@
-import { order_by } from "gql";
+import { Maybe, order_by } from "gql";
 import { withSuspense } from "hoc";
 import { Node, useNode } from "hooks";
 import { getIconFromId } from "mime";
 import { MimeSkeleton } from "comps";
+
+const MimeIcon = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, index?: number }) => {
+  return getIconFromId(mimeId, index);
+};
 
 const Icon = ({ node }: { node: Node }) => {
   const query = node.useQuery();
@@ -24,10 +28,10 @@ const Icon = ({ node }: { node: Node }) => {
   return getIconFromId(id, index);
 };
 
-const MimeIcon = withSuspense(Icon, MimeSkeleton);
+const MimeIconNode = withSuspense(Icon, MimeSkeleton);
 const MimeIconId = withSuspense(({ id }: { id: string }) => {
   const node = useNode({ id });
   return <Icon node={node} />;
 }, MimeSkeleton);
 
-export { MimeIcon, MimeIconId };
+export { MimeIcon, MimeIconNode, MimeIconId };

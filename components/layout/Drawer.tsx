@@ -18,6 +18,7 @@ import {
   ListItemAvatar,
   ListSubheader,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import {
   Airplay,
@@ -31,10 +32,11 @@ import {
   FileOpen,
   Home,
   Menu,
+  QueryStatsSharp,
 } from "@mui/icons-material";
 import { useSession, usePath, useNode, Node } from "hooks";
 import { fromId, toWhere } from "core/path";
-import { Link as NextLink, MimeAvatar, MimeIcon } from "comps";
+import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from "comps";
 import {
   order_by,
   query,
@@ -43,13 +45,162 @@ import {
   nodes,
   useSubscription,
 } from "gql";
-import { useState, startTransition, useEffect } from "react";
+import { useState, startTransition, useEffect, Suspense } from "react";
 import { useRouter } from "next/router";
 import { drawerWidth } from "core/constants";
 import { Box } from "@mui/system";
 import { useUserId } from "@nhost/react";
+import { getIconFromId } from "mime";
 
 const DrawerElement = ({
+  query,
+  path,
+  fullpath,
+  open,
+  setOpen,
+  setDrawerOpen,
+  index,
+  childIndex,
+  iconIndex,
+}: {
+  query: nodes;
+  path: string[];
+  fullpath: string[];
+  open: boolean[][];
+  setOpen: Function;
+  setDrawerOpen: Function;
+  index: number;
+  childIndex: number;
+  iconIndex?: number;
+}) => {
+  const router = useRouter();
+  const slicedPath = fullpath.slice(0, path.length);
+  const userId = useUserId();
+
+  const selected =
+    path.length === slicedPath.length &&
+    path.every((v, i) => v === slicedPath[i]);
+
+  const childrenCount =
+    query
+      ?.children_aggregate({
+        order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
+        where: {
+          _and: [
+            {
+              _or: [
+                { mutable: { _eq: false } },
+                { ownerId: { _eq: userId } },
+                { members: { nodeId: { _eq: userId } } },
+              ],
+            },
+            {
+              mime: {
+                hidden: { _eq: false },
+              },
+            },
+          ],
+        },
+      })
+      ?.aggregate?.count() ?? 0;
+
+  return (
+    <>
+      <ListItemButton
+        sx={{
+          pl: 1 + index,
+          color: selected ? "primary.main" : "",
+        }}
+        selected={selected}
+        onClick={() => {
+          startTransition(() => {
+            setDrawerOpen(false);
+            router.push(`${path.join("/")}`);
+          });
+        }}
+      >
+        <ListItemIcon sx={{ color: selected ? "primary.main" : "" }}>
+          {/* <Icon id={child?.id} index={iconIndex} /> */}
+          <MimeIcon mimeId={query.mimeId} index={iconIndex} />
+        </ListItemIcon>
+        <ListItemText>
+          <Typography>{query?.name}</Typography>
+        </ListItemText>
+        {childrenCount > 0 && (
+          <ListItemSecondaryAction>
+            <IconButton
+              disabled={selected}
+              onClick={(e) => {
+                e.stopPropagation();
+                startTransition(() => {
+                  console.log(open);
+                  console.log(index);
+                  console.log(childIndex);
+                  const newChildOpen = [
+                    ...new Array(childIndex).fill(false),
+                    !open[index]?.[childIndex] ?? false,
+                  ];
+
+                  const newOpen =
+                    open.length > 0
+                      ? [
+                          ...open.slice(0, index),
+                          newChildOpen,
+                          ...open.slice(index + 1),
+                        ]
+                      : [...new Array(index).fill([]), newChildOpen];
+
+                  setOpen(newOpen);
+                });
+              }}
+              edge="end"
+            >
+              {open[index]?.[childIndex] || selected ? (
+                <ExpandLess />
+              ) : (
+                <ExpandMore />
+              )}
+            </IconButton>
+          </ListItemSecondaryAction>
+        )}
+      </ListItemButton>
+      <Collapse
+        mountOnEnter
+        in={(open[index]?.[childIndex] ?? false) || selected}
+      >
+        <Suspense
+          fallback={
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <CircularProgress />
+            </Box>
+          }
+        >
+          {childrenCount > 0 && (
+            <DrawerList
+              key={query.id ?? 0}
+              id={query.id}
+              path={path}
+              fullpath={fullpath}
+              open={open}
+              setOpen={setOpen}
+              index={index}
+              childIndex={childIndex}
+              setDrawerOpen={setDrawerOpen}
+              siblings={length}
+            />
+          )}
+        </Suspense>
+      </Collapse>
+    </>
+  );
+};
+
+const DrawerList = ({
   id,
   path,
   fullpath,
@@ -72,11 +223,10 @@ const DrawerElement = ({
 }) => {
   const node = useNode({ id });
   const query = node.useQuery();
-  const router = useRouter();
   const slicedPath = fullpath.slice(0, path.length);
   const userId = useUserId();
 
-  const childrenAggregate = query?.children_aggregate({
+  const children = query?.children({
     order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
     where: {
       _and: [
@@ -94,181 +244,36 @@ const DrawerElement = ({
         },
       ],
     },
-  });
+  }) ?? [];
 
-  const selected =
-    path.length === slicedPath.length &&
-    path.every((v, i) => v === slicedPath[i]);
-
-  const length = childrenAggregate?.aggregate?.count() ?? 0;
-
-  return (
-    <>
-      {index !== 0 && (
-        <ListItemButton
-          sx={{
-            pl: 1 + index,
-            color: selected ? "primary.main" : "",
-          }}
-          selected={selected}
-          onClick={() => {
-            startTransition(() => {
-              setDrawerOpen(false);
-              router.push(`${path.join("/")}`);
-            });
-          }}
-        >
-          <ListItemIcon sx={{ color: selected ? "primary.main" : "" }}>
-            {/* <Icon id={child?.id} index={iconIndex} /> */}
-            <MimeIcon node={node} />
-          </ListItemIcon>
-          <ListItemText>
-            <Typography>{node?.name}</Typography>
-          </ListItemText>
-          {length > 0 && (
-            <ListItemSecondaryAction>
-              <IconButton
-                disabled={selected}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  startTransition(() => {
-                    const newChildOpen = [
-                      ...new Array(childIndex).fill(false),
-                      !open[index]?.[childIndex] ?? false,
-                      ...new Array(
-                        siblings - childIndex ? siblings - childIndex : 0
-                      ).fill(false),
-                    ];
-
-                    const newOpen =
-                      open.length > 0
-                        ? [
-                            ...open.slice(0, index),
-                            newChildOpen,
-                            ...open.slice(index + 1),
-                          ]
-                        : [...new Array(index).fill([]), newChildOpen];
-
-                    setOpen(newOpen);
-                  });
-                }}
-                edge="end"
-              >
-                {open[index]?.[childIndex] || selected ? (
-                  <ExpandLess />
-                ) : (
-                  <ExpandMore />
-                )}
-              </IconButton>
-            </ListItemSecondaryAction>
-          )}
-        </ListItemButton>
-      )}
-
-      <Collapse
-        mountOnEnter
-        in={index === 0 || (open[index]?.[childIndex] ?? false) || selected}
-      >
-        {length > 0 &&
-          childrenAggregate?.nodes?.map((child, childIndex) => (
-            <DrawerElement
-              key={child.id ?? 0}
-              id={child.id}
-              path={path.concat([child?.namespace!])}
-              fullpath={fullpath}
-              open={open}
-              setOpen={setOpen}
-              index={index + 1}
-              childIndex={childIndex}
-              setDrawerOpen={setDrawerOpen}
-              siblings={length}
-            />
-          ))}
-      </Collapse>
-    </>
-  );
-};
-
-const HomeList = ({ setOpen }: { setOpen: Function }) => {
-  const router = useRouter();
-  const userId = useUserId();
-  const query = useQuery();
-  const [_, setSession] = useSession();
-  const events = query.nodes({
-    where: {
-      _and: [
-        { mimeId: { _eq: "wiki/event" } },
-        {
-          members: {
-            _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
-          },
-        },
-      ],
-    },
-  });
-
-  const handleEventSelect = (id: any) => async () => {
-    const prefix = await resolved(() => {
-      const node = query.node({ id });
-      return {
-        id: node?.id,
-        name: node?.name ?? "",
-        mime: node?.mimeId!,
-        namespace: node?.namespace,
-      };
-    });
-
-    const path = await fromId(id);
-    startTransition(() => {
-      setSession({
-        prefix: {
-          ...prefix,
-          path,
-        },
-      });
-      setOpen(false);
-      router.push(`/${path.join("/")}`);
-    });
-  };
+  const number = children.filter((child) => child.mime?.icon == "number");
+  const letter = children.filter((child) => child.mime?.icon == "letter");
+  const findIndex = (id: string) => {
+    const numberIndex = number.findIndex(elem => elem.id === id)
+    if (numberIndex !== -1)
+      return numberIndex;
+    const letterIndex = letter.findIndex(elem => elem.id === id)
+    if (letterIndex !== -1)
+      return letterIndex
+    return undefined;
+  }
 
   return (
     <>
-      <List>
-        <ListItem key={-1}>
-          <ListItemAvatar>
-            <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
-              <Event />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Begivenheder" />
-        </ListItem>
-        <Divider />
-        {events.map(({ id = 0, name }) => {
-          const item = (
-            <ListItem
-              key={id}
-              hidden={id == 0}
-              button
-              onClick={handleEventSelect(id)}
-            >
-              <ListItemIcon>
-                <Event />
-              </ListItemIcon>
-              <ListItemText primary={name} />
-            </ListItem>
-          );
-          return id ? item : null;
-        })}
-        {!events?.[0]?.id && (
-          <ListItem key={-2}>
-            <ListItemIcon>
-              <EventBusy />
-            </ListItemIcon>
-            <ListItemText primary="Ingen begivenheder" />
-          </ListItem>
-        )}
-      </List>
-      <Divider />
+      {children?.map((child, childIndex) => (
+        <DrawerElement
+          key={child.id ?? 0}
+          query={child}
+          path={path.concat([child?.namespace!])}
+          fullpath={fullpath}
+          open={open}
+          setOpen={setOpen}
+          index={index + 1}
+          childIndex={childIndex}
+          iconIndex={findIndex(child.id)}
+          setDrawerOpen={setDrawerOpen}
+        />
+      ))}
     </>
   );
 };
@@ -284,11 +289,12 @@ export default function Drawer({
   const [session, setSession] = useSession();
   const largeScreen = useMediaQuery("(min-width:1200px)");
   const path = usePath();
-  const home = path.length === 0;
+  const home = path.length === 0 || session?.prefix?.mime === "wiki/home";
   const node = useNode({
     where: toWhere(home ? [] : session?.prefix?.path ?? path),
   });
-  const context = node.useContext();
+  const query = node.useQuery();
+  //const context = node.useContext();
 
   const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
@@ -297,9 +303,9 @@ export default function Drawer({
   const handleCurrent = async () => {
     const id = await resolved(
       () => {
-        return query
-          ?.node({ id: contextId })
-          ?.relations({ where: { name: { _eq: "active" } } })?.[0]?.nodeId;
+        return query?.context?.relations({
+          where: { name: { _eq: "active" } },
+        })?.[0]?.nodeId;
       },
       { noCache: true }
     );
@@ -309,11 +315,11 @@ export default function Drawer({
   };
 
   useEffect(() => {
-    if (session?.prefix === undefined) {
+    if (session?.prefix === undefined && !home) {
       Promise.all([
         fromId(contextId),
         resolved(() => {
-          const node = query.node({ id: contextId });
+          const node = query?.context;
           return {
             id: node?.id,
             name: node?.name ?? "",
@@ -354,17 +360,19 @@ export default function Drawer({
         <ListItemText primary="Aktuelle Punkt" />
       </ListItemButton>
       <Divider />
-      <DrawerElement
-        id={contextId}
-        path={session?.prefix?.path ?? []}
-        fullpath={path}
-        open={listOpen}
-        setOpen={setListOpen}
-        setDrawerOpen={setOpen}
-        index={0}
-        childIndex={0}
-        siblings={0}
-      />
+      <Suspense fallback={<CircularProgress />}>
+        <DrawerList
+          id={node.id}
+          path={session?.prefix?.path ?? []}
+          fullpath={path}
+          open={listOpen}
+          setOpen={setListOpen}
+          setDrawerOpen={setOpen}
+          index={0}
+          childIndex={0}
+          siblings={0}
+        />
+      </Suspense>
     </List>
   );
 
@@ -448,9 +456,9 @@ export default function Drawer({
             </IconButton>
           ) : null}
           <Box sx={{ flexGrow: 1 }} />
-          <MimeAvatar node={context} />
+          <MimeAvatar mimeId={query?.mimeId} />
           <Typography sx={{ pl: 1 }} color="#fff" variant="h6">
-            {context?.name}
+            {node?.name}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {!largeScreen && (

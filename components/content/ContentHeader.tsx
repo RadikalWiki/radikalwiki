@@ -1,5 +1,5 @@
 import { CardHeader, Skeleton, Typography } from "@mui/material";
-import { MimeAvatar, ExpandButton, MemberChips } from "comps";
+import { MimeAvatarNode, ExpandButton, MemberChips } from "comps";
 import { Suspense } from "react";
 import { Node, useScreen } from "hooks";
 
@@ -36,7 +36,7 @@ export default function ContentHeader({
           <Title node={node} />
         </Suspense>
       }
-      avatar={<MimeAvatar node={node} />}
+      avatar={<MimeAvatarNode node={node} />}
       subheader={
         <>
           {!hideMembers && !screen && (

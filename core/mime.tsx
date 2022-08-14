@@ -26,13 +26,14 @@ import {
   Skeleton,
   Typography,
 } from "@mui/material";
+import { Maybe } from "gql";
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
   return index >= 26 ? String.fromCharCode(64 + Math.floor(index / 26)) + f : f;
 };
 
-const getIconFromId = (mimeId?: string, index?: number, avatar?: boolean) => {
+const getIconFromId = (mimeId: Maybe<string | undefined>, index?: number, avatar?: boolean) => {
   switch (mimeId) {
     case "wiki/home":
       return <Home />;
