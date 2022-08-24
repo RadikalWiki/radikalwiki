@@ -5,6 +5,7 @@ import { CSVReader } from "comps";
 import { Node, useNode } from "hooks";
 
 export default function InvitesFab({ node }: { node: Node }) {
+  const parentId = node.id;
   const nodeMembers = node.useMembers();
   const handleFile = async (fileData: any) => {
     const invites = fileData
@@ -12,7 +13,7 @@ export default function InvitesFab({ node }: { node: Node }) {
       .map((r: any) => ({
         name: `${r.fornavn} ${r.efternavn}`,
         email: r?.email?.toLowerCase(),
-        parentId: node.id,
+        parentId,
       }));
     await nodeMembers.insert(invites);
   };
