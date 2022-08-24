@@ -40,7 +40,7 @@ export default function SpeakCard({
   const screen = useScreen();
   const userId = useUserId();
   const get = node.useSubsGet();
-  const $delete = node.useDelete();
+  const $delete = node.useDelete({ refetch: false });
   const speakerlist = get("speakerlist");
   const speakers = speakerlist?.children({
     where: { mimeId: { _eq: "speak/speak" } },

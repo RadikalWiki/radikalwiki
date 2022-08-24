@@ -13,7 +13,7 @@ export default function SpeakAdmin({
 }) {
   const get = node.useSubsGet();
   const speakerlist = get("speakerlist");
-  const update = node.useUpdate();
+  const update = node.useUpdate({ refetch: false });
   const children = node.useChildren();
   const [timeBox, setTimeBox] = useState(120);
   const id = speakerlist?.id;

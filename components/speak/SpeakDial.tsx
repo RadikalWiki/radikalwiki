@@ -11,7 +11,7 @@ export default function SpeakDial({ node }: { node: Node }) {
 
   const get = node.useSubsGet();
   const speakerlist = get("speakerlist");
-  const insert = node.useInsert();
+  const insert = node.useInsert({ refetch: false });
   const id = speakerlist?.id;
 
   const handleAddSpeak = (type: string) => (_: any) => {
