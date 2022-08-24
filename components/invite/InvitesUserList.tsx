@@ -73,7 +73,6 @@ const ListSuspense = () => {
     client.cache.query = {};
   };
 
-  console.log();
   return (
     <List>
       {invites.map(({ id = 0, parent }) => {
