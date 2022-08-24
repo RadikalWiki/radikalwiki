@@ -1,5 +1,4 @@
 import { UseQueryReturnValue } from "@gqty/react";
-import { toWhere } from "core/path";
 import {
   GeneratedSchema,
   Maybe,
@@ -29,6 +28,13 @@ const getNamespace = (name?: string) => {
     .replaceAll(":", "");
 };
 
+type Param = {
+  refetch:
+    | ((query: UseQueryReturnValue<GeneratedSchema>, node?: nodes) => any[])
+    | boolean
+    | undefined;
+};
+
 export type Node = {
   id: string;
   name: Maybe<string | undefined>;
@@ -38,7 +44,9 @@ export type Node = {
   namespace: Maybe<string | undefined>;
   useQuery: () => Maybe<nodes> | undefined;
   useSubs: () => Maybe<nodes>;
-  useInsert: () => ({
+  useInsert: (
+    param?: Param
+  ) => ({
     name,
     namespace,
     mimeId,
@@ -53,69 +61,60 @@ export type Node = {
     parentId?: string;
     contextId?: string;
   }) => Promise<{ id: string; namespace?: string }>;
-  useDelete: () => (param?: { id?: string }) => Promise<string>;
-  useUpdate: () => ({
-    id,
-    set,
-  }: {
-    id?: string;
-    set: nodes_set_input;
-  }) => Promise<void>;
+  useDelete: (param?: Param) => (param?: { id?: string }) => Promise<string>;
+  useUpdate: (
+    param?: Param
+  ) => ({ id, set }: { id?: string; set: nodes_set_input }) => Promise<void>;
   useSet: () => (name: string, nodeId: string | null) => Promise<void>;
   useGet: () => (name: string) => Maybe<nodes> | undefined;
   useSubsGet: () => (name: string) => Maybe<nodes> | undefined;
   useParent: () => Node;
   useContext: () => Node;
-  useMembers: () => {
+  useMembers: (param?: Param) => {
     insert: (members: members_insert_input[]) => Promise<number | undefined>;
     delete: () => Promise<number | undefined>;
   };
-  useMember: () => {
+  useMember: (param?: Param) => {
     insert: (member: members_insert_input) => Promise<number | undefined>;
     update: (id: string, set: members_set_input) => Promise<string>;
     delete: (id: string) => Promise<number | undefined>;
   };
-  useChildren: () => {
+  useChildren: (param?: Param) => {
     delete: (where: nodes_bool_exp) => Promise<number | undefined>;
   };
 };
 
-const useNode = (param?: {
-  id?: string;
-  where?: string;
-  refetch?: (
-    query: UseQueryReturnValue<GeneratedSchema>,
-    node?: nodes
-  ) => any[];
-}): Node => {
-  const path = usePath();
+const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
+  const where = {
+    where: param?.where ?? { parentId: { _is_null: true } },
+  };
   const useQuery = () => {
     const query = gqtyUseQuery();
     return param?.id
       ? query.node({ id: param?.id })
-      : query.nodes(param?.where ?? toWhere(path))?.[0];
+      : query.nodes(where)?.[0];
   };
   const query = gqtyUseQuery();
   const node = param?.id
     ? query.node({ id: param?.id })
-    : query.nodes(param?.where ?? toWhere(path))?.[0];
+    : query.nodes(where)?.[0];
   const nodeId = param?.id ?? node?.id;
   const name = node?.name;
   const parentId = node?.parentId;
   const mimeId = node?.mimeId;
   const nodeContextId = node?.contextId;
   const namespace = node?.namespace;
-  const parentQueries = [
-    query?.nodes(toWhere(path.slice(0, -1))),
-    query?.node({ id: parentId }),
-  ];
-  const refetchQueries = param?.refetch
-    ? [...param?.refetch(query, node!), node, node?.data, ...parentQueries]
-    : [node, node?.data, ...parentQueries];
-  const opts = {
-    refetchQueries,
+  const refetchQueries = [node, node?.data, query?.node({ id: parentId })];
+
+  const getOpts = (param?: Param) => ({
+    refetchQueries:
+      param?.refetch && typeof param?.refetch === "function"
+        ? [...param.refetch(query, node!)]
+        : param?.refetch === false
+        ? []
+        : refetchQueries,
     awaitRefetchQueries: true,
-  };
+  });
 
   const useGet = () => {
     return (name: string) => {
@@ -128,7 +127,7 @@ const useNode = (param?: {
     const subs = useSubscription();
     return param?.id
       ? subs.node({ id: param?.id })
-      : subs.nodes(toWhere(path))?.[0];
+      : subs.nodes(where)?.[0];
   };
 
   const useSubsGet = () => {
@@ -152,14 +151,16 @@ const useNode = (param?: {
       }
     );
     return (name: string, nodeId: string | null) => {
-      return insertRelation({ args: { parentId: param?.id ?? node?.id, name, nodeId } });
+      return insertRelation({
+        args: { parentId: param?.id ?? node?.id, name, nodeId },
+      });
     };
   };
 
-  const useInsert = () => {
+  const useInsert = (param?: Param) => {
     const [insertNode] = useMutation((mutation, args: nodes_insert_input) => {
       return mutation.insertNode({ object: args })?.id;
-    }, opts);
+    }, getOpts(param));
     return async ({
       name,
       namespace,
@@ -189,16 +190,16 @@ const useNode = (param?: {
     };
   };
 
-  const useDelete = () => {
+  const useDelete = (param?: Param) => {
     const [deleteNode] = useMutation((mutation, id: string) => {
       return mutation.deleteNode({ id })?.id;
-    }, opts);
+    }, getOpts(param));
     return (param?: { id?: string }) => {
       return deleteNode({ args: param?.id ?? nodeId });
     };
   };
 
-  const useUpdate = () => {
+  const useUpdate = (param?: Param) => {
     const [updateNode] = useMutation(
       (mutation, args: { id: string; set: nodes_set_input }) => {
         return mutation.updateNode({
@@ -206,7 +207,7 @@ const useNode = (param?: {
           _set: args.set,
         })?.id;
       },
-      opts
+      getOpts(param)
     );
     return ({ id, set }: { id?: string; set: nodes_set_input }) => {
       return updateNode({
@@ -218,28 +219,28 @@ const useNode = (param?: {
     };
   };
 
-  const useMembers = () => {
+  const useMembers = (param?: Param) => {
     const [insertMembers] = useMutation(
       (mutation, objects: members_insert_input[]) => {
         const members = objects.map((member) => ({
           ...member,
-          parentId: node?.id,
+          parentId: nodeId,
         }));
         return mutation.insertMembers({
           objects: members,
           on_conflict: {
-            constraint: members_constraint.members_parent_id_node_id_key,
+            constraint: members_constraint.members_parent_id_email_key,
             update_columns: [],
           },
         })?.affected_rows;
       },
-      opts
+      getOpts(param)
     );
 
     const [deleteMembers] = useMutation((mutation) => {
       return mutation.deleteMembers({ where: { parentId: { _eq: nodeId } } })
         ?.affected_rows;
-    }, opts);
+    }, getOpts(param));
 
     return {
       insert: (members: members_insert_input[]) => {
@@ -251,17 +252,17 @@ const useNode = (param?: {
     };
   };
 
-  const useMember = () => {
+  const useMember = (param?: Param) => {
     const [insertMember] = useMutation(
       (mutation, object: members_insert_input) => {
         return mutation.insertMember({ object })?.id;
       },
-      opts
+      getOpts(param)
     );
 
     const [deleteMember] = useMutation((mutation, id: string) => {
       return mutation.deleteMember({ id })?.id;
-    }, opts);
+    }, getOpts(param));
 
     const [updateMember] = useMutation(
       (mutation, args: { id: string; set: members_set_input }) => {
@@ -270,7 +271,7 @@ const useNode = (param?: {
           _set: args.set,
         })?.id;
       },
-      opts
+      getOpts(param)
     );
 
     return {
@@ -292,8 +293,8 @@ const useNode = (param?: {
     });
 
     return {
-      delete: (args: nodes_bool_exp) => args ? deleteChildren({ args }) : Promise.resolve(0)
-      ,
+      delete: (args: nodes_bool_exp) =>
+        args ? deleteChildren({ args }) : Promise.resolve(0),
     };
   };
 
