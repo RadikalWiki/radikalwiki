@@ -10,7 +10,7 @@ import { getIconFromId } from "mime";
 import { Image } from "comps";
 import { useRouter } from "next/router";
 import { query, resolved } from "gql";
-import { toWhere } from "core/path";
+import { toId } from "core/path";
 import { Box } from "@mui/system";
 import { useUserId } from "@nhost/react";
 import { nhost } from "nhost";
@@ -59,8 +59,9 @@ export default function CandidateList({ node }: { node: Node }) {
 
   const handleOnClick = (namespace?: string) => async () => {
     const path = `${router.asPath}/${namespace}`.substring(1).split("/");
+    const id = await toId(path);
     await resolved(() => {
-      const node = query?.nodes(toWhere(path))?.[0];
+      const node = query?.node({ id });
       node?.id;
       node?.name;
       node?.mimeId;

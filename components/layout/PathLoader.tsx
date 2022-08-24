@@ -1,23 +1,26 @@
 import { Slide, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import { useQuery } from "gql";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Loader from "./Loader";
 
 export default function PathLoader({
   namespaces,
-  id,
+  parentId,
   fullpath,
 }: {
   namespaces: string[];
-  id?: string;
+  parentId?: string;
   fullpath: string[];
 }) {
-  const [namespace, setNamespace] = useState<string | undefined>();
   const query = useQuery();
   const where = {
     _and: [
       { namespace: { _eq: namespaces.at(-1) } },
-      id ? { parentId: { _eq: id } } : { parentId: { _is_null: true } },
+      parentId
+        ? { parentId: { _eq: parentId } }
+        : { parentId: { _is_null: true } },
     ],
   };
   const node = query.nodes({ where }).at(0);
@@ -31,7 +34,7 @@ export default function PathLoader({
   ) : (
     <PathLoader
       namespaces={[...namespaces, fullpath[namespaces.length]]}
-      id={node?.id}
+      parentId={node?.id}
       fullpath={fullpath}
     />
   );

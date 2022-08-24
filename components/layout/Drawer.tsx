@@ -9,48 +9,33 @@ import {
   Typography,
   ListItemSecondaryAction,
   IconButton,
-  Avatar,
-  ListItem,
   useMediaQuery,
   alpha,
   Toolbar,
-  AppBar,
-  ListItemAvatar,
-  ListSubheader,
-  Button,
   CircularProgress,
 } from "@mui/material";
 import {
-  Airplay,
   ChevronLeft,
   Close,
   ConnectedTv,
-  Event,
-  EventBusy,
   ExpandLess,
   ExpandMore,
   FileOpen,
   Home,
-  Menu,
-  QueryStatsSharp,
 } from "@mui/icons-material";
-import { useSession, usePath, useNode, Node } from "hooks";
-import { fromId, toWhere } from "core/path";
+import { useSession, usePath, useNode } from "hooks";
+import { fromId } from "core/path";
 import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from "comps";
 import {
   order_by,
-  query,
   resolved,
-  useQuery,
   nodes,
-  useSubscription,
 } from "gql";
 import { useState, startTransition, useEffect, Suspense } from "react";
 import { useRouter } from "next/router";
 import { drawerWidth } from "core/constants";
 import { Box } from "@mui/system";
 import { useUserId } from "@nhost/react";
-import { getIconFromId } from "mime";
 
 const DrawerElement = ({
   query,
@@ -133,9 +118,6 @@ const DrawerElement = ({
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
-                  console.log(open);
-                  console.log(index);
-                  console.log(childIndex);
                   const newChildOpen = [
                     ...new Array(childIndex).fill(false),
                     !open[index]?.[childIndex] ?? false,
@@ -289,9 +271,9 @@ export default function Drawer({
   const [session, setSession] = useSession();
   const largeScreen = useMediaQuery("(min-width:1200px)");
   const path = usePath();
-  const home = path.length === 0 || session?.prefix?.mime === "wiki/home";
+  const home = path.length === 0;
   const node = useNode({
-    where: toWhere(home ? [] : session?.prefix?.path ?? path),
+    id: home ? undefined : session?.prefix?.id
   });
   const query = node.useQuery();
   //const context = node.useContext();

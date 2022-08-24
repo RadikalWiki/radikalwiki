@@ -1,15 +1,17 @@
 import { query, resolved } from "gql";
 
-const toWhere = (path: string[], root = true): any => {
-  const like = path.slice(-1)[0];
-  const where =
-    path.length > 0
-      ? {
-          parent: toWhere(path.slice(0, path.length - 1), false),
-          namespace: { _eq: like },
-        }
-      : { parentId: { _is_null: true } };
-  return root ? { where } : where;
+const toId = async (path: string[], parentId?: string): Promise<string> => {
+  const where = {
+    _and: [
+      { namespace: { _eq: path.at(-1) } },
+      parentId
+        ? { parentId: { _eq: parentId } }
+        : { parentId: { _is_null: true } },
+    ],
+  };
+  const id = await resolved(() => query.nodes({ where }).at(0)?.id);
+
+  return path.length > 0 ? toId(path.slice(1), id) : id;
 };
 
 const fromId = async (id?: string): Promise<string[]> => {
@@ -23,4 +25,4 @@ const fromId = async (id?: string): Promise<string[]> => {
   });
 };
 
-export { toWhere, fromId };
+export { toId, fromId };

@@ -27,7 +27,7 @@ export default function Loader({ app, id }: { app?: string, id?: string }) {
           </Box>
         }
       >
-        <MimeLoader />
+        <MimeLoader id={id} />
       </Suspense>
     );
   }
