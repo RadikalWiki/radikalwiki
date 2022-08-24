@@ -86,10 +86,17 @@ export default function Editor({ node }: { node: Node }) {
   const handleSave = (mutable?: boolean) => async () => {
     if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
       await nodeMembers.delete();
-      await nodeMembers.insert(members.map(member => ({ ...member, mimeId: undefined })));
+      await nodeMembers.insert(
+        members.map((member) => ({ ...member, mimeId: undefined }))
+      );
     }
+    const newContent =
+      content.length >= 1 && content[0].children[0].text === ""
+        ? content.slice(1)
+        : content;
+
     await update({
-      set: { name, data: { content, image: fileId }, mutable },
+      set: { name, data: { content: newContent, image: fileId }, mutable },
     });
     router.push(router.asPath.split("?")[0]);
   };
