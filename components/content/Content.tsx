@@ -4,7 +4,7 @@ import { Node } from "hooks";
 import { nhost } from "nhost";
 import { useEffect, useState } from "react";
 
-function Content({ node, fontSize }: { node: Node; fontSize: string }) {
+export default function Content({ node, fontSize }: { node: Node; fontSize: string }) {
   const query = node.useQuery();
   const [image, setImage] = useState<string | null>(null);
   const [content, setContent] = useState<string>();
@@ -43,5 +43,3 @@ function Content({ node, fontSize }: { node: Node; fontSize: string }) {
     </Grid>
   );
 }
-
-export default Content;
