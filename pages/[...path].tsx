@@ -5,10 +5,10 @@ import { fromId } from "core/path";
 import { usePath, useSession } from "hooks";
 
 export default function Path() {
+  const router = useRouter();
   const fullpath = usePath();
 
   // Redirect uuid v4 to full path
-  /*
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -22,7 +22,6 @@ export default function Path() {
         router.push(`${path.join("/")}`);
       });
   }, [fullpath]);
-  */
  
   if (fullpath.length === 0) return null
   return <PathLoader namespaces={[]} fullpath={fullpath} />;
