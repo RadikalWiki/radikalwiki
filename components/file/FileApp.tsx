@@ -1,9 +1,10 @@
-import { Card, Collapse, Divider } from "@mui/material";
+import { Card, Collapse, Divider, Stack } from "@mui/material";
 import {
   ContentHeader,
   ContentToolbar,
   FileLoader,
   DownloadFileFab,
+  ChangeList
 } from "comps";
 import { Node, useScreen } from "hooks";
 import { useState } from "react";
@@ -13,7 +14,7 @@ export default function FileApp({ node }: { node: Node }) {
   const [expand, setExpand] = useState(true);
 
   return (
-    <>
+    <Stack spacing={1}>
       <Card sx={{ m: 0 }}>
         <ContentHeader
           node={node}
@@ -27,7 +28,8 @@ export default function FileApp({ node }: { node: Node }) {
           <FileLoader node={node} />
         </Collapse>
       </Card>
+      <ChangeList node={node} />
       {!screen && <DownloadFileFab node={node} />}
-    </>
+    </Stack>
   );
 }
