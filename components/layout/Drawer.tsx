@@ -106,7 +106,7 @@ const DrawerElement = ({
       >
         <ListItemIcon sx={{ color: selected ? "primary.main" : "" }}>
           {/* <Icon id={child?.id} index={iconIndex} /> */}
-          <MimeIcon mimeId={query.mimeId} index={iconIndex} />
+          <MimeIcon mimeId={query.data({ path: "type" }) ?? query.mimeId} index={iconIndex} />
         </ListItemIcon>
         <ListItemText>
           <Typography>{query?.name}</Typography>
