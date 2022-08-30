@@ -7,12 +7,13 @@ import { Node } from "hooks";
 export default function ScreenApp({ node }: { node: Node }) {
   const get = node.useSubsGet();
   const content = get("active");
-
+  const id = content?.id;
+  const mimeId = content?.mimeId;
   return (
     <Box sx={{ height: "100%", m: 1 }}>
       <Grid container alignItems="stretch" justifyContent="space-evenly" spacing={1}>
         <Grid item xs>
-          <MimeLoader id={content?.id} mimeId={content?.mimeId!} />
+          {id && <MimeLoader id={id} mimeId={mimeId!} />}
         </Grid>
         <Grid item xs={3}>
           <SpeakApp node={node} />
