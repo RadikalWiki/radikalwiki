@@ -96,7 +96,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     });
     if (error) {
       // Already logged-in
-      if ([100, 20].includes(error.status)) {
+      if ([100].includes(error.status)) {
         router.push("/");
         return;
       }
@@ -107,6 +107,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
         setEmailErrorMsg(
           "Email ikke verificeret. Tjek din indbakke. Evt. også spam."
         );
+        setLoading(false);
         return;
       }
       setEmailError(true);
