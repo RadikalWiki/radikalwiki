@@ -62,9 +62,10 @@ export default function FolderList({ node }: { node: Node }) {
 
   return (
     <TransitionGroup>
-      {children.map(({ id, mimeId, name, namespace }) => {
+      {children.map(child => {
+        const { id, mimeId, name, namespace } = child;
         const avatar = <MimeAvatar
-          mimeId={mimeId}
+          mimeId={child.data({ path: "type" }) ?? mimeId}
           index={findIndex(id)}
         />
         return !id ? null : (
