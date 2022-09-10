@@ -169,7 +169,7 @@ export default function FolderDial({ node }: { node: Node }) {
           ariaLabel="Administrer mappe"
           sx={{
             position: "fixed",
-            bottom: (t) => t.spacing(16),
+            bottom: (t) => t.spacing(17),
             right: (t) => t.spacing(3),
           }}
           icon={<SupervisorAccount />}
