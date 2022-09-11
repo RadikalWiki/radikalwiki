@@ -39,6 +39,7 @@ export default function SpeakAdmin({
   };
 
   const owner = speakerlist?.isContextOwner;
+  const mutable = speakerlist?.mutable
 
   return (
     (owner && (
@@ -49,10 +50,10 @@ export default function SpeakAdmin({
             color="secondary"
             size="large"
             sx={{ color: "#fff" }}
-            endIcon={speakerlist?.mutable ? <Lock /> : <LockOpen />}
-            onClick={() => handleLockSpeak(!speakerlist?.mutable)}
+            endIcon={mutable ? <Lock /> : <LockOpen />}
+            onClick={() => handleLockSpeak(!mutable)}
           >
-            {speakerlist?.mutable ? "Luk" : "Åben"}
+            {mutable ? "Luk" : "Åben"}
           </Button>
 
           <Button
