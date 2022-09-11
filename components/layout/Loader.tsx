@@ -10,7 +10,7 @@ export default function Loader({ app, id }: { app?: string, id?: string }) {
   if (!router.query.app && app === "home") {
     return <HomeApp />;
   } else if (router.query.app || app) {
-    return <AppLoader app={(router.query.app as string) ?? app} id={id} />;
+    return id && <AppLoader app={(router.query.app as string) ?? app} id={id} /> || null;
   } else {
     return (
       <Suspense
