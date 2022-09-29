@@ -17,10 +17,6 @@
       "webRoot": "${workspaceFolder}",
       "pathMappings": [
         {
-          "url": "webpack://_n_e/utils",
-          "path": "${workspaceFolder}/utils"
-        },
-        {
           "url": "webpack://_n_e",
           "path": "${workspaceFolder}"
         }
