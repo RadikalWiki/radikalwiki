@@ -4,7 +4,8 @@ import {
   ContentToolbar,
   FileLoader,
   DownloadFileFab,
-  ChangeList
+  ChangeList,
+  QuestionList,
 } from "comps";
 import { Node, useScreen } from "hooks";
 import { useState } from "react";
@@ -29,6 +30,7 @@ export default function FileApp({ node }: { node: Node }) {
         </Collapse>
       </Card>
       <ChangeList node={node} />
+      <QuestionList node={node} />
       {!screen && <DownloadFileFab node={node} />}
     </Stack>
   );
