@@ -22,6 +22,7 @@ export default function FolderDial({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const query = node.useQuery();
+  const id = query?.id;
   const nodeUpdate = node.useUpdate();
   const nodeDelete = node.useDelete();
   const nodeMembers= node.useMembers();
@@ -100,7 +101,7 @@ export default function FolderDial({ node }: { node: Node }) {
   const handleExport = async () => {
     const nodes = await resolved(() => {
       return q
-        .node({ id: query?.id })
+        .node({ id })
         ?.children({
           order_by: [{ index: order_by.asc }],
           where: {
