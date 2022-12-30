@@ -30,7 +30,6 @@ const getHeaders = (): Record<string, string> =>
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
   const token = nhost.auth.getAccessToken();
-  console.log(token);
   if (token) {
     const accessTokenDecrypted = jwtDecode<JwtPayload>(token);
     if ((accessTokenDecrypted.exp ?? 0) * 1000 < Date.now()) {
