@@ -16,21 +16,23 @@ import { useSession } from "hooks";
 
 export default function Layout({ children }: { children?: any }) {
   const [outdated, setOutdated] = useState(false);
+  const [showing, setShowing] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [session, setSession] = useSession();
   const { asPath, push } = useRouter();
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
-  useEffect(() => {
-    if (!asPath.match(/^\/user\/|^\/$/) && !isLoading && !isAuthenticated) {
-      push("/user/login");
-    }
-  }, [isLoading, isAuthenticated, asPath, push]);
+  //useEffect(() => {
+  //  if (!asPath.match(/^\/user\/|^\/$/) && !isLoading && !isAuthenticated) {
+  //    push("/user/login");
+  //  }
+  //}, [isLoading, isAuthenticated, asPath, push]);
 
   //const refresh = () => nhost.auth.refreshSession();
 
   useEffect(() => {
     setOutdated(typeof window !== "undefined" && !checkVersion());
+    setShowing(true)
     //window.addEventListener("focus", refresh);
     //return () => {
     //  window.removeEventListener("focus", refresh);
@@ -51,6 +53,7 @@ export default function Layout({ children }: { children?: any }) {
   }, [session, setSession]);
 
   if (outdated) return <OldBrowser />;
+  if (!showing) return null
 
   if (asPath.match(/\?app=screen/) && isAuthenticated) return children;
 
@@ -62,9 +65,7 @@ export default function Layout({ children }: { children?: any }) {
         )}
         <Scroll>
           <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-          {(isAuthenticated || asPath.match(/^\/user\/|^\/$/)) && (
-            <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>
-          )}
+          {typeof window !== "undefined" && <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>}
           <Box sx={{ p: 8 }} />
         </Scroll>
       </Box>

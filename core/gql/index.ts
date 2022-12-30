@@ -2,7 +2,7 @@ import { createReactClient } from "@gqty/react";
 import { createSubscriptionsClient } from "@gqty/subscriptions";
 import type { QueryFetcher } from "gqty";
 import { createClient } from "gqty";
-import jwtDecode from "jwt-decode";
+import jwtDecode, { JwtPayload } from "jwt-decode";
 import Cookies from "js-cookie";
 import { nhost } from "nhost";
 import type {
@@ -18,17 +18,25 @@ const getHeaders = (): Record<string, string> =>
         "Content-Type": "application/json",
         "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
       }
-    : {
+    : nhost.auth.isAuthenticated()
+    ? {
         "Content-Type": "application/json",
         authorization: `Bearer ${nhost.auth.getAccessToken()}`,
+      }
+    : {
+        "Content-Type": "application/json",
+        "x-hasura-role": "public",
       };
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
   const token = nhost.auth.getAccessToken();
-  const accessTokenDecrypted: any = jwtDecode(token as any);
-  if (accessTokenDecrypted.exp * 1000 < Date.now()) {
-    const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-    await nhost.auth.refreshSession(refreshToken);
+  console.log(token);
+  if (token) {
+    const accessTokenDecrypted = jwtDecode<JwtPayload>(token);
+    if ((accessTokenDecrypted.exp ?? 0) * 1000 < Date.now()) {
+      const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
+      await nhost.auth.refreshSession(refreshToken);
+    }
   }
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
@@ -46,32 +54,30 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
   return await response.json();
 };
 
-const subscriptionsClient =
-  typeof window !== "undefined"
-    ? createSubscriptionsClient({
-        failedConnectionCallback: async () => {
-          const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-          await nhost.auth.refreshSession(refreshToken);
-          console.log("failed callback")
-          subscriptionsClient?.setConnectionParams(
-            {
-              headers: getHeaders(),
-            },
-          );
-        },
-        wsEndpoint: () => {
-          const url = new URL(
-            `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
-            window.location.href
-          );
-          // eslint-disable-next-line functional/immutable-data
-          url.protocol = url.protocol.replace("http", "ws");
-          return url.href;
-        },
-        reconnect: true,
-        lazy: false,
-      })
-    : undefined;
+//const subscriptionsClient =
+//  typeof window !== "undefined"
+//    ? createSubscriptionsClient({
+//        failedConnectionCallback: async () => {
+//          const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
+//          await nhost.auth.refreshSession(refreshToken);
+//          console.log("failed callback");
+//          subscriptionsClient?.setConnectionParams({
+//            headers: getHeaders(),
+//          });
+//        },
+//        wsEndpoint: () => {
+//          const url = new URL(
+//            `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
+//            window.location.href
+//          );
+//          // eslint-disable-next-line functional/immutable-data
+//          url.protocol = url.protocol.replace("http", "ws");
+//          return url.href;
+//        },
+//        reconnect: true,
+//        lazy: false,
+//      })
+//    : undefined;
 
 export const client = createClient<
   GeneratedSchema,
@@ -81,10 +87,14 @@ export const client = createClient<
   schema: generatedSchema,
   scalarsEnumsHash,
   queryFetcher,
-  subscriptionsClient,
+  //subscriptionsClient,
   normalization: false,
 });
 
+//client.interceptorManager.globalInterceptor.selectionCacheRefetchListeners.add((selection) => {
+//  client.interceptorManager.globalInterceptor.addSelection(selection)
+//})
+//
 const { query, mutation, mutate, subscription, resolved, refetch, track } =
   client;
 
@@ -127,16 +137,16 @@ export {
   useSubscription,
 };
 
-subscriptionsClient?.setConnectionParams({
-  headers: getHeaders(),
-});
+//subscriptionsClient?.setConnectionParams({
+//  headers: getHeaders(),
+//});
 
-nhost.auth?.onTokenChanged(() => {
-  console.log("token changed")
-  subscriptionsClient?.setConnectionParams({
-    headers: getHeaders(),
-  });
-});
+//nhost.auth?.onTokenChanged(() => {
+//  console.log("token changed");
+//  subscriptionsClient?.setConnectionParams({
+//    headers: getHeaders(),
+//  });
+//});
 
 export * from "./schema.generated";
 
