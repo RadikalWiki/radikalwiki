@@ -2,7 +2,7 @@ import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 import { Suspense } from "react";
 import { Box } from "@mui/system";
-import { MimeLoader, AppLoader, HomeApp } from "comps";
+import { MimeLoader, AppLoader, HomeApp, UnknownApp } from "comps";
 
 export default function Loader({ app, id }: { app?: string, id?: string }) {
   const router = useRouter();
@@ -27,7 +27,7 @@ export default function Loader({ app, id }: { app?: string, id?: string }) {
           </Box>
         }
       >
-        {id && <MimeLoader id={id} />}
+        {id ? <MimeLoader id={id} /> : <UnknownApp />}
       </Suspense>
     );
   }

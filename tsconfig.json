@@ -36,21 +36,6 @@
       "hoc": [
         "core/hoc"
       ],
-      "@gqty/subscriptions": [
-        "gqty/packages/subscriptions/src/index"
-      ],
-      "gqty": [
-        "gqty/packages/gqty/src/index"
-      ],
-      "@gqty/react": [
-        "gqty/packages/react/src/index"
-      ],
-      "@gqty/utils": [
-        "gqty/packages/utils/src/index"
-      ],
-      "@gqty/utils/sha1": [
-        "gqty/packages/utils/src/sha"
-      ],
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
