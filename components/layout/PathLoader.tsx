@@ -24,10 +24,13 @@ export default function PathLoader({
     ],
   };
   const node = query.nodes({ where }).at(0);
-
+  const name = node?.name;
   const selected =
     namespaces.length === fullpath.length &&
     namespaces.every((v, i) => v === fullpath[i]);
+  useEffect(() => {
+    if (selected) document.title = name ?? "RadikalWiki";
+  }, [name, selected]);
 
   return selected ? (
     <Loader id={node?.id} />
