@@ -29,6 +29,7 @@ export default function PathLoader({
     namespaces.length === fullpath.length &&
     namespaces.every((v, i) => v === fullpath[i]);
   useEffect(() => {
+    // eslint-disable-next-line functional/immutable-data
     if (selected) document.title = name ?? "RadikalWiki";
   }, [name, selected]);
 
