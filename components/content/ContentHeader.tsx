@@ -12,7 +12,7 @@ function Title({ node }: { node: Node }) {
         {query?.name}
       </Typography>
     ) : (
-      <Typography color="secondary">{query?.name ?? ""}</Typography>
+      <Typography>{query?.name ?? ""}</Typography>
     )
   ) : null;
 }

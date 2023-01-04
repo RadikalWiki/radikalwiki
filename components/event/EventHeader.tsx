@@ -14,7 +14,7 @@ export default function EventHeader({
   const query = node.useQuery();
   return (
     <CardHeader
-      title={<Typography color="secondary">{query?.name}</Typography>}
+      title={<Typography>{query?.name}</Typography>}
       avatar={<MimeAvatarNode node={node} />}
       subheader={query
         ?.members()

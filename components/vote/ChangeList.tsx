@@ -130,7 +130,7 @@ export default function ChangeList({ node }: { node: Node }) {
   return (
     <Card sx={{ m: 0 }}>
       <CardHeader
-        title={<Typography color="secondary"> Ændringsforslag </Typography>}
+        title={<Typography> Ændringsforslag </Typography>}
         avatar={
           <Avatar
             sx={{

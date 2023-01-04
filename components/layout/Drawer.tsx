@@ -104,7 +104,7 @@ const DrawerElement = ({
           });
         }}
       >
-        <ListItemIcon sx={{ color: selected ? "primary.main" : "" }}>
+        <ListItemIcon sx={{ color: selected ? "primary.main" : "secondary.main" }}>
           {/* <Icon id={child?.id} index={iconIndex} /> */}
           <MimeIcon mimeId={query.data({ path: "type" }) ?? query.mimeId} index={iconIndex} />
         </ListItemIcon>
@@ -325,7 +325,6 @@ export default function Drawer({
   ) : (
     <List sx={{ pt: 0, pb: 0, width: "100%" }}>
       <ListItemButton
-        sx={{ color: "secondary.main" }}
         component={NextLink}
         href={`/${session?.prefix?.path?.join("/")}?app=screen`}
         target="_blank"
@@ -335,7 +334,7 @@ export default function Drawer({
         </ListItemIcon>
         <ListItemText primary="Skærm" />
       </ListItemButton>
-      <ListItemButton onClick={handleCurrent} sx={{ color: "secondary.main" }}>
+      <ListItemButton onClick={handleCurrent}>
         <ListItemIcon sx={{ color: "secondary.main" }}>
           <FileOpen />
         </ListItemIcon>

@@ -54,7 +54,7 @@ export default function QuestionList({ node }: { node: Node }) {
   return (
     <Card sx={{ m: 0 }}>
       <CardHeader
-        title={<Typography color="secondary">Spørgsmål</Typography>}
+        title={<Typography>Spørgsmål</Typography>}
         avatar={
           <Avatar
             sx={{

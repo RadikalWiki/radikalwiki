@@ -1,8 +1,6 @@
 import React, { useEffect, ComponentType } from "react";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import Head from "next/head";
-import { Layout, SessionProvider } from "comps";
-import { useTheme } from "hooks";
+import { Layout, SessionProvider, Theme } from "comps";
 import { nhost } from "nhost";
 import { NhostReactProvider } from "@nhost/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
@@ -20,7 +18,6 @@ export default function App({
     const jssStyles = document.querySelector("#jss-server-side");
     jssStyles?.parentElement?.removeChild(jssStyles);
   }, []);
-  const theme = useTheme();
 
   return (
     <>
@@ -34,14 +31,13 @@ export default function App({
 
       <NhostReactProvider nhost={nhost}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <SessionProvider>
+          <SessionProvider>
+            <Theme>
               <Layout>
                 <Component {...pageProps} />
               </Layout>
-            </SessionProvider>
-          </ThemeProvider>
+            </Theme>
+          </SessionProvider>
         </LocalizationProvider>
       </NhostReactProvider>
     </>

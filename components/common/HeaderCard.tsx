@@ -19,7 +19,7 @@ export default function HeaderCard({
       <CardHeader
         action={action}
         subheader={subtitle}
-        title={<Typography color="secondary">{title}</Typography>}
+        title={<Typography>{title}</Typography>}
         avatar={avatar}
       />
       {children}

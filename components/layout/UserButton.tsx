@@ -35,6 +35,8 @@ export default function UserButton() {
   const [anchorEl, setAnchorEl] = useState(null);
   const largeScreen = useMediaQuery("(min-width:1200px)");
   const { isAuthenticated } = useAuthenticationStatus();
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const theme = (session?.theme == undefined && prefersDarkMode) || session?.theme === "dark" ? "dark" : "light";
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -45,7 +47,7 @@ export default function UserButton() {
   };
 
   const handleTheme = () => {
-    setSession({ theme: session?.theme === "dark" ? "light" : "dark" });
+    setSession({ theme: theme === "dark"  ? "light" : "dark" });
   };
 
   const handleLogout = async () => {
@@ -90,17 +92,6 @@ export default function UserButton() {
           //  </ListItemIcon>
           //  <ListItemText>Profil</ListItemText>
           //</MenuItem>,
-          // <MenuItem
-          //   key="theme"
-          //   onClick={handleTheme}
-          // >
-          //   <ListItemIcon>
-          //     {session?.theme === "dark" ? <Brightness7 /> : <Brightness4 />}
-          //   </ListItemIcon>
-          //   <ListItemText>
-          //     {session?.theme === "dark" ? "Lys" : "Mørk"}
-          //   </ListItemText>
-          // </MenuItem>,
           <MenuItem key="reset" onClick={handleUser("reset-password")}>
             <ListItemIcon>
               <LockReset />
@@ -127,6 +118,14 @@ export default function UserButton() {
             <ListItemText>Registrer</ListItemText>
           </MenuItem>,
         ]}
+        <MenuItem key="theme" onClick={handleTheme}>
+          <ListItemIcon>
+            {theme === "dark" ? <Brightness7 /> : <Brightness4 />}
+          </ListItemIcon>
+          <ListItemText>
+            {theme === "dark" ? "Lys" : "Mørk"}
+          </ListItemText>
+        </MenuItem>
       </Menu>
     </>
   );

@@ -1,8 +1,9 @@
-import { createTheme, useMediaQuery } from "@mui/material";
+import { createTheme, ThemeOptions, useMediaQuery } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { useSession } from "hooks";
+import React from "react";
 
-export const theme = {
+export const theme: ThemeOptions = {
   typography: {
     fontFamily: ["Roboto", "sans-serif"].join(","),
   },
@@ -20,6 +21,15 @@ export const theme = {
       main: "#61ac24",
     },
   },
+  components: {
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+      },
+    },
+  },
 };
 
 const light = createTheme({
@@ -34,12 +44,21 @@ const dark = createTheme({
   ...theme,
   palette: {
     ...theme.palette,
+    primary: {
+      main: "#a8377a",
+    },
+    secondary: {
+      main: "#4c6cff",
+    },
     mode: "dark",
   },
 });
 
 export default function useTheme() {
   const [session] = useSession();
-  //const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  return session?.theme === "dark" ? dark : light;
+  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  return (session?.theme === undefined && prefersDarkMode) ||
+    session?.theme === "dark"
+    ? dark
+    : light;
 }

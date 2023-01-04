@@ -164,7 +164,7 @@ export default function SearchField() {
             selected={selected === option.id}
             onClick={goto(option.id)}
           >
-            <ListItemIcon>
+            <ListItemIcon sx={{ color: "secondary.main" }}>
               <MimeIconId id={option?.id} />
             </ListItemIcon>
             <ListItemText secondary={option.parent?.name}>

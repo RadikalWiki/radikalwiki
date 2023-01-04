@@ -34,6 +34,7 @@ import {
   TextField,
   ToggleButton,
   ToggleButtonGroup,
+  Link as MuiLink
 } from "@mui/material";
 import {
   FormatAlignCenter,
@@ -51,6 +52,7 @@ import {
   Undo,
 } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import { Link as NextLink } from "comps"
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -398,7 +400,7 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   const code = leaf.code ? <em>{bold}</em> : bold;
   const underline = leaf.underline ? <u>{code}</u> : code;
   const italic = leaf.italic ? <i>{underline}</i> : underline;
-  const link = leaf.link ? <a href={leaf.link}>{children}</a> : italic;
+  const link = leaf.link ? <MuiLink component={NextLink} href={leaf.link}>{children}</MuiLink> : italic;
 
   return <span {...attributes}>{link}</span>;
 };

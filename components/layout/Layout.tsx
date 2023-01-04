@@ -32,7 +32,7 @@ export default function Layout({ children }: { children?: any }) {
 
   useEffect(() => {
     setOutdated(typeof window !== "undefined" && !checkVersion());
-    setShowing(true)
+    setShowing(true);
     //window.addEventListener("focus", refresh);
     //return () => {
     //  window.removeEventListener("focus", refresh);
@@ -53,7 +53,7 @@ export default function Layout({ children }: { children?: any }) {
   }, [session, setSession]);
 
   if (outdated) return <OldBrowser />;
-  if (!showing) return null
+  if (!showing) return null;
 
   if (asPath.match(/\?app=screen/) && isAuthenticated) return children;
 
@@ -65,7 +65,9 @@ export default function Layout({ children }: { children?: any }) {
         )}
         <Scroll>
           <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-          {typeof window !== "undefined" && <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>}
+          {typeof window !== "undefined" && (
+            <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>
+          )}
           <Box sx={{ p: 8 }} />
         </Scroll>
       </Box>
