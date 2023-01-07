@@ -2,7 +2,7 @@ import React, { useEffect, ComponentType } from "react";
 import Head from "next/head";
 import { Layout, SessionProvider, Theme } from "comps";
 import { nhost } from "nhost";
-import { NhostReactProvider } from "@nhost/react";
+import { NhostProvider } from "@nhost/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
@@ -29,7 +29,7 @@ export default function App({
         />
       </Head>
 
-      <NhostReactProvider nhost={nhost}>
+      <NhostProvider nhost={nhost}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <SessionProvider>
             <Theme>
@@ -39,7 +39,7 @@ export default function App({
             </Theme>
           </SessionProvider>
         </LocalizationProvider>
-      </NhostReactProvider>
+      </NhostProvider>
     </>
   );
 }
