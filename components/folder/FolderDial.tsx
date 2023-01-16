@@ -17,6 +17,7 @@ import { fromId } from "core/path";
 import HTMLtoDOCX from "html-to-docx";
 import { toHtml } from "core/document";
 import { getLetter } from "mime";
+import { DeleteDialog } from "comps/content";
 
 const checkIfSuperParent = async (
   id: string,
@@ -39,14 +40,13 @@ export default function FolderDial({ node }: { node: Node }) {
   const screen = useScreen();
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
   const router = useRouter();
   const query = node.useQuery();
   const id = query?.id;
   const nodeInsert = node.useInsert();
   const nodeUpdate = node.useUpdate();
-  const nodeDelete = node.useDelete();
   const nodeMembers = node.useMembers();
-  const parentId = query?.parentId;
 
   if (screen || !query?.isContextOwner) return null;
 
@@ -221,10 +221,7 @@ export default function FolderDial({ node }: { node: Node }) {
   };
 
   const handleDelete = async () => {
-    await nodeMembers.delete();
-    await nodeDelete();
-    const path = await fromId(parentId);
-    router.push("/" + path.join("/"));
+    setOpenDelete(true);
   };
 
   const handleLockChildren = async () => {
@@ -312,6 +309,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
         </SpeedDial>
       </Zoom>
+      <DeleteDialog open={openDelete} setOpen={setOpenDelete} node={node} />
     </>
   );
 }

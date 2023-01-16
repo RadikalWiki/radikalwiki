@@ -18,9 +18,8 @@ import {
 } from "@mui/icons-material";
 import { Node, useNode, useSession } from "hooks";
 import { useRouter } from "next/router";
-import { AutoButton, PollDialog } from "comps";
+import { AutoButton, DeleteDialog, PollDialog } from "comps";
 import { useState } from "react";
-import { fromId } from "core/path";
 
 const marks = [
   {
@@ -52,24 +51,20 @@ export default function ContentToolbar({
   child: boolean;
 }) {
   const query = node.useQuery();
-  const $delete = node.useDelete();
   const update = node.useUpdate();
   const context = node.useContext();
   const set = context.useSet();
   const [_, setSession] = useSession();
   const router = useRouter();
   const [openPollDialog, setOpenPollDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const open = Boolean(anchorEl);
-  const parentId = query?.parentId;
   const namespace = query?.namespace;
   const inserts = query?.inserts()?.map(mime => mime.id)
 
   const handleDelete = async () => {
-    await $delete();
-
-    const path = await fromId(parentId);
-    router.push("/" + path.join("/"));
+    setOpenDeleteDialog(true);
   };
 
   const handlePublish = async () => {
@@ -155,6 +150,7 @@ export default function ContentToolbar({
         )}
       </CardActions>
       <Divider />
+      <DeleteDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} node={node} />
       {!child && [
         inserts?.includes("vote/poll") && (
           <PollDialog
