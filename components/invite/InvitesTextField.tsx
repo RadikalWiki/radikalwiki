@@ -13,13 +13,13 @@ export default function InvitesTextField({ node }: { node: Node }) {
   const [users, setUsers] = useState<any[]>([]);
 
   const handleAddInvites = async () => {
-    const invites = users.map((user) => ({
+    const members = users.map((user) => ({
       name: user.name,
       email: user.email,
       nodeId: user.userId,
       parentId: node.id,
     }));
-    await nodeMembers.insert(invites);
+    await nodeMembers.insert({ members });
     setUsers([]);
   };
 

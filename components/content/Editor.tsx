@@ -86,9 +86,9 @@ export default function Editor({ node }: { node: Node }) {
   const handleSave = (mutable?: boolean) => async () => {
     if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
       await nodeMembers.delete();
-      await nodeMembers.insert(
-        members.map((member) => ({ ...member, mimeId: undefined }))
-      );
+      await nodeMembers.insert({
+        members: members.map((member) => ({ ...member, mimeId: undefined })),
+      });
     }
     const newContent =
       content.length >= 1 && content[0].children[0].text === ""
