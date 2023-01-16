@@ -6,7 +6,8 @@ export type Session = {
   user?: { id: string; displayName: string; email: string };
   timeDiff?: number;
   theme?: string;
-  screen?: { size: string }
+  screen?: { size: string };
+  selected?: string[]
 };
 type SessionSetter = (props: Session | null) => void;
 

@@ -8,24 +8,44 @@ import {
   Lock,
   LockOpen,
   Delete,
+  ContentPaste,
 } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import { resolved, query as q, order_by } from "gql";
-import { Node, useScreen } from "hooks";
+import { Node, useScreen, useSession } from "hooks";
 import { fromId } from "core/path";
 import HTMLtoDOCX from "html-to-docx";
 import { toHtml } from "core/document";
 import { getLetter } from "mime";
 
+const checkIfSuperParent = async (
+  id: string,
+  superParentId: string
+): Promise<boolean> => {
+  const parentId = await resolved(() => q.node({ id })?.parentId);
+  console.log("id: " + id);
+  console.log("parentId: " + parentId);
+  console.log("superParentId: " + superParentId);
+  console.log();
+
+  return id == superParentId || parentId === superParentId
+    ? true
+    : parentId === null
+    ? false
+    : checkIfSuperParent(parentId, superParentId);
+};
+
 export default function FolderDial({ node }: { node: Node }) {
   const screen = useScreen();
+  const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const query = node.useQuery();
   const id = query?.id;
+  const nodeInsert = node.useInsert();
   const nodeUpdate = node.useUpdate();
   const nodeDelete = node.useDelete();
-  const nodeMembers= node.useMembers();
+  const nodeMembers = node.useMembers();
   const parentId = query?.parentId;
 
   if (screen || !query?.isContextOwner) return null;
@@ -35,15 +55,18 @@ export default function FolderDial({ node }: { node: Node }) {
     const index =
       (
         await resolved(() =>
-          q.node({ id })?.parent?.children({
-            where: {
-              _and: [
-                { mutable: { _eq: false } },
-                { mimeId: { _in: ["vote/change", "vote/policy"] } },
-              ],
-            },
-            order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
-          }).map(({ id }) => ({ id }))
+          q
+            .node({ id })
+            ?.parent?.children({
+              where: {
+                _and: [
+                  { mutable: { _eq: false } },
+                  { mimeId: { _in: ["vote/change", "vote/policy"] } },
+                ],
+              },
+              order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
+            })
+            .map(({ id }) => ({ id }))
         )
       )?.findIndex((e: any) => e.id === id) ?? 0;
 
@@ -148,6 +171,55 @@ export default function FolderDial({ node }: { node: Node }) {
     document.body.removeChild(link);
   };
 
+  const copy = async (copyId: string, parentId: string) => {
+    const node = await resolved(() => {
+      const { name, namespace, mimeId, data, mutable, attachable, index } =
+        q.node({ id: copyId })!;
+      return {
+        name,
+        namespace,
+        mimeId: mimeId!,
+        mutable,
+        attachable,
+        index,
+        data: data(),
+        parentId,
+      };
+    });
+    const children = await resolved(() =>
+      q
+        .node({ id: copyId })
+        ?.children()
+        .map((child) => child.id)
+    );
+    const members = await resolved(() => {
+      return q
+        .members({ where: { parentId: { _eq: copyId } } })
+        .map(({ name, nodeId, email }) => ({ name, nodeId, email, parentId }));
+    });
+    const newNode = await nodeInsert(node);
+    await nodeMembers.insert({ members, parentId: newNode.id });
+
+    children?.map((id) => copy(id, newNode.id));
+
+    setSession({ selected: [] });
+  };
+
+  const handlePaste = async () => {
+    if (
+      (
+        await Promise.all(
+          session?.selected?.map(async (id) =>
+            checkIfSuperParent(node.id, id)
+          ) ?? []
+        )
+      ).some((e) => e)
+    ) {
+      return;
+    }
+    session?.selected?.map((id) => copy(id, node.id));
+  };
+
   const handleDelete = async () => {
     await nodeMembers.delete();
     await nodeDelete();
@@ -178,6 +250,16 @@ export default function FolderDial({ node }: { node: Node }) {
           onClose={() => setOpen(false)}
           open={open}
         >
+          <SpeedDialAction
+            icon={
+              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+                {<ContentPaste />}
+              </Avatar>
+            }
+            tooltipTitle="Indsæt"
+            tooltipOpen
+            onClick={handlePaste}
+          />
           <SpeedDialAction
             icon={
               <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>

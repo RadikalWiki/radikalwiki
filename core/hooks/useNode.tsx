@@ -53,6 +53,9 @@ export type Node = {
     data,
     parentId,
     contextId,
+    mutable,
+    attachable,
+    index
   }: {
     name?: string;
     namespace?: string;
@@ -60,6 +63,9 @@ export type Node = {
     data?: any;
     parentId?: string;
     contextId?: string;
+    mutable?: boolean;
+    attachable?: boolean;
+    index?: number;
   }) => Promise<{ id: string; namespace?: string }>;
   useDelete: (param?: Param) => (param?: { id?: string }) => Promise<string>;
   useUpdate: (
@@ -71,7 +77,7 @@ export type Node = {
   useParent: () => Node;
   useContext: () => Node;
   useMembers: (param?: Param) => {
-    insert: (members: members_insert_input[]) => Promise<number | undefined>;
+    insert: ({ members, parentId }: { members: members_insert_input[], parentId?: string }) => Promise<number | undefined>;
     delete: () => Promise<number | undefined>;
   };
   useMember: (param?: Param) => {
@@ -168,6 +174,9 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       data,
       parentId,
       contextId,
+      mutable,
+      attachable,
+      index,
     }: {
       name?: string;
       namespace?: string;
@@ -175,6 +184,9 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       data?: any;
       parentId?: string;
       contextId?: string;
+      mutable?: boolean;
+      attachable?: boolean;
+      index?: number;
     }) => {
       const childId = await insertNode({
         args: {
@@ -184,6 +196,9 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
           parentId: parentId ? parentId : nodeId,
           mimeId,
           contextId: contextId ?? nodeContextId,
+          mutable,
+          attachable,
+          index,
         },
       });
       return { id: childId, namespace: getNamespace(namespace ?? name) };
@@ -221,13 +236,13 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
 
   const useMembers = (param?: Param) => {
     const [insertMembers] = useMutation(
-      (mutation, objects: members_insert_input[]) => {
-        const members = objects.map((member) => ({
+      (mutation, { members, parentId }: { members: members_insert_input[], parentId?: string }) => {
+        const objects = members.map((member) => ({
           ...member,
-          parentId: nodeId,
+          parentId: parentId ? parentId : nodeId,
         }));
         return mutation.insertMembers({
-          objects: members,
+          objects,
           on_conflict: {
             constraint: members_constraint.members_parent_id_email_key,
             update_columns: [],
@@ -243,8 +258,8 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     }, getOpts(param));
 
     return {
-      insert: (members: members_insert_input[]) => {
-        return insertMembers({ args: members });
+      insert: ({ members, parentId }: { members: members_insert_input[], parentId?: string }) => {
+        return insertMembers({ args: { members, parentId } });
       },
       delete: () => {
         return deleteMembers();
