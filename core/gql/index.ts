@@ -29,14 +29,14 @@ const getHeaders = (): Record<string, string> =>
       };
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
-  const token = nhost.auth.getAccessToken();
-  if (token) {
-    const accessTokenDecrypted = jwtDecode<JwtPayload>(token);
-    if ((accessTokenDecrypted.exp ?? 0) * 1000 < Date.now()) {
-      const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-      await nhost.auth.refreshSession(refreshToken);
-    }
-  }
+  //const token = nhost.auth.getAccessToken();
+  //if (token) {
+  //  const accessTokenDecrypted = jwtDecode<JwtPayload>(token);
+  //  if ((accessTokenDecrypted.exp ?? 0) * 1000 < Date.now()) {
+  //    const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
+  //    await nhost.auth.refreshSession(refreshToken);
+  //  }
+  //}
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
     {
@@ -53,30 +53,24 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
   return await response.json();
 };
 
-//const subscriptionsClient =
-//  typeof window !== "undefined"
-//    ? createSubscriptionsClient({
-//        failedConnectionCallback: async () => {
-//          const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-//          await nhost.auth.refreshSession(refreshToken);
-//          console.log("failed callback");
-//          subscriptionsClient?.setConnectionParams({
-//            headers: getHeaders(),
-//          });
-//        },
-//        wsEndpoint: () => {
-//          const url = new URL(
-//            `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
-//            window.location.href
-//          );
-//          // eslint-disable-next-line functional/immutable-data
-//          url.protocol = url.protocol.replace("http", "ws");
-//          return url.href;
-//        },
-//        reconnect: true,
-//        lazy: false,
-//      })
-//    : undefined;
+const subscriptionsClient = createSubscriptionsClient({
+        //failedConnectionCallback: async () => {
+        //  const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
+        //  await nhost.auth.refreshSession(refreshToken);
+        //  console.log("failed callback");
+        //  subscriptionsClient?.setConnectionParams({
+        //    headers: getHeaders(),
+        //  });
+        //},
+        wsEndpoint: () => {
+          const url = new URL(`${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`);
+          // eslint-disable-next-line functional/immutable-data
+          url.protocol = url.protocol.replace("http", "ws");
+          return url.href;
+        },
+        reconnect: true,
+        lazy: false,
+      });
 
 export const client = createClient<
   GeneratedSchema,
@@ -86,14 +80,10 @@ export const client = createClient<
   schema: generatedSchema,
   scalarsEnumsHash,
   queryFetcher,
-  //subscriptionsClient,
+  subscriptionsClient,
   normalization: false,
 });
 
-//client.interceptorManager.globalInterceptor.selectionCacheRefetchListeners.add((selection) => {
-//  client.interceptorManager.globalInterceptor.addSelection(selection)
-//})
-//
 const { query, mutation, mutate, subscription, resolved, refetch, track } =
   client;
 
@@ -136,16 +126,12 @@ export {
   useSubscription,
 };
 
-//subscriptionsClient?.setConnectionParams({
-//  headers: getHeaders(),
-//});
-
-//nhost.auth?.onTokenChanged(() => {
-//  console.log("token changed");
-//  subscriptionsClient?.setConnectionParams({
-//    headers: getHeaders(),
-//  });
-//});
+nhost.auth.onTokenChanged(() => {
+  console.log("token changed");
+  subscriptionsClient.setConnectionParams({
+    headers: getHeaders(),
+  }, true);
+});
 
 export * from "./schema.generated";
 

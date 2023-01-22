@@ -1,6 +1,6 @@
 import { Event, EventBusy } from "@mui/icons-material";
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from "@mui/material";
-import { useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/nextjs";
 import { fromId } from "core/path";
 import { order_by, resolved, useQuery } from "gql";
 import { useSession } from "hooks";

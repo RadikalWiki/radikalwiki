@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { HeaderCard } from "comps/common";
 import { QuestionMark } from "@mui/icons-material";
-import { useAuthenticationStatus } from "@nhost/react";
+import { useAuthenticationStatus } from "@nhost/nextjs";
 
 export default function UnknownApp() {
   const { isAuthenticated } = useAuthenticationStatus();

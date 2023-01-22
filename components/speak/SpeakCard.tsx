@@ -19,7 +19,7 @@ import { avatars } from "comps";
 import { TransitionGroup } from "react-transition-group";
 import { order_by } from "gql";
 import { Node, useScreen } from "hooks";
-import { useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/nextjs";
 
 const timeString = (time: number) => {
   const sec = String(time % 60);

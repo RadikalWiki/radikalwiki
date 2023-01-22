@@ -9,7 +9,7 @@ import {
 import { Menu } from "@mui/icons-material";
 import { UserButton, HideOnScroll, SearchField } from "comps";
 import { useSession } from "hooks";
-import { useAuthenticationStatus } from "@nhost/react";
+import { useAuthenticationStatus } from "@nhost/nextjs";
 import { Container } from "@mui/system";
 import { drawerWidth } from "core/constants";
 

@@ -14,7 +14,7 @@ import {
 import { useSession } from "hooks";
 import { nhost } from "nhost";
 import { Email, HowToReg, LockReset, Login } from "@mui/icons-material";
-import { useAuthenticationStatus } from "@nhost/react";
+import { useAuthenticationStatus } from "@nhost/nextjs";
 
 type Mode = "login" | "register" | "login-email" | "reset-password";
 

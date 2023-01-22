@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { query, resolved } from "gql";
 import { toId } from "core/path";
 import { Box } from "@mui/system";
-import { useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/nextjs";
 import { nhost } from "nhost";
 import { useEffect, useState } from "react";
 

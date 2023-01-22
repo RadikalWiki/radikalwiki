@@ -21,7 +21,7 @@ import { nodes, order_by } from "gql";
 import { TransitionGroup } from "react-transition-group";
 import { MimeAvatar } from "comps";
 import { Node, useSession } from "hooks";
-import { useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/nextjs";
 import { getIconFromId } from "mime";
 
 export default function FolderList({ node }: { node: Node }) {

@@ -21,7 +21,7 @@ import {
 import { Add, ContactMail, DoNotDisturb } from "@mui/icons-material";
 import { HeaderCard, MimeAvatarId } from "comps";
 import { Suspense } from "react";
-import { useUserEmail, useUserId } from "@nhost/react";
+import { useUserEmail, useUserId } from "@nhost/nextjs";
 import { TransitionGroup } from "react-transition-group";
 
 const ListSuspense = () => {

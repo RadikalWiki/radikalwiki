@@ -28,7 +28,7 @@ import {
   HowToVote,
   Refresh,
 } from "@mui/icons-material";
-import { useUserEmail, useUserId } from "@nhost/react";
+import { useUserEmail, useUserId } from "@nhost/nextjs";
 
 export default function VoteApp({ node }: { node: Node }) {
   const [session] = useSession();

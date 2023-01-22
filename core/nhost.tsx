@@ -1,9 +1,7 @@
-import { NhostClient } from "@nhost/react";
+import { NhostClient } from "@nhost/nextjs";
 
 const nhost = new NhostClient({
-  autoRefreshToken: false,
-  backendUrl: process.env.NEXT_PUBLIC_NHOST_BACKEND ?? "",
-  clientStorageType: "cookie",  
+  backendUrl: process.env.NEXT_PUBLIC_NHOST_BACKEND,
 });
 
 export { nhost };

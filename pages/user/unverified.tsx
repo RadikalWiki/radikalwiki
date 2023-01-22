@@ -9,7 +9,7 @@ import {
 import { HeaderCard } from "comps";
 import { MarkEmailRead } from "@mui/icons-material";
 import { useRouter } from "next/router";
-import { useAuthenticationStatus } from "@nhost/react";
+import { useAuthenticationStatus } from "@nhost/nextjs";
 
 export default function Unverified() {
   const { push } = useRouter();

@@ -21,7 +21,7 @@ import {
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
 import { nhost } from "nhost";
-import { useAuthenticationStatus, useUserDisplayName } from "@nhost/react";
+import { useAuthenticationStatus, useUserDisplayName } from "@nhost/nextjs";
 
 const abriviateName = (name: string) =>
   name?.split(" ").length === 1

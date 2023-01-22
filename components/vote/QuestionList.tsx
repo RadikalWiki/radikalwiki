@@ -38,7 +38,7 @@ import { nodes, order_by } from "gql";
 import { getIconFromId } from "mime";
 import { Node, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
-import { useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/nextjs";
 
 export default function QuestionList({ node }: { node: Node }) {
   const screen = useScreen();

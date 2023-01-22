@@ -35,7 +35,7 @@ import { useState, startTransition, useEffect, Suspense } from "react";
 import { useRouter } from "next/router";
 import { drawerWidth } from "core/constants";
 import { Box } from "@mui/system";
-import { useUserId } from "@nhost/react";
+import { useUserId } from "@nhost/nextjs";
 
 const DrawerElement = ({
   query,

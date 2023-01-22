@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { AddContentDialog, AutoButton } from "comps";
 import { PlusOne } from "@mui/icons-material";
 import { Node, useNode } from "hooks";
-import { useUserDisplayName } from "@nhost/react";
+import { useUserDisplayName } from "@nhost/nextjs";
 
 export default function AddChangeButton({ node }: { node: Node }) {
   const displayName = useUserDisplayName();
