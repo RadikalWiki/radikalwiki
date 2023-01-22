@@ -74,7 +74,7 @@ export default function SpeakCard({
         action={
           <Paper
             sx={{
-              bgcolor: (t) => t.palette.primary.main,
+              bgcolor: "primary.main",
               pl: 2,
               pr: 2,
               pt: 0.5,
@@ -87,7 +87,7 @@ export default function SpeakCard({
           </Paper>
         }
         sx={{
-          bgcolor: (t) => t.palette.secondary.main,
+          bgcolor: "secondary.main",
           color: (t) => t.palette.secondary.contrastText,
         }}
       />
@@ -131,7 +131,7 @@ export default function SpeakCard({
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      bgcolor: (t) => t.palette.secondary.main,
+                      bgcolor: "secondary.main",
                     }}
                   >
                     <DoNotTouch />

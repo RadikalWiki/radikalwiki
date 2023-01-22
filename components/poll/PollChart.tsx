@@ -71,7 +71,7 @@
 //     <Card sx={{ m: 0 }}>
 //       <CardHeader
 //         sx={{
-//           bgcolor: (t) => t.palette.secondary.main,
+//           bgcolor: "secondary.main",
 //           color: (t) => t.palette.secondary.contrastText,
 //         }}
 //         title={title}

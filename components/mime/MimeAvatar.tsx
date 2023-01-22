@@ -11,8 +11,7 @@ const MimeAvatar = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, inde
   return (
     <MuiAvatar
       sx={{
-        bgcolor: (t) =>
-          screen ? t.palette.primary.main : t.palette.secondary.main,
+        bgcolor: screen ? "primary.main" : "secondary.main",
       }}
     >
       {getIconFromId(mimeId, index, true)}
@@ -49,8 +48,7 @@ const Avatar = ({ node }: { node: Node }) => {
   const avatar = (
     <MuiAvatar
       sx={{
-        bgcolor: (t) =>
-          screen ? t.palette.primary.main : t.palette.secondary.main,
+        bgcolor: screen ? "primary.main" : "secondary.main",
       }}
     >
       {getIconFromId(id, index, true)}
@@ -69,7 +67,7 @@ const Avatar = ({ node }: { node: Node }) => {
             sx={{
               width: 18,
               height: 18,
-              bgcolor: (t) => t.palette.primary.main,
+              bgcolor: "primary.main",
             }}
           >
             <LockOpen

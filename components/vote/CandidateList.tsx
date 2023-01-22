@@ -100,7 +100,7 @@ export default function CandidateList({ node }: { node: Node }) {
                     height: 32,
                     width: 32,
                     bgcolor: "#ffffff",
-                    color: (t) => t.palette.primary.main,
+                    color: "primary.main",
                   }}
                 >
                   {getIconFromId("vote/candidate")}

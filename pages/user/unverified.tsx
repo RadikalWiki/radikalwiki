@@ -28,7 +28,7 @@ export default function Unverified() {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.secondary.main,
+              bgcolor: "secondary.main",
             }}
           >
             <MarkEmailRead />

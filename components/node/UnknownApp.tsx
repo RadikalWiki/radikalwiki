@@ -22,7 +22,7 @@ export default function UnknownApp() {
           avatar={
             <Avatar
               sx={{
-                bgcolor: (t) => t.palette.secondary.main,
+                bgcolor: "secondary.main",
               }}
             >
               <QuestionMark />

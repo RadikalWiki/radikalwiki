@@ -55,7 +55,7 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
       <List>
         <ListItem key={-1}>
           <ListItemAvatar>
-            <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
+            <Avatar sx={{ bgcolor: "secondary.main" }}>
               <Event />
             </Avatar>
           </ListItemAvatar>

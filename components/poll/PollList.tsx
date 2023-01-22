@@ -35,7 +35,7 @@ function PollListSuspense({ node }: { node: Node }) {
       avatar={
         <Avatar
           sx={{
-            bgcolor: (t) => t.palette.secondary.main,
+            bgcolor: "secondary.main",
           }}
         >
           {getIconFromId("vote/poll")}
@@ -64,7 +64,7 @@ function PollListSuspense({ node }: { node: Node }) {
                   >
                     <Avatar
                       sx={{
-                        bgcolor: (t) => t.palette.secondary.main,
+                        bgcolor: "secondary.main",
                       }}
                     >
                       <HowToVote sx={{ color: "#fff" }} />

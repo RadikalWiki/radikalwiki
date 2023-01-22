@@ -97,7 +97,7 @@ const ListSuspense = () => {
           <ListItemAvatar>
             <Avatar
               sx={{
-                bgcolor: (t) => t.palette.secondary.main,
+                bgcolor: "secondary.main",
               }}
             >
               <DoNotDisturb />
@@ -116,7 +116,7 @@ export default function InvitesUserList() {
       avatar={
         <Avatar
           sx={{
-            bgcolor: (t) => t.palette.secondary.main,
+            bgcolor: "secondary.main",
           }}
         >
           <ContactMail />

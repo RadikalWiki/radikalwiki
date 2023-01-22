@@ -82,7 +82,7 @@ export default function UserApp({ node }: { node: Node }) {
               <ListItemAvatar>
                 <Avatar
                   sx={{
-                    bgcolor: (t) => t.palette.secondary.main,
+                    bgcolor: "secondary.main",
                   }}
                 >
                   {getIconFromId(mimeId!)}

@@ -113,7 +113,7 @@ export default function FolderList({ node }: { node: Node }) {
             <ListItemAvatar>
               <Avatar
                 sx={{
-                  bgcolor: (t) => t.palette.secondary.main,
+                  bgcolor: "secondary.main",
                 }}
               >
                 <DoNotDisturb />

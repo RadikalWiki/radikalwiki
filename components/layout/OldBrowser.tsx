@@ -13,7 +13,7 @@ export default function OldBrowser() {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.primary.main,
+              bgcolor: "primary.main",
             }}
           >
             <BrowserNotSupported />

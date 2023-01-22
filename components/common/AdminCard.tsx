@@ -10,7 +10,7 @@ export default function AdminCard({
   title: string;
 }) {
   return (
-    <Card sx={{ m: 0, bgcolor: (t) => t.palette.primary.main }}>
+    <Card sx={{ m: 0, bgcolor: "primary.main" }}>
       <CardHeader
         title={
           <Typography variant="h5" sx={{ color: "#fff" }}>
@@ -20,7 +20,7 @@ export default function AdminCard({
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.secondary.main,
+              bgcolor: "secondary.main",
             }}
           >
             <SupervisorAccount />

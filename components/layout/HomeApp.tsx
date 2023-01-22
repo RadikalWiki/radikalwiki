@@ -23,7 +23,7 @@ export default function HomeApp() {
           avatar={
             <Avatar
               sx={{
-                bgcolor: (t) => t.palette.secondary.main,
+                bgcolor: "secondary.main",
               }}
             >
               <Hail />

@@ -105,7 +105,7 @@ function ChildListRaw({ node }: { node: Node }) {
               <ListItemAvatar>
                 <Avatar
                   sx={{
-                    bgcolor: (t) => t.palette.secondary.main,
+                    bgcolor: "secondary.main",
                   }}
                 >
                   <DoNotDisturb />
@@ -134,7 +134,7 @@ export default function ChangeList({ node }: { node: Node }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.secondary.main,
+              bgcolor: "secondary.main",
             }}
           >
             {getIconFromId("vote/change")}

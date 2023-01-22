@@ -48,7 +48,7 @@ export default function ContentHeader({
       }
       sx={
         screen ? {
-          bgcolor: (t) => t.palette.secondary.main,
+          bgcolor: "secondary.main",
           color: (t) => t.palette.secondary.contrastText,
         } : undefined
       }

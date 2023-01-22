@@ -249,7 +249,7 @@ export default function FolderDial({ node }: { node: Node }) {
         >
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
                 {<ContentPaste />}
               </Avatar>
             }
@@ -259,7 +259,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
                 {<Delete />}
               </Avatar>
             }
@@ -269,7 +269,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
                 {query?.attachable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
@@ -279,7 +279,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
                 {query?.mutable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
@@ -289,7 +289,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
                 <LowPriority />
               </Avatar>
             }
@@ -299,7 +299,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: (t) => t.palette.primary.main }}>
+              <Avatar sx={{ bgcolor: "primary.main" }}>
                 <GetApp />
               </Avatar>
             }

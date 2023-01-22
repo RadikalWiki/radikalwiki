@@ -116,7 +116,7 @@ export default function Editor({ node }: { node: Node }) {
         <CardHeader
           title={<Typography>{name}</Typography>}
           avatar={
-            <Avatar sx={{ bgcolor: (t) => t.palette.secondary.main }}>
+            <Avatar sx={{ bgcolor: "secondary.main" }}>
               <Edit />
             </Avatar>
           }

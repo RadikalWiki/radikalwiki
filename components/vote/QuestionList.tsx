@@ -58,7 +58,7 @@ export default function QuestionList({ node }: { node: Node }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.secondary.main,
+              bgcolor: "secondary.main",
             }}
           >
             {getIconFromId("vote/question")}
@@ -89,7 +89,7 @@ export default function QuestionList({ node }: { node: Node }) {
                   <ListItemAvatar>
                     <Avatar
                       sx={{
-                        bgcolor: (t) => t.palette.secondary.main,
+                        bgcolor: "secondary.main",
                       }}
                     >
                       {index + 1}
@@ -134,7 +134,7 @@ export default function QuestionList({ node }: { node: Node }) {
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      bgcolor: (t) => t.palette.secondary.main,
+                      bgcolor: "secondary.main",
                     }}
                   >
                     <DoNotDisturb />

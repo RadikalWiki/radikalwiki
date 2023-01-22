@@ -168,8 +168,7 @@ export default function VoteApp({ node }: { node: Node }) {
             onMouseEnter={() => setRefresh(true)}
             onMouseLeave={() => setRefresh(false)}
             sx={{
-              bgcolor: (t) =>
-                canVote ? t.palette.secondary.main : t.palette.primary.main,
+              bgcolor: canVote ? "secondary.main" : "primary.main",
             }}
           >
             {refresh ? <Refresh /> : canVote ? <HowToReg /> : <DoNotDisturb />}
@@ -194,7 +193,7 @@ export default function VoteApp({ node }: { node: Node }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: (t) => t.palette.secondary.main,
+              bgcolor: "secondary.main",
             }}
           >
             <DoNotDisturb />
