@@ -2,7 +2,7 @@ import { Event, EventBusy } from "@mui/icons-material";
 import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from "@mui/material";
 import { useUserId } from "@nhost/react";
 import { fromId } from "core/path";
-import { resolved, useQuery } from "gql";
+import { order_by, resolved, useQuery } from "gql";
 import { useSession } from "hooks";
 import { useRouter } from "next/router";
 import { startTransition } from "react";
@@ -13,6 +13,7 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
   const query = useQuery();
   const [_, setSession] = useSession();
   const events = query.nodes({
+    order_by: [{ createdAt: order_by.desc }],
     where: {
       _and: [
         { mimeId: { _eq: "wiki/event" } },
