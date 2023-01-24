@@ -7,22 +7,22 @@ import { Node, useNode } from "hooks";
 export default function InvitesFab({ node }: { node: Node }) {
   const parentId = node.id;
   const nodeMembers = node.useMembers();
-  const handleFile = async (fileData: any) => {
-    const invites = fileData
-      .filter((r: any) => r?.email)
+  const handleFile = async (fileData: { forname: string, efternavn: string, email: string }[]) => {
+    const members = fileData
+      .filter((r) => r?.email)
       .map((r: any) => ({
         name: `${r.fornavn} ${r.efternavn}`,
         email: r?.email?.toLowerCase(),
         parentId,
       }));
-    await nodeMembers.insert(invites);
+    await nodeMembers.insert({ members });
   };
 
   const parseOptions = {
     header: true,
     dynamicTyping: true,
     skipEmptyLines: true,
-    transformHeader: (header: any) => header.toLowerCase().replace(/\W/g, "_"),
+    transformHeader: (header: string) => header.toLowerCase().replace(/\W/g, "_"),
   };
 
   return (
