@@ -1,5 +1,5 @@
 import React from "react";
-import { PollAdmin } from "components";
+import { PollAdmin } from "comps";
 import { Node, useScreen } from "hooks";
 import { Stack } from "@mui/material";
 

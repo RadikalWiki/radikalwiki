@@ -1,8 +1,7 @@
 import React, { Suspense } from "react";
 import { Typography, CardContent, Grid, Avatar, Divider } from "@mui/material";
-import { AddContentFab, HeaderCard } from "comps";
+import { AddContentFab, HeaderCard, InvitesUserList } from "comps";
 import { useNode } from "hooks";
-import { InvitesUserList } from "comps/invite";
 import { Hail } from "@mui/icons-material";
 import { useAuthenticationStatus, useUserDisplayName } from "@nhost/nextjs";
 

@@ -16,10 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "comps": [
-        "./components"
-      ],
-      "comps/*": [
-        "./components/*"
+        "components"
       ],
       "hooks": [
         "core/hooks"
@@ -36,6 +33,21 @@
       "hoc": [
         "core/hoc"
       ],
+      "core/path": [
+        "core/path"
+      ],
+      "core/document": [
+        "core/document"
+      ],
+      "core/constants": [
+        "core/constants"
+      ],
+      "core/util": [
+        "core/util"
+      ],
+      "*": [
+        "output/*"
+      ],
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -49,7 +61,8 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "**/*.js"
   ],
   "exclude": [
     "node_modules"

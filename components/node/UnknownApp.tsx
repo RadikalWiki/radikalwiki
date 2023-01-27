@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { HeaderCard } from "comps/common";
+import { HeaderCard } from "comps";
 import { QuestionMark } from "@mui/icons-material";
 import { useAuthenticationStatus } from "@nhost/nextjs";
 

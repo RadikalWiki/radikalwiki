@@ -23,7 +23,7 @@
 // } from "@mui/material";
 // import { Node, useScreen, useSession } from "hooks";
 // import { nodes, Maybe, useSubscription, String_comparison_exp } from "gql";
-// import { MimeAvatarId } from "comps/mime";
+// import { MimeAvatarId } from "comps";
 
 // const MuiChart = DxChart as any;
 

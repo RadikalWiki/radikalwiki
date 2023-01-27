@@ -37,9 +37,7 @@ yarn.lock
 # gql
 schema.generated.ts
 
-# rescript
-lib/bs/*
-*.lock
-.merlin
-*.js
-*.mjs
+# purescript
+output
+.psc-ide-port
+.psci_modules

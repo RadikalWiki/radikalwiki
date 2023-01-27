@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, CardContent, Avatar, Divider } from "@mui/material";
 import { BrowserNotSupported } from "@mui/icons-material";
 import { Container } from "@mui/system";
-import { HeaderCard } from "comps/common";
+import { HeaderCard } from "comps";
 import platform from 'platform';
 
 export default function OldBrowser() {

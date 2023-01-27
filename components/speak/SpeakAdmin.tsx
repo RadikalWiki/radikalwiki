@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, ButtonGroup, Divider, TextField } from "@mui/material";
-import { AdminCard } from "components";
+import { AdminCard } from "comps";
 import { Clear, LockOpen, Lock, PlayArrow, Stop } from "@mui/icons-material";
 import { Node } from "hooks";
 

@@ -51,10 +51,18 @@
     "xstate": "^4.32.1"
   },
   "scripts": {
-    "dev": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && next",
-    "build": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn gen-gqty && next build",
-    "start": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && next start",
-    "gen-gqty": "gqty generate",
+    "build": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn build:gqty && yarn build:clean && yarn build:spago && yarn build:next",
+    "build:clean": "rm -Rf output",
+    "build:spago": "spago -x spago.production.dhall build",
+    "build:next": "next build",
+    "build:gqty": "gqty generate",
+    "clean": "rm -Rf .cache .next output output-es node_modules .spago *.lock",
+    "dev": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn dev:clean && yarn dev:build && yarn dev:serve",
+    "dev:clean": "rm -Rf output",
+    "dev:build": "spago build",
+    "dev:serve": "spago build --watch & next",
+    "postinstall": "spago install",
+    "start": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn build && next start",
     "lint": "next lint"
   },
   "devDependencies": {
@@ -75,6 +83,9 @@
     "eslint-config-next": "^12.1.4",
     "eslint-plugin-functional": "^4.2.1",
     "file-loader": "^6.2.0",
+    "purescript": "^0.15.7",
+    "purs-backend-es": "^1.3.1",
+    "spago": "^0.20.9",
     "tsutils": "^3.21.0",
     "typescript": "4.7.4"
   },

@@ -17,7 +17,7 @@ import { fromId } from "core/path";
 import HTMLtoDOCX from "html-to-docx";
 import { toHtml } from "core/document";
 import { getLetter } from "mime";
-import { DeleteDialog } from "comps/content";
+import { DeleteDialog } from "comps";
 
 const checkIfSuperParent = async (
   id: string,
