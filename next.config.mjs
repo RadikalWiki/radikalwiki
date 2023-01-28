@@ -13,6 +13,9 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    domains: ["pgvhpsenoifywhuxnybq.storage.eu-central-1.nhost.run"]
+  }
 };
 
 export default nextConfig;

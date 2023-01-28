@@ -3,6 +3,7 @@ import { CircularProgress } from "@mui/material";
 import { common, grey } from "@mui/material/colors";
 import { BrokenImage } from "@mui/icons-material";
 import { Box } from "@mui/system";
+import NextImage from "next/image"
 
 export default function Image({
   src,
@@ -63,7 +64,7 @@ export default function Image({
       }}
     >
       {src && (
-        <img
+        <NextImage
           {...image}
           src={src}
           alt={alt}
