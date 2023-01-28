@@ -114,6 +114,7 @@ const getIconFromId = (mimeId: Maybe<string | undefined>, index?: number, avatar
     default:
   }
 
+  // eslint-disable-next-line jsx-a11y/alt-text
   if (mimeId?.includes("image/")) return <Image />;
   if (mimeId?.includes("audio/")) return <MusicNote />;
   if (mimeId?.includes("video/"))

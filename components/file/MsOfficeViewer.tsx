@@ -10,6 +10,7 @@ export default function MsOfficeViewer({ file }: { file: any }) {
     setHeight(`${(scroll?.scrollHeight ?? 0) - (screen ? 100 : 210)}px`);
   }, []);
 
+  console.log(file)
   return (
     file && (
       <iframe

@@ -1,13 +1,7 @@
 import { Node } from "hooks";
-import dynamic from "next/dynamic";
 import { nhost } from "nhost";
 import { useEffect, useState } from "react";
-import { VideoViewer, ImageViewer, MsOfficeViewer } from "comps";
-import AudioViewer from "./AudioViewer";
-
-const PdfViewer = dynamic(() => import("./PdfViewer"), {
-  ssr: false,
-});
+import { VideoViewer, ImageViewer, MsOfficeViewer, AudioViewer, PdfViewer } from "comps";
 
 export default function FileLoader({ node }: { node: Node }) {
   const [file, setFile] = useState<any>(null);
