@@ -41,3 +41,4 @@ schema.generated.ts
 output
 .psc-ide-port
 .psci_modules
+.spago
