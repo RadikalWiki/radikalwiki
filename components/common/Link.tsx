@@ -11,9 +11,7 @@ const RawLink = (props: any, ref: any) => {
   const { as, href, ...other } = props;
 
   return (
-    <NextLink href={href} as={as}>
-      <a {...other} ref={ref} />
-    </NextLink>
+    <NextLink href={href} as={as} {...other} ref={ref} />
   );
 };
 
