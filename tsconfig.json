@@ -44,10 +44,7 @@
       ],
       "core/util": [
         "core/util"
-      ],
-      "*": [
-        "output/*"
-      ],
+      ]
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -61,8 +58,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx",
-    "**/*.js"
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"
