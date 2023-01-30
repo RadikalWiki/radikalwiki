@@ -77,7 +77,6 @@ const avatars: { [id: string]: any } = {
           backgroundColor: red[700],
         }}
       >
-        <Announcement />
         <PanTool />
       </Avatar>
     ),
