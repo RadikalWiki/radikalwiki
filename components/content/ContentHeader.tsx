@@ -19,14 +19,8 @@ function Title({ node }: { node: Node }) {
 
 export default function ContentHeader({
   node,
-  expand,
-  setExpand,
-  hideMembers = false,
 }: {
   node: Node;
-  expand: boolean;
-  setExpand: Function;
-  hideMembers?: boolean;
 }) {
   const screen = useScreen();
   return (
@@ -37,23 +31,11 @@ export default function ContentHeader({
         </Suspense>
       }
       avatar={<MimeAvatarNode node={node} />}
-      subheader={
-        <>
-          {!hideMembers && !screen && (
-            <Suspense fallback={<Skeleton width={10} />}>
-              <MemberChips node={node} />
-            </Suspense>
-          )}
-        </>
-      }
       sx={
         screen ? {
           bgcolor: "secondary.main",
           color: (t) => t.palette.secondary.contrastText,
         } : undefined
-      }
-      action={
-        !screen && <ExpandButton expand={expand} onClick={() => setExpand(!expand)} />
       }
     />
   );

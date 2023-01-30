@@ -15,7 +15,7 @@ import {
 import { fromId } from "core/path";
 import { nodes, query, resolved } from "gql";
 import { useSession } from "hooks";
-import { MimeIconId } from "comps";
+import { MimeAvatar, MimeAvatarId, MimeIconId } from "comps";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
 
@@ -35,7 +35,7 @@ const SearchBox = styled("div")(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+  padding: theme.spacing(0, 1),
   height: "100%",
   position: "absolute",
   pointerEvents: "none",
@@ -45,29 +45,28 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
   "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "200px",
-      "&:focus": {
-        width: "400px",
-      },
+    "&::placeholder": {
+      color: "white",
+      opacity: 1,
     },
+    padding: theme.spacing(1.5, 1, 1.5, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(6)})`,
+    transition: theme.transitions.create("width"),
+    width: "80vh"
   },
 }));
 
 export default function SearchField() {
   const router = useRouter();
-  const [session] = useSession();
+  const [input, setInput] = useState("");
+  const [session, setSession] = useSession();
+  const [node, setNode] = useState<Partial<nodes>>();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<nodes[]>([]);
+  const [options, setOptions] = useState<{ id: string, name?: string, parent: { name?: string } }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
   const ref = useRef<any>(null);
 
@@ -76,6 +75,7 @@ export default function SearchField() {
 
     router.push("/" + path.join("/"));
     setOpen(false);
+    setInput("");
   };
 
   const search = async (name: string) => {
@@ -99,9 +99,24 @@ export default function SearchField() {
           parent: { name: parent?.name },
         }));
     });
-    setOptions(nodes as any);
+    setOptions(nodes);
     setIsLoading(false);
   };
+
+  const loadNode = async (id: string) => {
+    const node = await resolved(() => {
+      const node = query.node({ id });
+      return { name: node?.name, mimeId: node?.mimeId };
+    });
+    setNode(node);
+  };
+
+  useEffect(() => {
+    if (session?.nodeId) {
+      loadNode(session.nodeId);
+    }
+    setSelected(options?.[selectIndex]?.id);
+  }, [session?.nodeId]);
 
   useEffect(() => {
     setSelected(options?.[selectIndex]?.id);
@@ -122,16 +137,14 @@ export default function SearchField() {
     };
   }, []);
 
+  console.log(session?.nodeId)
   return (
     <Autocomplete
       sx={{ width: "100%", maxWidth: "750px", height: "100%" }}
       open={open}
-      onOpen={() => {
-        setOpen(true);
-      }}
-      onClose={() => {
-        setOpen(false);
-      }}
+      inputValue={input}
+      onOpen={() => setOpen(true)}
+      onClose={() => setOpen(false)}
       onKeyDown={(e) => {
         if (e.key === "ArrowDown")
           setSelectIndex(
@@ -154,6 +167,7 @@ export default function SearchField() {
       options={options}
       loading={isLoading}
       onInputChange={async (_, value) => {
+        setInput(value)
         setSelectIndex(0);
         await search(value);
       }}
@@ -187,14 +201,14 @@ export default function SearchField() {
       renderInput={(params) => (
         <SearchBox ref={params.InputProps.ref}>
           <SearchIconWrapper>
-            <Search />
+            {session?.nodeId ? <MimeAvatarId id={session?.nodeId} /> : <MimeAvatar mimeId={undefined}/>}
           </SearchIconWrapper>
           <StyledInputBase
             inputRef={(input) => {
               // eslint-disable-next-line functional/immutable-data
               ref.current = input;
             }}
-            placeholder="Søg…"
+            placeholder={node?.name}
             inputProps={{
               ...params.inputProps,
               endadornment: isLoading ? (

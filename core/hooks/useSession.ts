@@ -7,7 +7,8 @@ export type Session = {
   timeDiff?: number;
   theme?: string;
   screen?: { size: string };
-  selected?: string[]
+  selected?: string[];
+  nodeId?: string;
 };
 type SessionSetter = (props: Session | null) => void;
 

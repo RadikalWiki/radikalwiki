@@ -4,7 +4,6 @@ import {
   AddContentFab,
   FolderDial,
   FolderList,
-  ContentHeader,
   ContentToolbar,
 } from "comps";
 import { Node, useScreen } from "hooks";
@@ -23,21 +22,10 @@ export default function FolderApp({
   return (
     <>
       <Card sx={{ m: 0 }}>
-        {!child && (
-          <>
-            <ContentHeader
-              node={node}
-              hideMembers
-              expand={expand}
-              setExpand={setExpand}
-            />
-            <Divider />
-          </>
-        )}
         <Collapse in={expand}>
           <List sx={{ m: 0 }}>
             <Suspense fallback={null}>
-              {(child || screen) && <Divider />}
+              <Divider />
               <FolderList node={node} />
             </Suspense>
           </List>

@@ -1,31 +1,32 @@
 import { Face } from "@mui/icons-material";
-import { Chip, Skeleton } from "@mui/material";
-import { Node } from "hooks";
+import { Chip, Collapse, Skeleton, Tooltip, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
+import { Node, useScreen } from "hooks";
 import { getIconFromId } from "mime";
 
-export default function MemberChips({ node }: { node: Node }) {
+export default function MemberChips({ node, child }: { node: Node, child?: boolean }) {
+  const screen = useScreen();
   const members = node.useQuery()?.members();
   const chips =
     members?.map(({ id, name, node, user }) => {
       return (
-        <Chip
+        <Tooltip
           key={id ?? 0}
-          icon={node?.mimeId ? getIconFromId(node.mimeId) : <Face />}
-          color="secondary"
-          variant="outlined"
-          size="small"
-          sx={{ mr: 0.5 }}
-          label={name ?? user?.displayName}
-        />
+          title="Forfatter">
+          <Chip
+            icon={node?.mimeId ? getIconFromId(node.mimeId) : <Face />}
+            size={screen ? "medium" : "small"}
+            color="secondary"
+            label={<Typography variant={screen ? "h5" : undefined} >{name ?? user?.displayName}</Typography>}
+          />
+        </Tooltip>
       );
     }) ?? [];
   return (
-    <>
-      {!members?.[0]?.id && members?.length !== 0 ? (
-        <Skeleton height={20} width={120} />
-      ) : (
-        chips
-      )}
-    </>
+    <Collapse in={members?.[0]?.id && members?.length !== 0} >
+      <Stack direction="row" spacing={0.5} sx={{ p: child ? 0 : 1 }}>
+        {chips}
+      </Stack>
+    </Collapse>
   );
 }

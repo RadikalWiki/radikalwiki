@@ -45,7 +45,7 @@
     "build:next": "next build",
     "build:gqty": "gqty generate",
     "clean": "rm -Rf .next node_modules",
-    "dev": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn dev:build && yarn dev:serve",
+    "dev": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn build:gqty && next",
     "start": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && next start",
     "lint": "next lint"
   },

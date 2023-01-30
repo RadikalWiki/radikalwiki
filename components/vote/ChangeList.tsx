@@ -59,7 +59,7 @@ function ChildListElement({ id, index }: { id: string, index: number }) {
         </ListItemAvatar>
         <ListItemText
           primary={query?.name}
-          secondary={<MemberChips node={node} />}
+          secondary={<MemberChips node={node} child />}
         />
         <ListItemSecondaryAction>
           <IconButton

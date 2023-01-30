@@ -1,5 +1,5 @@
-import { Card, Collapse, Divider } from "@mui/material";
-import { Content, ContentHeader, ContentToolbar } from "comps";
+import { Box, Card, Collapse, Divider } from "@mui/material";
+import { Content, ContentToolbar, MemberChips } from "comps";
 import { Node, useScreen } from "hooks";
 import { useState } from "react";
 
@@ -11,17 +11,10 @@ export default function ContentApp(param: {
   const [expand, setExpand] = useState(true);
   return (
     <Card sx={{ m: 0 }}>
-      <ContentHeader
-        node={param.node}
-        hideMembers={param?.hideMembers}
-        expand={expand}
-        setExpand={setExpand}
-      />
+      {!screen && <ContentToolbar node={param.node} child={false} />}
+      {!param.hideMembers && <MemberChips node={param.node} />}
       <Divider />
-      <Collapse in={expand}>
-        {!screen && <ContentToolbar node={param.node} child={false} />}
-        <Content node={param.node} fontSize={screen ? "150%" : "100%"} />
-      </Collapse>
+      <Content node={param.node} fontSize={screen ? "150%" : "100%"} />
     </Card>
   );
 }
