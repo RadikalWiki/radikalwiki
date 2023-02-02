@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import {
   Button,
+  IconButton,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -47,7 +48,7 @@ export default function UserButton() {
   };
 
   const handleTheme = () => {
-    setSession({ theme: theme === "dark"  ? "light" : "dark" });
+    setSession({ theme: theme === "dark" ? "light" : "dark" });
   };
 
   const handleLogout = async () => {
@@ -64,9 +65,13 @@ export default function UserButton() {
 
   return (
     <>
-      <Button color="inherit" onClick={handleClick} endIcon={<AccountCircle />}>
-        {isAuthenticated ? name : "Log ind"}
-      </Button>
+      {isAuthenticated ? <IconButton sx={{ ml: 2 }} color="inherit" onClick={handleClick}>
+        <AccountCircle />
+      </IconButton> :
+        <Button color="inherit" onClick={handleClick} endIcon={<AccountCircle />}>
+          Log ind
+        </Button>
+      }
       <Menu
         anchorOrigin={{
           vertical: "bottom",
@@ -105,19 +110,19 @@ export default function UserButton() {
             <ListItemText>Log ud</ListItemText>
           </MenuItem>,
         ]) || [
-          <MenuItem key="login" onClick={handleUser("login")}>
-            <ListItemIcon>
-              <Login />
-            </ListItemIcon>
-            <ListItemText>Log ind</ListItemText>
-          </MenuItem>,
-          <MenuItem key="register" onClick={handleUser("register")}>
-            <ListItemIcon>
-              <HowToReg />
-            </ListItemIcon>
-            <ListItemText>Registrer</ListItemText>
-          </MenuItem>,
-        ]}
+            <MenuItem key="login" onClick={handleUser("login")}>
+              <ListItemIcon>
+                <Login />
+              </ListItemIcon>
+              <ListItemText>Log ind</ListItemText>
+            </MenuItem>,
+            <MenuItem key="register" onClick={handleUser("register")}>
+              <ListItemIcon>
+                <HowToReg />
+              </ListItemIcon>
+              <ListItemText>Registrer</ListItemText>
+            </MenuItem>,
+          ]}
         <MenuItem key="theme" onClick={handleTheme}>
           <ListItemIcon>
             {theme === "dark" ? <Brightness7 /> : <Brightness4 />}
