@@ -1,7 +1,6 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AuthorTextField,
-  ExpandButton,
   AutoButton,
   Slate,
   FileUploader,
@@ -17,14 +16,9 @@ import {
   CardContent,
   TextField,
   Grid,
-  CardHeader,
-  Collapse,
-  Avatar,
-  Typography,
   Paper,
-  Button,
 } from "@mui/material";
-import { Publish, Save, Delete, Edit } from "@mui/icons-material";
+import { Publish, Save, Delete } from "@mui/icons-material";
 import { fromId } from "core/path";
 import { Node } from "hooks";
 import { nhost } from "nhost";
@@ -113,68 +107,56 @@ export default function Editor({ node }: { node: Node }) {
   return (
     <>
       <Card sx={{ m: 0 }}>
-        <CardHeader
-          title={<Typography>{name}</Typography>}
-          avatar={
-            <Avatar sx={{ bgcolor: "secondary.main" }}>
-              <Edit />
-            </Avatar>
-          }
-          action={<ExpandButton onClick={() => setExpand(!expand)} />}
-        />
+        <CardActions>
+          <AutoButton text="Slet" icon={<Delete />} onClick={handleDelete} />
+          <Box sx={{ flexGrow: 1 }} />
+          <AutoButton text="Gem" icon={<Save />} onClick={handleSave()} />
+          {editable && (
+            <AutoButton
+              text="Indsend"
+              icon={<Publish />}
+              onClick={handleSave(false)}
+            />
+          )}
+        </CardActions>
         <Divider />
-        <Collapse in={expand} timeout="auto">
-          <CardActions>
-            <AutoButton text="Slet" icon={<Delete />} onClick={handleDelete} />
-            <Box sx={{ flexGrow: 1 }} />
-            <AutoButton text="Gem" icon={<Save />} onClick={handleSave()} />
-            {editable && (
-              <AutoButton
-                text="Indsend"
-                icon={<Publish />}
-                onClick={handleSave(false)}
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                value={name}
+                onChange={(e: any) => setName(e.target.value)}
+                label="Titel"
+                variant="outlined"
+                fullWidth
               />
-            )}
-          </CardActions>
-          <Divider />
-          <CardContent>
-            <Grid container spacing={2}>
+            </Grid>
+            {!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "") && (
               <Grid item xs={12}>
-                <TextField
-                  value={name}
-                  onChange={(e: any) => setName(e.target.value)}
-                  label="Titel"
-                  variant="outlined"
-                  fullWidth
-                />
+                <AuthorTextField value={members} onChange={setMembers} />
               </Grid>
-              {!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "") && (
-                <Grid item xs={12}>
-                  <AuthorTextField value={members} onChange={setMembers} />
+            )}
+            <Grid item xs={12}>
+              <Grid container>
+                <Grid item xs={9}>
+                  <FileUploader
+                    text="Upload Billede"
+                    onNewFile={async ({ fileId }: { fileId: string }) => {
+                      setFileId(fileId);
+                    }}
+                  />
                 </Grid>
-              )}
-              <Grid item xs={12}>
-                <Grid container>
-                  <Grid item xs={9}>
-                    <FileUploader
-                      text="Upload Billede"
-                      onNewFile={async ({ fileId }: { fileId: string }) => {
-                        setFileId(fileId);
-                      }}
-                    />
+                {image && (
+                  <Grid item xs={3}>
+                    <Paper sx={{ p: 1, m: 1 }}>
+                      <Image alt="Billede for indhold" src={image} />
+                    </Paper>
                   </Grid>
-                  {image && (
-                    <Grid item xs={3}>
-                      <Paper sx={{ p: 1, m: 1 }}>
-                        <Image alt="Billede for indhold" src={image} />
-                      </Paper>
-                    </Grid>
-                  )}
-                </Grid>
+                )}
               </Grid>
             </Grid>
-          </CardContent>
-        </Collapse>
+          </Grid>
+        </CardContent>
         <Slate
           value={content}
           onChange={(value: any) => setContent(structuredClone(value))}
