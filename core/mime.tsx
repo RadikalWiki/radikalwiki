@@ -16,6 +16,11 @@ import {
   InterpreterMode,
   Image,
   MusicNote,
+  Search,
+  Edit,
+  LowPriority,
+  HowToVote,
+  RecordVoiceOver,
 } from "@mui/icons-material";
 import MicrosoftExcelIcon from "./svg/microsoft-excel.svg";
 import MicrosoftWordIcon from "./svg/microsoft-word.svg";
@@ -35,6 +40,8 @@ const getLetter = (index: number) => {
 
 const getIconFromId = (mimeId: Maybe<string | undefined>, index?: number, avatar?: boolean) => {
   switch (mimeId) {
+    case "wiki/search":
+      return <Search />;
     case "wiki/home":
       return <Home />;
     case "wiki/group":
@@ -109,6 +116,14 @@ const getIconFromId = (mimeId: Maybe<string | undefined>, index?: number, avatar
       return <InterpreterMode />;
     case "application/pdf":
       return <FilePdfBoxIcon fill="currentColor" height="24" width="24" />;
+    case "app/editor":
+      return <Edit />
+    case "app/sort":
+      return <LowPriority />
+    case "app/vote":
+      return <HowToVote />
+    case "app/speak":
+      return <RecordVoiceOver />
     case undefined:
       return <Skeleton variant="circular" width={24} height={24} />;
     default:
