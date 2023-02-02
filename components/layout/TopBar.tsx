@@ -1,4 +1,4 @@
-import React, { Fragment, startTransition, useState } from "react";
+import React, { startTransition } from "react";
 import {
   AppBar,
   Toolbar,
@@ -8,9 +8,7 @@ import {
 } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { UserButton, HideOnScroll, SearchField } from "comps";
-import { useSession } from "hooks";
 import { useAuthenticationStatus } from "@nhost/nextjs";
-import { Container } from "@mui/system";
 import { drawerWidth } from "core/constants";
 
 export default function TopBar({
@@ -23,7 +21,6 @@ export default function TopBar({
   const { isAuthenticated } = useAuthenticationStatus();
   const largeScreen = useMediaQuery("(min-width:1200px)");
 
-  const Con = largeScreen ? Container : Fragment;
   return (
     <>
       <HideOnScroll>
@@ -39,32 +36,30 @@ export default function TopBar({
           }
           enableColorOnDark
         >
-          <Con>
-            <Toolbar>
-              {isAuthenticated && [
-                ...(largeScreen
-                  ? []
-                  : [
-                    <IconButton
-                      key="menu"
-                      aria-label="menu"
-                      edge="start"
-                      color="inherit"
-                      onClick={() =>
-                        startTransition(() => setOpenDrawer(!openDrawer))
-                      }
-                      size="large"
-                    >
-                      <Menu />
-                    </IconButton>,
-                  ]),
-                ,
-                <SearchField key="search" />,
-              ]}
-              <Box sx={{ flexGrow: 1 }} />
-              <UserButton />
-            </Toolbar>
-          </Con>
+          <Toolbar>
+            {isAuthenticated && [
+              ...(largeScreen
+                ? []
+                : [
+                  <IconButton
+                    key="menu"
+                    aria-label="menu"
+                    edge="start"
+                    color="inherit"
+                    onClick={() =>
+                      startTransition(() => setOpenDrawer(!openDrawer))
+                    }
+                    size="large"
+                  >
+                    <Menu />
+                  </IconButton>,
+                ]),
+              ,
+              <SearchField key="search" />,
+            ]}
+            <Box sx={{ flexGrow: 1 }} />
+            <UserButton />
+          </Toolbar>
         </AppBar>
       </HideOnScroll>
       <Box sx={{ p: 4 }} />
