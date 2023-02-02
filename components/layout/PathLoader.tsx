@@ -35,7 +35,7 @@ export default function PathLoader({
     if (selected) {
       // eslint-disable-next-line functional/immutable-data
       document.title = name ?? "RadikalWiki";
-      setSession({ nodeId });
+      setSession({ nodeId: nodeId ?? null });
     }
   }, [name, selected]);
 

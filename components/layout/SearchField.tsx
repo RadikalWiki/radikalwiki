@@ -46,15 +46,14 @@ const SearchIconWrapper = styled("div")(({ theme }) => ({
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
+    color: "white",
     "&::placeholder": {
-      color: "white",
       opacity: 1,
     },
     padding: theme.spacing(1.5, 1, 1.5, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(6)})`,
     transition: theme.transitions.create("width"),
-    width: "80vh"
   },
 }));
 
@@ -64,7 +63,9 @@ export default function SearchField() {
   const [session, setSession] = useSession();
   const [node, setNode] = useState<Partial<nodes>>();
   const [open, setOpen] = useState(false);
-  const [options, setOptions] = useState<{ id: string, name?: string, parent: { name?: string } }[]>([]);
+  const [options, setOptions] = useState<
+    { id: string; name?: string; parent: { name?: string } }[]
+  >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
@@ -137,10 +138,9 @@ export default function SearchField() {
     };
   }, []);
 
-  console.log(session?.nodeId)
   return (
     <Autocomplete
-      sx={{ width: "100%", maxWidth: "750px", height: "100%" }}
+      sx={{ width: "100%", height: "100%" }}
       open={open}
       inputValue={input}
       onOpen={() => setOpen(true)}
@@ -167,7 +167,7 @@ export default function SearchField() {
       options={options}
       loading={isLoading}
       onInputChange={async (_, value) => {
-        setInput(value)
+        setInput(value);
         setSelectIndex(0);
         await search(value);
       }}
@@ -201,14 +201,23 @@ export default function SearchField() {
       renderInput={(params) => (
         <SearchBox ref={params.InputProps.ref}>
           <SearchIconWrapper>
-            {session?.nodeId ? <MimeAvatarId id={session?.nodeId} /> : <MimeAvatar mimeId={undefined}/>}
+            {router.query.app ? <MimeAvatar mimeId={`app/${router.query.app}`} /> : session?.nodeId ? (
+              <MimeAvatarId id={session?.nodeId} />
+            ) : (
+              <MimeAvatar
+                mimeId={
+                  session?.nodeId === undefined ? "wiki/search" : undefined
+                }
+              />
+            )}
           </SearchIconWrapper>
           <StyledInputBase
             inputRef={(input) => {
               // eslint-disable-next-line functional/immutable-data
               ref.current = input;
             }}
-            placeholder={node?.name}
+            placeholder={node?.name ?? "Søg"}
+            fullWidth
             inputProps={{
               ...params.inputProps,
               endadornment: isLoading ? (

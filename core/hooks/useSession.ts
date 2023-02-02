@@ -8,7 +8,7 @@ export type Session = {
   theme?: string;
   screen?: { size: string };
   selected?: string[];
-  nodeId?: string;
+  nodeId?: string | null;
 };
 type SessionSetter = (props: Session | null) => void;
 
