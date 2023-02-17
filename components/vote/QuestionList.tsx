@@ -1,12 +1,12 @@
-import React, { Children, Suspense, useState } from "react";
+import React, { Children, Suspense, useState } from 'react';
 import {
   Link as NextLink,
   AddQuestionButton,
   Content,
   ContentToolbar,
   AutoButton,
-} from "comps";
-import { useRouter } from "next/router";
+} from 'comps';
+import { useRouter } from 'next/router';
 import {
   ExpandMore,
   ExpandLess,
@@ -15,7 +15,7 @@ import {
   Face,
   DoNotDisturb,
   Delete,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 import {
   Avatar,
   Badge,
@@ -33,12 +33,12 @@ import {
   CardActions,
   Typography,
   Chip,
-} from "@mui/material";
-import { nodes, order_by } from "gql";
-import { IconId } from "mime";
-import { Node, useScreen } from "hooks";
-import { TransitionGroup } from "react-transition-group";
-import { useUserId } from "@nhost/nextjs";
+} from '@mui/material';
+import { nodes, order_by } from 'gql';
+import { IconId } from 'mime';
+import { Node, useScreen } from 'hooks';
+import { TransitionGroup } from 'react-transition-group';
+import { useUserId } from '@nhost/nextjs';
 
 export default function QuestionList({ node }: { node: Node }) {
   const screen = useScreen();
@@ -47,7 +47,7 @@ export default function QuestionList({ node }: { node: Node }) {
   const $delete = node.useDelete();
   const userId = useUserId();
   const children = query?.children({
-    where: { mimeId: { _eq: "vote/question" } },
+    where: { mimeId: { _eq: 'vote/question' } },
     order_by: [{ index: order_by.asc }],
   });
 
@@ -58,7 +58,7 @@ export default function QuestionList({ node }: { node: Node }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: "secondary.main",
+              bgcolor: 'secondary.main',
             }}
           >
             <IconId mimeId="vote/question" />
@@ -89,7 +89,7 @@ export default function QuestionList({ node }: { node: Node }) {
                   <ListItemAvatar>
                     <Avatar
                       sx={{
-                        bgcolor: "secondary.main",
+                        bgcolor: 'secondary.main',
                       }}
                     >
                       {index + 1}
@@ -134,7 +134,7 @@ export default function QuestionList({ node }: { node: Node }) {
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      bgcolor: "secondary.main",
+                      bgcolor: 'secondary.main',
                     }}
                   >
                     <DoNotDisturb />

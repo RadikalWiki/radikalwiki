@@ -1,4 +1,10 @@
-export default function AudioViewer({ file, type }: { file: any, type: string }) {
+export default function AudioViewer({
+  file,
+  type,
+}: {
+  file: any;
+  type: string;
+}) {
   return (
     file && (
       <audio autoPlay controls>
@@ -7,4 +13,3 @@ export default function AudioViewer({ file, type }: { file: any, type: string })
     )
   );
 }
-

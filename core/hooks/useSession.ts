@@ -1,7 +1,7 @@
-import { useEffect, createContext, useContext } from "react";
+import { useEffect, createContext, useContext } from 'react';
 
 export type Session = {
-  path?: string
+  path?: string;
   prefix?: { id: string; name: string; mime: string; path: string[] };
   user?: { id: string; displayName: string; email: string };
   timeDiff?: number;
@@ -26,8 +26,9 @@ export default function useSession(): [Session | null, SessionSetter] {
   }, [session]);
 
   const setSession: SessionSetter = (props) => {
-    const newSession = !session || props === null ? props : { ...session, ...props };
-    localStorage.setItem("session", JSON.stringify(newSession));
+    const newSession =
+      !session || props === null ? props : { ...session, ...props };
+    localStorage.setItem('session', JSON.stringify(newSession));
     if (setCtxSession) setCtxSession(newSession);
   };
 

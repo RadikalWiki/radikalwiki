@@ -1,16 +1,16 @@
-import React from "react";
+import React from 'react';
 import {
   List,
   ListItem,
   ListItemText,
   ListItemAvatar,
   Avatar,
-} from "@mui/material";
-import { HeaderCard, Link } from "comps";
-import { useQuery } from "gql";
-import { Event, Group, Subject } from "@mui/icons-material";
-import { IconId } from "mime";
-import { Node } from "hooks";
+} from '@mui/material';
+import { HeaderCard, Link } from 'comps';
+import { useQuery } from 'gql';
+import { Event, Group, Subject } from '@mui/icons-material';
+import { IconId } from 'mime';
+import { Node } from 'hooks';
 
 export default function UserApp({ node }: { node: Node }) {
   const query = useQuery();
@@ -28,7 +28,7 @@ export default function UserApp({ node }: { node: Node }) {
               where: {
                 _and: [
                   { nodeId: { _eq: node?.id } },
-                  { parent: { mimeId: { _eq: "wiki/group" } } },
+                  { parent: { mimeId: { _eq: 'wiki/group' } } },
                 ],
               },
             })
@@ -37,7 +37,7 @@ export default function UserApp({ node }: { node: Node }) {
                 key={node?.id ?? 0}
                 button
                 component={Link}
-                href={parent?.id ?? ""}
+                href={parent?.id ?? ''}
               >
                 <ListItemText primary={parent?.name} />
               </ListItem>
@@ -55,7 +55,7 @@ export default function UserApp({ node }: { node: Node }) {
               where: {
                 _and: [
                   { nodeId: { _eq: node?.id } },
-                  { parent: { mimeId: { _eq: "wiki/event" } } },
+                  { parent: { mimeId: { _eq: 'wiki/event' } } },
                 ],
               },
             })
@@ -64,7 +64,7 @@ export default function UserApp({ node }: { node: Node }) {
                 key={node?.id ?? 0}
                 button
                 component={Link}
-                href={parent?.id ?? ""}
+                href={parent?.id ?? ''}
               >
                 <ListItemText primary={parent?.name} />
               </ListItem>
@@ -78,11 +78,11 @@ export default function UserApp({ node }: { node: Node }) {
       <HeaderCard title="Indhold" avatar={<Subject />}>
         <List>
           {nodes?.map(({ id, name, mimeId, parent }) => (
-            <ListItem key={id} button component={Link} href={id ?? ""}>
+            <ListItem key={id} button component={Link} href={id ?? ''}>
               <ListItemAvatar>
                 <Avatar
                   sx={{
-                    bgcolor: "secondary.main",
+                    bgcolor: 'secondary.main',
                   }}
                 >
                   <IconId mimeId={mimeId} />

@@ -1,59 +1,55 @@
-import { order_by } from "gql";
-import {
-  DataGrid,
-  GridActionsCellItem,
-  GridColumns,
-} from "@mui/x-data-grid";
-import { Box } from "@mui/system";
-import { Delete } from "@mui/icons-material";
-import { Node, useNode } from "hooks";
+import { order_by } from 'gql';
+import { DataGrid, GridActionsCellItem, GridColumns } from '@mui/x-data-grid';
+import { Box } from '@mui/system';
+import { Delete } from '@mui/icons-material';
+import { Node, useNode } from 'hooks';
 
 export default function MembersDataGrid({ node }: { node: Node }) {
-  const query = node.useQuery()
-  const member = node.useMember()
+  const query = node.useQuery();
+  const member = node.useMember();
 
   const columns: GridColumns = [
     {
-      field: "name",
-      headerName: "Navn",
+      field: 'name',
+      headerName: 'Navn',
 
       editable: true,
       width: 200,
     },
     {
-      field: "email",
-      headerName: "E-Mail",
+      field: 'email',
+      headerName: 'E-Mail',
 
       editable: true,
       width: 200,
     },
     {
-      field: "hidden",
-      type: "boolean",
-      headerName: "Skjul",
+      field: 'hidden',
+      type: 'boolean',
+      headerName: 'Skjul',
       editable: true,
       width: 150,
     },
     {
-      field: "owner",
-      type: "boolean",
-      headerName: "Ejer",
+      field: 'owner',
+      type: 'boolean',
+      headerName: 'Ejer',
       editable: true,
       width: 150,
     },
     {
-      field: "active",
-      type: "boolean",
+      field: 'active',
+      type: 'boolean',
       editable: true,
-      headerName: "Aktiv",
+      headerName: 'Aktiv',
       width: 150,
     },
     {
-      field: "actions",
-      type: "actions",
-      headerName: "Actions",
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
       width: 100,
-      cellClassName: "actions",
+      cellClassName: 'actions',
       getActions: ({ id }) => {
         return [
           <GridActionsCellItem
@@ -77,7 +73,7 @@ export default function MembersDataGrid({ node }: { node: Node }) {
     field: any;
     value: any;
   }) => {
-    if (typeof value != "boolean" && !["name", "email"].includes(field)) return;
+    if (typeof value != 'boolean' && !['name', 'email'].includes(field)) return;
     const set = { [field]: value };
     await member.update(id, set);
   };

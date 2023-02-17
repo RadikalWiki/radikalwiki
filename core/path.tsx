@@ -1,4 +1,4 @@
-import { query, resolved } from "gql";
+import { query, resolved } from 'gql';
 
 const toId = async (path: string[], parentId?: string): Promise<string> => {
   const where = {

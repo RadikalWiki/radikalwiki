@@ -1,6 +1,6 @@
-import React, { Suspense, useState } from "react";
-import { useRouter } from "next/router";
-import { ExpandMore, ExpandLess, Policy } from "@mui/icons-material";
+import React, { Suspense, useState } from 'react';
+import { useRouter } from 'next/router';
+import { ExpandMore, ExpandLess, Policy } from '@mui/icons-material';
 import {
   Avatar,
   Collapse,
@@ -18,8 +18,8 @@ import {
   FormGroup,
   FormControlLabel,
   Stack,
-} from "@mui/material";
-import { mimes, permissions, useQuery } from "gql";
+} from '@mui/material';
+import { mimes, permissions, useQuery } from 'gql';
 
 /*
 function PermListElement({

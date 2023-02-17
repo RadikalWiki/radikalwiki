@@ -1,9 +1,9 @@
-import React, { Suspense } from "react";
-import { Typography, CardContent, Grid, Avatar, Divider } from "@mui/material";
-import { AddContentFab, HeaderCard, InvitesUserList } from "comps";
-import { useNode } from "hooks";
-import { Hail } from "@mui/icons-material";
-import { useAuthenticationStatus, useUserDisplayName } from "@nhost/nextjs";
+import React, { Suspense } from 'react';
+import { Typography, CardContent, Grid, Avatar, Divider } from '@mui/material';
+import { AddContentFab, HeaderCard, InvitesUserList } from 'comps';
+import { useNode } from 'hooks';
+import { Hail } from '@mui/icons-material';
+import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
 
 const AddContentFabSuspense = () => {
   const node = useNode();
@@ -22,7 +22,7 @@ export default function HomeApp() {
           avatar={
             <Avatar
               sx={{
-                bgcolor: "secondary.main",
+                bgcolor: 'secondary.main',
               }}
             >
               <Hail />

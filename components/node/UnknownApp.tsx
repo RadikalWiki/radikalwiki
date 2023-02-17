@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Avatar,
   CardContent,
@@ -6,10 +6,10 @@ import {
   Grid,
   Stack,
   Typography,
-} from "@mui/material";
-import { HeaderCard } from "comps";
-import { QuestionMark } from "@mui/icons-material";
-import { useAuthenticationStatus } from "@nhost/nextjs";
+} from '@mui/material';
+import { HeaderCard } from 'comps';
+import { QuestionMark } from '@mui/icons-material';
+import { useAuthenticationStatus } from '@nhost/nextjs';
 
 export default function UnknownApp() {
   const { isAuthenticated } = useAuthenticationStatus();
@@ -22,7 +22,7 @@ export default function UnknownApp() {
           avatar={
             <Avatar
               sx={{
-                bgcolor: "secondary.main",
+                bgcolor: 'secondary.main',
               }}
             >
               <QuestionMark />

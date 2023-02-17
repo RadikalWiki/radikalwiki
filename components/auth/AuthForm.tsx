@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   Container,
   TextField,
@@ -10,45 +10,49 @@ import {
   Divider,
   CircularProgress,
   Box,
-} from "@mui/material";
-import { useSession } from "hooks";
-import { nhost } from "nhost";
-import { Email, HowToReg, LockReset, Login } from "@mui/icons-material";
-import { useAuthenticationStatus } from "@nhost/nextjs";
+} from '@mui/material';
+import { useSession } from 'hooks';
+import { nhost } from 'nhost';
+import { Email, HowToReg, LockReset, Login } from '@mui/icons-material';
+import { useAuthenticationStatus } from '@nhost/nextjs';
 
-type Mode = "login" | "register" | "login-email" | "reset-password";
+type Mode = 'login' | 'register' | 'login-email' | 'reset-password';
 
 export default function LoginForm({ mode }: { mode: Mode }) {
   const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
   const [_, setSession] = useSession();
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordRepeat, setPasswordRepeat] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordRepeat, setPasswordRepeat] = useState('');
   const [errorName, setNameError] = useState(false);
   const [errorEmail, setEmailError] = useState(false);
-  const [errorNameMsg, setNameErrorMsg] = useState("");
-  const [errorEmailMsg, setEmailErrorMsg] = useState("");
+  const [errorNameMsg, setNameErrorMsg] = useState('');
+  const [errorEmailMsg, setEmailErrorMsg] = useState('');
   const [errorPassword, setPasswordError] = useState(false);
-  const [errorPasswordMsg, setPasswordErrorMsg] = useState("");
+  const [errorPasswordMsg, setPasswordErrorMsg] = useState('');
 
   useEffect(() => {
-    if (["login", "register", "login-email"].includes(mode) && !loading && isAuthenticated) {
-      router.push("/")
+    if (
+      ['login', 'register', 'login-email'].includes(mode) &&
+      !loading &&
+      isAuthenticated
+    ) {
+      router.push('/');
     }
-  }, [isAuthenticated, loading, mode])
+  }, [isAuthenticated, loading, mode]);
 
   const onNameChange = (e: any) => {
     const name = e.target.value;
     setName(name);
     if (name) {
       setNameError(false);
-      setNameErrorMsg("");
+      setNameErrorMsg('');
     } else {
       setNameError(true);
-      setNameErrorMsg("Mangler navn");
+      setNameErrorMsg('Mangler navn');
     }
   };
 
@@ -57,34 +61,34 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     setEmail(email);
     if (email) {
       setEmailError(false);
-      setEmailErrorMsg("");
+      setEmailErrorMsg('');
     } else {
       setEmailError(true);
-      setEmailErrorMsg("Mangler email");
+      setEmailErrorMsg('Mangler email');
     }
   };
 
   const onPasswordChange = (e: any) => {
     const password = e.target.value;
     setPassword(password);
-    if (password === passwordRepeat || passwordRepeat === "") {
+    if (password === passwordRepeat || passwordRepeat === '') {
       setPasswordError(false);
-      setPasswordErrorMsg("");
+      setPasswordErrorMsg('');
     } else {
       setPasswordError(true);
-      setPasswordErrorMsg("Kodeord er ikke ens");
+      setPasswordErrorMsg('Kodeord er ikke ens');
     }
   };
 
   const onPasswordRepeatChange = (e: any) => {
     const passwordRepeat = e.target.value;
     setPasswordRepeat(passwordRepeat);
-    if (password === passwordRepeat || passwordRepeat === "") {
+    if (password === passwordRepeat || passwordRepeat === '') {
       setPasswordError(false);
-      setPasswordErrorMsg("");
+      setPasswordErrorMsg('');
     } else {
       setPasswordError(true);
-      setPasswordErrorMsg("Kodeord er ikke ens");
+      setPasswordErrorMsg('Kodeord er ikke ens');
     }
   };
 
@@ -97,23 +101,23 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     if (error) {
       // Already logged-in
       if ([100].includes(error.status)) {
-        router.push("/");
+        router.push('/');
         return;
       }
 
-      if (error.error === "unverified-user") {
+      if (error.error === 'unverified-user') {
         nhost.auth.sendVerificationEmail({ email });
         setEmailError(true);
         setEmailErrorMsg(
-          "Email ikke verificeret. Tjek din indbakke. Evt. også spam."
+          'Email ikke verificeret. Tjek din indbakke. Evt. også spam.'
         );
         setLoading(false);
         return;
       }
       setEmailError(true);
-      setEmailErrorMsg("Forkert email eller kode");
+      setEmailErrorMsg('Forkert email eller kode');
       setPasswordError(true);
-      setPassword("Forkert email eller kode");
+      setPassword('Forkert email eller kode');
       setLoading(false);
       return;
     }
@@ -122,13 +126,13 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     setSession({
       timeDiff: undefined,
     });
-    
+
     router.back();
   };
 
   const onRegister = async () => {
-    if (["login"].includes(mode)) {
-      router.push("/user/register");
+    if (['login'].includes(mode)) {
+      router.push('/user/register');
       return;
     }
     const { error } = await nhost.auth.signUp({
@@ -140,27 +144,27 @@ export default function LoginForm({ mode }: { mode: Mode }) {
       setEmailError(true);
       setEmailErrorMsg(error?.message);
     } else {
-      router.push("/user/unverified");
+      router.push('/user/unverified');
     }
   };
 
   const onResetPassword = async () => {
-    if (["login", "register"].includes(mode)) {
-      router.push("/user/reset-password");
-    } else if (mode === "reset-password") {
+    if (['login', 'register'].includes(mode)) {
+      router.push('/user/reset-password');
+    } else if (mode === 'reset-password') {
       // TODO: add error handling
       await nhost.auth.changePassword({ newPassword: password });
-      router.push("/");
+      router.push('/');
     }
   };
 
   const onLoginEmail = async () => {
     // TODO: add error handling
-    if (mode == "login-email") {
+    if (mode == 'login-email') {
       await nhost.auth.resetPassword({ email: email.toLowerCase() });
-      router.push("/");
+      router.push('/');
     } else {
-      router.push("/user/login-email");
+      router.push('/user/login-email');
     }
   };
 
@@ -168,27 +172,27 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     <Container sx={{ padding: 3 }} maxWidth="xs">
       <form>
         <Stack spacing={2} alignItems="center">
-          <Avatar sx={{ bgcolor: "primary.main" }}>
-            {mode === "login" ? (
+          <Avatar sx={{ bgcolor: 'primary.main' }}>
+            {mode === 'login' ? (
               <Login />
-            ) : mode === "register" ? (
+            ) : mode === 'register' ? (
               <HowToReg />
-            ) : mode === "login-email" ? (
+            ) : mode === 'login-email' ? (
               <Email />
             ) : (
               <LockReset />
             )}
           </Avatar>
           <Typography variant="h5">
-            {mode === "login"
-              ? "Log Ind"
-              : mode === "register"
-              ? "Registrer"
-              : mode === "login-email"
-              ? "Log Ind med E-mail"
-              : "Sæt Kodeord"}
+            {mode === 'login'
+              ? 'Log Ind'
+              : mode === 'register'
+              ? 'Registrer'
+              : mode === 'login-email'
+              ? 'Log Ind med E-mail'
+              : 'Sæt Kodeord'}
           </Typography>
-          {mode === "register" && (
+          {mode === 'register' && (
             <TextField
               fullWidth
               error={errorName}
@@ -199,7 +203,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               onChange={onNameChange}
             />
           )}
-          {mode !== "reset-password" && (
+          {mode !== 'reset-password' && (
             <TextField
               fullWidth
               error={errorEmail}
@@ -211,12 +215,12 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               onChange={onEmailChange}
             />
           )}
-          {mode !== "login-email" && (
+          {mode !== 'login-email' && (
             <TextField
               fullWidth
               error={errorPassword}
               helperText={errorPasswordMsg}
-              label={mode == "reset-password" ? "Nyt kodeord" : "Kodeord"}
+              label={mode == 'reset-password' ? 'Nyt kodeord' : 'Kodeord'}
               autoComplete="current-password"
               name="password"
               type="password"
@@ -224,7 +228,7 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               onChange={onPasswordChange}
             />
           )}
-          {mode === "register" && (
+          {mode === 'register' && (
             <TextField
               fullWidth
               error={errorPassword}
@@ -235,8 +239,8 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               onChange={onPasswordRepeatChange}
             />
           )}
-          {mode === "login" && (
-            <Box sx={{ position: "relative", width: "100%" }}>
+          {mode === 'login' && (
+            <Box sx={{ position: 'relative', width: '100%' }}>
               <Button
                 color="primary"
                 fullWidth
@@ -250,29 +254,29 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               <Divider
                 sx={{
                   mt: 1,
-                  width: "100%",
+                  width: '100%',
                 }}
               />
               {loading && (
                 <CircularProgress
                   size={24}
                   sx={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: "-12px",
-                    marginLeft: "-12px",
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-12px',
+                    marginLeft: '-12px',
                   }}
                 />
               )}
             </Box>
           )}
-          {!["reset-password", "login-email"].includes(mode) && (
+          {!['reset-password', 'login-email'].includes(mode) && (
             <Button
               disabled={
-                mode !== "login" && (errorName || errorEmail || errorPassword)
+                mode !== 'login' && (errorName || errorEmail || errorPassword)
               }
-              color={mode === "login" ? "secondary" : "primary"}
+              color={mode === 'login' ? 'secondary' : 'primary'}
               fullWidth
               variant="contained"
               startIcon={<HowToReg />}
@@ -281,9 +285,9 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               Registrer
             </Button>
           )}
-          {!["register"].includes(mode) && isAuthenticated && (
+          {!['register'].includes(mode) && isAuthenticated && (
             <Button
-              color={mode === "login" ? "secondary" : "primary"}
+              color={mode === 'login' ? 'secondary' : 'primary'}
               fullWidth
               variant="contained"
               startIcon={<LockReset />}
@@ -292,9 +296,9 @@ export default function LoginForm({ mode }: { mode: Mode }) {
               Sæt Kodeord
             </Button>
           )}
-          {!["register", "reset-password"].includes(mode) && (
+          {!['register', 'reset-password'].includes(mode) && (
             <Button
-              color={mode === "login" ? "secondary" : "primary"}
+              color={mode === 'login' ? 'secondary' : 'primary'}
               fullWidth
               variant="contained"
               startIcon={<Email />}

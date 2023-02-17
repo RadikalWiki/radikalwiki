@@ -1,5 +1,5 @@
-import { Component, ComponentType, ReactElement, Suspense } from "react";
-import { useNode } from "hooks";
+import { Component, ComponentType, ReactElement, Suspense } from 'react';
+import { useNode } from 'hooks';
 
 const withSuspense =
   <T,>(Component: ComponentType<T>, fallback?: ReactElement | null) =>
@@ -11,11 +11,11 @@ const withSuspense =
       </Suspense>
     );
 
-const Node = <T,G>(props: T & { id: string, Component: ComponentType<G> }) => {
+const Node = <T, G>(props: T & { id: string; Component: ComponentType<G> }) => {
   const id = props.id;
-  const node = useNode({ id })
+  const node = useNode({ id });
   return <Component node={node} {...props} />;
-}
+};
 
 /*
 const withNode =

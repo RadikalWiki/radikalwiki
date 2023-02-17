@@ -5,7 +5,7 @@ import {
   Popover,
   Paper,
   Slider,
-} from "@mui/material";
+} from '@mui/material';
 import {
   Delete,
   Edit,
@@ -15,32 +15,32 @@ import {
   Poll,
   People,
   ZoomIn,
-} from "@mui/icons-material";
-import { Node, useNode, useSession } from "hooks";
-import { useRouter } from "next/router";
-import { AutoButton, DeleteDialog, PollDialog } from "comps";
-import { useState } from "react";
+} from '@mui/icons-material';
+import { Node, useNode, useSession } from 'hooks';
+import { useRouter } from 'next/router';
+import { AutoButton, DeleteDialog, PollDialog } from 'comps';
+import { useState } from 'react';
 
 const marks = [
   {
     value: 50,
-    label: "50%",
+    label: '50%',
   },
   {
     value: 100,
-    label: "100%",
+    label: '100%',
   },
   {
     value: 150,
-    label: "150%",
+    label: '150%',
   },
   {
     value: 200,
-    label: "200%",
+    label: '200%',
   },
   {
     value: 250,
-    label: "250%",
+    label: '250%',
   },
 ];
 export default function ContentToolbar({
@@ -61,7 +61,7 @@ export default function ContentToolbar({
   const [anchorEl, setAnchorEl] = useState<any>(null);
   const open = Boolean(anchorEl);
   const namespace = query?.namespace;
-  const inserts = query?.inserts()?.map(mime => mime.id)
+  const inserts = query?.inserts()?.map((mime) => mime.id);
 
   const handleDelete = async () => {
     setOpenDeleteDialog(true);
@@ -76,7 +76,7 @@ export default function ContentToolbar({
   };
 
   const handleFocus = (id: string | null) => async (_: any) => {
-    await set("active", id);
+    await set('active', id);
   };
 
   if (!(query?.mutable && query?.isOwner) && !query?.isContextOwner)
@@ -106,7 +106,7 @@ export default function ContentToolbar({
               onClick={(e: any) => setAnchorEl(e.currentTarget)}
             />
           ),
-          inserts?.includes("vote/poll") && (
+          inserts?.includes('vote/poll') && (
             <AutoButton
               key="poll"
               text="Ny afstemning"
@@ -114,7 +114,7 @@ export default function ContentToolbar({
               onClick={handleAddPoll}
             />
           ),
-          ["wiki/event", "wiki/group"].includes(query?.mimeId ?? "") && (
+          ['wiki/event', 'wiki/group'].includes(query?.mimeId ?? '') && (
             <AutoButton
               key="member"
               text="Medlemmer"
@@ -130,16 +130,18 @@ export default function ContentToolbar({
           icon={<Delete />}
           onClick={handleDelete}
         />
-        {query?.mimeId !== "wiki/file" && <AutoButton
-          key="edit"
-          text="Rediger"
-          icon={<Edit />}
-          onClick={() =>
-            router.push(
-              `${router.asPath + (child ? `/${namespace}` : "")}?app=editor`
-            )
-          }
-        />}
+        {query?.mimeId !== 'wiki/file' && (
+          <AutoButton
+            key="edit"
+            text="Rediger"
+            icon={<Edit />}
+            onClick={() =>
+              router.push(
+                `${router.asPath + (child ? `/${namespace}` : '')}?app=editor`
+              )
+            }
+          />
+        )}
         {query?.mutable && (
           <AutoButton
             key="sent"
@@ -150,9 +152,13 @@ export default function ContentToolbar({
         )}
       </CardActions>
       <Divider />
-      <DeleteDialog open={openDeleteDialog} setOpen={setOpenDeleteDialog} node={node} />
+      <DeleteDialog
+        open={openDeleteDialog}
+        setOpen={setOpenDeleteDialog}
+        node={node}
+      />
       {!child && [
-        inserts?.includes("vote/poll") && (
+        inserts?.includes('vote/poll') && (
           <PollDialog
             key="poll-dialog"
             node={node}
@@ -165,12 +171,12 @@ export default function ContentToolbar({
           open={open}
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
+            vertical: 'bottom',
+            horizontal: 'center',
           }}
           transformOrigin={{
-            vertical: "top",
-            horizontal: "center",
+            vertical: 'top',
+            horizontal: 'center',
           }}
           onClose={() => setAnchorEl(null)}
         >

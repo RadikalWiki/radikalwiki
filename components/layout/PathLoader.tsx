@@ -1,10 +1,10 @@
-import { Slide, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { useQuery } from "gql";
-import { useSession } from "hooks";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Loader from "./Loader";
+import { Slide, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { useQuery } from 'gql';
+import { useSession } from 'hooks';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import Loader from './Loader';
 
 export default function PathLoader({
   namespaces,
@@ -16,7 +16,7 @@ export default function PathLoader({
   fullpath: string[];
 }) {
   const query = useQuery();
-  const [session, setSession] = useSession()
+  const [session, setSession] = useSession();
   const where = {
     _and: [
       { namespace: { _eq: namespaces.at(-1) } },
@@ -34,7 +34,7 @@ export default function PathLoader({
   useEffect(() => {
     if (selected) {
       // eslint-disable-next-line functional/immutable-data
-      document.title = name ?? "RadikalWiki";
+      document.title = name ?? 'RadikalWiki';
       setSession({ nodeId: nodeId ?? null });
     }
   }, [name, selected]);

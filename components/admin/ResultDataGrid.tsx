@@ -1,12 +1,12 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
 const numColWidth = 90;
 const columns: any[] = [
-  { field: "name", headerName: "Afstemning", width: 200 },
-  { field: "for", headerName: "For", width: numColWidth },
-  { field: "against", headerName: "Imod", width: numColWidth },
-  { field: "blank", headerName: "Blank", width: numColWidth },
-  { field: "total", headerName: "Total", width: numColWidth },
+  { field: 'name', headerName: 'Afstemning', width: 200 },
+  { field: 'for', headerName: 'For', width: numColWidth },
+  { field: 'against', headerName: 'Imod', width: numColWidth },
+  { field: 'blank', headerName: 'Blank', width: numColWidth },
+  { field: 'total', headerName: 'Total', width: numColWidth },
 ];
 
 /*

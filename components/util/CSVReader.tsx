@@ -1,5 +1,5 @@
-import { parse, ParseConfig } from "papaparse";
-import { Input } from "@mui/material";
+import { parse, ParseConfig } from 'papaparse';
+import { Input } from '@mui/material';
 
 export default function CSVReader({
   children,
@@ -31,7 +31,7 @@ export default function CSVReader({
         id="input-file"
         type="file"
         onChange={handleChangeFile}
-        sx={{ display: "none" }}
+        sx={{ display: 'none' }}
       />
       <label htmlFor="input-file">{children}</label>
     </>

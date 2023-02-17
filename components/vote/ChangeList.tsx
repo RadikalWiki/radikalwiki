@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState } from 'react';
 import {
   Link as NextLink,
   AddChangeButton,
@@ -7,8 +7,8 @@ import {
   AutoButton,
   MimeAvatar,
   MemberChips,
-} from "comps";
-import { useRouter } from "next/router";
+} from 'comps';
+import { useRouter } from 'next/router';
 import {
   ExpandMore,
   ExpandLess,
@@ -16,7 +16,7 @@ import {
   LockOpen,
   Face,
   DoNotDisturb,
-} from "@mui/icons-material";
+} from '@mui/icons-material';
 import {
   Avatar,
   Badge,
@@ -35,13 +35,13 @@ import {
   Typography,
   Chip,
   Skeleton,
-} from "@mui/material";
-import { order_by } from "gql";
-import { IconId } from "mime";
-import { Node, useNode, useScreen } from "hooks";
-import { TransitionGroup } from "react-transition-group";
+} from '@mui/material';
+import { order_by } from 'gql';
+import { IconId } from 'mime';
+import { Node, useNode, useScreen } from 'hooks';
+import { TransitionGroup } from 'react-transition-group';
 
-function ChildListElement({ id, index }: { id: string, index: number }) {
+function ChildListElement({ id, index }: { id: string; index: number }) {
   const node = useNode({ id });
   const query = node.useQuery();
   const router = useRouter();
@@ -85,7 +85,7 @@ function ChildListElement({ id, index }: { id: string, index: number }) {
 
 function ChildListRaw({ node }: { node: Node }) {
   const children = node.useQuery()?.children({
-    where: { mimeId: { _eq: "vote/change" } },
+    where: { mimeId: { _eq: 'vote/change' } },
     order_by: [{ index: order_by.asc }],
   });
 
@@ -105,7 +105,7 @@ function ChildListRaw({ node }: { node: Node }) {
               <ListItemAvatar>
                 <Avatar
                   sx={{
-                    bgcolor: "secondary.main",
+                    bgcolor: 'secondary.main',
                   }}
                 >
                   <DoNotDisturb />
@@ -134,7 +134,7 @@ export default function ChangeList({ node }: { node: Node }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: "secondary.main",
+              bgcolor: 'secondary.main',
             }}
           >
             <IconId mimeId="vote/change" />

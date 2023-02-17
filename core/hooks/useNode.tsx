@@ -1,4 +1,4 @@
-import { UseQueryReturnValue } from "@gqty/react";
+import { UseQueryReturnValue } from '@gqty/react';
 import {
   GeneratedSchema,
   Maybe,
@@ -16,16 +16,16 @@ import {
   useMutation,
   useQuery as gqtyUseQuery,
   useSubscription,
-} from "gql";
-import { usePath } from "hooks";
+} from 'gql';
+import { usePath } from 'hooks';
 
 const getNamespace = (name?: string) => {
   return name
     ?.trim()
     .toLocaleLowerCase()
-    .replaceAll(" ", "_")
-    .replaceAll("?", "")
-    .replaceAll(":", "");
+    .replaceAll(' ', '_')
+    .replaceAll('?', '')
+    .replaceAll(':', '');
 };
 
 type Param = {
@@ -55,7 +55,7 @@ export type Node = {
     contextId,
     mutable,
     attachable,
-    index
+    index,
   }: {
     name?: string;
     namespace?: string;
@@ -77,7 +77,13 @@ export type Node = {
   useParent: () => Node;
   useContext: () => Node;
   useMembers: (param?: Param) => {
-    insert: ({ members, parentId }: { members: members_insert_input[], parentId?: string }) => Promise<number | undefined>;
+    insert: ({
+      members,
+      parentId,
+    }: {
+      members: members_insert_input[];
+      parentId?: string;
+    }) => Promise<number | undefined>;
     delete: () => Promise<number | undefined>;
   };
   useMember: (param?: Param) => {
@@ -96,9 +102,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   };
   const useQuery = () => {
     const query = gqtyUseQuery();
-    return param?.id
-      ? query.node({ id: param?.id })
-      : query.nodes(where)?.[0];
+    return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
   };
   const query = gqtyUseQuery();
   const node = param?.id
@@ -114,7 +118,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
 
   const getOpts = (param?: Param) => ({
     refetchQueries:
-      param?.refetch && typeof param?.refetch === "function"
+      param?.refetch && typeof param?.refetch === 'function'
         ? [...param.refetch(query, node!)]
         : param?.refetch === false
         ? []
@@ -131,9 +135,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
 
   const useSubs = () => {
     const subs = useSubscription();
-    return param?.id
-      ? subs.node({ id: param?.id })
-      : subs.nodes(where)?.[0];
+    return param?.id ? subs.node({ id: param?.id }) : subs.nodes(where)?.[0];
   };
 
   const useSubsGet = () => {
@@ -236,7 +238,13 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
 
   const useMembers = (param?: Param) => {
     const [insertMembers] = useMutation(
-      (mutation, { members, parentId }: { members: members_insert_input[], parentId?: string }) => {
+      (
+        mutation,
+        {
+          members,
+          parentId,
+        }: { members: members_insert_input[]; parentId?: string }
+      ) => {
         const objects = members.map((member) => ({
           ...member,
           parentId: parentId ? parentId : nodeId,
@@ -258,7 +266,13 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     }, getOpts(param));
 
     return {
-      insert: ({ members, parentId }: { members: members_insert_input[], parentId?: string }) => {
+      insert: ({
+        members,
+        parentId,
+      }: {
+        members: members_insert_input[];
+        parentId?: string;
+      }) => {
         return insertMembers({ args: { members, parentId } });
       },
       delete: () => {

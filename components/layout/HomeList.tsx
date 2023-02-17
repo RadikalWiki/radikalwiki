@@ -1,11 +1,19 @@
-import { Event, EventBusy } from "@mui/icons-material";
-import { Avatar, Divider, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from "@mui/material";
-import { useUserId } from "@nhost/nextjs";
-import { fromId } from "core/path";
-import { order_by, resolved, useQuery } from "gql";
-import { useSession } from "hooks";
-import { useRouter } from "next/router";
-import { startTransition } from "react";
+import { Event, EventBusy } from '@mui/icons-material';
+import {
+  Avatar,
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
+import { useUserId } from '@nhost/nextjs';
+import { fromId } from 'core/path';
+import { order_by, resolved, useQuery } from 'gql';
+import { useSession } from 'hooks';
+import { useRouter } from 'next/router';
+import { startTransition } from 'react';
 
 export default function HomeList({ setOpen }: { setOpen: Function }) {
   const router = useRouter();
@@ -16,7 +24,7 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
     order_by: [{ createdAt: order_by.desc }],
     where: {
       _and: [
-        { mimeId: { _eq: "wiki/event" } },
+        { mimeId: { _eq: 'wiki/event' } },
         {
           members: {
             _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
@@ -31,7 +39,7 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
       const node = query.node({ id });
       return {
         id: node?.id,
-        name: node?.name ?? "",
+        name: node?.name ?? '',
         mime: node?.mimeId!,
         namespace: node?.namespace,
       };
@@ -46,7 +54,7 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
         },
       });
       setOpen(false);
-      router.push(`/${path.join("/")}`);
+      router.push(`/${path.join('/')}`);
     });
   };
 
@@ -55,7 +63,7 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
       <List>
         <ListItem key={-1}>
           <ListItemAvatar>
-            <Avatar sx={{ bgcolor: "secondary.main" }}>
+            <Avatar sx={{ bgcolor: 'secondary.main' }}>
               <Event />
             </Avatar>
           </ListItemAvatar>
@@ -90,4 +98,4 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
       <Divider />
     </>
   );
-};
+}

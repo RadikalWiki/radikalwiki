@@ -1,31 +1,31 @@
-import { createTheme, ThemeOptions, useMediaQuery } from "@mui/material";
-import { red } from "@mui/material/colors";
-import { useSession } from "hooks";
-import React from "react";
+import { createTheme, ThemeOptions, useMediaQuery } from '@mui/material';
+import { red } from '@mui/material/colors';
+import { useSession } from 'hooks';
+import React from 'react';
 
 export const theme: ThemeOptions = {
   typography: {
-    fontFamily: ["Roboto", "sans-serif"].join(","),
+    fontFamily: ['Roboto', 'sans-serif'].join(','),
   },
   palette: {
     primary: {
-      main: "#ec407a",
+      main: '#ec407a',
     },
     secondary: {
-      main: "#303f9f",
+      main: '#303f9f',
     },
     error: {
       main: red.A400,
     },
     success: {
-      main: "#61ac24",
+      main: '#61ac24',
     },
   },
   components: {
     MuiAvatar: {
       styleOverrides: {
         root: {
-          color: "#fff",
+          color: '#fff',
         },
       },
     },
@@ -36,7 +36,7 @@ const light = createTheme({
   ...theme,
   palette: {
     ...theme.palette,
-    mode: "light",
+    mode: 'light',
   },
 });
 
@@ -45,20 +45,20 @@ const dark = createTheme({
   palette: {
     ...theme.palette,
     primary: {
-      main: "#a8377a",
+      main: '#a8377a',
     },
     secondary: {
-      main: "#4c6cff",
+      main: '#4c6cff',
     },
-    mode: "dark",
+    mode: 'dark',
   },
 });
 
 export default function useTheme() {
   const [session] = useSession();
-  const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   return (session?.theme === undefined && prefersDarkMode) ||
-    session?.theme === "dark"
+    session?.theme === 'dark'
     ? dark
     : light;
 }

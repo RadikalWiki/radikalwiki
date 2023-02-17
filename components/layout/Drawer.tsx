@@ -13,7 +13,7 @@ import {
   alpha,
   Toolbar,
   CircularProgress,
-} from "@mui/material";
+} from '@mui/material';
 import {
   ChevronLeft,
   Close,
@@ -22,20 +22,16 @@ import {
   ExpandMore,
   FileOpen,
   Home,
-} from "@mui/icons-material";
-import { useSession, usePath, useNode } from "hooks";
-import { fromId } from "core/path";
-import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from "comps";
-import {
-  order_by,
-  resolved,
-  nodes,
-} from "gql";
-import { useState, startTransition, useEffect, Suspense } from "react";
-import { useRouter } from "next/router";
-import { drawerWidth } from "core/constants";
-import { Box } from "@mui/system";
-import { useUserId } from "@nhost/nextjs";
+} from '@mui/icons-material';
+import { useSession, usePath, useNode } from 'hooks';
+import { fromId } from 'core/path';
+import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from 'comps';
+import { order_by, resolved, nodes } from 'gql';
+import { useState, startTransition, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/router';
+import { drawerWidth } from 'core/constants';
+import { Box } from '@mui/system';
+import { useUserId } from '@nhost/nextjs';
 
 const DrawerElement = ({
   query,
@@ -94,22 +90,27 @@ const DrawerElement = ({
       <ListItemButton
         sx={{
           pl: 1 + index,
-          color: selected ? "primary.main" : "",
+          color: selected ? 'primary.main' : '',
         }}
         selected={selected}
         onClick={() => {
           startTransition(() => {
             setDrawerOpen(false);
-            router.push(`${path.join("/")}`);
+            router.push(`${path.join('/')}`);
           });
         }}
       >
-        <ListItemIcon sx={{ color: selected ? "primary.main" : "secondary.main" }}>
+        <ListItemIcon
+          sx={{ color: selected ? 'primary.main' : 'secondary.main' }}
+        >
           {/* <Icon id={child?.id} index={iconIndex} /> */}
-          <MimeIcon mimeId={query.data({ path: "type" }) ?? query.mimeId} index={iconIndex} />
+          <MimeIcon
+            mimeId={query.data({ path: 'type' }) ?? query.mimeId}
+            index={iconIndex}
+          />
         </ListItemIcon>
         <ListItemText>
-          <Typography sx={{ hyphens: "auto" }}>{query?.name}</Typography>
+          <Typography sx={{ hyphens: 'auto' }}>{query?.name}</Typography>
         </ListItemText>
         {childrenCount > 0 && (
           <ListItemSecondaryAction>
@@ -154,8 +155,8 @@ const DrawerElement = ({
           fallback={
             <Box
               sx={{
-                display: "flex",
-                justifyContent: "center",
+                display: 'flex',
+                justifyContent: 'center',
               }}
             >
               <CircularProgress />
@@ -208,37 +209,36 @@ const DrawerList = ({
   const slicedPath = fullpath.slice(0, path.length);
   const userId = useUserId();
 
-  const children = query?.children({
-    order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
-    where: {
-      _and: [
-        {
-          _or: [
-            { mutable: { _eq: false } },
-            { ownerId: { _eq: userId } },
-            { members: { nodeId: { _eq: userId } } },
-          ],
-        },
-        {
-          mime: {
-            hidden: { _eq: false },
+  const children =
+    query?.children({
+      order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
+      where: {
+        _and: [
+          {
+            _or: [
+              { mutable: { _eq: false } },
+              { ownerId: { _eq: userId } },
+              { members: { nodeId: { _eq: userId } } },
+            ],
           },
-        },
-      ],
-    },
-  }) ?? [];
+          {
+            mime: {
+              hidden: { _eq: false },
+            },
+          },
+        ],
+      },
+    }) ?? [];
 
-  const number = children.filter((child) => child.mime?.icon == "number");
-  const letter = children.filter((child) => child.mime?.icon == "letter");
+  const number = children.filter((child) => child.mime?.icon == 'number');
+  const letter = children.filter((child) => child.mime?.icon == 'letter');
   const findIndex = (id: string) => {
-    const numberIndex = number.findIndex(elem => elem.id === id)
-    if (numberIndex !== -1)
-      return numberIndex;
-    const letterIndex = letter.findIndex(elem => elem.id === id)
-    if (letterIndex !== -1)
-      return letterIndex
+    const numberIndex = number.findIndex((elem) => elem.id === id);
+    if (numberIndex !== -1) return numberIndex;
+    const letterIndex = letter.findIndex((elem) => elem.id === id);
+    if (letterIndex !== -1) return letterIndex;
     return undefined;
-  }
+  };
 
   return (
     <>
@@ -269,11 +269,11 @@ export default function Drawer({
 }) {
   const router = useRouter();
   const [session, setSession] = useSession();
-  const largeScreen = useMediaQuery("(min-width:1200px)");
+  const largeScreen = useMediaQuery('(min-width:1200px)');
   const path = usePath();
   const home = path.length === 0;
   const node = useNode({
-    id: home ? undefined : session?.prefix?.id
+    id: home ? undefined : session?.prefix?.id,
   });
   const query = node.useQuery();
   //const context = node.useContext();
@@ -286,13 +286,13 @@ export default function Drawer({
     const id = await resolved(
       () => {
         return query?.context?.relations({
-          where: { name: { _eq: "active" } },
+          where: { name: { _eq: 'active' } },
         })?.[0]?.nodeId;
       },
       { noCache: true }
     );
     const path = await fromId(id ?? contextId);
-    await router.push(`/${path.join("/")}`);
+    await router.push(`/${path.join('/')}`);
     setOpen(false);
   };
 
@@ -304,7 +304,7 @@ export default function Drawer({
           const node = query?.context;
           return {
             id: node?.id,
-            name: node?.name ?? "",
+            name: node?.name ?? '',
             mime: node?.mimeId!,
             namespace: node?.namespace,
           };
@@ -323,19 +323,19 @@ export default function Drawer({
   const list = home ? (
     <HomeList setOpen={setOpen} />
   ) : (
-    <List sx={{ pt: 0, pb: 0, width: "100%" }}>
+    <List sx={{ pt: 0, pb: 0, width: '100%' }}>
       <ListItemButton
         component={NextLink}
-        href={`/${session?.prefix?.path?.join("/")}?app=screen`}
+        href={`/${session?.prefix?.path?.join('/')}?app=screen`}
         target="_blank"
       >
-        <ListItemIcon sx={{ color: "secondary.main" }}>
+        <ListItemIcon sx={{ color: 'secondary.main' }}>
           <ConnectedTv />
         </ListItemIcon>
         <ListItemText primary="Skærm" />
       </ListItemButton>
       <ListItemButton onClick={handleCurrent}>
-        <ListItemIcon sx={{ color: "secondary.main" }}>
+        <ListItemIcon sx={{ color: 'secondary.main' }}>
           <FileOpen />
         </ListItemIcon>
         <ListItemText primary="Aktuelle Punkt" />
@@ -364,56 +364,56 @@ export default function Drawer({
           ? {
               width: drawerWidth,
               flexShrink: 0,
-              "& .MuiDrawer-paper": {
+              '& .MuiDrawer-paper': {
                 width: drawerWidth,
                 height: `calc(100% - 64px)`,
-                boxSizing: "border-box",
+                boxSizing: 'border-box',
               },
             }
           : {
-              position: "absolute",
-              width: "100%",
-              "& .MuiDrawer-paper": {
-                width: "100%",
+              position: 'absolute',
+              width: '100%',
+              '& .MuiDrawer-paper': {
+                width: '100%',
               },
             }
       }
-      variant={largeScreen ? "permanent" : "persistent"}
+      variant={largeScreen ? 'permanent' : 'persistent'}
       open={open || largeScreen}
       onMouseLeave={() => setOpen(false)}
     >
       <Box
         sx={{
           // Disable scroll (Firefox)
-          scrollbarWidth: "none",
+          scrollbarWidth: 'none',
           // Disable scroll (Webkit)
-          "::-webkit-scrollbar": {
-            display: "none",
+          '::-webkit-scrollbar': {
+            display: 'none',
           },
-          overflowY: "auto",
-          WebkitOverflowScrolling: "touch",
-          height: "calc(100vh - 64px)",
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
+          height: 'calc(100vh - 64px)',
         }}
       >
         <Toolbar
           onClick={() => {
             if (!home) {
-              router.push(`/${(session?.prefix?.path ?? path).join("/")}`);
+              router.push(`/${(session?.prefix?.path ?? path).join('/')}`);
               setOpen(false);
             }
           }}
           sx={{
-            cursor: "pointer",
+            cursor: 'pointer',
             ml: largeScreen ? -2 : 0,
-            bgcolor: "primary.main",
-            "&:hover, &:focus": {
+            bgcolor: 'primary.main',
+            '&:hover, &:focus': {
               bgcolor: (t) => alpha(t.palette.primary.main, 0.9),
             },
           }}
         >
           {home ? (
             <IconButton
-              sx={{ color: "#fff" }}
+              sx={{ color: '#fff' }}
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
@@ -425,11 +425,11 @@ export default function Drawer({
             </IconButton>
           ) : path.length > 0 ? (
             <IconButton
-              sx={{ color: "#fff" }}
+              sx={{ color: '#fff' }}
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
-                  router.push("/");
+                  router.push('/');
                 });
               }}
             >
@@ -444,7 +444,7 @@ export default function Drawer({
           <Box sx={{ flexGrow: 1 }} />
           {!largeScreen && (
             <IconButton
-              sx={{ color: "#fff" }}
+              sx={{ color: '#fff' }}
               onClick={(e) => {
                 e.stopPropagation();
                 setOpen(false);

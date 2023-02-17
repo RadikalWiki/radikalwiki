@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Avatar,
   Badge,
@@ -16,19 +16,19 @@ import {
   Stack,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { useSession } from "hooks";
-import { useRouter } from "next/router";
-import { Node } from "hooks";
-import { HeaderCard, MimeAvatarId, MimeLoader } from "comps";
+} from '@mui/material';
+import { useSession } from 'hooks';
+import { useRouter } from 'next/router';
+import { Node } from 'hooks';
+import { HeaderCard, MimeAvatarId, MimeLoader } from 'comps';
 import {
   DoNotDisturb,
   Hail,
   HowToReg,
   HowToVote,
   Refresh,
-} from "@mui/icons-material";
-import { useUserEmail, useUserId } from "@nhost/nextjs";
+} from '@mui/icons-material';
+import { useUserEmail, useUserId } from '@nhost/nextjs';
 
 export default function VoteApp({ node }: { node: Node }) {
   const [session] = useSession();
@@ -41,16 +41,16 @@ export default function VoteApp({ node }: { node: Node }) {
   const insert = node.useInsert();
   const sub = node.useSubs();
   const get = node.useSubsGet();
-  const poll = get("active");
+  const poll = get('active');
 
-  const [helperText, setHelperText] = useState("");
+  const [helperText, setHelperText] = useState('');
   const [error, setError] = useState(false);
 
-  const checkUnique = poll?.checkUnique({ args: { mime: "vote/vote" } });
+  const checkUnique = poll?.checkUnique({ args: { mime: 'vote/vote' } });
   const canVote = !!sub?.context?.permissions({
     where: {
       _and: [
-        { mimeId: { _eq: "vote/vote" } },
+        { mimeId: { _eq: 'vote/vote' } },
         { insert: { _eq: true } },
         {
           node: {
@@ -86,7 +86,7 @@ export default function VoteApp({ node }: { node: Node }) {
       return true;
     }
     if (selected > 1 && vote[vote.length - 1]) {
-      setHelperText("Blank kan kun vælges alene");
+      setHelperText('Blank kan kun vælges alene');
       setError(true);
       return false;
     }
@@ -94,7 +94,7 @@ export default function VoteApp({ node }: { node: Node }) {
     if (submit && (minVote ?? 1) > selected) {
       setHelperText(
         `Vælg venligst mindst ${minVote} mulighed${
-          (minVote ?? 1) > 1 ? "er" : ""
+          (minVote ?? 1) > 1 ? 'er' : ''
         }`
       );
       setError(true);
@@ -103,7 +103,7 @@ export default function VoteApp({ node }: { node: Node }) {
 
     if ((maxVote ?? 1) < selected) {
       setHelperText(
-        `Vælg venligst max ${maxVote} mulighed${(maxVote ?? 1) > 1 ? "er" : ""}`
+        `Vælg venligst max ${maxVote} mulighed${(maxVote ?? 1) > 1 ? 'er' : ''}`
       );
       setError(true);
       return false;
@@ -122,7 +122,7 @@ export default function VoteApp({ node }: { node: Node }) {
     ).toLocaleString();
     await insert({
       name,
-      mimeId: "vote/vote",
+      mimeId: 'vote/vote',
       parentId: poll?.id,
       data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
     });
@@ -146,7 +146,7 @@ export default function VoteApp({ node }: { node: Node }) {
     }
     setVote(voteNew);
 
-    setHelperText("");
+    setHelperText('');
     setError(false);
   };
 
@@ -154,12 +154,12 @@ export default function VoteApp({ node }: { node: Node }) {
 
   const status = (
     <HeaderCard
-      title={canVote ? "Du har stemmeret" : "Du har ikke stemmeret"}
+      title={canVote ? 'Du har stemmeret' : 'Du har ikke stemmeret'}
       subtitle={
-        (poll?.mimeId == "vote/poll" &&
+        (poll?.mimeId == 'vote/poll' &&
           canVote &&
-          (checkUnique ? "Du har ikke stemt" : "Du har stemt")) ||
-        ""
+          (checkUnique ? 'Du har ikke stemt' : 'Du har stemt')) ||
+        ''
       }
       avatar={
         <Tooltip title="Opdater status">
@@ -168,7 +168,7 @@ export default function VoteApp({ node }: { node: Node }) {
             onMouseEnter={() => setRefresh(true)}
             onMouseLeave={() => setRefresh(false)}
             sx={{
-              bgcolor: canVote ? "secondary.main" : "primary.main",
+              bgcolor: canVote ? 'secondary.main' : 'primary.main',
             }}
           >
             {refresh ? <Refresh /> : canVote ? <HowToReg /> : <DoNotDisturb />}
@@ -193,7 +193,7 @@ export default function VoteApp({ node }: { node: Node }) {
         avatar={
           <Avatar
             sx={{
-              bgcolor: "secondary.main",
+              bgcolor: 'secondary.main',
             }}
           >
             <DoNotDisturb />
@@ -250,12 +250,12 @@ export default function VoteApp({ node }: { node: Node }) {
 
   if (
     poll?.id &&
-    poll?.mimeId == "vote/poll" &&
+    poll?.mimeId == 'vote/poll' &&
     (!poll?.mutable || checkUnique === false || canVote === false)
   )
     return pollComp;
 
-  if (!(poll?.mutable && poll?.mimeId == "vote/poll")) return noVoteComp;
+  if (!(poll?.mutable && poll?.mimeId == 'vote/poll')) return noVoteComp;
 
   return voteComp;
 }

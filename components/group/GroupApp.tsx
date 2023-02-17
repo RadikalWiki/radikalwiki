@@ -1,6 +1,6 @@
-import { Stack } from "@mui/material";
-import { FolderApp, ContentApp } from "comps";
-import { Node } from "hooks";
+import { Stack } from '@mui/material';
+import { FolderApp, ContentApp } from 'comps';
+import { Node } from 'hooks';
 
 export default function GroupApp({ node }: { node: Node }) {
   return (

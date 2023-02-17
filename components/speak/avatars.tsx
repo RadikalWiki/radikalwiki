@@ -1,24 +1,24 @@
-import { green, orange, red, yellow } from "@mui/material/colors";
+import { green, orange, red, yellow } from '@mui/material/colors';
 import {
   Announcement,
   EmojiPeople,
   LiveHelp,
   PanTool,
   RecordVoiceOver,
-} from "@mui/icons-material";
-import { Avatar } from "@mui/material";
+} from '@mui/icons-material';
+import { Avatar } from '@mui/material';
 
-const color = "#fff";
+const color = '#fff';
 
 const avatars: { [id: string]: any } = {
   0: {
-    name: "Tal",
+    name: 'Tal',
     priority: 0,
     avatar: (
       <Avatar
         sx={{
           color,
-          backgroundColor: "#303f9f",
+          backgroundColor: '#303f9f',
         }}
       >
         <RecordVoiceOver />
@@ -26,7 +26,7 @@ const avatars: { [id: string]: any } = {
     ),
   },
   1: {
-    name: "Spørgsmål",
+    name: 'Spørgsmål',
     priority: 1,
     avatar: (
       <Avatar
@@ -40,7 +40,7 @@ const avatars: { [id: string]: any } = {
     ),
   },
   2: {
-    name: "Opklar",
+    name: 'Opklar',
     priority: 2,
     avatar: (
       <Avatar
@@ -54,7 +54,7 @@ const avatars: { [id: string]: any } = {
     ),
   },
   3: {
-    name: "Misforstået",
+    name: 'Misforstået',
     priority: 3,
     avatar: (
       <Avatar
@@ -68,7 +68,7 @@ const avatars: { [id: string]: any } = {
     ),
   },
   4: {
-    name: "Procedure",
+    name: 'Procedure',
     priority: 4,
     avatar: (
       <Avatar

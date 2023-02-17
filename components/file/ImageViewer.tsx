@@ -1,5 +1,5 @@
-import { Box } from "@mui/system";
-import { Image } from "comps";
+import { Box } from '@mui/system';
+import { Image } from 'comps';
 
 export default function ImageViewer({ file }: { file: any }) {
   return (

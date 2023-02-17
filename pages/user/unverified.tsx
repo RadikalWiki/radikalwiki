@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import {
   Typography,
   CardContent,
   Avatar,
   Divider,
   Container,
-} from "@mui/material";
-import { HeaderCard } from "comps";
-import { MarkEmailRead } from "@mui/icons-material";
-import { useRouter } from "next/router";
-import { useAuthenticationStatus } from "@nhost/nextjs";
+} from '@mui/material';
+import { HeaderCard } from 'comps';
+import { MarkEmailRead } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { useAuthenticationStatus } from '@nhost/nextjs';
 
 export default function Unverified() {
   const { push } = useRouter();
@@ -17,7 +17,7 @@ export default function Unverified() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      push("/");
+      push('/');
     }
   }, [isAuthenticated]);
 
@@ -28,7 +28,7 @@ export default function Unverified() {
         avatar={
           <Avatar
             sx={{
-              bgcolor: "secondary.main",
+              bgcolor: 'secondary.main',
             }}
           >
             <MarkEmailRead />

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Avatar, Zoom } from "@mui/material";
-import { SpeedDial, SpeedDialAction } from "@mui/material";
+import React, { useState } from 'react';
+import { Avatar, Zoom } from '@mui/material';
+import { SpeedDial, SpeedDialAction } from '@mui/material';
 import {
   LowPriority,
   GetApp,
@@ -9,24 +9,24 @@ import {
   LockOpen,
   Delete,
   ContentPaste,
-} from "@mui/icons-material";
-import { useRouter } from "next/router";
-import { resolved, query as q, order_by } from "gql";
-import { Node, useScreen, useSession } from "hooks";
-import { fromId } from "core/path";
-import HTMLtoDOCX from "html-to-docx";
-import { toHtml } from "core/document";
-import { getLetter } from "mime";
-import { DeleteDialog } from "comps";
+} from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { resolved, query as q, order_by } from 'gql';
+import { Node, useScreen, useSession } from 'hooks';
+import { fromId } from 'core/path';
+import HTMLtoDOCX from 'html-to-docx';
+import { toHtml } from 'core/document';
+import { getLetter } from 'mime';
+import { DeleteDialog } from 'comps';
 
 const checkIfSuperParent = async (
   id: string,
   superParentId: string
 ): Promise<boolean> => {
   const parentId = await resolved(() => q.node({ id })?.parentId);
-  console.log("id: " + id);
-  console.log("parentId: " + parentId);
-  console.log("superParentId: " + superParentId);
+  console.log('id: ' + id);
+  console.log('parentId: ' + parentId);
+  console.log('superParentId: ' + superParentId);
   console.log();
 
   return id == superParentId || parentId === superParentId
@@ -51,7 +51,7 @@ export default function FolderDial({ node }: { node: Node }) {
   if (screen || !query?.isContextOwner) return null;
 
   const formatContent = async (id: string, level: number): Promise<string> => {
-    if (!id) return "";
+    if (!id) return '';
     const index =
       (
         await resolved(() =>
@@ -61,7 +61,7 @@ export default function FolderDial({ node }: { node: Node }) {
               where: {
                 _and: [
                   { mutable: { _eq: false } },
-                  { mimeId: { _in: ["vote/change", "vote/policy"] } },
+                  { mimeId: { _in: ['vote/change', 'vote/policy'] } },
                 ],
               },
               order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
@@ -78,10 +78,10 @@ export default function FolderDial({ node }: { node: Node }) {
           where: {
             mimeId: {
               _in: [
-                "vote/position",
-                "vote/candidate",
-                "vote/policy",
-                "vote/change",
+                'vote/position',
+                'vote/candidate',
+                'vote/policy',
+                'vote/change',
               ],
             },
           },
@@ -93,7 +93,7 @@ export default function FolderDial({ node }: { node: Node }) {
         .node({ id })
         ?.members()
         ?.map((m) => m.name ?? m.user?.displayName)
-        .join(", ");
+        .join(', ');
     });
     const node = await resolved(() => {
       const node = q.node({ id });
@@ -102,22 +102,22 @@ export default function FolderDial({ node }: { node: Node }) {
     });
 
     const prefix =
-      node?.mimeId == "vote/policy"
+      node?.mimeId == 'vote/policy'
         ? `${getLetter(index)}: `
-        : node?.mimeId == "vote/change"
+        : node?.mimeId == 'vote/change'
         ? `${index + 1}: `
-        : "";
+        : '';
     return `<h${level}>${prefix}${
       node?.name
     }</h${level}><i>Stillet af: ${members}</i>${toHtml(node?.data?.content)}${
       children
-        ? "<br>" +
+        ? '<br>' +
           (
             await Promise.all(
               children.map(async (id) => await formatContent(id, level + 1))
             )
-          ).join("<br>")
-        : ""
+          ).join('<br>')
+        : ''
     }`;
   };
 
@@ -130,10 +130,10 @@ export default function FolderDial({ node }: { node: Node }) {
           where: {
             mimeId: {
               _in: [
-                "vote/position",
-                "vote/candidate",
-                "vote/policy",
-                "vote/change",
+                'vote/position',
+                'vote/candidate',
+                'vote/policy',
+                'vote/change',
               ],
             },
           },
@@ -146,23 +146,23 @@ export default function FolderDial({ node }: { node: Node }) {
           await Promise.all(
             nodes.map(async (content) => await formatContent(content.id, 2))
           )
-        ).join("<br><br>")
-      : "";
+        ).join('<br><br>')
+      : '';
 
-    const blob = await HTMLtoDOCX(html as string, "", {
+    const blob = await HTMLtoDOCX(html as string, '', {
       table: { row: { cantSplit: true } },
     });
 
     // Create and evoke link to file
     const blobUrl = URL.createObjectURL(blob as Blob);
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     // eslint-disable-next-line functional/immutable-data
     link.href = blobUrl;
     // eslint-disable-next-line functional/immutable-data
     link.download = `${query?.name} Eksport.docx`;
     document.body.appendChild(link);
     link.dispatchEvent(
-      new MouseEvent("click", {
+      new MouseEvent('click', {
         bubbles: true,
         cancelable: true,
         view: window,
@@ -238,7 +238,7 @@ export default function FolderDial({ node }: { node: Node }) {
         <SpeedDial
           ariaLabel="Administrer mappe"
           sx={{
-            position: "fixed",
+            position: 'fixed',
             bottom: (t) => t.spacing(17),
             right: (t) => t.spacing(3),
           }}
@@ -249,7 +249,7 @@ export default function FolderDial({ node }: { node: Node }) {
         >
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 {<ContentPaste />}
               </Avatar>
             }
@@ -259,9 +259,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
-                {<Delete />}
-              </Avatar>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>{<Delete />}</Avatar>
             }
             tooltipTitle="Slet"
             tooltipOpen
@@ -269,27 +267,27 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 {query?.attachable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
-            tooltipTitle={`${query?.attachable ? "Lås" : "Lås op"} indsend`}
+            tooltipTitle={`${query?.attachable ? 'Lås' : 'Lås op'} indsend`}
             tooltipOpen
             onClick={handleLockChildren}
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 {query?.mutable ? <Lock /> : <LockOpen />}
               </Avatar>
             }
-            tooltipTitle={`${query?.mutable ? "Lås" : "Lås op"} indhold`}
+            tooltipTitle={`${query?.mutable ? 'Lås' : 'Lås op'} indhold`}
             tooltipOpen
             onClick={handleLockContent}
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 <LowPriority />
               </Avatar>
             }
@@ -299,7 +297,7 @@ export default function FolderDial({ node }: { node: Node }) {
           />
           <SpeedDialAction
             icon={
-              <Avatar sx={{ bgcolor: "primary.main" }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 <GetApp />
               </Avatar>
             }

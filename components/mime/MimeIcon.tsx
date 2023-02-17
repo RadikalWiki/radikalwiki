@@ -1,16 +1,22 @@
-import { Maybe, order_by } from "gql";
-import { withSuspense } from "hoc";
-import { Node, useNode } from "hooks";
-import { IconId } from "mime";
-import { MimeSkeleton } from "comps";
+import { Maybe, order_by } from 'gql';
+import { withSuspense } from 'hoc';
+import { Node, useNode } from 'hooks';
+import { IconId } from 'mime';
+import { MimeSkeleton } from 'comps';
 
-const MimeIcon = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, index?: number }) => {
+const MimeIcon = ({
+  mimeId,
+  index,
+}: {
+  mimeId: Maybe<string | undefined>;
+  index?: number;
+}) => {
   return <IconId mimeId={mimeId} index={index} />;
 };
 
 const Icon = ({ node }: { node: Node }) => {
   const query = node.useQuery();
-  const type = query?.data?.({ path: "type" });
+  const type = query?.data?.({ path: 'type' });
   const mimeId = query?.mimeId;
   const id = type ?? mimeId;
   const index =
@@ -19,7 +25,7 @@ const Icon = ({ node }: { node: Node }) => {
         where: {
           _and: [
             { mutable: { _eq: false } },
-            { mime: { icon: { _in: ["number", "letter"] } } },
+            { mime: { icon: { _in: ['number', 'letter'] } } },
           ],
         },
         order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],

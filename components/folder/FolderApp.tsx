@@ -1,13 +1,8 @@
-import { NumbersOutlined } from "@mui/icons-material";
-import { Card, Collapse, Divider, List } from "@mui/material";
-import {
-  AddContentFab,
-  FolderDial,
-  FolderList,
-  ContentToolbar,
-} from "comps";
-import { Node, useScreen } from "hooks";
-import { Suspense, useState } from "react";
+import { NumbersOutlined } from '@mui/icons-material';
+import { Card, Collapse, Divider, List } from '@mui/material';
+import { AddContentFab, FolderDial, FolderList, ContentToolbar } from 'comps';
+import { Node, useScreen } from 'hooks';
+import { Suspense, useState } from 'react';
 
 export default function FolderApp({
   node,

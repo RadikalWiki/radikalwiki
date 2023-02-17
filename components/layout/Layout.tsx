@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   NavBar,
   Scroll,
@@ -6,13 +6,13 @@ import {
   SessionProvider,
   OldBrowser,
   Drawer,
-} from "comps";
-import { useAuthenticationStatus } from "@nhost/nextjs";
-import { useRouter } from "next/router";
-import { Container, Box, useMediaQuery, Grid } from "@mui/material";
-import { nhost } from "nhost";
-import { checkVersion } from "core/util";
-import { useSession } from "hooks";
+} from 'comps';
+import { useAuthenticationStatus } from '@nhost/nextjs';
+import { useRouter } from 'next/router';
+import { Container, Box, useMediaQuery, Grid } from '@mui/material';
+import { nhost } from 'nhost';
+import { checkVersion } from 'core/util';
+import { useSession } from 'hooks';
 
 export default function Layout({ children }: { children?: any }) {
   const [outdated, setOutdated] = useState(false);
@@ -31,7 +31,7 @@ export default function Layout({ children }: { children?: any }) {
   //const refresh = () => nhost.auth.refreshSession();
 
   useEffect(() => {
-    setOutdated(typeof window !== "undefined" && !checkVersion());
+    setOutdated(typeof window !== 'undefined' && !checkVersion());
     setShowing(true);
     //window.addEventListener("focus", refresh);
     //return () => {
@@ -42,7 +42,7 @@ export default function Layout({ children }: { children?: any }) {
   useEffect(() => {
     if (session !== null && session?.timeDiff === undefined) {
       setSession({ timeDiff: 0 });
-      fetch("/api/time").then((res) =>
+      fetch('/api/time').then((res) =>
         res.json().then(({ time }) => {
           setSession({
             timeDiff: new Date().getTime() - new Date(time).getTime(),
@@ -59,13 +59,13 @@ export default function Layout({ children }: { children?: any }) {
 
   return (
     <>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         {isAuthenticated && (
           <Drawer open={openDrawer} setOpen={() => setOpenDrawer(false)} />
         )}
         <Scroll>
           <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
-          {typeof window !== "undefined" && (
+          {typeof window !== 'undefined' && (
             <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>
           )}
           <Box sx={{ p: 8 }} />

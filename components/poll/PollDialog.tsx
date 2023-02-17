@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   Dialog,
   DialogTitle,
@@ -12,9 +12,9 @@ import {
   Stack,
   Typography,
   Divider,
-} from "@mui/material";
-import { Node, useSession } from "hooks";
-import { PlayArrow } from "@mui/icons-material";
+} from '@mui/material';
+import { Node, useSession } from 'hooks';
+import { PlayArrow } from '@mui/icons-material';
 
 export default function PollDialog({
   node,
@@ -29,7 +29,7 @@ export default function PollDialog({
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
   const get = node.useSubsGet();
-  const pollId = get("active")?.id;
+  const pollId = get('active')?.id;
   const insert = node.useInsert();
   const update = node.useUpdate();
   const query = node.useQuery();
@@ -37,19 +37,19 @@ export default function PollDialog({
   const context = node.useContext();
   const contextSet = context.useSet();
 
-  const [hidden, setHidden] = useState(query?.mimeId == "vote/position");
+  const [hidden, setHidden] = useState(query?.mimeId == 'vote/position');
   const [voteCount, setVoteCount] = React.useState<number[]>([1, 1]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setVoteCount(newValue as number[]);
   };
 
-  const options = ["vote/policy", "vote/change"].includes(query?.mimeId ?? "")
-    ? ["For", "Imod", "Blank"]
+  const options = ['vote/policy', 'vote/change'].includes(query?.mimeId ?? '')
+    ? ['For', 'Imod', 'Blank']
     : query
-        ?.children({ where: { mimeId: { _eq: "vote/candidate" } } })
+        ?.children({ where: { mimeId: { _eq: 'vote/candidate' } } })
         .map(({ name }) => name)
-        .concat("Blank");
+        .concat('Blank');
   const optionsCount = options?.length || 0;
 
   const handleAddPoll = async () => {
@@ -57,11 +57,11 @@ export default function PollDialog({
     if (pollId) await update({ id: pollId, set: { mutable: false } });
     const namespace = new Date(new Date().getTime() + (session?.timeDiff ?? 0))
       .toLocaleString()
-      .replaceAll("/", "");
+      .replaceAll('/', '');
     const poll = await insert({
       name: query?.name,
       namespace,
-      mimeId: "vote/poll",
+      mimeId: 'vote/poll',
       data: {
         minVote: voteCount[0],
         maxVote: voteCount[1],
@@ -71,8 +71,8 @@ export default function PollDialog({
       },
     });
 
-    await contextSet("active", poll.id);
-    router.push(`${router.asPath.split("?")[0]}/${poll.namespace}`);
+    await contextSet('active', poll.id);
+    router.push(`${router.asPath.split('?')[0]}/${poll.namespace}`);
     setLoading(false);
   };
 
@@ -88,19 +88,20 @@ export default function PollDialog({
       <Divider />
       <DialogContent>
         <Stack spacing={2}>
-          {!["vote/policy", "vote/change"].includes(query?.mimeId ?? "") && optionsCount > 2 && (
-            <>
-              <Typography>Stemmeinterval</Typography>
-              <Slider
-                value={voteCount}
-                onChange={handleChange}
-                valueLabelDisplay="off"
-                min={1}
-                marks={getMarks(optionsCount)}
-                max={optionsCount - 1}
-              />
-            </>
-          )}
+          {!['vote/policy', 'vote/change'].includes(query?.mimeId ?? '') &&
+            optionsCount > 2 && (
+              <>
+                <Typography>Stemmeinterval</Typography>
+                <Slider
+                  value={voteCount}
+                  onChange={handleChange}
+                  valueLabelDisplay="off"
+                  min={1}
+                  marks={getMarks(optionsCount)}
+                  max={optionsCount - 1}
+                />
+              </>
+            )}
           <FormControlLabel
             control={
               <Switch

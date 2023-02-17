@@ -1,5 +1,5 @@
-import React, { Fragment, Suspense } from "react";
-import { HeaderCard, Link as NextLink } from "comps";
+import React, { Fragment, Suspense } from 'react';
+import { HeaderCard, Link as NextLink } from 'comps';
 import {
   List,
   ListItem,
@@ -11,18 +11,18 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Divider,
-} from "@mui/material";
-import { Cancel, HowToVote } from "@mui/icons-material";
-import { useRouter } from "next/router";
-import { IconId } from "mime";
-import { Node, useScreen } from "hooks";
+} from '@mui/material';
+import { Cancel, HowToVote } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { IconId } from 'mime';
+import { Node, useScreen } from 'hooks';
 
 function PollListSuspense({ node }: { node: Node }) {
   const router = useRouter();
   const query = node.useQuery();
   const $delete = node.useDelete();
   const polls = query?.children({
-    where: { mimeId: { _eq: "vote/poll" } },
+    where: { mimeId: { _eq: 'vote/poll' } },
   });
   const handleDeletePoll = (id: string) => async () => {
     await $delete({ id });
@@ -35,7 +35,7 @@ function PollListSuspense({ node }: { node: Node }) {
       avatar={
         <Avatar
           sx={{
-            bgcolor: "secondary.main",
+            bgcolor: 'secondary.main',
           }}
         >
           <IconId mimeId="vote/poll" />
@@ -59,21 +59,21 @@ function PollListSuspense({ node }: { node: Node }) {
                     max={1000}
                     overlap="circular"
                     badgeContent={
-                      children_aggregate().aggregate?.count() || "0"
+                      children_aggregate().aggregate?.count() || '0'
                     }
                   >
                     <Avatar
                       sx={{
-                        bgcolor: "secondary.main",
+                        bgcolor: 'secondary.main',
                       }}
                     >
-                      <HowToVote sx={{ color: "#fff" }} />
+                      <HowToVote sx={{ color: '#fff' }} />
                     </Avatar>
                   </Badge>
                 </ListItemAvatar>
               </Tooltip>
               <ListItemText
-                primary={`${new Date(createdAt).toLocaleString("da-DK")}`}
+                primary={`${new Date(createdAt).toLocaleString('da-DK')}`}
               />
               {owner && (
                 <ListItemSecondaryAction>

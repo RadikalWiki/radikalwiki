@@ -1,7 +1,14 @@
-import React from "react";
-import { ContentApp, PollList, CandidateList, AddContentFab, FolderDial, QuestionList } from "comps";
-import { Node } from "hooks";
-import { Stack } from "@mui/material";
+import React from 'react';
+import {
+  ContentApp,
+  PollList,
+  CandidateList,
+  AddContentFab,
+  FolderDial,
+  QuestionList,
+} from 'comps';
+import { Node } from 'hooks';
+import { Stack } from '@mui/material';
 
 export default function PositionApp({ node }: { node: Node }) {
   return (

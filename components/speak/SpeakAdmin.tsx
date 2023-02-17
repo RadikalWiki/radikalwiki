@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Button, ButtonGroup, Divider, TextField } from "@mui/material";
-import { AdminCard } from "comps";
-import { Clear, LockOpen, Lock, PlayArrow, Stop } from "@mui/icons-material";
-import { Node } from "hooks";
+import React, { useState } from 'react';
+import { Button, ButtonGroup, Divider, TextField } from '@mui/material';
+import { AdminCard } from 'comps';
+import { Clear, LockOpen, Lock, PlayArrow, Stop } from '@mui/icons-material';
+import { Node } from 'hooks';
 
 export default function SpeakAdmin({
   node,
@@ -12,7 +12,7 @@ export default function SpeakAdmin({
   time: number;
 }) {
   const get = node.useSubsGet();
-  const speakerlist = get("speakerlist");
+  const speakerlist = get('speakerlist');
   const update = node.useUpdate({ refetch: false });
   const children = node.useChildren();
   const [timeBox, setTimeBox] = useState(120);
@@ -21,7 +21,7 @@ export default function SpeakAdmin({
   const handleRemoveSpeaks = async () => {
     await children.delete({
       _and: [
-        { mimeId: { _eq: "speak/speak" } },
+        { mimeId: { _eq: 'speak/speak' } },
         {
           parentId: { _eq: id },
         },
@@ -39,7 +39,7 @@ export default function SpeakAdmin({
   };
 
   const owner = speakerlist?.isContextOwner;
-  const mutable = speakerlist?.mutable
+  const mutable = speakerlist?.mutable;
 
   return (
     (owner && (
@@ -49,18 +49,18 @@ export default function SpeakAdmin({
           <Button
             color="secondary"
             size="large"
-            sx={{ color: "#fff" }}
+            sx={{ color: '#fff' }}
             endIcon={mutable ? <Lock /> : <LockOpen />}
             onClick={() => handleLockSpeak(!mutable)}
           >
-            {mutable ? "Luk" : "Åben"}
+            {mutable ? 'Luk' : 'Åben'}
           </Button>
 
           <Button
             color="secondary"
             size="large"
             endIcon={<Clear />}
-            sx={{ color: "#fff" }}
+            sx={{ color: '#fff' }}
             onClick={handleRemoveSpeaks}
           >
             Ryd
@@ -68,11 +68,11 @@ export default function SpeakAdmin({
           <Button
             color="secondary"
             size="large"
-            sx={{ color: "#fff" }}
+            sx={{ color: '#fff' }}
             endIcon={time == 0 ? <PlayArrow /> : <Stop />}
             onClick={() => handleTimerSet(time > 0 ? 0 : timeBox)}
           >
-            {time == 0 ? "Start" : "Stop"}
+            {time == 0 ? 'Start' : 'Stop'}
           </Button>
         </ButtonGroup>
 
@@ -83,16 +83,16 @@ export default function SpeakAdmin({
           color="secondary"
           value={timeBox}
           sx={{
-            bgcolor: "secondary.main",
-            borderColor: "white",
+            bgcolor: 'secondary.main',
+            borderColor: 'white',
             m: 2,
           }}
           InputLabelProps={{
             shrink: true,
-            sx: { color: "#fff" },
+            sx: { color: '#fff' },
           }}
           InputProps={{
-            sx: { color: "#fff" },
+            sx: { color: '#fff' },
           }}
           onChange={(e) => setTimeBox(parseInt(e.target.value))}
           variant="filled"

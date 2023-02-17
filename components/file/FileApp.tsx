@@ -1,13 +1,13 @@
-import { Card, Collapse, Divider, Stack } from "@mui/material";
+import { Card, Collapse, Divider, Stack } from '@mui/material';
 import {
   ContentToolbar,
   FileLoader,
   DownloadFileFab,
   ChangeList,
   QuestionList,
-} from "comps";
-import { Node, useScreen } from "hooks";
-import { useState } from "react";
+} from 'comps';
+import { Node, useScreen } from 'hooks';
+import { useState } from 'react';
 
 export default function FileApp({ node }: { node: Node }) {
   const screen = useScreen();

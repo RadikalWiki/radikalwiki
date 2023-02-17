@@ -1,13 +1,15 @@
-import React from "react";
-import { Fab } from "@mui/material";
-import { GroupAdd } from "@mui/icons-material";
-import { CSVReader } from "comps";
-import { Node, useNode } from "hooks";
+import React from 'react';
+import { Fab } from '@mui/material';
+import { GroupAdd } from '@mui/icons-material';
+import { CSVReader } from 'comps';
+import { Node, useNode } from 'hooks';
 
 export default function InvitesFab({ node }: { node: Node }) {
   const parentId = node.id;
   const nodeMembers = node.useMembers();
-  const handleFile = async (fileData: { forname: string, efternavn: string, email: string }[]) => {
+  const handleFile = async (
+    fileData: { forname: string; efternavn: string; email: string }[]
+  ) => {
     const members = fileData
       .filter((r) => r?.email)
       .map((r: any) => ({
@@ -22,14 +24,15 @@ export default function InvitesFab({ node }: { node: Node }) {
     header: true,
     dynamicTyping: true,
     skipEmptyLines: true,
-    transformHeader: (header: string) => header.toLowerCase().replace(/\W/g, "_"),
+    transformHeader: (header: string) =>
+      header.toLowerCase().replace(/\W/g, '_'),
   };
 
   return (
     <CSVReader parseOptions={parseOptions} onFileLoaded={handleFile}>
       <Fab
         sx={{
-          position: "fixed",
+          position: 'fixed',
           bottom: (t) => t.spacing(9),
           right: (t) => t.spacing(3),
         }}

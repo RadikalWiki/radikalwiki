@@ -1,12 +1,12 @@
-import React, { Fragment } from "react";
-import { Link as NextLink } from "comps";
-import { Card, Divider, List, ListItem, ListItemText } from "@mui/material";
-import { useQuery } from "gql";
+import React, { Fragment } from 'react';
+import { Link as NextLink } from 'comps';
+import { Card, Divider, List, ListItem, ListItemText } from '@mui/material';
+import { useQuery } from 'gql';
 
 export default function EventList() {
   const query = useQuery();
   const events = query.nodes({
-    where: { mimeId: { _eq: "wiki/event" } },
+    where: { mimeId: { _eq: 'wiki/event' } },
   });
 
   return (

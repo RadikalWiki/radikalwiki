@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import { AddContentDialog, AutoButton } from "comps";
-import { PlusOne } from "@mui/icons-material";
-import { Node, useNode } from "hooks";
-import { useUserDisplayName } from "@nhost/nextjs";
+import React, { useState } from 'react';
+import { AddContentDialog, AutoButton } from 'comps';
+import { PlusOne } from '@mui/icons-material';
+import { Node, useNode } from 'hooks';
+import { useUserDisplayName } from '@nhost/nextjs';
 
 export default function AddChangeButton({ node }: { node: Node }) {
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
   const query = node.useQuery();
 
-  const name = query?.mimeId == "vote/position" ? displayName : "";
+  const name = query?.mimeId == 'vote/position' ? displayName : '';
 
   const handleSubmit = async () => {
     setOpen(true);
   };
 
-  if (!query?.inserts()?.some(mime => mime.id == "vote/change")) return null;
+  if (!query?.inserts()?.some((mime) => mime.id == 'vote/change')) return null;
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function AddChangeButton({ node }: { node: Node }) {
       <AddContentDialog
         initTitel={name}
         node={node}
-        mimes={["vote/change"]}
+        mimes={['vote/change']}
         open={open}
         setOpen={setOpen}
         redirect

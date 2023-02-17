@@ -1,8 +1,8 @@
-import { UploadFile } from "@mui/icons-material";
-import { Button, CircularProgress, Divider, Input } from "@mui/material";
-import { Box } from "@mui/system";
-import { nhost } from "nhost";
-import { useState } from "react";
+import { UploadFile } from '@mui/icons-material';
+import { Button, CircularProgress, Divider, Input } from '@mui/material';
+import { Box } from '@mui/system';
+import { nhost } from 'nhost';
+import { useState } from 'react';
 
 export default function FileUploader({
   text,
@@ -21,12 +21,12 @@ export default function FileUploader({
   };
 
   return (
-    <Box sx={{ position: "relative", width: "100%" }}>
+    <Box sx={{ position: 'relative', width: '100%' }}>
       <Input
         id="input-file"
         type="file"
         onChange={handleChangeFile}
-        sx={{ display: "none" }}
+        sx={{ display: 'none' }}
       />
       <label htmlFor="input-file">
         <Button
@@ -44,11 +44,11 @@ export default function FileUploader({
         <CircularProgress
           size={24}
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            marginTop: "-12px",
-            marginLeft: "-12px",
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            marginTop: '-12px',
+            marginLeft: '-12px',
           }}
         />
       )}

@@ -1,31 +1,31 @@
-import { createReactClient } from "@gqty/react";
-import { createSubscriptionsClient } from "@gqty/subscriptions";
-import type { QueryFetcher } from "gqty";
-import { createClient } from "gqty";
-import jwtDecode, { JwtPayload } from "jwt-decode";
-import Cookies from "js-cookie";
-import { nhost } from "nhost";
+import { createReactClient } from '@gqty/react';
+import { createSubscriptionsClient } from '@gqty/subscriptions';
+import type { QueryFetcher } from 'gqty';
+import { createClient } from 'gqty';
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import Cookies from 'js-cookie';
+import { nhost } from 'nhost';
 import type {
   GeneratedSchema,
   SchemaObjectTypes,
   SchemaObjectTypesNames,
-} from "./schema.generated";
-import { generatedSchema, scalarsEnumsHash } from "./schema.generated";
+} from './schema.generated';
+import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
 const getHeaders = (): Record<string, string> =>
   process.env.HASURA_GRAPHQL_ADMIN_SECRET
     ? {
-        "Content-Type": "application/json",
-        "x-hasura-admin-secret": process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET,
       }
     : nhost.auth.isAuthenticated()
     ? {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
         authorization: `Bearer ${nhost.auth.getAccessToken()}`,
       }
     : {
-        "Content-Type": "application/json",
-        "x-hasura-role": "public",
+        'Content-Type': 'application/json',
+        'x-hasura-role': 'public',
       };
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
@@ -40,13 +40,13 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
     {
-      method: "POST",
+      method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({
         query,
         variables,
       }),
-      mode: "cors",
+      mode: 'cors',
     }
   );
 
@@ -54,23 +54,23 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
 };
 
 const subscriptionsClient = createSubscriptionsClient({
-        //failedConnectionCallback: async () => {
-        //  const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
-        //  await nhost.auth.refreshSession(refreshToken);
-        //  console.log("failed callback");
-        //  subscriptionsClient?.setConnectionParams({
-        //    headers: getHeaders(),
-        //  });
-        //},
-        wsEndpoint: () => {
-          const url = new URL(`${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`);
-          // eslint-disable-next-line functional/immutable-data
-          url.protocol = url.protocol.replace("http", "ws");
-          return url.href;
-        },
-        reconnect: true,
-        lazy: false,
-      });
+  //failedConnectionCallback: async () => {
+  //  const refreshToken = Cookies.get("nhostRefreshToken") || undefined;
+  //  await nhost.auth.refreshSession(refreshToken);
+  //  console.log("failed callback");
+  //  subscriptionsClient?.setConnectionParams({
+  //    headers: getHeaders(),
+  //  });
+  //},
+  wsEndpoint: () => {
+    const url = new URL(`${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`);
+    // eslint-disable-next-line functional/immutable-data
+    url.protocol = url.protocol.replace('http', 'ws');
+    return url.href;
+  },
+  reconnect: true,
+  lazy: false,
+});
 
 export const client = createClient<
   GeneratedSchema,
@@ -127,16 +127,19 @@ export {
 };
 
 nhost.auth.onTokenChanged(() => {
-  console.log("token changed");
-  subscriptionsClient.setConnectionParams({
-    headers: getHeaders(),
-  }, true);
+  console.log('token changed');
+  subscriptionsClient.setConnectionParams(
+    {
+      headers: getHeaders(),
+    },
+    true
+  );
 });
 
-export * from "./schema.generated";
+export * from './schema.generated';
 
-if (process.env.NODE_ENV === "development" && typeof window !== "undefined") {
-  import("@gqty/logger").then(({ createLogger }) => {
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  import('@gqty/logger').then(({ createLogger }) => {
     const logger = createLogger(client);
     logger.start();
   });

@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "lib": [
-      "DOM",
-      "ESNext"
-    ],
+    "lib": ["DOM", "ESNext"],
     "jsx": "preserve",
     "moduleResolution": "Node",
     "forceConsistentCasingInFileNames": true,
@@ -15,36 +12,16 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "comps": [
-        "components"
-      ],
-      "hooks": [
-        "core/hooks"
-      ],
-      "gql": [
-        "core/gql"
-      ],
-      "nhost": [
-        "core/nhost"
-      ],
-      "mime": [
-        "core/mime"
-      ],
-      "hoc": [
-        "core/hoc"
-      ],
-      "core/path": [
-        "core/path"
-      ],
-      "core/document": [
-        "core/document"
-      ],
-      "core/constants": [
-        "core/constants"
-      ],
-      "core/util": [
-        "core/util"
-      ]
+      "comps": ["components"],
+      "hooks": ["core/hooks"],
+      "gql": ["core/gql"],
+      "nhost": ["core/nhost"],
+      "mime": ["core/mime"],
+      "hoc": ["core/hoc"],
+      "core/path": ["core/path"],
+      "core/document": ["core/document"],
+      "core/constants": ["core/constants"],
+      "core/util": ["core/util"]
     },
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -55,12 +32,6 @@
     "module": "esnext",
     "incremental": true
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }

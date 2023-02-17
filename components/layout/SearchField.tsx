@@ -1,4 +1,4 @@
-import { Search, SearchOff } from "@mui/icons-material";
+import { Search, SearchOff } from '@mui/icons-material';
 import {
   alpha,
   Autocomplete,
@@ -16,14 +16,14 @@ import {
   Paper,
   Stack,
   styled,
-} from "@mui/material";
-import { fromId } from "core/path";
-import { nodes, query, resolved } from "gql";
-import { useSession } from "hooks";
-import { MimeAvatar, MimeAvatarId, MimeIconId } from "comps";
-import { useRouter } from "next/router";
-import { forwardRef, Fragment, useEffect, useRef, useState } from "react";
-import Breadcrumbs from "./BreadCrumbs";
+} from '@mui/material';
+import { fromId } from 'core/path';
+import { nodes, query, resolved } from 'gql';
+import { useSession } from 'hooks';
+import { MimeAvatar, MimeAvatarId, MimeIconId } from 'comps';
+import { useRouter } from 'next/router';
+import { forwardRef, Fragment, useEffect, useRef, useState } from 'react';
+import Breadcrumbs from './BreadCrumbs';
 
 const SearchBoxRef = (props: any, ref?: any) => {
   return (
@@ -31,17 +31,17 @@ const SearchBoxRef = (props: any, ref?: any) => {
       {...props}
       ref={ref}
       sx={{
-        position: "relative",
+        position: 'relative',
         borderRadius: (t) => t.shape.borderRadius,
         backgroundColor: (t) => alpha(t.palette.common.white, 0.15),
-        "&:hover": {
+        '&:hover': {
           backgroundColor: (t) => alpha(t.palette.common.white, 0.25),
         },
         marginLeft: {
           sm: (t) => t.spacing(1),
           md: 0,
         },
-        width: "100%",
+        width: '100%',
       }}
     />
   );
@@ -55,16 +55,16 @@ const StyledInputRef = (props: InputBaseProps, ref?: any) => {
       {...props}
       ref={ref}
       sx={{
-        "& .MuiInputBase-input": {
-          color: "white",
-          "&::placeholder": {
+        '& .MuiInputBase-input': {
+          color: 'white',
+          '&::placeholder': {
             opacity: 1,
           },
-          width: "100%",
+          width: '100%',
           padding: (t) => t.spacing(1.5, 1, 1.5, 0),
           // vertical padding + font size from searchIcon
           //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
-          transition: (t) => t.transitions.create("width"),
+          transition: (t) => t.transitions.create('width'),
         },
       }}
     />
@@ -74,16 +74,16 @@ const StyledInputRef = (props: InputBaseProps, ref?: any) => {
 const StyledInput = forwardRef(StyledInputRef);
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  "& .MuiInputBase-input": {
-    color: "white",
-    "&::placeholder": {
+  '& .MuiInputBase-input': {
+    color: 'white',
+    '&::placeholder': {
       opacity: 1,
     },
-    width: "100%",
+    width: '100%',
     padding: theme.spacing(1.5, 1, 1.5, 0),
     // vertical padding + font size from searchIcon
     //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
-    transition: theme.transitions.create("width"),
+    transition: theme.transitions.create('width'),
   },
 }));
 
@@ -91,7 +91,7 @@ export default function SearchField() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [searchMode, setSearchMode] = useState(false);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<
@@ -103,9 +103,9 @@ export default function SearchField() {
 
   const goto = async (id: string) => {
     const path = await fromId(id);
-    router.push("/" + path.join("/"));
+    router.push('/' + path.join('/'));
     setOpen(false);
-    setInput("");
+    setInput('');
   };
 
   const search = async (name: string) => {
@@ -139,35 +139,35 @@ export default function SearchField() {
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
-      if (event.ctrlKey === true && event.key === "k") {
+      if (event.ctrlKey === true && event.key === 'k') {
         event.preventDefault();
         setSearchMode(!searchMode);
         inputRef.current?.focus?.();
       }
     };
 
-    document.addEventListener("keydown", handleKeyPress);
+    document.addEventListener('keydown', handleKeyPress);
 
     return () => {
-      document.removeEventListener("keydown", handleKeyPress);
+      document.removeEventListener('keydown', handleKeyPress);
     };
   }, []);
 
   const autocomplete = (
     <Autocomplete
-      sx={{ width: "100%", height: "100%" }}
+      sx={{ width: '100%', height: '100%' }}
       open={open}
       inputValue={input}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
       onKeyDown={(e) => {
-        if (e.key === "ArrowDown")
+        if (e.key === 'ArrowDown')
           setSelectIndex(
             options.length - 1 > selectIndex ? selectIndex + 1 : selectIndex
           );
-        if (e.key === "ArrowUp")
+        if (e.key === 'ArrowUp')
           setSelectIndex(selectIndex > 0 ? selectIndex - 1 : selectIndex);
-        if (e.key === "Enter") {
+        if (e.key === 'Enter') {
           setSearchMode(false);
           if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id);
         }
@@ -179,7 +179,7 @@ export default function SearchField() {
       noOptionsText="Intet resultat"
       loadingText="Loader..."
       isOptionEqualToValue={(option, value) => option.id === value.id}
-      getOptionLabel={(option) => option.name ?? ""}
+      getOptionLabel={(option) => option.name ?? ''}
       options={options}
       loading={isLoading}
       onInputChange={async (e, value) => {
@@ -199,7 +199,7 @@ export default function SearchField() {
               goto(option.id);
             }}
           >
-            <ListItemIcon sx={{ color: "secondary.main" }}>
+            <ListItemIcon sx={{ color: 'secondary.main' }}>
               <MimeIconId id={option?.id} />
             </ListItemIcon>
             <ListItemText secondary={option.parent?.name}>
@@ -211,7 +211,7 @@ export default function SearchField() {
       )}
       PaperComponent={(props) => {
         return (
-          <Paper {...props} sx={{ height: "100%" }}>
+          <Paper {...props} sx={{ height: '100%' }}>
             <List dense>
               <Divider />
               {props.children}
@@ -240,7 +240,7 @@ export default function SearchField() {
               }}
             />
             <IconButton onClick={() => setSearchMode(false)}>
-              <Avatar sx={{ bgcolor: "secondary.main" }}>
+              <Avatar sx={{ bgcolor: 'secondary.main' }}>
                 <SearchOff />
               </Avatar>
             </IconButton>

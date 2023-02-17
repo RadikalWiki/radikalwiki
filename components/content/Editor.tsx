@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  AuthorTextField,
-  AutoButton,
-  Slate,
-  FileUploader,
-  Image,
-} from "comps";
-import { useRouter } from "next/router";
-import { resolved } from "gql";
+import React, { useState, useEffect } from 'react';
+import { AuthorTextField, AutoButton, Slate, FileUploader, Image } from 'comps';
+import { useRouter } from 'next/router';
+import { resolved } from 'gql';
 import {
   Box,
   Divider,
@@ -17,11 +11,11 @@ import {
   TextField,
   Grid,
   Paper,
-} from "@mui/material";
-import { Publish, Save, Delete } from "@mui/icons-material";
-import { fromId } from "core/path";
-import { Node } from "hooks";
-import { nhost } from "nhost";
+} from '@mui/material';
+import { Publish, Save, Delete } from '@mui/icons-material';
+import { fromId } from 'core/path';
+import { Node } from 'hooks';
+import { nhost } from 'nhost';
 
 export default function Editor({ node }: { node: Node }) {
   const router = useRouter();
@@ -33,7 +27,7 @@ export default function Editor({ node }: { node: Node }) {
   const data = query?.data();
 
   const [expand, setExpand] = useState(true);
-  const [name, setName] = useState("");
+  const [name, setName] = useState('');
   const [members, setMembers] = useState<
     { nodeId: string; name?: string; email?: string }[]
   >([]);
@@ -43,7 +37,7 @@ export default function Editor({ node }: { node: Node }) {
 
   useEffect(() => {
     if (query) {
-      if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
+      if (!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '')) {
         const fetchMembers = async () => {
           const members = await resolved(() => {
             return query?.members().map(({ nodeId, name, email, node }) => ({
@@ -59,7 +53,7 @@ export default function Editor({ node }: { node: Node }) {
         fetchMembers();
       }
       const fetch = async () => {
-        setName(query.name ?? "");
+        setName(query.name ?? '');
         setContent(structuredClone(data?.content));
         setFileId(data?.image);
       };
@@ -78,28 +72,28 @@ export default function Editor({ node }: { node: Node }) {
   }, [fileId]);
 
   const handleSave = (mutable?: boolean) => async () => {
-    if (!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "")) {
+    if (!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '')) {
       await nodeMembers.delete();
       await nodeMembers.insert({
         members: members.map((member) => ({ ...member, mimeId: undefined })),
       });
     }
     const newContent =
-      content.length >= 1 && content[0].children[0].text === ""
+      content.length >= 1 && content[0].children[0].text === ''
         ? content.slice(1)
         : content;
 
     await update({
       set: { name, data: { content: newContent, image: fileId }, mutable },
     });
-    router.push(router.asPath.split("?")[0]);
+    router.push(router.asPath.split('?')[0]);
   };
 
   const handleDelete = async () => {
     await nodeMembers.delete();
     await $delete();
     const path = await fromId(parentId);
-    router.push("/" + path.join("/"));
+    router.push('/' + path.join('/'));
   };
 
   const editable = query?.mutable && query?.isOwner;
@@ -131,7 +125,7 @@ export default function Editor({ node }: { node: Node }) {
                 fullWidth
               />
             </Grid>
-            {!["wiki/group", "wiki/event"].includes(query?.mimeId ?? "") && (
+            {!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '') && (
               <Grid item xs={12}>
                 <AuthorTextField value={members} onChange={setMembers} />
               </Grid>

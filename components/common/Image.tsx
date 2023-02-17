@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import { CircularProgress } from "@mui/material";
-import { common, grey } from "@mui/material/colors";
-import { BrokenImage } from "@mui/icons-material";
-import { Box } from "@mui/system";
-import NextImage from "next/image"
+import React, { useRef, useState } from 'react';
+import { CircularProgress } from '@mui/material';
+import { common, grey } from '@mui/material/colors';
+import { BrokenImage } from '@mui/icons-material';
+import { Box } from '@mui/system';
+import NextImage from 'next/image';
 
 export default function Image({
   src,
@@ -60,7 +60,7 @@ export default function Image({
       sx={{
         backgroundColor: common.white,
         paddingTop: `calc(1 / ${aspectRatio} * 100%)`,
-        position: "relative",
+        position: 'relative',
       }}
     >
       {src && (
@@ -70,12 +70,12 @@ export default function Image({
           alt={alt}
           ref={imageRef}
           style={{
-            borderRadius: "10px",
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            objectFit: "inherit",
-            cursor: "inherit",
+            borderRadius: '10px',
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            objectFit: 'inherit',
+            cursor: 'inherit',
             top: 0,
             left: 0,
             ...imageTransition,
@@ -86,16 +86,16 @@ export default function Image({
       )}
       <Box
         style={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          cursor: "inherit",
+          width: '100%',
+          height: '100%',
+          position: 'absolute',
+          cursor: 'inherit',
           top: 0,
           left: 0,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          pointerEvents: "none",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          pointerEvents: 'none',
         }}
       >
         {!loaded && !error && <CircularProgress size={48} />}

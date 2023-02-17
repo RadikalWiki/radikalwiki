@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Button, Grid, TextField } from "@mui/material";
-import { Autocomplete } from "@mui/material";
-import {
-  resolved,
-  query,
-  order_by,
-} from "gql";
-import { Node, useNode } from "hooks";
+import React, { useEffect, useState } from 'react';
+import { Button, Grid, TextField } from '@mui/material';
+import { Autocomplete } from '@mui/material';
+import { resolved, query, order_by } from 'gql';
+import { Node, useNode } from 'hooks';
 
 export default function InvitesTextField({ node }: { node: Node }) {
   const nodeMembers = node.useMembers();
@@ -24,7 +20,7 @@ export default function InvitesTextField({ node }: { node: Node }) {
   };
 
   const [options, setOptions] = useState<any[]>([]);
-  const [inputValue, setInputValue] = React.useState("");
+  const [inputValue, setInputValue] = React.useState('');
 
   useEffect(() => {
     const fetch = async () => {
@@ -44,7 +40,7 @@ export default function InvitesTextField({ node }: { node: Node }) {
       const newOptions: any[] = ([] as any[]).concat(
         users ? users : [],
         res ? res : [],
-        inputValue ? [{ name: "N/A", email: inputValue }] : []
+        inputValue ? [{ name: 'N/A', email: inputValue }] : []
       );
 
       setOptions(newOptions);
@@ -59,7 +55,7 @@ export default function InvitesTextField({ node }: { node: Node }) {
           multiple
           color="primary"
           options={options}
-          getOptionLabel={(option) => option.email ?? option?.name ?? ""}
+          getOptionLabel={(option) => option.email ?? option?.name ?? ''}
           defaultValue={options}
           value={users}
           filterSelectedOptions

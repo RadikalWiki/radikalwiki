@@ -1,9 +1,9 @@
-import React from "react";
-import { Button, Divider } from "@mui/material";
-import { useRefetch } from "gql";
-import { AdminCard } from "comps";
-import { Node, useNode } from "hooks";
-import { Stop } from "@mui/icons-material";
+import React from 'react';
+import { Button, Divider } from '@mui/material';
+import { useRefetch } from 'gql';
+import { AdminCard } from 'comps';
+import { Node, useNode } from 'hooks';
+import { Stop } from '@mui/icons-material';
 
 export default function PollAdmin({ node }: { node: Node }) {
   const sub = node.useSubs();
@@ -15,7 +15,7 @@ export default function PollAdmin({ node }: { node: Node }) {
     ?.permissions({
       where: {
         _and: [
-          { mimeId: { _eq: "vote/vote" } },
+          { mimeId: { _eq: 'vote/vote' } },
           { insert: { _eq: true } },
           {
             node: {
@@ -47,7 +47,7 @@ export default function PollAdmin({ node }: { node: Node }) {
         color="secondary"
         variant="contained"
         endIcon={<Stop />}
-        sx={{ color: "#fff", m: 2 }}
+        sx={{ color: '#fff', m: 2 }}
         onClick={handleStopPoll}
       >
         Stop

@@ -1,7 +1,7 @@
-import React from "react";
-import { PollAdmin } from "comps";
-import { Node, useScreen } from "hooks";
-import { Stack } from "@mui/material";
+import React from 'react';
+import { PollAdmin } from 'comps';
+import { Node, useScreen } from 'hooks';
+import { Stack } from '@mui/material';
 
 export default function PollApp({ node }: { node: Node }) {
   const screen = useScreen();

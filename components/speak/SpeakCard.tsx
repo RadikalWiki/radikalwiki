@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Avatar,
   Card,
@@ -13,13 +13,13 @@ import {
   Paper,
   Tooltip,
   Typography,
-} from "@mui/material";
-import { Cancel, DoNotTouch, Lock, LockOpen } from "@mui/icons-material";
-import { avatars } from "comps";
-import { TransitionGroup } from "react-transition-group";
-import { order_by } from "gql";
-import { Node, useScreen } from "hooks";
-import { useUserId } from "@nhost/nextjs";
+} from '@mui/material';
+import { Cancel, DoNotTouch, Lock, LockOpen } from '@mui/icons-material';
+import { avatars } from 'comps';
+import { TransitionGroup } from 'react-transition-group';
+import { order_by } from 'gql';
+import { Node, useScreen } from 'hooks';
+import { useUserId } from '@nhost/nextjs';
 
 const timeString = (time: number) => {
   const sec = String(time % 60);
@@ -41,9 +41,9 @@ export default function SpeakCard({
   const userId = useUserId();
   const get = node.useSubsGet();
   const $delete = node.useDelete({ refetch: false });
-  const speakerlist = get("speakerlist");
+  const speakerlist = get('speakerlist');
   const speakers = speakerlist?.children({
-    where: { mimeId: { _eq: "speak/speak" } },
+    where: { mimeId: { _eq: 'speak/speak' } },
     order_by: [{ data: order_by.desc }, { createdAt: order_by.asc }],
   });
 
@@ -55,7 +55,7 @@ export default function SpeakCard({
     <Card sx={{ m: 0 }}>
       <CardHeader
         title={
-          <Typography variant="h5" sx={{ color: "#fff" }}>
+          <Typography variant="h5" sx={{ color: '#fff' }}>
             Talerliste
           </Typography>
         }
@@ -74,20 +74,20 @@ export default function SpeakCard({
         action={
           <Paper
             sx={{
-              bgcolor: "primary.main",
+              bgcolor: 'primary.main',
               pl: 2,
               pr: 2,
               pt: 0.5,
               pb: 0.5,
             }}
           >
-            <Typography variant="h4" sx={{ color: "#fff" }}>
+            <Typography variant="h4" sx={{ color: '#fff' }}>
               {timeString(time)}
             </Typography>
           </Paper>
         }
         sx={{
-          bgcolor: "secondary.main",
+          bgcolor: 'secondary.main',
           color: (t) => t.palette.secondary.contrastText,
         }}
       />
@@ -105,7 +105,11 @@ export default function SpeakCard({
                       </ListItemAvatar>
                     </Tooltip>
                   )}
-                  <ListItemText primary={<Typography sx={{ fontSize: "120%" }}>{name}</Typography>} />
+                  <ListItemText
+                    primary={
+                      <Typography sx={{ fontSize: '120%' }}>{name}</Typography>
+                    }
+                  />
                   {!screen &&
                     (userId === ownerId || speakerlist?.isContextOwner) && (
                       <ListItemSecondaryAction>
@@ -131,7 +135,7 @@ export default function SpeakCard({
                 <ListItemAvatar>
                   <Avatar
                     sx={{
-                      bgcolor: "secondary.main",
+                      bgcolor: 'secondary.main',
                     }}
                   >
                     <DoNotTouch />

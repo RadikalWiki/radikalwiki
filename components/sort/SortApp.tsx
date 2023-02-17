@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { Fragment, useState } from "react";
-import { SortFab, MimeAvatarId } from "comps";
+import React, { useEffect } from 'react';
+import { Fragment, useState } from 'react';
+import { SortFab, MimeAvatarId } from 'comps';
 import {
   Avatar,
   Card,
@@ -9,10 +9,10 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-} from "@mui/material";
-import { nodes, order_by, resolved } from "gql";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { Node } from "hooks";
+} from '@mui/material';
+import { nodes, order_by, resolved } from 'gql';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Node } from 'hooks';
 
 export default function SortApp({ node }: { node: Node }) {
   const [list, setList] = useState<Partial<nodes>[]>([]);
@@ -27,7 +27,7 @@ export default function SortApp({ node }: { node: Node }) {
               query
                 ?.children({
                   order_by: [{ index: order_by.asc }],
-                  where: { mime: { hidden: { _eq: false } } }
+                  where: { mime: { hidden: { _eq: false } } },
                 })
                 .map(({ id, name, index, mutable, mimeId, data }) => ({
                   id,

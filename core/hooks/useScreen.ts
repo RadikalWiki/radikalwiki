@@ -1,9 +1,8 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/router';
 
 const useScreen = () => {
   const router = useRouter();
-  return router.query.app === "screen";
-}
+  return router.query.app === 'screen';
+};
 
-
-export default useScreen
+export default useScreen;

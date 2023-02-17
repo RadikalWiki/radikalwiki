@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { Box, Chip, TextField } from "@mui/material";
-import { Autocomplete } from "@mui/material";
-import { query, resolved, order_by } from "gql";
-import { IconId } from "mime";
-import { Face } from "@mui/icons-material";
+import React, { useEffect, useState } from 'react';
+import { Box, Chip, TextField } from '@mui/material';
+import { Autocomplete } from '@mui/material';
+import { query, resolved, order_by } from 'gql';
+import { IconId } from 'mime';
+import { Face } from '@mui/icons-material';
 
 const capitalize = (sentence: string) =>
   sentence.replace(/(^\w{1})|(\s+\w{1})/g, (letter) => letter.toUpperCase());
 
-type Option = { name?: string, mimeId?: string, nodeId?: string }
+type Option = { name?: string; mimeId?: string; nodeId?: string };
 
 export default function AuthorTextField({
   value,
@@ -18,7 +18,7 @@ export default function AuthorTextField({
   onChange: any;
 }) {
   const [options, setOptions] = useState<Option[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     const fetch = async () => {
@@ -30,13 +30,13 @@ export default function AuthorTextField({
             limit: 10,
             where: {
               _and: [
-                { mimeId: { _eq: "wiki/group" } },
+                { mimeId: { _eq: 'wiki/group' } },
                 { name: { _ilike: like } },
               ],
             },
             order_by: [{ name: order_by.asc }],
           })
-          .map(({ id, name }) => ({ name, nodeId: id, mimeId: "wiki/group" }));
+          .map(({ id, name }) => ({ name, nodeId: id, mimeId: 'wiki/group' }));
       });
       const users = await resolved(() => {
         return query
@@ -67,7 +67,7 @@ export default function AuthorTextField({
       multiple
       color="primary"
       options={options}
-      getOptionLabel={(option) => option?.name ?? ""}
+      getOptionLabel={(option) => option?.name ?? ''}
       //defaultValue={options}
       value={value}
       filterSelectedOptions

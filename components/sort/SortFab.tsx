@@ -1,8 +1,8 @@
-import React from "react";
-import { Fab, Tooltip } from "@mui/material";
-import { Save } from "@mui/icons-material";
-import { useRouter } from "next/router";
-import { Node } from "hooks";
+import React from 'react';
+import { Fab, Tooltip } from '@mui/material';
+import { Save } from '@mui/icons-material';
+import { useRouter } from 'next/router';
+import { Node } from 'hooks';
 
 export default function SortFab({
   node,
@@ -20,14 +20,14 @@ export default function SortFab({
       return update({ id, set });
     });
     await Promise.all(proms);
-    router.push(router.asPath.split("?")[0]);
+    router.push(router.asPath.split('?')[0]);
   };
 
   return (
     <Tooltip title="Gem sortering">
       <Fab
         sx={{
-          position: "fixed",
+          position: 'fixed',
           bottom: (t) => t.spacing(9),
           right: (t) => t.spacing(3),
         }}

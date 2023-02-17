@@ -1,9 +1,7 @@
-import React, { Suspense, useEffect, useState } from "react";
-import {
-  Grid,
-} from "@mui/material";
-import { Node, useScreen, useSession } from "hooks";
-import { SpeakDial, SpeakAdmin, SpeakCard } from "comps";
+import React, { Suspense, useEffect, useState } from 'react';
+import { Grid } from '@mui/material';
+import { Node, useScreen, useSession } from 'hooks';
+import { SpeakDial, SpeakAdmin, SpeakCard } from 'comps';
 
 export default function SpeakApp({ node }: { node: Node }) {
   const screen = useScreen();
@@ -11,7 +9,7 @@ export default function SpeakApp({ node }: { node: Node }) {
   const [time, setTime] = useState(0);
 
   const get = node.useSubsGet();
-  const speakerlist = get("speakerlist");
+  const speakerlist = get('speakerlist');
 
   const data = speakerlist?.data();
 
@@ -29,7 +27,6 @@ export default function SpeakApp({ node }: { node: Node }) {
     }, 1000);
     return () => clearInterval(interval);
   }, [time, data?.time, data?.updatedAt, session?.timeDiff]);
-
 
   return (
     <>

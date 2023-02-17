@@ -1,15 +1,9 @@
-import React, { startTransition } from "react";
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  useMediaQuery,
-  Box,
-} from "@mui/material";
-import { Menu } from "@mui/icons-material";
-import { UserButton, HideOnScroll, SearchField } from "comps";
-import { useAuthenticationStatus } from "@nhost/nextjs";
-import { drawerWidth } from "core/constants";
+import React, { startTransition } from 'react';
+import { AppBar, Toolbar, IconButton, useMediaQuery, Box } from '@mui/material';
+import { Menu } from '@mui/icons-material';
+import { UserButton, HideOnScroll, SearchField } from 'comps';
+import { useAuthenticationStatus } from '@nhost/nextjs';
+import { drawerWidth } from 'core/constants';
 
 export default function TopBar({
   openDrawer,
@@ -19,7 +13,7 @@ export default function TopBar({
   setOpenDrawer: Function;
 }) {
   const { isAuthenticated } = useAuthenticationStatus();
-  const largeScreen = useMediaQuery("(min-width:1200px)");
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   return (
     <>
@@ -29,9 +23,9 @@ export default function TopBar({
           sx={
             largeScreen && isAuthenticated
               ? {
-                width: `calc(100% - ${drawerWidth}px)`,
-                ml: `${drawerWidth}px`,
-              }
+                  width: `calc(100% - ${drawerWidth}px)`,
+                  ml: `${drawerWidth}px`,
+                }
               : {}
           }
           enableColorOnDark
@@ -41,19 +35,19 @@ export default function TopBar({
               ...(largeScreen
                 ? []
                 : [
-                  <IconButton
-                    key="menu"
-                    aria-label="menu"
-                    edge="start"
-                    color="inherit"
-                    onClick={() =>
-                      startTransition(() => setOpenDrawer(!openDrawer))
-                    }
-                    size="large"
-                  >
-                    <Menu />
-                  </IconButton>,
-                ]),
+                    <IconButton
+                      key="menu"
+                      aria-label="menu"
+                      edge="start"
+                      color="inherit"
+                      onClick={() =>
+                        startTransition(() => setOpenDrawer(!openDrawer))
+                      }
+                      size="large"
+                    >
+                      <Menu />
+                    </IconButton>,
+                  ]),
               ,
               <SearchField key="search" />,
             ]}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Button,
   TextField,
@@ -14,12 +14,12 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-} from "@mui/material";
-import { useRouter } from "next/router";
-import { IconId, getName } from "mime";
-import { Node } from "hooks";
-import { FileUploader } from "comps";
-import { v4 as uuid } from "uuid";
+} from '@mui/material';
+import { useRouter } from 'next/router';
+import { IconId, getName } from 'mime';
+import { Node } from 'hooks';
+import { FileUploader } from 'comps';
+import { v4 as uuid } from 'uuid';
 
 export default function AddContentDialog({
   node,
@@ -37,9 +37,9 @@ export default function AddContentDialog({
   redirect?: boolean;
 }) {
   const router = useRouter();
-  const [titel, setTitel] = useState<string>(initTitel ?? "");
-  const [text, setText] = useState<string>("");
-  const [mimeId, setMimeId] = useState(mimes?.[0] ?? "");
+  const [titel, setTitel] = useState<string>(initTitel ?? '');
+  const [text, setText] = useState<string>('');
+  const [mimeId, setMimeId] = useState(mimes?.[0] ?? '');
   const [fileId, setFileId] = useState<any>();
   const [type, setType] = useState<any>();
   const [fileName, setFileName] = useState<string>();
@@ -48,12 +48,12 @@ export default function AddContentDialog({
   const handleSubmit = async () => {
     const { namespace } = await insert({
       name: titel,
-      namespace: mimeId == "vote/question" ? uuid() : undefined,
+      namespace: mimeId == 'vote/question' ? uuid() : undefined,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
       data:
-        mimeId == "wiki/file"
+        mimeId == 'wiki/file'
           ? { fileId, type }
-          : mimeId == "vote/question"
+          : mimeId == 'vote/question'
           ? { text }
           : undefined,
     });
@@ -61,8 +61,8 @@ export default function AddContentDialog({
 
     // Reset fields
     setOpen(false);
-    setTitel(initTitel ?? "");
-    setText("");
+    setTitel(initTitel ?? '');
+    setText('');
     setFileId(undefined);
     setFileName(undefined);
 
@@ -72,11 +72,11 @@ export default function AddContentDialog({
   return (
     <Dialog maxWidth="xs" fullWidth open={open} onClose={() => setOpen(false)}>
       <DialogTitle color="secondary">
-        Tilføj {mimes.length > 1 ? "indhold" : getName(mimes[0])}
+        Tilføj {mimes.length > 1 ? 'indhold' : getName(mimes[0])}
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
-          {mimeId !== "vote/question" && (
+          {mimeId !== 'vote/question' && (
             <TextField
               sx={{ mt: 1 }}
               autoFocus
@@ -119,7 +119,7 @@ export default function AddContentDialog({
               </Select>
             </FormControl>
           )}
-          {mimeId == "vote/question" && (
+          {mimeId == 'vote/question' && (
             <TextField
               sx={{ mt: 1 }}
               autoFocus
@@ -131,7 +131,7 @@ export default function AddContentDialog({
               onChange={(e) => setText(e.target.value)}
             />
           )}
-          {mimeId == "wiki/file" && (
+          {mimeId == 'wiki/file' && (
             <>
               <FileUploader
                 text="Upload Fil"
@@ -145,7 +145,7 @@ export default function AddContentDialog({
                   setFileId(fileId);
                   setType(file.type);
                   setFileName(file.name);
-                  setTitel(file.name.split(".").slice(0, -1).join("."));
+                  setTitel(file.name.split('.').slice(0, -1).join('.'));
                 }}
               />
               {fileName && (
@@ -167,10 +167,10 @@ export default function AddContentDialog({
         </Button>
         <Button
           disabled={
-            (mimeId != "vote/question" && !titel) ||
+            (mimeId != 'vote/question' && !titel) ||
             (mimes.length !== 1 && !mimeId) ||
-            (mimeId == "wiki/file" && !fileId) ||
-            (mimeId == "vote/question" && !text)
+            (mimeId == 'wiki/file' && !fileId) ||
+            (mimeId == 'vote/question' && !text)
           }
           onClick={handleSubmit}
           color="secondary"

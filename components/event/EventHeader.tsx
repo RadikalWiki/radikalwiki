@@ -1,6 +1,6 @@
-import { CardHeader, Typography } from "@mui/material";
-import { MimeAvatarNode, ExpandButton } from "comps";
-import { Node, useNode } from "hooks";
+import { CardHeader, Typography } from '@mui/material';
+import { MimeAvatarNode, ExpandButton } from 'comps';
+import { Node, useNode } from 'hooks';
 
 export default function EventHeader({
   node,
@@ -19,7 +19,7 @@ export default function EventHeader({
       subheader={query
         ?.members()
         .map((m) => m.name ?? m.user?.displayName)
-        .join(", ")}
+        .join(', ')}
       action={
         <ExpandButton expand={expand} onClick={() => setExpand(!expand)} />
       }

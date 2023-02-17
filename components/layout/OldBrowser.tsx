@@ -1,8 +1,8 @@
-import React from "react";
-import { Typography, CardContent, Avatar, Divider } from "@mui/material";
-import { BrowserNotSupported } from "@mui/icons-material";
-import { Container } from "@mui/system";
-import { HeaderCard } from "comps";
+import React from 'react';
+import { Typography, CardContent, Avatar, Divider } from '@mui/material';
+import { BrowserNotSupported } from '@mui/icons-material';
+import { Container } from '@mui/system';
+import { HeaderCard } from 'comps';
 import platform from 'platform';
 
 export default function OldBrowser() {
@@ -13,7 +13,7 @@ export default function OldBrowser() {
         avatar={
           <Avatar
             sx={{
-              bgcolor: "primary.main",
+              bgcolor: 'primary.main',
             }}
           >
             <BrowserNotSupported />
@@ -33,10 +33,10 @@ export default function OldBrowser() {
             <Typography sx={{ mb: 1 }}>
               Skamløst forslag: <a href="https://firefox.com">Firefox 🦊</a>
             </Typography>
-            <Typography  sx={{ mb: 1, fontWeight: 'bold' }}>
+            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
               OBS: På iOS er det kun muligt at bruge Safari. (Opdater Safari!)
             </Typography>
-            <Typography sx={{ fontStyle: "italic", mb: 1 }} >
+            <Typography sx={{ fontStyle: 'italic', mb: 1 }}>
               Chrome og Firefox er blot et skin over Safari på iOS
             </Typography>
           </>

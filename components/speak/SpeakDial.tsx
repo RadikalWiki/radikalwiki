@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
-import { avatars } from "comps";
-import { useSession, useNode, Node } from "hooks";
-import { useUserDisplayName } from "@nhost/nextjs";
+import React, { useState } from 'react';
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
+import { avatars } from 'comps';
+import { useSession, useNode, Node } from 'hooks';
+import { useUserDisplayName } from '@nhost/nextjs';
 
 export default function SpeakDial({ node }: { node: Node }) {
   const [session] = useSession();
@@ -10,7 +10,7 @@ export default function SpeakDial({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
 
   const get = node.useSubsGet();
-  const speakerlist = get("speakerlist");
+  const speakerlist = get('speakerlist');
   const insert = node.useInsert({ refetch: false });
   const id = speakerlist?.id;
 
@@ -23,8 +23,8 @@ export default function SpeakDial({ node }: { node: Node }) {
       name: displayName,
       parentId: id,
       namespace: `${displayName?.toLocaleLowerCase()}-${time}`,
-      mimeId: "speak/speak",
-      data: type
+      mimeId: 'speak/speak',
+      data: type,
     });
   };
 
@@ -32,7 +32,7 @@ export default function SpeakDial({ node }: { node: Node }) {
     <SpeedDial
       ariaLabel="Kom på talerlisten"
       sx={{
-        position: "fixed",
+        position: 'fixed',
         bottom: (t) => t.spacing(9),
         right: (t) => t.spacing(3),
       }}
@@ -43,7 +43,7 @@ export default function SpeakDial({ node }: { node: Node }) {
     >
       {Object.entries(avatars).map(
         ([key, action]) =>
-          (speakerlist?.mutable || key !== "0") && (
+          (speakerlist?.mutable || key !== '0') && (
             <SpeedDialAction
               key={key}
               icon={action.avatar}

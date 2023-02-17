@@ -1,15 +1,15 @@
-import React from "react";
-import { useRouter } from "next/router";
+import React from 'react';
+import { useRouter } from 'next/router';
 import {
   Dialog,
   DialogTitle,
   DialogActions,
   Button,
   Divider,
-} from "@mui/material";
-import { Node } from "hooks";
-import { Delete } from "@mui/icons-material";
-import { fromId } from "core/path";
+} from '@mui/material';
+import { Node } from 'hooks';
+import { Delete } from '@mui/icons-material';
+import { fromId } from 'core/path';
 
 export default function PollDialog({
   node,
@@ -25,11 +25,10 @@ export default function PollDialog({
   const $delete = node.useDelete();
   const parentId = query?.parentId;
 
-
   const handleDelete = async () => {
     await $delete();
     const path = await fromId(parentId);
-    router.push("/" + path.join("/"));
+    router.push('/' + path.join('/'));
   };
 
   const getMarks = (count: number) =>

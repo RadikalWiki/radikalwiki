@@ -5,7 +5,7 @@ export default function Error({ name, message, stack }: any) {
       <p>{`Name: ${name}`}</p>
       <p>{`Message: ${message}`}</p>
       <p>Stack:</p>
-      {stack?.split("\n").map((line: any, index: number) => (
+      {stack?.split('\n').map((line: any, index: number) => (
         <p key={index}>{line}</p>
       ))}
     </>

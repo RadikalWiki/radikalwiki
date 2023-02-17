@@ -4,29 +4,29 @@ import {
   ImageListItem,
   ImageListItemBar,
   useMediaQuery,
-} from "@mui/material";
-import { Node, useScreen } from "hooks";
-import { IconId } from "mime";
-import { Image } from "comps";
-import { useRouter } from "next/router";
-import { query, resolved } from "gql";
-import { toId } from "core/path";
-import { Box } from "@mui/system";
-import { useUserId } from "@nhost/nextjs";
-import { nhost } from "nhost";
-import { useEffect, useState } from "react";
+} from '@mui/material';
+import { Node, useScreen } from 'hooks';
+import { IconId } from 'mime';
+import { Image } from 'comps';
+import { useRouter } from 'next/router';
+import { query, resolved } from 'gql';
+import { toId } from 'core/path';
+import { Box } from '@mui/system';
+import { useUserId } from '@nhost/nextjs';
+import { nhost } from 'nhost';
+import { useEffect, useState } from 'react';
 
 export default function CandidateList({ node }: { node: Node }) {
   const router = useRouter();
   const screen = useScreen();
-  const largeScreen = useMediaQuery("(min-width:1200px)");
+  const largeScreen = useMediaQuery('(min-width:1200px)');
   const userId = useUserId();
   const [images, setImages] = useState<string[]>([]);
 
   const children = node.useQuery()?.children({
     where: {
       _and: [
-        { mimeId: { _eq: "vote/candidate" } },
+        { mimeId: { _eq: 'vote/candidate' } },
         {
           _or: [
             { mutable: { _eq: false } },
@@ -50,7 +50,7 @@ export default function CandidateList({ node }: { node: Node }) {
             : Promise.resolve(null)
         ) ?? []
       );
-      setImages(preUrls.map((preUrl) => preUrl?.presignedUrl?.url ?? "") ?? []);
+      setImages(preUrls.map((preUrl) => preUrl?.presignedUrl?.url ?? '') ?? []);
     };
     fetch();
   }, [JSON.stringify(imageIds)]);
@@ -58,7 +58,7 @@ export default function CandidateList({ node }: { node: Node }) {
   if (screen) return null;
 
   const handleOnClick = (namespace?: string) => async () => {
-    const path = `${router.asPath}/${namespace}`.substring(1).split("/");
+    const path = `${router.asPath}/${namespace}`.substring(1).split('/');
     const id = await toId(path);
     await resolved(() => {
       const node = query?.node({ id });
@@ -76,7 +76,7 @@ export default function CandidateList({ node }: { node: Node }) {
         return !id ? null : (
           <ImageListItem
             key={id ?? 0}
-            sx={{ borderRadius: "70px", cursor: "pointer" }}
+            sx={{ borderRadius: '70px', cursor: 'pointer' }}
             onClick={handleOnClick(namespace)}
           >
             {images?.[index] ? (
@@ -86,10 +86,10 @@ export default function CandidateList({ node }: { node: Node }) {
                 src={images?.[index]}
               />
             ) : (
-              <Box sx={{ height: "50px" }}></Box>
+              <Box sx={{ height: '50px' }}></Box>
             )}
             <ImageListItemBar
-              sx={{ borderRadius: "10px" }}
+              sx={{ borderRadius: '10px' }}
               title={name}
               position="top"
               actionPosition="left"
@@ -99,8 +99,8 @@ export default function CandidateList({ node }: { node: Node }) {
                     m: 1,
                     height: 32,
                     width: 32,
-                    bgcolor: "#ffffff",
-                    color: "primary.main",
+                    bgcolor: '#ffffff',
+                    color: 'primary.main',
                   }}
                 >
                   <IconId mimeId="vote/candidate" />

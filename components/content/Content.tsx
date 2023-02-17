@@ -1,10 +1,16 @@
-import { Grid, Box, Paper, Collapse } from "@mui/material";
-import { Slate, Image } from "comps";
-import { Node } from "hooks";
-import { nhost } from "nhost";
-import { useEffect, useState } from "react";
+import { Grid, Box, Paper, Collapse } from '@mui/material';
+import { Slate, Image } from 'comps';
+import { Node } from 'hooks';
+import { nhost } from 'nhost';
+import { useEffect, useState } from 'react';
 
-export default function Content({ node, fontSize }: { node: Node; fontSize: string }) {
+export default function Content({
+  node,
+  fontSize,
+}: {
+  node: Node;
+  fontSize: string;
+}) {
   const query = node.useQuery();
   const [image, setImage] = useState<string | null>(null);
   const [content, setContent] = useState<string>();
@@ -27,7 +33,7 @@ export default function Content({ node, fontSize }: { node: Node; fontSize: stri
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm>
-        <Box sx={{ fontSize, overflowX: "auto" }}>
+        <Box sx={{ fontSize, overflowX: 'auto' }}>
           <Collapse in={!!content}>
             <Slate value={content} readOnly />
           </Collapse>

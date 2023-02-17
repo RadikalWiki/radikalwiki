@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, CardHeader, Typography } from "@mui/material";
+import React from 'react';
+import { Card, CardHeader, Typography } from '@mui/material';
 
 export default function HeaderCard({
   children,

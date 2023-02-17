@@ -1,13 +1,14 @@
 /* eslint-disable functional/immutable-data */
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import isHotkey from "is-hotkey";
-import { jsx } from "slate-hyperscript";
-import { Editable, withReact, useSlate, Slate as SlateEditor, ReactEditor } from "slate-react";
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import isHotkey from 'is-hotkey';
+import { jsx } from 'slate-hyperscript';
+import {
+  Editable,
+  withReact,
+  useSlate,
+  Slate as SlateEditor,
+  ReactEditor,
+} from 'slate-react';
 import {
   Editor,
   Transforms,
@@ -16,8 +17,8 @@ import {
   Element as SlateElement,
   Node as SlateNode,
   BaseEditor,
-} from "slate";
-import { HistoryEditor, withHistory } from "slate-history";
+} from 'slate';
+import { HistoryEditor, withHistory } from 'slate-history';
 import {
   Button,
   ButtonGroup,
@@ -34,8 +35,8 @@ import {
   TextField,
   ToggleButton,
   ToggleButtonGroup,
-  Link as MuiLink
-} from "@mui/material";
+  Link as MuiLink,
+} from '@mui/material';
 import {
   FormatAlignCenter,
   FormatAlignJustify,
@@ -50,38 +51,38 @@ import {
   LinkOff,
   Redo,
   Undo,
-} from "@mui/icons-material";
-import { Box } from "@mui/system";
-import { Link as NextLink } from "comps"
+} from '@mui/icons-material';
+import { Box } from '@mui/system';
+import { Link as NextLink } from 'comps';
 
 const HOTKEYS = {
-  "mod+b": "bold",
-  "mod+i": "italic",
-  "mod+u": "underline",
-  "mod+`": "code",
+  'mod+b': 'bold',
+  'mod+i': 'italic',
+  'mod+u': 'underline',
+  'mod+`': 'code',
 };
 const STYLE_NAMES: Record<string, string> = {
-  paragraph: "Normal Tekst",
-  "heading-one": "Overskrift 1",
-  "heading-two": "Overskrift 2",
-  "heading-three": "Overskrift 3",
-  "heading-four": "Overskrift 4",
-  "heading-five": "Overskrift 5",
-  "heading-six": "Overskrift 6",
-  "block-quote": "Blok",
+  paragraph: 'Normal Tekst',
+  'heading-one': 'Overskrift 1',
+  'heading-two': 'Overskrift 2',
+  'heading-three': 'Overskrift 3',
+  'heading-four': 'Overskrift 4',
+  'heading-five': 'Overskrift 5',
+  'heading-six': 'Overskrift 6',
+  'block-quote': 'Blok',
 };
 const STYLE_TYPES = [
-  "paragraph",
-  "heading-one",
-  "heading-two",
-  "heading-three",
-  "heading-four",
-  "heading-five",
-  "heading-six",
-  "block-quote",
+  'paragraph',
+  'heading-one',
+  'heading-two',
+  'heading-three',
+  'heading-four',
+  'heading-five',
+  'heading-six',
+  'block-quote',
 ];
-const LIST_TYPES = ["numbered-list", "bulleted-list"];
-const TEXT_ALIGN_TYPES = ["left", "center", "right", "justify"];
+const LIST_TYPES = ['numbered-list', 'bulleted-list'];
+const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify'];
 
 type EditorNode = {
   code?: boolean;
@@ -96,21 +97,21 @@ type EditorElement = { type?: string; text: string } | SlateElement;
 
 const ELEMENT_TAGS: Record<
   string,
-  (el?: Element) => Omit<EditorElement, "children">
+  (el?: Element) => Omit<EditorElement, 'children'>
 > = {
-  BLOCKQUOTE: () => ({ type: "quote" }),
-  H1: () => ({ type: "heading-one" }),
-  H2: () => ({ type: "heading-two" }),
-  H3: () => ({ type: "heading-three" }),
-  H4: () => ({ type: "heading-four" }),
-  H5: () => ({ type: "heading-five" }),
-  H6: () => ({ type: "heading-six" }),
-  IMG: (el) => ({ type: "image", url: el?.getAttribute("src") }),
-  LI: () => ({ type: "list-item" }),
-  OL: () => ({ type: "numbered-list" }),
-  P: () => ({ type: "paragraph" }),
-  PRE: () => ({ type: "code" }),
-  UL: () => ({ type: "bulleted-list" }),
+  BLOCKQUOTE: () => ({ type: 'quote' }),
+  H1: () => ({ type: 'heading-one' }),
+  H2: () => ({ type: 'heading-two' }),
+  H3: () => ({ type: 'heading-three' }),
+  H4: () => ({ type: 'heading-four' }),
+  H5: () => ({ type: 'heading-five' }),
+  H6: () => ({ type: 'heading-six' }),
+  IMG: (el) => ({ type: 'image', url: el?.getAttribute('src') }),
+  LI: () => ({ type: 'list-item' }),
+  OL: () => ({ type: 'numbered-list' }),
+  P: () => ({ type: 'paragraph' }),
+  PRE: () => ({ type: 'code' }),
+  UL: () => ({ type: 'bulleted-list' }),
 };
 
 // COMPAT: `B` is omitted here because Google Docs uses `<b>` in weird ways.
@@ -122,7 +123,7 @@ const TEXT_TAGS: Record<string, (el?: Element) => EditorNode> = {
   S: () => ({ strikethrough: true }),
   STRONG: () => ({ bold: true }),
   U: () => ({ underline: true }),
-  A: (el) => ({ link: el?.getAttribute("href") ?? "" }),
+  A: (el) => ({ link: el?.getAttribute('href') ?? '' }),
 };
 
 const deserialize = (el: any) => {
@@ -130,15 +131,15 @@ const deserialize = (el: any) => {
     return el.textContent;
   } else if (el.nodeType !== 1) {
     return null;
-  } else if (el.nodeName === "BR") {
-    return "\n";
+  } else if (el.nodeName === 'BR') {
+    return '\n';
   }
 
   const { nodeName } = el;
   const parent =
-    nodeName === "PRE" &&
+    nodeName === 'PRE' &&
     el.childNodes[0] &&
-    el.childNodes[0].nodeName === "CODE"
+    el.childNodes[0].nodeName === 'CODE'
       ? el.childNodes[0]
       : el;
 
@@ -146,20 +147,20 @@ const deserialize = (el: any) => {
     .map(deserialize)
     .flat();
   const children: any =
-    parentChildren.length === 0 ? [{ text: "" }] : parentChildren;
+    parentChildren.length === 0 ? [{ text: '' }] : parentChildren;
 
-  if (el.nodeName === "BODY") {
-    return jsx("fragment", {}, children);
+  if (el.nodeName === 'BODY') {
+    return jsx('fragment', {}, children);
   }
 
   if (ELEMENT_TAGS[nodeName]) {
     const attrs = ELEMENT_TAGS[nodeName](el);
-    return jsx("element", attrs, children);
+    return jsx('element', attrs, children);
   }
 
   if (TEXT_TAGS[nodeName]) {
     const attrs = TEXT_TAGS[nodeName](el);
-    return children.map((child: any) => jsx("text", attrs, child));
+    return children.map((child: any) => jsx('text', attrs, child));
   }
 
   return children;
@@ -169,18 +170,18 @@ const withHtml = (editor: any) => {
   const { insertData, isInline, isVoid } = editor;
 
   editor.isInline = (element: any) => {
-    return element.type === "link" ? true : isInline(element);
+    return element.type === 'link' ? true : isInline(element);
   };
 
   editor.isVoid = (element: any) => {
-    return element.type === "image" ? true : isVoid(element);
+    return element.type === 'image' ? true : isVoid(element);
   };
 
   editor.insertData = (data: any) => {
-    const html = data.getData("text/html");
+    const html = data.getData('text/html');
 
     if (html) {
-      const parsed = new DOMParser().parseFromString(html, "text/html");
+      const parsed = new DOMParser().parseFromString(html, 'text/html');
       const fragment = deserialize(parsed.body);
       // eslint-disable-next-line functional/no-try-statement
       try {
@@ -198,9 +199,9 @@ const withHtml = (editor: any) => {
 };
 
 const validate = (value: any) => {
-  if (Array.isArray(value)) return value
-  else return [{ type: "paragraph", children: [{ text: '' }] }]
-}
+  if (Array.isArray(value)) return value;
+  else return [{ type: 'paragraph', children: [{ text: '' }] }];
+};
 
 export default function Slate({
   value,
@@ -237,22 +238,25 @@ export default function Slate({
           <Divider />
         </>
       )}
-      {(!readOnly || (validated.length !== 0 && validated[0].children[0].text !== '')) && <Box sx={{ m: 2 }}>
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          spellCheck
-          readOnly={readOnly}
-          onKeyDown={(event) => {
-            Object.entries(HOTKEYS).map(([hotkey, mark]) => {
-              if (isHotkey(hotkey, event as any)) {
-                event.preventDefault();
-                toggleMark(editor, mark);
-              }
-            });
-          }}
-        />
-      </Box>}
+      {(!readOnly ||
+        (validated.length !== 0 && validated[0].children[0].text !== '')) && (
+        <Box sx={{ m: 2 }}>
+          <Editable
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            spellCheck
+            readOnly={readOnly}
+            onKeyDown={(event) => {
+              Object.entries(HOTKEYS).map(([hotkey, mark]) => {
+                if (isHotkey(hotkey, event as any)) {
+                  event.preventDefault();
+                  toggleMark(editor, mark);
+                }
+              });
+            }}
+          />
+        </Box>
+      )}
     </SlateEditor>
   );
 }
@@ -270,11 +274,11 @@ const toggleMark = (editor: any, format: any) => {
 const currentBlocks = (
   editor: any,
   validBlocks: string[],
-  blockType = "type",
+  blockType = 'type',
   prop?: string
 ) => {
   const { selection } = editor;
-  if (!selection) return "paragraph";
+  if (!selection) return 'paragraph';
 
   const blocks = Array.from(
     Editor.nodes(editor, {
@@ -300,7 +304,7 @@ const currentBlocks = (
     : undefined;
 };
 
-const isBlockActive = (editor: any, format: string, blockType = "type") => {
+const isBlockActive = (editor: any, format: string, blockType = 'type') => {
   const { selection } = editor;
   if (!selection) return false;
 
@@ -325,61 +329,61 @@ const isMarkActive = (editor: BaseEditor, format: string) => {
 const Element = ({ attributes, children, element }: any) => {
   const style = { textAlign: element.align };
   switch (element.type) {
-    case "block-quote":
+    case 'block-quote':
       return (
         <blockquote style={style} {...attributes}>
           {children}
         </blockquote>
       );
-    case "bulleted-list":
+    case 'bulleted-list':
       return (
         <ul style={style} {...attributes}>
           {children}
         </ul>
       );
-    case "heading-one":
+    case 'heading-one':
       return (
         <h1 style={style} {...attributes}>
           {children}
         </h1>
       );
-    case "heading-two":
+    case 'heading-two':
       return (
         <h2 style={style} {...attributes}>
           {children}
         </h2>
       );
-    case "heading-three":
+    case 'heading-three':
       return (
         <h3 style={style} {...attributes}>
           {children}
         </h3>
       );
-    case "heading-four":
+    case 'heading-four':
       return (
         <h4 style={style} {...attributes}>
           {children}
         </h4>
       );
-    case "heading-five":
+    case 'heading-five':
       return (
         <h5 style={style} {...attributes}>
           {children}
         </h5>
       );
-    case "heading-six":
+    case 'heading-six':
       return (
         <h6 style={style} {...attributes}>
           {children}
         </h6>
       );
-    case "list-item":
+    case 'list-item':
       return (
         <li style={style} {...attributes}>
           {children}
         </li>
       );
-    case "numbered-list":
+    case 'numbered-list':
       return (
         <ol style={style} {...attributes}>
           {children}
@@ -388,7 +392,7 @@ const Element = ({ attributes, children, element }: any) => {
 
     default:
       return (
-        <p style={{ ...style, hyphens: "auto" }} {...attributes}>
+        <p style={{ ...style, hyphens: 'auto' }} {...attributes}>
           {children}
         </p>
       );
@@ -400,7 +404,13 @@ const Leaf = ({ attributes, children, leaf }: any) => {
   const code = leaf.code ? <em>{bold}</em> : bold;
   const underline = leaf.underline ? <u>{code}</u> : code;
   const italic = leaf.italic ? <i>{underline}</i> : underline;
-  const link = leaf.link ? <MuiLink component={NextLink} href={leaf.link}>{children}</MuiLink> : italic;
+  const link = leaf.link ? (
+    <MuiLink component={NextLink} href={leaf.link}>
+      {children}
+    </MuiLink>
+  ) : (
+    italic
+  );
 
   return <span {...attributes}>{link}</span>;
 };
@@ -413,8 +423,12 @@ const BlockSelect = () => {
       <Select
         label="Stil"
         sx={{ width: 145 }}
-        value={currentBlocks(editor, STYLE_TYPES) ?? "paragraph"}
-        onChange={(e) => Transforms.setNodes<EditorElement>(editor, { type: e.target.value as string })}
+        value={currentBlocks(editor, STYLE_TYPES) ?? 'paragraph'}
+        onChange={(e) =>
+          Transforms.setNodes<EditorElement>(editor, {
+            type: e.target.value as string,
+          })
+        }
       >
         {STYLE_TYPES.map((style) => (
           <MenuItem key={style} value={style}>
@@ -450,7 +464,7 @@ const HistoryButtons = () => {
 const ListButtons = () => {
   const editor = useSlate();
   const handleBlock = (e: any, format: string) => {
-    const isActive = isBlockActive(editor, format, "type");
+    const isActive = isBlockActive(editor, format, 'type');
 
     Transforms.unwrapNodes<EditorElement>(editor, {
       match: (n: EditorElement) =>
@@ -460,7 +474,7 @@ const ListButtons = () => {
       split: true,
     });
     const newProperties: any = {
-      type: isActive ? "paragraph" : "list-item",
+      type: isActive ? 'paragraph' : 'list-item',
     };
 
     Transforms.setNodes<SlateElement>(editor, newProperties);
@@ -490,7 +504,7 @@ const ListButtons = () => {
 const AlignButtons = () => {
   const editor = useSlate();
   const handleBlock = (e: any, block: string) => {
-    const isActive = isBlockActive(editor, block, "align");
+    const isActive = isBlockActive(editor, block, 'align');
     const newProperties: any = {
       align: isActive ? undefined : block,
     };
@@ -500,7 +514,7 @@ const AlignButtons = () => {
   return (
     <ToggleButtonGroup
       exclusive
-      value={currentBlocks(editor, TEXT_ALIGN_TYPES, "align") ?? []}
+      value={currentBlocks(editor, TEXT_ALIGN_TYPES, 'align') ?? []}
       onChange={handleBlock}
     >
       <ToggleButton value="left">
@@ -535,9 +549,9 @@ const MarkButtons = () => {
 
   const getMarks = (marks: any) => {
     if (!marks) return [];
-    return (marks.bold ? ["bold"] : [])
-      .concat(marks.italic ? ["italic"] : [])
-      .concat(marks.underline ? ["underline"] : []);
+    return (marks.bold ? ['bold'] : [])
+      .concat(marks.italic ? ['italic'] : [])
+      .concat(marks.underline ? ['underline'] : []);
   };
   return (
     <ToggleButtonGroup value={getMarks(marks)} onChange={handleMarks}>
@@ -561,12 +575,12 @@ const LinkButton = () => {
   const open = Boolean(anchorEl);
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    e.preventDefault()
+    e.preventDefault();
     setAnchorEl(anchorEl ? null : e.currentTarget);
   };
 
   const handleChange = (event: any) => {
-    Editor.addMark(editor, "link", event.target.value);
+    Editor.addMark(editor, 'link', event.target.value);
   };
 
   return (
@@ -578,22 +592,22 @@ const LinkButton = () => {
         disablePortal={false}
         modifiers={[
           {
-            name: "flip",
+            name: 'flip',
             enabled: true,
             options: {
               altBoundary: true,
-              rootBoundary: "document",
+              rootBoundary: 'document',
               padding: 8,
             },
           },
           {
-            name: "preventOverflow",
+            name: 'preventOverflow',
             enabled: true,
             options: {
               altAxis: true,
               altBoundary: true,
               tether: true,
-              rootBoundary: "document",
+              rootBoundary: 'document',
               padding: 8,
             },
           },
@@ -601,23 +615,23 @@ const LinkButton = () => {
       >
         <Paper
           sx={{
-            p: "2px 4px",
-            display: "flex",
-            alignItems: "center",
+            p: '2px 4px',
+            display: 'flex',
+            alignItems: 'center',
           }}
         >
           <InputBase
             sx={{ ml: 1, flex: 1 }}
-            value={(marks as any)?.link ?? ""}
+            value={(marks as any)?.link ?? ''}
             onChange={handleChange}
           />
           <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
           <IconButton
-            sx={{ p: "10px" }}
+            sx={{ p: '10px' }}
             color="inherit"
             onClick={() => {
               setAnchorEl(null);
-              Editor.removeMark(editor, "link");
+              Editor.removeMark(editor, 'link');
             }}
           >
             <LinkOff />

@@ -5,7 +5,7 @@ import {
   useSubscription,
   useRefetch,
   client,
-} from "gql";
+} from 'gql';
 import {
   Avatar,
   Box,
@@ -17,32 +17,34 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-} from "@mui/material";
-import { Add, ContactMail, DoNotDisturb } from "@mui/icons-material";
-import { HeaderCard, MimeAvatarId } from "comps";
-import { Suspense } from "react";
-import { useUserEmail, useUserId } from "@nhost/nextjs";
-import { TransitionGroup } from "react-transition-group";
+} from '@mui/material';
+import { Add, ContactMail, DoNotDisturb } from '@mui/icons-material';
+import { HeaderCard, MimeAvatarId } from 'comps';
+import { Suspense } from 'react';
+import { useUserEmail, useUserId } from '@nhost/nextjs';
+import { TransitionGroup } from 'react-transition-group';
 
 const ListSuspense = () => {
   const refetch = useRefetch();
   const query = useQuery();
   const userId = useUserId();
   const email = useUserEmail();
-  const invites = query.members({
-    where: {
-      _and: [
-        { accepted: { _eq: false } },
-        {
-          _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
-        },
-      ],
-    },
-  }).filter(invite => invite.parent?.id);
+  const invites = query
+    .members({
+      where: {
+        _and: [
+          { accepted: { _eq: false } },
+          {
+            _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
+          },
+        ],
+      },
+    })
+    .filter((invite) => invite.parent?.id);
   const events = query.nodes({
     where: {
       _and: [
-        { mimeId: { _eq: "wiki/event" } },
+        { mimeId: { _eq: 'wiki/event' } },
         {
           members: {
             _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
@@ -76,28 +78,30 @@ const ListSuspense = () => {
   return (
     <List>
       {invites.map(({ id = 0, parent }) => {
-        const item = <ListItem
-          key={id}
-          secondaryAction={
-            <IconButton onClick={handleAcceptInvite(id)}>
-              <Add />
-            </IconButton>
-          }
-        >
-          <ListItemAvatar>
-            <MimeAvatarId id={parent?.id} />
-          </ListItemAvatar>
-          <ListItemText primary={parent?.name} />
-        </ListItem>
+        const item = (
+          <ListItem
+            key={id}
+            secondaryAction={
+              <IconButton onClick={handleAcceptInvite(id)}>
+                <Add />
+              </IconButton>
+            }
+          >
+            <ListItemAvatar>
+              <MimeAvatarId id={parent?.id} />
+            </ListItemAvatar>
+            <ListItemText primary={parent?.name} />
+          </ListItem>
+        );
 
-        return parent?.id ? item : null
+        return parent?.id ? item : null;
       })}
       {!invites?.[0]?.id && (
         <ListItem>
           <ListItemAvatar>
             <Avatar
               sx={{
-                bgcolor: "secondary.main",
+                bgcolor: 'secondary.main',
               }}
             >
               <DoNotDisturb />
@@ -116,7 +120,7 @@ export default function InvitesUserList() {
       avatar={
         <Avatar
           sx={{
-            bgcolor: "secondary.main",
+            bgcolor: 'secondary.main',
           }}
         >
           <ContactMail />

@@ -8,14 +8,14 @@ const nextConfig = {
     };
     config.module.rules.push({
       test: /\.svg$/,
-      use: ["@svgr/webpack"]
+      use: ['@svgr/webpack'],
     });
 
     return config;
   },
   images: {
-    domains: ["pgvhpsenoifywhuxnybq.storage.eu-central-1.nhost.run"]
-  }
+    domains: ['pgvhpsenoifywhuxnybq.storage.eu-central-1.nhost.run'],
+  },
 };
 
 export default nextConfig;

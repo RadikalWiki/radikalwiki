@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { AddContentDialog, AutoButton } from "comps";
-import { PlusOne } from "@mui/icons-material";
-import { Node, useNode } from "hooks";
+import React, { useState } from 'react';
+import { AddContentDialog, AutoButton } from 'comps';
+import { PlusOne } from '@mui/icons-material';
+import { Node, useNode } from 'hooks';
 
 export default function AddQuestionButton({ node }: { node: Node }) {
   const [open, setOpen] = useState(false);
@@ -11,18 +11,15 @@ export default function AddQuestionButton({ node }: { node: Node }) {
     setOpen(true);
   };
 
-  if (!query?.inserts()?.some(mime => mime.id == "vote/question")) return null;
+  if (!query?.inserts()?.some((mime) => mime.id == 'vote/question'))
+    return null;
 
   return (
     <>
-      <AutoButton
-        text="Spørgsmål"
-        icon={<PlusOne />}
-        onClick={handleSubmit}
-      />
+      <AutoButton text="Spørgsmål" icon={<PlusOne />} onClick={handleSubmit} />
       <AddContentDialog
         node={node}
-        mimes={["vote/question"]}
+        mimes={['vote/question']}
         open={open}
         setOpen={setOpen}
       />

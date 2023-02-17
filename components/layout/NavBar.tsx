@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   BottomNavigation,
   BottomNavigationAction,
-} from "@mui/material";
-import { HowToVote, RecordVoiceOver, Folder } from "@mui/icons-material";
-import { useSession } from "hooks";
-import { useRouter } from "next/router";
+} from '@mui/material';
+import { HowToVote, RecordVoiceOver, Folder } from '@mui/icons-material';
+import { useSession } from 'hooks';
+import { useRouter } from 'next/router';
 
 const getState = (path: string) =>
-  path.includes("app=vote")
-    ? "vote"
-    : path.includes("group")
-    ? "group"
-    : path.includes("event")
-    ? "event"
-    : path.includes("folder") ||
-      path.includes("content") ||
-      path.includes("poll")
-    ? "folder"
-    : path.includes("app=speak")
-    ? "speak"
-    : path.includes("admin")
-    ? "admin"
-    : "folder";
+  path.includes('app=vote')
+    ? 'vote'
+    : path.includes('group')
+    ? 'group'
+    : path.includes('event')
+    ? 'event'
+    : path.includes('folder') ||
+      path.includes('content') ||
+      path.includes('poll')
+    ? 'folder'
+    : path.includes('app=speak')
+    ? 'speak'
+    : path.includes('admin')
+    ? 'admin'
+    : 'folder';
 
 export default function NavBar() {
   const [session] = useSession();
@@ -36,16 +36,16 @@ export default function NavBar() {
   }, [router.asPath]);
 
   const handleFolder = async () => {
-    await router.push(localStorage?.path ?? session?.prefix?.path.join("/"));
-    const scroll = document.querySelector("#scroll");
+    await router.push(localStorage?.path ?? session?.prefix?.path.join('/'));
+    const scroll = document.querySelector('#scroll');
     scroll?.scrollTo(0, JSON.parse(localStorage.scroll ?? 0));
   };
 
   const handleScroll = (path: string) => async () => {
-    if (state == "folder") {
-      const scroll = document.querySelector("#scroll");
-      localStorage.setItem("scroll", scroll?.scrollTop?.toString() ?? "0");
-      localStorage.setItem("path", router.asPath ?? "");
+    if (state == 'folder') {
+      const scroll = document.querySelector('#scroll');
+      localStorage.setItem('scroll', scroll?.scrollTop?.toString() ?? '0');
+      localStorage.setItem('path', router.asPath ?? '');
     }
     router.push(path);
   };
@@ -53,7 +53,7 @@ export default function NavBar() {
   if ((session?.prefix?.path.length ?? 0) == 0) return null;
 
   return (
-    <AppBar sx={{ position: "fixed", top: "auto", bottom: 0 }}>
+    <AppBar sx={{ position: 'fixed', top: 'auto', bottom: 0 }}>
       <BottomNavigation
         value={state}
         showLabels
@@ -62,7 +62,7 @@ export default function NavBar() {
         }}
       >
         <BottomNavigationAction
-          onClick={handleScroll(`${session?.prefix?.path.join("/")}?app=vote`)}
+          onClick={handleScroll(`${session?.prefix?.path.join('/')}?app=vote`)}
           value="vote"
           label="Stem"
           icon={<HowToVote />}
@@ -74,7 +74,7 @@ export default function NavBar() {
           icon={<Folder />}
         />
         <BottomNavigationAction
-          onClick={handleScroll(`${session?.prefix?.path.join("/")}?app=speak`)}
+          onClick={handleScroll(`${session?.prefix?.path.join('/')}?app=speak`)}
           value="speak"
           label="Tal"
           icon={<RecordVoiceOver />}

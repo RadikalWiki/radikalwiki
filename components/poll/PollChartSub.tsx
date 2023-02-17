@@ -62,7 +62,7 @@
 //         <Legend position="bottom" />
 //         <Stack />
 //       </MuiChart>
-//       {/* 
+//       {/*
 //       <CardContent>
 //         <Typography>{`${count} / ${voters} stemmer`}</Typography>
 //       </CardContent> */}
@@ -137,4 +137,4 @@
 
 //   return <Chart chartData={chartData} title={title ?? ""} />;
 // }
-export {}
+export {};

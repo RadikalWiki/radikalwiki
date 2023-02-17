@@ -1,5 +1,5 @@
-import React from "react";
-import { useRouter } from "next/router";
+import React from 'react';
+import { useRouter } from 'next/router';
 import {
   Avatar,
   Collapse,
@@ -10,18 +10,18 @@ import {
   ListItemText,
   Tooltip,
   Typography,
-} from "@mui/material";
+} from '@mui/material';
 import {
   CheckBox,
   CheckBoxOutlineBlankOutlined,
   ContentCopy,
   DoNotDisturb,
-} from "@mui/icons-material";
-import { nodes, order_by } from "gql";
-import { TransitionGroup } from "react-transition-group";
-import { MimeAvatar } from "comps";
-import { Node, useSession } from "hooks";
-import { useUserId } from "@nhost/nextjs";
+} from '@mui/icons-material';
+import { nodes, order_by } from 'gql';
+import { TransitionGroup } from 'react-transition-group';
+import { MimeAvatar } from 'comps';
+import { Node, useSession } from 'hooks';
+import { useUserId } from '@nhost/nextjs';
 
 export default function FolderList({ node }: { node: Node }) {
   const [session, setSession] = useSession();
@@ -55,8 +55,8 @@ export default function FolderList({ node }: { node: Node }) {
     router.push(`${router.asPath}/${namespace}`);
   };
 
-  const number = children.filter((child) => child.mime?.icon == "number");
-  const letter = children.filter((child) => child.mime?.icon == "letter");
+  const number = children.filter((child) => child.mime?.icon == 'number');
+  const letter = children.filter((child) => child.mime?.icon == 'letter');
   const findIndex = (id: string) => {
     const numberIndex = number.findIndex((elem) => elem.id === id);
     if (numberIndex !== -1) return numberIndex;
@@ -80,7 +80,7 @@ export default function FolderList({ node }: { node: Node }) {
         const { id, mimeId, name, namespace } = child;
         const avatar = (
           <MimeAvatar
-            mimeId={child.data({ path: "type" }) ?? mimeId}
+            mimeId={child.data({ path: 'type' }) ?? mimeId}
             index={findIndex(id)}
           />
         );
@@ -112,7 +112,7 @@ export default function FolderList({ node }: { node: Node }) {
             <ListItemAvatar>
               <Avatar
                 sx={{
-                  bgcolor: "secondary.main",
+                  bgcolor: 'secondary.main',
                 }}
               >
                 <DoNotDisturb />

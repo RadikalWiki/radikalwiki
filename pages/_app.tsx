@@ -1,10 +1,10 @@
-import React, { useEffect, ComponentType } from "react";
-import Head from "next/head";
-import { Layout, SessionProvider, Theme } from "comps";
-import { nhost } from "nhost";
-import { NhostProvider, } from "@nhost/nextjs";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import React, { useEffect, ComponentType } from 'react';
+import Head from 'next/head';
+import { Layout, SessionProvider, Theme } from 'comps';
+import { nhost } from 'nhost';
+import { NhostProvider } from '@nhost/nextjs';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 export default function App({
   Component,
@@ -15,7 +15,7 @@ export default function App({
 }) {
   useEffect(() => {
     // Remove the server-side injected CSS.
-    const jssStyles = document.querySelector("#jss-server-side");
+    const jssStyles = document.querySelector('#jss-server-side');
     jssStyles?.parentElement?.removeChild(jssStyles);
   }, []);
 
