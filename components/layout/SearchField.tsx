@@ -1,15 +1,20 @@
-import { Search } from "@mui/icons-material";
+import { Search, SearchOff } from "@mui/icons-material";
 import {
   alpha,
   Autocomplete,
+  Avatar,
+  Box,
   CircularProgress,
   Divider,
+  IconButton,
   InputBase,
+  InputBaseProps,
   List,
   ListItemButton,
   ListItemIcon,
   ListItemText,
   Paper,
+  Stack,
   styled,
 } from "@mui/material";
 import { fromId } from "core/path";
@@ -17,32 +22,56 @@ import { nodes, query, resolved } from "gql";
 import { useSession } from "hooks";
 import { MimeAvatar, MimeAvatarId, MimeIconId } from "comps";
 import { useRouter } from "next/router";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { forwardRef, Fragment, useEffect, useRef, useState } from "react";
+import Breadcrumbs from "./BreadCrumbs";
 
-const SearchBox = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
+const SearchBoxRef = (props: any, ref?: any) => {
+  return (
+    <Box
+      {...props}
+      ref={ref}
+      sx={{
+        position: "relative",
+        borderRadius: (t) => t.shape.borderRadius,
+        backgroundColor: (t) => alpha(t.palette.common.white, 0.15),
+        "&:hover": {
+          backgroundColor: (t) => alpha(t.palette.common.white, 0.25),
+        },
+        marginLeft: {
+          sm: (t) => t.spacing(1),
+          md: 0,
+        },
+        width: "100%",
+      }}
+    />
+  );
+};
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 1),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
+const SearchBox = forwardRef(SearchBoxRef);
+
+const StyledInputRef = (props: InputBaseProps, ref?: any) => {
+  return (
+    <InputBase
+      {...props}
+      ref={ref}
+      sx={{
+        "& .MuiInputBase-input": {
+          color: "white",
+          "&::placeholder": {
+            opacity: 1,
+          },
+          width: "100%",
+          padding: (t) => t.spacing(1.5, 1, 1.5, 0),
+          // vertical padding + font size from searchIcon
+          //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
+          transition: (t) => t.transitions.create("width"),
+        },
+      }}
+    />
+  );
+};
+
+const StyledInput = forwardRef(StyledInputRef);
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   "& .MuiInputBase-input": {
@@ -50,18 +79,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     "&::placeholder": {
       opacity: 1,
     },
+    width: "100%",
     padding: theme.spacing(1.5, 1, 1.5, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(6)})`,
+    //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
     transition: theme.transitions.create("width"),
   },
 }));
 
 export default function SearchField() {
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [searchMode, setSearchMode] = useState(false);
   const [input, setInput] = useState("");
   const [session, setSession] = useSession();
-  const [node, setNode] = useState<Partial<nodes>>();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<
     { id: string; name?: string; parent: { name?: string } }[]
@@ -69,11 +100,9 @@ export default function SearchField() {
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
-  const ref = useRef<any>(null);
 
-  const goto = (id: string) => async () => {
+  const goto = async (id: string) => {
     const path = await fromId(id);
-
     router.push("/" + path.join("/"));
     setOpen(false);
     setInput("");
@@ -104,21 +133,6 @@ export default function SearchField() {
     setIsLoading(false);
   };
 
-  const loadNode = async (id: string) => {
-    const node = await resolved(() => {
-      const node = query.node({ id });
-      return { name: node?.name, mimeId: node?.mimeId };
-    });
-    setNode(node);
-  };
-
-  useEffect(() => {
-    if (session?.nodeId) {
-      loadNode(session.nodeId);
-    }
-    setSelected(options?.[selectIndex]?.id);
-  }, [session?.nodeId]);
-
   useEffect(() => {
     setSelected(options?.[selectIndex]?.id);
   }, [options, selectIndex]);
@@ -127,7 +141,8 @@ export default function SearchField() {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.ctrlKey === true && event.key === "k") {
         event.preventDefault();
-        ref.current?.focus?.();
+        setSearchMode(!searchMode);
+        inputRef.current?.focus?.();
       }
     };
 
@@ -138,7 +153,7 @@ export default function SearchField() {
     };
   }, []);
 
-  return (
+  const autocomplete = (
     <Autocomplete
       sx={{ width: "100%", height: "100%" }}
       open={open}
@@ -153,7 +168,8 @@ export default function SearchField() {
         if (e.key === "ArrowUp")
           setSelectIndex(selectIndex > 0 ? selectIndex - 1 : selectIndex);
         if (e.key === "Enter") {
-          if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id)();
+          setSearchMode(false);
+          if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id);
         }
         const scroll = document.querySelector(
           `#o${options?.[selectIndex]?.id}`
@@ -166,17 +182,22 @@ export default function SearchField() {
       getOptionLabel={(option) => option.name ?? ""}
       options={options}
       loading={isLoading}
-      onInputChange={async (_, value) => {
-        setInput(value);
-        setSelectIndex(0);
-        await search(value);
+      onInputChange={async (e, value) => {
+        if (e) {
+          setInput(value);
+          setSelectIndex(0);
+          await search(value);
+        }
       }}
       renderOption={(props, option) => (
         <Fragment key={option.id}>
           <ListItemButton
             key={`o${option.id}`}
             selected={selected === option.id}
-            onClick={goto(option.id)}
+            onClick={() => {
+              setSearchMode(false);
+              goto(option.id);
+            }}
           >
             <ListItemIcon sx={{ color: "secondary.main" }}>
               <MimeIconId id={option?.id} />
@@ -200,33 +221,45 @@ export default function SearchField() {
       }}
       renderInput={(params) => (
         <SearchBox ref={params.InputProps.ref}>
-          <SearchIconWrapper>
-            {router.query.app ? <MimeAvatar mimeId={`app/${router.query.app}`} /> : session?.nodeId ? (
-              <MimeAvatarId id={session?.nodeId} />
-            ) : (
-              <MimeAvatar
-                mimeId={
-                  session?.nodeId === undefined ? "wiki/search" : undefined
-                }
-              />
-            )}
-          </SearchIconWrapper>
-          <StyledInputBase
-            inputRef={(input) => {
-              // eslint-disable-next-line functional/immutable-data
-              ref.current = input;
-            }}
-            placeholder={node?.name ?? "Søg"}
-            fullWidth
-            inputProps={{
-              ...params.inputProps,
-              endadornment: isLoading ? (
-                <CircularProgress color="inherit" size={20} />
-              ) : null,
-            }}
-          />
+          <Stack direction="row">
+            <IconButton onClick={() => setSearchMode(false)}>
+              <MimeAvatar mimeId="app/search" />
+            </IconButton>
+            <StyledInput
+              inputRef={(input) => {
+                // eslint-disable-next-line functional/immutable-data
+                inputRef.current = input;
+              }}
+              placeholder="Søg"
+              fullWidth
+              inputProps={{
+                ...params.inputProps,
+                endadornment: isLoading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null,
+              }}
+            />
+            <IconButton onClick={() => setSearchMode(false)}>
+              <Avatar sx={{ bgcolor: "secondary.main" }}>
+                <SearchOff />
+              </Avatar>
+            </IconButton>
+          </Stack>
         </SearchBox>
       )}
     />
+  );
+
+  return !searchMode ? (
+    <SearchBox>
+      <Stack direction="row">
+        <Breadcrumbs />
+        <IconButton onClick={() => setSearchMode(true)}>
+          <MimeAvatar mimeId="app/search" />
+        </IconButton>
+      </Stack>
+    </SearchBox>
+  ) : (
+    autocomplete
   );
 }
