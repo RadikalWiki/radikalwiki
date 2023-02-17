@@ -16,10 +16,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { getIconFromId, getName } from "mime";
+import { IconId, getName } from "mime";
 import { Node } from "hooks";
 import { FileUploader } from "comps";
-import { v4 as uuid } from 'uuid';
+import { v4 as uuid } from "uuid";
 
 export default function AddContentDialog({
   node,
@@ -99,7 +99,9 @@ export default function AddContentDialog({
                   const mime = mimes.filter((mime) => mime == mimeId)?.[0];
                   return mime ? (
                     <MenuItem sx={{ m: -1 }} key={mime} value={mime}>
-                      <ListItemIcon>{getIconFromId(mime)}</ListItemIcon>
+                      <ListItemIcon>
+                        <IconId mimeId={mime} />
+                      </ListItemIcon>
                       <ListItemText>{getName(mime)}</ListItemText>
                     </MenuItem>
                   ) : null;
@@ -108,7 +110,9 @@ export default function AddContentDialog({
               >
                 {mimes?.map((mime) => (
                   <MenuItem key={mime ?? 0} value={mime}>
-                    <ListItemIcon>{getIconFromId(mime)}</ListItemIcon>
+                    <ListItemIcon>
+                      <IconId mimeId={mime} />
+                    </ListItemIcon>
                     <ListItemText>{getName(mime)}</ListItemText>
                   </MenuItem>
                 ))}

@@ -6,7 +6,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { Node, useScreen } from "hooks";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 import { Image } from "comps";
 import { useRouter } from "next/router";
 import { query, resolved } from "gql";
@@ -103,7 +103,7 @@ export default function CandidateList({ node }: { node: Node }) {
                     color: "primary.main",
                   }}
                 >
-                  {getIconFromId("vote/candidate")}
+                  <IconId mimeId="vote/candidate" />
                 </Avatar>
               }
             />

@@ -1,11 +1,11 @@
 import { Maybe, order_by } from "gql";
 import { withSuspense } from "hoc";
 import { Node, useNode } from "hooks";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 import { MimeSkeleton } from "comps";
 
 const MimeIcon = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, index?: number }) => {
-  return getIconFromId(mimeId, index);
+  return <IconId mimeId={mimeId} index={index} />;
 };
 
 const Icon = ({ node }: { node: Node }) => {
@@ -25,7 +25,7 @@ const Icon = ({ node }: { node: Node }) => {
         order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       })
       .findIndex((child) => child.id === node.id) ?? 0;
-  return getIconFromId(id, index);
+  return <IconId mimeId={id} index={index} />;
 };
 
 const MimeIconNode = withSuspense(Icon, MimeSkeleton);

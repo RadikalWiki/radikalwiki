@@ -35,7 +35,7 @@ import {
   Chip,
 } from "@mui/material";
 import { nodes, order_by } from "gql";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 import { Node, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 import { useUserId } from "@nhost/nextjs";
@@ -61,7 +61,7 @@ export default function QuestionList({ node }: { node: Node }) {
               bgcolor: "secondary.main",
             }}
           >
-            {getIconFromId("vote/question")}
+            <IconId mimeId="vote/question" />
           </Avatar>
         }
         action={

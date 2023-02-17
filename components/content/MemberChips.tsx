@@ -2,7 +2,7 @@ import { Face } from "@mui/icons-material";
 import { Chip, Collapse, Skeleton, Tooltip, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
 import { Node, useScreen } from "hooks";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 
 export default function MemberChips({ node, child }: { node: Node, child?: boolean }) {
   const screen = useScreen();
@@ -14,7 +14,7 @@ export default function MemberChips({ node, child }: { node: Node, child?: boole
           key={id ?? 0}
           title="Forfatter">
           <Chip
-            icon={node?.mimeId ? getIconFromId(node.mimeId) : <Face />}
+            icon={node?.mimeId ? <IconId mimeId={node?.mimeId} /> : <Face />}
             size={screen ? "medium" : "small"}
             color="secondary"
             label={<Typography variant={screen ? "h5" : undefined} >{name ?? user?.displayName}</Typography>}

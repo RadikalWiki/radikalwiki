@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Chip, TextField } from "@mui/material";
 import { Autocomplete } from "@mui/material";
 import { query, resolved, order_by } from "gql";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 import { Face } from "@mui/icons-material";
 
 const capitalize = (sentence: string) =>
@@ -86,7 +86,7 @@ export default function AuthorTextField({
           <Chip
             variant="outlined"
             color="secondary"
-            icon={option?.mimeId ? getIconFromId(option.mimeId) : <Face />}
+            icon={option?.mimeId ? <IconId mimeId={option.mimeId} /> : <Face />}
             label={option?.name}
           />
         </Box>
@@ -96,7 +96,7 @@ export default function AuthorTextField({
           <Chip
             variant="outlined"
             color="secondary"
-            icon={option?.mimeId ? getIconFromId(option.mimeId) : <Face />}
+            icon={option?.mimeId ? <IconId mimeId={option.mimeId} /> : <Face />}
             label={option?.name}
             {...getCustomizedTagProps({ index })}
             key={index}

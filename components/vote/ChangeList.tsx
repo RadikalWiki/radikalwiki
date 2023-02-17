@@ -37,7 +37,7 @@ import {
   Skeleton,
 } from "@mui/material";
 import { order_by } from "gql";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 import { Node, useNode, useScreen } from "hooks";
 import { TransitionGroup } from "react-transition-group";
 
@@ -137,7 +137,7 @@ export default function ChangeList({ node }: { node: Node }) {
               bgcolor: "secondary.main",
             }}
           >
-            {getIconFromId("vote/change")}
+            <IconId mimeId="vote/change" />
           </Avatar>
         }
         action={

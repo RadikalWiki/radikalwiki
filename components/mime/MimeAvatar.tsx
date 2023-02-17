@@ -3,7 +3,7 @@ import { Badge, Tooltip, Avatar as MuiAvatar, Skeleton } from "@mui/material";
 import { Maybe, order_by } from "gql";
 import { withSuspense } from "hoc";
 import { Node, useNode, useScreen } from "hooks";
-import { getIconFromId } from "mime";
+import { IconId } from "mime";
 import { MimeSkeleton } from "comps";
 
 const MimeAvatar = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, index?: number }) => {
@@ -14,7 +14,7 @@ const MimeAvatar = ({ mimeId, index }: { mimeId: Maybe<string | undefined>, inde
         bgcolor: screen ? "primary.main" : "secondary.main",
       }}
     >
-      {getIconFromId(mimeId, index, true)}
+      <IconId mimeId={mimeId} index={index} avatar />
     </MuiAvatar>
   );
 };
@@ -51,7 +51,7 @@ const Avatar = ({ node }: { node: Node }) => {
         bgcolor: screen ? "primary.main" : "secondary.main",
       }}
     >
-      {getIconFromId(id, index, true)}
+      <IconId mimeId={id} index={index} avatar />
     </MuiAvatar>
   );
   return query?.mutable && !screen ? (
@@ -89,9 +89,9 @@ const Avatar = ({ node }: { node: Node }) => {
 };
 
 const MimeAvatarNode = withSuspense(Avatar, MimeSkeleton);
-const MimeAvatarId = withSuspense(({ id }: { id: string }) => {
+const MimeAvatarId = withSuspense(({ id, ...props }: { id: string }) => {
   const node = useNode({ id });
-  return <Avatar node={node} />;
+  return <Avatar node={node} {...props} />;
 }, MimeSkeleton);
 
 export { MimeAvatar, MimeAvatarNode, MimeAvatarId };

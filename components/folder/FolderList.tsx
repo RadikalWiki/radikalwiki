@@ -22,7 +22,6 @@ import { TransitionGroup } from "react-transition-group";
 import { MimeAvatar } from "comps";
 import { Node, useSession } from "hooks";
 import { useUserId } from "@nhost/nextjs";
-import { getIconFromId } from "mime";
 
 export default function FolderList({ node }: { node: Node }) {
   const [session, setSession] = useSession();

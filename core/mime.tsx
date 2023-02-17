@@ -38,7 +38,7 @@ const getLetter = (index: number) => {
   return index >= 26 ? String.fromCharCode(64 + Math.floor(index / 26)) + f : f;
 };
 
-const getIconFromId = (mimeId: Maybe<string | undefined>, index?: number, avatar?: boolean) => {
+const IconId = ({ mimeId, index, avatar }: {mimeId: Maybe<string | undefined>, index?: number, avatar?: boolean }) => {
   switch (mimeId) {
     case "wiki/search":
       return <Search />;
@@ -124,6 +124,10 @@ const getIconFromId = (mimeId: Maybe<string | undefined>, index?: number, avatar
       return <HowToVote />
     case "app/speak":
       return <RecordVoiceOver />
+    case "app/search":
+      return <Search />
+    case "app/member":
+      return <Group />
     case undefined:
       return <Skeleton variant="circular" width={24} height={24} />;
     default:
@@ -170,6 +174,16 @@ const getName = (mimeId?: string): string => {
       return "Spørgsmål";
     case "speak/list":
       return "Talerliste";
+    case "app/editor":
+      return "Rediger";
+    case "app/sort":
+      return "Sorter";
+    case "app/speak":
+      return "Tal";
+    case "app/vote":
+      return "Stem";
+    case "app/member":
+      return "Medlemmer"
     default:
       return "Ukendt";
   }
@@ -178,7 +192,7 @@ const getName = (mimeId?: string): string => {
 
 
 export {
+  IconId,
   getLetter,
-  getIconFromId,
   getName,
 };
