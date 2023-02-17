@@ -388,7 +388,7 @@ const Element = ({ attributes, children, element }: any) => {
 
     default:
       return (
-        <p style={style} {...attributes}>
+        <p style={{ ...style, hyphens: "auto" }} {...attributes}>
           {children}
         </p>
       );
