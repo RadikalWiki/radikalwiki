@@ -109,7 +109,7 @@ const DrawerElement = ({
           <MimeIcon mimeId={query.data({ path: "type" }) ?? query.mimeId} index={iconIndex} />
         </ListItemIcon>
         <ListItemText>
-          <Typography>{query?.name}</Typography>
+          <Typography sx={{ hyphens: "auto" }}>{query?.name}</Typography>
         </ListItemText>
         {childrenCount > 0 && (
           <ListItemSecondaryAction>
