@@ -284,11 +284,10 @@ const Drawer = ({
 
   const handleCurrent = async () => {
     const id = await resolved(
-      () => {
-        return query?.context?.relations({
+      () =>
+        query?.context?.relations({
           where: { name: { _eq: 'active' } },
-        })?.[0]?.nodeId;
-      },
+        })?.[0]?.nodeId,
       { noCache: true }
     );
     const path = await fromId(id ?? contextId);
@@ -458,6 +457,6 @@ const Drawer = ({
       </Box>
     </MuiDrawer>
   );
-}
+};
 
 export default Drawer;

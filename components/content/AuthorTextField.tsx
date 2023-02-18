@@ -24,8 +24,8 @@ const AuthorTextField = ({
     const fetch = async () => {
       const like = `%${inputValue}%`;
 
-      const nodes = await resolved(() => {
-        return query
+      const nodes = await resolved(() =>
+        query
           .nodes({
             limit: 10,
             where: {
@@ -36,10 +36,10 @@ const AuthorTextField = ({
             },
             order_by: [{ name: order_by.asc }],
           })
-          .map(({ id, name }) => ({ name, nodeId: id, mimeId: 'wiki/group' }));
-      });
-      const users = await resolved(() => {
-        return query
+          .map(({ id, name }) => ({ name, nodeId: id, mimeId: 'wiki/group' }))
+      );
+      const users = await resolved(() =>
+        query
           .users({
             limit: 10,
             order_by: [{ displayName: order_by.asc }],
@@ -47,8 +47,8 @@ const AuthorTextField = ({
           .map(({ id, displayName }) => ({
             name: displayName,
             nodeId: id,
-          }));
-      });
+          }))
+      );
 
       const newOptions = ([] as Option[]).concat(
         users ? users : [],
@@ -114,6 +114,6 @@ const AuthorTextField = ({
       )}
     />
   );
-}
+};
 
 export default AuthorTextField;

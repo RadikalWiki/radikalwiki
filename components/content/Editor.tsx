@@ -39,14 +39,14 @@ const Editor = ({ node }: { node: Node }) => {
     if (query) {
       if (!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '')) {
         const fetchMembers = async () => {
-          const members = await resolved(() => {
-            return query?.members().map(({ nodeId, name, email, node }) => ({
+          const members = await resolved(() =>
+            query?.members().map(({ nodeId, name, email, node }) => ({
               nodeId: nodeId!,
               name: name!,
               email: email!,
               mimeId: node?.mimeId,
-            }));
-          });
+            }))
+          );
           if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
             setMembers(members);
         };
@@ -159,6 +159,6 @@ const Editor = ({ node }: { node: Node }) => {
       </Card>
     </>
   );
-}
+};
 
 export default Editor;

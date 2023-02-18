@@ -13,18 +13,16 @@ const HeaderCard = ({
   avatar?: any;
   subtitle?: string;
   action?: any;
-}) => {
-  return (
-    <Card sx={{ m: 0 }}>
-      <CardHeader
-        action={action}
-        subheader={subtitle}
-        title={<Typography>{title}</Typography>}
-        avatar={avatar}
-      />
-      {children}
-    </Card>
-  );
-}
+}) => (
+  <Card sx={{ m: 0 }}>
+    <CardHeader
+      action={action}
+      subheader={subtitle}
+      title={<Typography>{title}</Typography>}
+      avatar={avatar}
+    />
+    {children}
+  </Card>
+);
 
 export default HeaderCard;

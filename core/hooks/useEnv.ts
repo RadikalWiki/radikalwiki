@@ -1,5 +1,3 @@
-const useEnv = () => {
-  return process.env;
-}
+const useEnv = () => process.env;
 
 export default useEnv;

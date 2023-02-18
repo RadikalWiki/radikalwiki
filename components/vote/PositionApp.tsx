@@ -10,17 +10,15 @@ import {
 import { Node } from 'hooks';
 import { Stack } from '@mui/material';
 
-const PositionApp = ({ node }: { node: Node }) => {
-  return (
-    <Stack spacing={1}>
-      <ContentApp node={node} />
-      <CandidateList node={node} />
-      <QuestionList node={node} />
-      <PollList node={node} />
-      <AddContentFab node={node} />
-      <FolderDial node={node} />
-    </Stack>
-  );
-}
+const PositionApp = ({ node }: { node: Node }) => (
+  <Stack spacing={1}>
+    <ContentApp node={node} />
+    <CandidateList node={node} />
+    <QuestionList node={node} />
+    <PollList node={node} />
+    <AddContentFab node={node} />
+    <FolderDial node={node} />
+  </Stack>
+);
 
 export default PositionApp;

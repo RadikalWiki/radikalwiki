@@ -19,14 +19,13 @@ import {
 } from 'gql';
 import { usePath } from 'hooks';
 
-const getNamespace = (name?: string) => {
-  return name
+const getNamespace = (name?: string) =>
+  name
     ?.trim()
     .toLocaleLowerCase()
     .replaceAll(' ', '_')
     .replaceAll('?', '')
     .replaceAll(':', '');
-};
 
 type Param = {
   refetch:
@@ -126,12 +125,8 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     awaitRefetchQueries: true,
   });
 
-  const useGet = () => {
-    return (name: string) => {
-      const rel = query?.relations({ where: { name: { _eq: name } } })?.[0];
-      return rel?.node;
-    };
-  };
+  const useGet = () => (name: string) =>
+    query?.relations({ where: { name: { _eq: name } } })?.[0].node;
 
   const useSubs = () => {
     const subs = useSubscription();
@@ -148,27 +143,27 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
 
   const useSet = () => {
     const [insertRelation] = useMutation(
-      (mutation, args: relations_insert_input) => {
-        return mutation.insertRelation({
+      (mutation, args: relations_insert_input) =>
+        mutation.insertRelation({
           object: args,
           on_conflict: {
             constraint: relations_constraint.relations_parent_id_name_key,
             update_columns: [relations_update_column.nodeId],
           },
-        })?.id;
-      }
+        })?.id
     );
-    return (name: string, nodeId: string | null) => {
-      return insertRelation({
+    return (name: string, nodeId: string | null) =>
+      insertRelation({
         args: { parentId: param?.id ?? node?.id, name, nodeId },
       });
-    };
   };
 
   const useInsert = (param?: Param) => {
-    const [insertNode] = useMutation((mutation, args: nodes_insert_input) => {
-      return mutation.insertNode({ object: args })?.id;
-    }, getOpts(param));
+    const [insertNode] = useMutation(
+      (mutation, args: nodes_insert_input) =>
+        mutation.insertNode({ object: args })?.id,
+      getOpts(param)
+    );
     return async ({
       name,
       namespace,
@@ -208,32 +203,30 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   };
 
   const useDelete = (param?: Param) => {
-    const [deleteNode] = useMutation((mutation, id: string) => {
-      return mutation.deleteNode({ id })?.id;
-    }, getOpts(param));
-    return (param?: { id?: string }) => {
-      return deleteNode({ args: param?.id ?? nodeId });
-    };
+    const [deleteNode] = useMutation(
+      (mutation, id: string) => mutation.deleteNode({ id })?.id,
+      getOpts(param)
+    );
+    return (param?: { id?: string }) =>
+      deleteNode({ args: param?.id ?? nodeId });
   };
 
   const useUpdate = (param?: Param) => {
     const [updateNode] = useMutation(
-      (mutation, args: { id: string; set: nodes_set_input }) => {
-        return mutation.updateNode({
+      (mutation, args: { id: string; set: nodes_set_input }) =>
+        mutation.updateNode({
           pk_columns: { id: args.id },
           _set: args.set,
-        })?.id;
-      },
+        })?.id,
       getOpts(param)
     );
-    return ({ id, set }: { id?: string; set: nodes_set_input }) => {
-      return updateNode({
+    return ({ id, set }: { id?: string; set: nodes_set_input }) =>
+      updateNode({
         args: {
           id: id ?? nodeId,
           set,
         },
       });
-    };
   };
 
   const useMembers = (param?: Param) => {
@@ -260,10 +253,12 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       getOpts(param)
     );
 
-    const [deleteMembers] = useMutation((mutation) => {
-      return mutation.deleteMembers({ where: { parentId: { _eq: nodeId } } })
-        ?.affected_rows;
-    }, getOpts(param));
+    const [deleteMembers] = useMutation(
+      (mutation) =>
+        mutation.deleteMembers({ where: { parentId: { _eq: nodeId } } })
+          ?.affected_rows,
+      getOpts(param)
+    );
 
     return {
       insert: ({
@@ -272,54 +267,46 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       }: {
         members: members_insert_input[];
         parentId?: string;
-      }) => {
-        return insertMembers({ args: { members, parentId } });
-      },
-      delete: () => {
-        return deleteMembers();
-      },
+      }) => insertMembers({ args: { members, parentId } }),
+      delete: () => deleteMembers(),
     };
   };
 
   const useMember = (param?: Param) => {
     const [insertMember] = useMutation(
-      (mutation, object: members_insert_input) => {
-        return mutation.insertMember({ object })?.id;
-      },
+      (mutation, object: members_insert_input) =>
+        mutation.insertMember({ object })?.id,
       getOpts(param)
     );
 
-    const [deleteMember] = useMutation((mutation, id: string) => {
-      return mutation.deleteMember({ id })?.id;
-    }, getOpts(param));
+    const [deleteMember] = useMutation(
+      (mutation, id: string) => mutation.deleteMember({ id })?.id,
+      getOpts(param)
+    );
 
     const [updateMember] = useMutation(
-      (mutation, args: { id: string; set: members_set_input }) => {
-        return mutation.updateMember({
+      (mutation, args: { id: string; set: members_set_input }) =>
+        mutation.updateMember({
           pk_columns: { id: args.id },
           _set: args.set,
-        })?.id;
-      },
+        })?.id,
       getOpts(param)
     );
 
     return {
-      insert: (member: members_insert_input) => {
-        return insertMember({ args: { ...member, parentId: nodeId } });
-      },
-      delete: (id: string) => {
-        return deleteMember({ args: id });
-      },
-      update: (id: string, set: members_set_input) => {
-        return updateMember({ args: { id, set } });
-      },
+      insert: (member: members_insert_input) =>
+        insertMember({ args: { ...member, parentId: nodeId } }),
+      delete: (id: string) => deleteMember({ args: id }),
+      update: (id: string, set: members_set_input) =>
+        updateMember({ args: { id, set } }),
     };
   };
 
   const useChildren = () => {
-    const [deleteChildren] = useMutation((mutation, where: nodes_bool_exp) => {
-      return mutation.deleteNodes({ where })?.affected_rows;
-    });
+    const [deleteChildren] = useMutation(
+      (mutation, where: nodes_bool_exp) =>
+        mutation.deleteNodes({ where })?.affected_rows
+    );
 
     return {
       delete: (args: nodes_bool_exp) =>
@@ -328,21 +315,11 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   };
 
   /*
-  const useChildren = (Comp: any) => {
-    return node?.children().map(({ id }) => {
-      <ChildNode id={id} Comp={Comp} />
-    });
-  };
+  const useChildren = (Comp: any) => node?.children().map(({ id }) => <ChildNode id={id} Comp={Comp} />);
   */
 
-  const useContext = () => {
-    return useNode({ id: nodeContextId });
-  };
-
-  const useParent = () => {
-    return useNode({ id: parentId });
-  };
-
+  const useContext = () => useNode({ id: nodeContextId });
+  const useParent = () => useNode({ id: parentId });
   return {
     id: nodeId,
     name,

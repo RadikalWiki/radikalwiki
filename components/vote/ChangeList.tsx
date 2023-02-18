@@ -81,7 +81,7 @@ const ChildListElement = ({ id, index }: { id: string; index: number }) => {
     </>
   );
   return id ? item : null;
-}
+};
 
 const ChildListRaw = ({ node }: { node: Node }) => {
   const children = node.useQuery()?.children({
@@ -92,13 +92,11 @@ const ChildListRaw = ({ node }: { node: Node }) => {
   return (
     <List>
       <TransitionGroup>
-        {children?.map(({ id }, index) => {
-          return (
-            <Collapse key={id ?? 0}>
-              <ChildListElement id={id} index={index} />
-            </Collapse>
-          );
-        })}
+        {children?.map(({ id }, index) => (
+          <Collapse key={id ?? 0}>
+            <ChildListElement id={id} index={index} />
+          </Collapse>
+        ))}
         {children?.length == 0 && (
           <Collapse key={-1}>
             <ListItem button>
@@ -118,7 +116,7 @@ const ChildListRaw = ({ node }: { node: Node }) => {
       </TransitionGroup>
     </List>
   );
-}
+};
 
 const ChangeList = ({ node }: { node: Node }) => {
   const screen = useScreen();
@@ -157,6 +155,6 @@ const ChangeList = ({ node }: { node: Node }) => {
       <ChildListRaw node={node!} />
     </Card>
   );
-}
+};
 
 export default ChangeList;

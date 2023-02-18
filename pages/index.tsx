@@ -1,7 +1,5 @@
 import { Loader } from 'comps';
 
-const Index = () => {
-  return <Loader app="home" />;
-}
+const Index = () => <Loader app="home" />;
 
 export default Index;

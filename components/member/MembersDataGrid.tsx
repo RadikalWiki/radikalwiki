@@ -50,17 +50,15 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: ({ id }) => {
-        return [
-          <GridActionsCellItem
-            icon={<Delete />}
-            label="Delete"
-            key="delete"
-            onClick={() => member.delete(id.toString())}
-            color="inherit"
-          />,
-        ];
-      },
+      getActions: ({ id }) => [
+        <GridActionsCellItem
+          icon={<Delete />}
+          label="Delete"
+          key="delete"
+          onClick={() => member.delete(id.toString())}
+          color="inherit"
+        />,
+      ],
     },
   ];
 
@@ -102,6 +100,6 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
       />
     </Box>
   );
-}
+};
 
 export default MembersDataGrid;

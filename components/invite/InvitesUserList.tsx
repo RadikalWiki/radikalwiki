@@ -55,12 +55,11 @@ const ListSuspense = () => {
   });
 
   const [updateMember] = useMutation(
-    (mutation, args: { id?: string; set: members_set_input }) => {
-      return mutation.updateMember({
+    (mutation, args: { id?: string; set: members_set_input }) =>
+      mutation.updateMember({
         pk_columns: { id: args.id },
         _set: args.set,
-      })?.id;
-    },
+      })?.id,
     {
       refetchQueries: [invites, events],
     }
@@ -114,25 +113,23 @@ const ListSuspense = () => {
   );
 };
 
-const InvitesUserList = () => {
-  return (
-    <HeaderCard
-      avatar={
-        <Avatar
-          sx={{
-            bgcolor: 'secondary.main',
-          }}
-        >
-          <ContactMail />
-        </Avatar>
-      }
-      title="Invitationer"
-    >
-      <Divider />
+const InvitesUserList = () => (
+  <HeaderCard
+    avatar={
+      <Avatar
+        sx={{
+          bgcolor: 'secondary.main',
+        }}
+      >
+        <ContactMail />
+      </Avatar>
+    }
+    title="Invitationer"
+  >
+    <Divider />
 
-      <ListSuspense />
-    </HeaderCard>
-  );
-}
+    <ListSuspense />
+  </HeaderCard>
+);
 
 export default InvitesUserList;

@@ -25,51 +25,47 @@ import { useRouter } from 'next/router';
 import { forwardRef, Fragment, useEffect, useRef, useState } from 'react';
 import Breadcrumbs from './BreadCrumbs';
 
-const SearchBoxRef = (props: any, ref?: any) => {
-  return (
-    <Box
-      {...props}
-      ref={ref}
-      sx={{
-        position: 'relative',
-        borderRadius: (t) => t.shape.borderRadius,
-        backgroundColor: (t) => alpha(t.palette.common.white, 0.15),
-        '&:hover': {
-          backgroundColor: (t) => alpha(t.palette.common.white, 0.25),
-        },
-        marginLeft: {
-          sm: (t) => t.spacing(1),
-          md: 0,
-        },
-        width: '100%',
-      }}
-    />
-  );
-};
+const SearchBoxRef = (props: any, ref?: any) => (
+  <Box
+    {...props}
+    ref={ref}
+    sx={{
+      position: 'relative',
+      borderRadius: (t) => t.shape.borderRadius,
+      backgroundColor: (t) => alpha(t.palette.common.white, 0.15),
+      '&:hover': {
+        backgroundColor: (t) => alpha(t.palette.common.white, 0.25),
+      },
+      marginLeft: {
+        sm: (t) => t.spacing(1),
+        md: 0,
+      },
+      width: '100%',
+    }}
+  />
+);
 
 const SearchBox = forwardRef(SearchBoxRef);
 
-const StyledInputRef = (props: InputBaseProps, ref?: any) => {
-  return (
-    <InputBase
-      {...props}
-      ref={ref}
-      sx={{
-        '& .MuiInputBase-input': {
-          color: 'white',
-          '&::placeholder': {
-            opacity: 1,
-          },
-          width: '100%',
-          padding: (t) => t.spacing(1.5, 1, 1.5, 0),
-          // vertical padding + font size from searchIcon
-          //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
-          transition: (t) => t.transitions.create('width'),
+const StyledInputRef = (props: InputBaseProps, ref?: any) => (
+  <InputBase
+    {...props}
+    ref={ref}
+    sx={{
+      '& .MuiInputBase-input': {
+        color: 'white',
+        '&::placeholder': {
+          opacity: 1,
         },
-      }}
-    />
-  );
-};
+        width: '100%',
+        padding: (t) => t.spacing(1.5, 1, 1.5, 0),
+        // vertical padding + font size from searchIcon
+        //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
+        transition: (t) => t.transitions.create('width'),
+      },
+    }}
+  />
+);
 
 const StyledInput = forwardRef(StyledInputRef);
 
@@ -110,8 +106,8 @@ const SearchField = () => {
 
   const search = async (name: string) => {
     setIsLoading(true);
-    const nodes = await resolved(() => {
-      return query
+    const nodes = await resolved(() =>
+      query
         .nodes({
           where: {
             _and: [
@@ -127,8 +123,8 @@ const SearchField = () => {
           name,
           mimeId,
           parent: { name: parent?.name },
-        }));
-    });
+        }))
+    );
     setOptions(nodes);
     setIsLoading(false);
   };
@@ -209,16 +205,14 @@ const SearchField = () => {
           <Divider />
         </Fragment>
       )}
-      PaperComponent={(props) => {
-        return (
-          <Paper {...props} sx={{ height: '100%' }}>
-            <List dense>
-              <Divider />
-              {props.children}
-            </List>
-          </Paper>
-        );
-      }}
+      PaperComponent={(props) => (
+        <Paper {...props} sx={{ height: '100%' }}>
+          <List dense>
+            <Divider />
+            {props.children}
+          </List>
+        </Paper>
+      )}
       renderInput={(params) => (
         <SearchBox ref={params.InputProps.ref}>
           <Stack direction="row">
@@ -262,6 +256,6 @@ const SearchField = () => {
   ) : (
     autocomplete
   );
-}
+};
 
 export default SearchField;

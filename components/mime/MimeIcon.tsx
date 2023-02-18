@@ -10,9 +10,7 @@ const MimeIcon = ({
 }: {
   mimeId: Maybe<string | undefined>;
   index?: number;
-}) => {
-  return <IconId mimeId={mimeId} index={index} />;
-};
+}) => <IconId mimeId={mimeId} index={index} />;
 
 const Icon = ({ node }: { node: Node }) => {
   const query = node.useQuery();

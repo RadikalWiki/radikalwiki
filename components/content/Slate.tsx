@@ -258,7 +258,7 @@ const Slate = ({
       )}
     </SlateEditor>
   );
-}
+};
 
 const toggleMark = (editor: any, format: any) => {
   const isActive = isMarkActive(editor, format);
@@ -282,13 +282,10 @@ const currentBlocks = (
   const blocks = Array.from(
     Editor.nodes(editor, {
       at: Editor.unhangRange(editor, selection),
-      match: (n) => {
-        return (
-          !Editor.isEditor(n) &&
-          SlateElement.isElement(n) &&
-          validBlocks.includes((n as any)[blockType])
-        );
-      },
+      match: (n) =>
+        !Editor.isEditor(n) &&
+        SlateElement.isElement(n) &&
+        validBlocks.includes((n as any)[blockType]),
     })
   )?.[0];
 

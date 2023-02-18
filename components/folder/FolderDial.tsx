@@ -70,8 +70,8 @@ const FolderDial = ({ node }: { node: Node }) => {
         )
       )?.findIndex((e: any) => e.id === id) ?? 0;
 
-    const children = await resolved(() => {
-      return q
+    const children = await resolved(() =>
+      q
         .node({ id })
         ?.children({
           order_by: [{ index: order_by.asc }],
@@ -86,15 +86,15 @@ const FolderDial = ({ node }: { node: Node }) => {
             },
           },
         })
-        .map(({ id }) => id);
-    });
-    const members = await resolved(() => {
-      return q
+        .map(({ id }) => id)
+    );
+    const members = await resolved(() =>
+      q
         .node({ id })
         ?.members()
         ?.map((m) => m.name ?? m.user?.displayName)
-        .join(', ');
-    });
+        .join(', ')
+    );
     const node = await resolved(() => {
       const node = q.node({ id });
       if (node)
@@ -122,8 +122,8 @@ const FolderDial = ({ node }: { node: Node }) => {
   };
 
   const handleExport = async () => {
-    const nodes = await resolved(() => {
-      return q
+    const nodes = await resolved(() =>
+      q
         .node({ id })
         ?.children({
           order_by: [{ index: order_by.asc }],
@@ -138,8 +138,8 @@ const FolderDial = ({ node }: { node: Node }) => {
             },
           },
         })
-        .map(({ id }) => ({ id }));
-    });
+        .map(({ id }) => ({ id }))
+    );
 
     const html = nodes
       ? (
@@ -192,11 +192,11 @@ const FolderDial = ({ node }: { node: Node }) => {
         ?.children()
         .map((child) => child.id)
     );
-    const members = await resolved(() => {
-      return q
+    const members = await resolved(() =>
+      q
         .members({ where: { parentId: { _eq: copyId } } })
-        .map(({ name, nodeId, email }) => ({ name, nodeId, email, parentId }));
-    });
+        .map(({ name, nodeId, email }) => ({ name, nodeId, email, parentId }))
+    );
     const newNode = await nodeInsert(node);
     await nodeMembers.insert({ members, parentId: newNode.id });
 
@@ -310,6 +310,6 @@ const FolderDial = ({ node }: { node: Node }) => {
       <DeleteDialog open={openDelete} setOpen={setOpenDelete} node={node} />
     </>
   );
-}
+};
 
 export default FolderDial;
