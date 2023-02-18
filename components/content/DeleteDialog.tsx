@@ -11,7 +11,7 @@ import { Node } from 'hooks';
 import { Delete } from '@mui/icons-material';
 import { fromId } from 'core/path';
 
-export default function PollDialog({
+const PollDialog = ({
   node,
   open,
   setOpen,
@@ -19,7 +19,7 @@ export default function PollDialog({
   node: Node;
   open: boolean;
   setOpen: Function;
-}) {
+}) => {
   const query = node.useQuery();
   const router = useRouter();
   const $delete = node.useDelete();
@@ -54,3 +54,5 @@ export default function PollDialog({
     </Dialog>
   );
 }
+
+export default PollDialog;

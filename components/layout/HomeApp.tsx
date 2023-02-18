@@ -10,7 +10,7 @@ const AddContentFabSuspense = () => {
   return <AddContentFab node={node} />;
 };
 
-export default function HomeApp() {
+const HomeApp = () => {
   const { isAuthenticated } = useAuthenticationStatus();
   const displayName = useUserDisplayName();
 
@@ -73,3 +73,5 @@ export default function HomeApp() {
     </Grid>
   );
 }
+
+export default HomeApp;

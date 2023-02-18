@@ -172,7 +172,7 @@ const BreadcrumbsLink = ({
   );
 };
 
-export default function Breadcrumbs() {
+const Breadcrumbs = () => {
   const [session] = useSession();
   const router = useRouter();
   const path = usePath();
@@ -230,3 +230,5 @@ export default function Breadcrumbs() {
     </Box>
   );
 }
+
+export default Breadcrumbs;

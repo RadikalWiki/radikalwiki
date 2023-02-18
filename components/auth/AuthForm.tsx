@@ -18,7 +18,7 @@ import { useAuthenticationStatus } from '@nhost/nextjs';
 
 type Mode = 'login' | 'register' | 'login-email' | 'reset-password';
 
-export default function LoginForm({ mode }: { mode: Mode }) {
+const LoginForm = ({ mode }: { mode: Mode }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
   const [_, setSession] = useSession();
@@ -312,3 +312,5 @@ export default function LoginForm({ mode }: { mode: Mode }) {
     </Container>
   );
 }
+
+export default LoginForm;

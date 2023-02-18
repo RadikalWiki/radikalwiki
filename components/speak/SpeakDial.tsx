@@ -4,7 +4,7 @@ import { avatars } from 'comps';
 import { useSession, useNode, Node } from 'hooks';
 import { useUserDisplayName } from '@nhost/nextjs';
 
-export default function SpeakDial({ node }: { node: Node }) {
+const SpeakDial = ({ node }: { node: Node }) => {
   const [session] = useSession();
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
@@ -56,3 +56,5 @@ export default function SpeakDial({ node }: { node: Node }) {
     </SpeedDial>
   );
 }
+
+export default SpeakDial;

@@ -1,5 +1,7 @@
 import { Loader } from 'comps';
 
-export default function Index() {
+const Index = () => {
   return <Loader app="home" />;
 }
+
+export default Index;

@@ -15,7 +15,7 @@ import {
 } from 'comps';
 import { useRouter } from 'next/router';
 
-function SelectApp({ mimeId, node }: { mimeId: string; node: Node }) {
+const SelectApp = ({ mimeId, node }: { mimeId: string; node: Node }) => {
   switch (mimeId) {
     case 'wiki/folder':
       return <FolderApp node={node} />;
@@ -45,7 +45,7 @@ function SelectApp({ mimeId, node }: { mimeId: string; node: Node }) {
   }
 }
 
-export default function MimeLoader(param?: { id?: string; mimeId?: string }) {
+const MimeLoader = (param?: { id?: string; mimeId?: string }) => {
   const screen = useScreen();
   const node = useNode({ id: param?.id });
   const router = useRouter();
@@ -58,3 +58,5 @@ export default function MimeLoader(param?: { id?: string; mimeId?: string }) {
     </>
   );
 }
+
+export default MimeLoader;

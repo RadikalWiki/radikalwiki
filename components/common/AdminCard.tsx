@@ -2,13 +2,13 @@ import React from 'react';
 import { Avatar, Card, CardHeader, Typography } from '@mui/material';
 import { SupervisorAccount } from '@mui/icons-material';
 
-export default function AdminCard({
+const AdminCard = ({
   children,
   title,
 }: {
   children: any;
   title: string;
-}) {
+}) => {
   return (
     <Card sx={{ m: 0, bgcolor: 'primary.main' }}>
       <CardHeader
@@ -31,3 +31,5 @@ export default function AdminCard({
     </Card>
   );
 }
+
+export default AdminCard;

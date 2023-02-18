@@ -4,7 +4,7 @@ import { GroupAdd } from '@mui/icons-material';
 import { CSVReader } from 'comps';
 import { Node, useNode } from 'hooks';
 
-export default function InvitesFab({ node }: { node: Node }) {
+const InvitesFab = ({ node }: { node: Node }) => {
   const parentId = node.id;
   const nodeMembers = node.useMembers();
   const handleFile = async (
@@ -47,3 +47,5 @@ export default function InvitesFab({ node }: { node: Node }) {
     </CSVReader>
   );
 }
+
+export default InvitesFab;

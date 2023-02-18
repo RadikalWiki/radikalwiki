@@ -52,13 +52,14 @@
 //   return { options, data: [res] };
 // };
 
-// export default function PollChart({
+// export default PollChart;
+// const PollChart = ({
 //   node,
 //   screen = false,
 // }: {
 //   node: Node;
 //   screen?: boolean;
-// }) {
+// }) => {
 //   const poll = node.useQuery();
 
 //   const title = poll?.name;

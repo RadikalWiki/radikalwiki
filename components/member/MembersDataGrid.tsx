@@ -4,7 +4,7 @@ import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
 import { Node, useNode } from 'hooks';
 
-export default function MembersDataGrid({ node }: { node: Node }) {
+const MembersDataGrid = ({ node }: { node: Node }) => {
   const query = node.useQuery();
   const member = node.useMember();
 
@@ -103,3 +103,5 @@ export default function MembersDataGrid({ node }: { node: Node }) {
     </Box>
   );
 }
+
+export default MembersDataGrid;

@@ -131,7 +131,8 @@ function ChildList({ id }: { id?: string }) {
   );
 }
 
-export default function PermList({ id }: { id: string }) {
+export default PermList;
+const PermList = ({ id }: { id: string }) => {
   return (
     <Card sx={{ m: 0 }}>
       <CardHeader

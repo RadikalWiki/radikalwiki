@@ -4,7 +4,7 @@ import { Autocomplete } from '@mui/material';
 import { resolved, query, order_by } from 'gql';
 import { Node, useNode } from 'hooks';
 
-export default function InvitesTextField({ node }: { node: Node }) {
+const InvitesTextField = ({ node }: { node: Node }) => {
   const nodeMembers = node.useMembers();
   const [users, setUsers] = useState<any[]>([]);
 
@@ -88,3 +88,5 @@ export default function InvitesTextField({ node }: { node: Node }) {
     </Grid>
   );
 }
+
+export default InvitesTextField;

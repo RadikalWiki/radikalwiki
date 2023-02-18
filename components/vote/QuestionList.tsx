@@ -40,7 +40,7 @@ import { Node, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
 import { useUserId } from '@nhost/nextjs';
 
-export default function QuestionList({ node }: { node: Node }) {
+const QuestionList = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const router = useRouter();
   const query = node.useQuery();
@@ -149,3 +149,5 @@ export default function QuestionList({ node }: { node: Node }) {
     </Card>
   );
 }
+
+export default QuestionList;

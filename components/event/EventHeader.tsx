@@ -2,7 +2,7 @@ import { CardHeader, Typography } from '@mui/material';
 import { MimeAvatarNode, ExpandButton } from 'comps';
 import { Node, useNode } from 'hooks';
 
-export default function EventHeader({
+const EventHeader = ({
   node,
   expand,
   setExpand,
@@ -10,7 +10,7 @@ export default function EventHeader({
   node: Node;
   expand: boolean;
   setExpand: Function;
-}) {
+}) => {
   const query = node.useQuery();
   return (
     <CardHeader
@@ -26,3 +26,5 @@ export default function EventHeader({
     />
   );
 }
+
+export default EventHeader;

@@ -4,7 +4,7 @@ import { SpeakApp, MimeLoader } from 'comps';
 import { Box } from '@mui/system';
 import { Node } from 'hooks';
 
-export default function ScreenApp({ node }: { node: Node }) {
+const ScreenApp = ({ node }: { node: Node }) => {
   const get = node.useSubsGet();
   const content = get('active');
   const id = content?.id;
@@ -27,3 +27,5 @@ export default function ScreenApp({ node }: { node: Node }) {
     </Box>
   );
 }
+
+export default ScreenApp;

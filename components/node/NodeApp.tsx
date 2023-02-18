@@ -34,7 +34,8 @@ const uniqBy = <T,>(a: T[], key: (v: T) => string) => {
   });
 }
 
-export default function NodeApp({ node }: { node: Node }) {
+export default NodeApp;
+const NodeApp = ({ node }: { node: Node }) => {
   const router = useRouter();
   const query = useQuery();
   const [dim, setDim] = useState({

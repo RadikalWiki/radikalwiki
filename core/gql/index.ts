@@ -28,7 +28,7 @@ const getHeaders = (): Record<string, string> =>
         'x-hasura-role': 'public',
       };
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
+const queryFetcher: QueryFetcher = async (query, variables) => {
   //const token = nhost.auth.getAccessToken();
   //if (token) {
   //  const accessTokenDecrypted = jwtDecode<JwtPayload>(token);

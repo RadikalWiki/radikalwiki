@@ -4,7 +4,7 @@ import { Download } from '@mui/icons-material';
 import { Node } from 'hooks';
 import { nhost } from 'nhost';
 
-export default function AddContentFab({ node }: { node: Node }) {
+const AddContentFab = ({ node }: { node: Node }) => {
   const trigger = useScrollTrigger({
     target:
       typeof document !== 'undefined'
@@ -42,3 +42,5 @@ export default function AddContentFab({ node }: { node: Node }) {
     </>
   );
 }
+
+export default AddContentFab;

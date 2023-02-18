@@ -1,4 +1,4 @@
-export default function PdfViewer({ file }: { file: any }) {
+const PdfViewer = ({ file }: { file: any }) => {
   return (
     <div style={{ width: '100%', height: '75vh' }}>
       <object
@@ -11,3 +11,5 @@ export default function PdfViewer({ file }: { file: any }) {
     </div>
   );
 }
+
+export default PdfViewer;

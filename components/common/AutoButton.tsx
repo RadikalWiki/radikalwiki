@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, useMediaQuery, IconButton, Tooltip } from '@mui/material';
 
-export default function AutoButton({
+const AutoButton = ({
   text,
   icon,
   onClick,
@@ -9,7 +9,7 @@ export default function AutoButton({
   text: string;
   icon: any;
   onClick: any;
-}) {
+}) => {
   const largeScreen = useMediaQuery('(min-width:1200px)');
 
   return largeScreen ? (
@@ -27,3 +27,5 @@ export default function AutoButton({
     </IconButton>
   );
 }
+
+export default AutoButton;

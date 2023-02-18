@@ -9,7 +9,7 @@ import {
   PdfViewer,
 } from 'comps';
 
-export default function FileLoader({ node }: { node: Node }) {
+const FileLoader = ({ node }: { node: Node }) => {
   const [file, setFile] = useState<any>(null);
   const data = node.useQuery()?.data();
 
@@ -51,3 +51,5 @@ export default function FileLoader({ node }: { node: Node }) {
 
   return null;
 }
+
+export default FileLoader;

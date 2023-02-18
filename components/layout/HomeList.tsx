@@ -15,7 +15,7 @@ import { useSession } from 'hooks';
 import { useRouter } from 'next/router';
 import { startTransition } from 'react';
 
-export default function HomeList({ setOpen }: { setOpen: Function }) {
+const HomeList = ({ setOpen }: { setOpen: Function }) => {
   const router = useRouter();
   const userId = useUserId();
   const query = useQuery();
@@ -99,3 +99,5 @@ export default function HomeList({ setOpen }: { setOpen: Function }) {
     </>
   );
 }
+
+export default HomeList;

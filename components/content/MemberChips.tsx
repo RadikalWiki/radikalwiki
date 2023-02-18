@@ -4,13 +4,13 @@ import { Stack } from '@mui/system';
 import { Node, useScreen } from 'hooks';
 import { IconId } from 'mime';
 
-export default function MemberChips({
+const MemberChips = ({
   node,
   child,
 }: {
   node: Node;
   child?: boolean;
-}) {
+}) => {
   const screen = useScreen();
   const members = node.useQuery()?.members();
   const chips =
@@ -38,3 +38,5 @@ export default function MemberChips({
     </Collapse>
   );
 }
+
+export default MemberChips;

@@ -9,7 +9,7 @@ import {
 import { Node, useScreen } from 'hooks';
 import { useState } from 'react';
 
-export default function FileApp({ node }: { node: Node }) {
+const FileApp = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const [expand, setExpand] = useState(true);
 
@@ -27,3 +27,5 @@ export default function FileApp({ node }: { node: Node }) {
     </Stack>
   );
 }
+
+export default FileApp;

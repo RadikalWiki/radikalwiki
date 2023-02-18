@@ -8,7 +8,7 @@ const format = (leaf: any) => {
   return link;
 };
 
-export function toHtml(doc: any) {
+const toHtml = (doc: any) => {
   return doc
     ?.map((element: any) => {
       const formatted = element.children.map(format).join('');
@@ -39,3 +39,5 @@ export function toHtml(doc: any) {
     })
     .join('');
 }
+
+export { toHtml }

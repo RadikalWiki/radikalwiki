@@ -17,7 +17,7 @@ import { useRouter } from 'next/router';
 import { IconId } from 'mime';
 import { Node, useScreen } from 'hooks';
 
-function PollListSuspense({ node }: { node: Node }) {
+const PollListSuspense = ({ node }: { node: Node }) => {
   const router = useRouter();
   const query = node.useQuery();
   const $delete = node.useDelete();
@@ -98,7 +98,7 @@ function PollListSuspense({ node }: { node: Node }) {
   return polls?.[0]?.id ? card : null;
 }
 
-export default function PollList({ node }: { node: Node }) {
+const PollList = ({ node }: { node: Node }) => {
   const screen = useScreen();
 
   if (screen) return null;
@@ -108,3 +108,5 @@ export default function PollList({ node }: { node: Node }) {
     </Suspense>
   );
 }
+
+export default PollList;

@@ -1,3 +1,5 @@
-export default function useEnv() {
+const useEnv = () => {
   return process.env;
 }
+
+export default useEnv;

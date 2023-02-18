@@ -10,7 +10,7 @@ import {
 import { Node } from 'hooks';
 import { Stack } from '@mui/material';
 
-export default function PositionApp({ node }: { node: Node }) {
+const PositionApp = ({ node }: { node: Node }) => {
   return (
     <Stack spacing={1}>
       <ContentApp node={node} />
@@ -22,3 +22,5 @@ export default function PositionApp({ node }: { node: Node }) {
     </Stack>
   );
 }
+
+export default PositionApp;

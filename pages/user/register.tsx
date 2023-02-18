@@ -1,6 +1,8 @@
 import React from 'react';
 import { AuthForm } from 'comps';
 
-export default function Register() {
+const Register = () => {
   return <AuthForm mode="register" />;
 }
+
+export default Register;

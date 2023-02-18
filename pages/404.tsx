@@ -1,4 +1,4 @@
-export default function P404() {
+const P404 = () => {
   return (
     <>
       <p>404: Path not found!</p>
@@ -6,3 +6,5 @@ export default function P404() {
     </>
   );
 }
+
+export default P404;

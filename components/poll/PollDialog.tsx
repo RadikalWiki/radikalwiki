@@ -16,7 +16,7 @@ import {
 import { Node, useSession } from 'hooks';
 import { PlayArrow } from '@mui/icons-material';
 
-export default function PollDialog({
+const PollDialog = ({
   node,
   open,
   setOpen,
@@ -24,7 +24,7 @@ export default function PollDialog({
   node: Node;
   open: boolean;
   setOpen: Function;
-}) {
+}) => {
   const router = useRouter();
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
@@ -128,3 +128,5 @@ export default function PollDialog({
     </Dialog>
   );
 }
+
+export default PollDialog;

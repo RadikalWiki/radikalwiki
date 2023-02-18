@@ -42,7 +42,7 @@ const getRows = (data: any[]) => {
 };
 */
 
-export default function ResultsDataGrid() {
+const ResultsDataGrid = () => {
   return null;
   /*
   const { data } = useSubscription(POLL_SUB_ALL_RESULT);
@@ -61,3 +61,5 @@ export default function ResultsDataGrid() {
   );
   */
 }
+
+export default ResultsDataGrid;

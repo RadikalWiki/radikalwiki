@@ -11,7 +11,7 @@ import { MarkEmailRead } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 
-export default function Unverified() {
+const Unverified = () => {
   const { push } = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
 
@@ -47,3 +47,5 @@ export default function Unverified() {
     </Container>
   );
 }
+
+export default Unverified;

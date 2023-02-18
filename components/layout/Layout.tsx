@@ -14,7 +14,7 @@ import { nhost } from 'nhost';
 import { checkVersion } from 'core/util';
 import { useSession } from 'hooks';
 
-export default function Layout({ children }: { children?: any }) {
+const Layout = ({ children }: { children?: any }) => {
   const [outdated, setOutdated] = useState(false);
   const [showing, setShowing] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -75,3 +75,5 @@ export default function Layout({ children }: { children?: any }) {
     </>
   );
 }
+
+export default Layout;

@@ -3,7 +3,7 @@ import { MimeAvatarNode, ExpandButton, MemberChips } from 'comps';
 import { Suspense } from 'react';
 import { Node, useScreen } from 'hooks';
 
-function Title({ node }: { node: Node }) {
+const Title = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const query = node.useQuery();
   return query?.name ? (
@@ -17,7 +17,7 @@ function Title({ node }: { node: Node }) {
   ) : null;
 }
 
-export default function ContentHeader({ node }: { node: Node }) {
+const ContentHeader = ({ node }: { node: Node }) => {
   const screen = useScreen();
   return (
     <CardHeader
@@ -38,3 +38,5 @@ export default function ContentHeader({ node }: { node: Node }) {
     />
   );
 }
+
+export default ContentHeader;

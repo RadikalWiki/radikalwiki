@@ -36,7 +36,7 @@ const checkIfSuperParent = async (
     : checkIfSuperParent(parentId, superParentId);
 };
 
-export default function FolderDial({ node }: { node: Node }) {
+const FolderDial = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
@@ -311,3 +311,5 @@ export default function FolderDial({ node }: { node: Node }) {
     </>
   );
 }
+
+export default FolderDial;

@@ -3,7 +3,7 @@ import { Link as NextLink } from 'comps';
 import { Card, Divider, List, ListItem, ListItemText } from '@mui/material';
 import { useQuery } from 'gql';
 
-export default function EventList() {
+const EventList = () => {
   const query = useQuery();
   const events = query.nodes({
     where: { mimeId: { _eq: 'wiki/event' } },
@@ -25,3 +25,5 @@ export default function EventList() {
     </Card>
   );
 }
+
+export default EventList;

@@ -30,7 +30,7 @@ import {
 } from '@mui/icons-material';
 import { useUserEmail, useUserId } from '@nhost/nextjs';
 
-export default function VoteApp({ node }: { node: Node }) {
+const VoteApp = ({ node }: { node: Node }) => {
   const [session] = useSession();
   const userId = useUserId();
   const email = useUserEmail();
@@ -258,4 +258,6 @@ export default function VoteApp({ node }: { node: Node }) {
   if (!(poll?.mutable && poll?.mimeId == 'vote/poll')) return noVoteComp;
 
   return voteComp;
-}
+};
+
+export default VoteApp;

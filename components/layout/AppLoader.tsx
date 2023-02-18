@@ -10,7 +10,7 @@ import {
 } from 'comps';
 import { useNode } from 'hooks';
 
-export default function AppLoader({ app, id }: { app?: string; id?: string }) {
+const AppLoader = ({ app, id }: { app?: string; id?: string }) => {
   const node = useNode({ id });
 
   if (app) {
@@ -35,3 +35,5 @@ export default function AppLoader({ app, id }: { app?: string; id?: string }) {
 
   return null;
 }
+
+export default AppLoader;

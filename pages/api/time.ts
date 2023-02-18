@@ -1,10 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
+const handler = async (
   req: NextApiRequest,
   res: NextApiResponse
-) {
+) => {
   return res.json({
     time: new Date(),
   });
 }
+
+export default handler;

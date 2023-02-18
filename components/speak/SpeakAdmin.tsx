@@ -4,13 +4,13 @@ import { AdminCard } from 'comps';
 import { Clear, LockOpen, Lock, PlayArrow, Stop } from '@mui/icons-material';
 import { Node } from 'hooks';
 
-export default function SpeakAdmin({
+const SpeakAdmin = ({
   node,
   time,
 }: {
   node: Node;
   time: number;
-}) {
+}) => {
   const get = node.useSubsGet();
   const speakerlist = get('speakerlist');
   const update = node.useUpdate({ refetch: false });
@@ -102,3 +102,5 @@ export default function SpeakAdmin({
     null
   );
 }
+
+export default SpeakAdmin;

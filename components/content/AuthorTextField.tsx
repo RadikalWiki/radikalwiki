@@ -10,13 +10,13 @@ const capitalize = (sentence: string) =>
 
 type Option = { name?: string; mimeId?: string; nodeId?: string };
 
-export default function AuthorTextField({
+const AuthorTextField = ({
   value,
   onChange,
 }: {
   value: Option[];
   onChange: any;
-}) {
+}) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState('');
 
@@ -115,3 +115,5 @@ export default function AuthorTextField({
     />
   );
 }
+
+export default AuthorTextField;

@@ -3,10 +3,10 @@ import { Content, ContentToolbar, MemberChips } from 'comps';
 import { Node, useScreen } from 'hooks';
 import { useState } from 'react';
 
-export default function ContentApp(param: {
+const ContentApp = (param: {
   node: Node;
   hideMembers?: boolean;
-}) {
+}) => {
   const screen = useScreen();
   const [expand, setExpand] = useState(true);
   return (
@@ -18,3 +18,5 @@ export default function ContentApp(param: {
     </Card>
   );
 }
+
+export default ContentApp;

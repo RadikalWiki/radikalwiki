@@ -4,13 +4,13 @@ import { AddContentFab, FolderDial, FolderList, ContentToolbar } from 'comps';
 import { Node, useScreen } from 'hooks';
 import { Suspense, useState } from 'react';
 
-export default function FolderApp({
+const FolderApp = ({
   node,
   child,
 }: {
   node: Node;
   child?: boolean;
-}) {
+}) => {
   const [expand, setExpand] = useState(true);
   const screen = useScreen();
   if (screen && child) return null;
@@ -33,3 +33,5 @@ export default function FolderApp({
     </>
   );
 }
+
+export default FolderApp;

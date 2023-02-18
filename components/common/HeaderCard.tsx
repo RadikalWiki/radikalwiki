@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, Typography } from '@mui/material';
 
-export default function HeaderCard({
+const HeaderCard = ({
   children,
   title,
   avatar,
@@ -13,7 +13,7 @@ export default function HeaderCard({
   avatar?: any;
   subtitle?: string;
   action?: any;
-}) {
+}) => {
   return (
     <Card sx={{ m: 0 }}>
       <CardHeader
@@ -26,3 +26,5 @@ export default function HeaderCard({
     </Card>
   );
 }
+
+export default HeaderCard;

@@ -11,7 +11,7 @@ import { HeaderCard } from 'comps';
 import { QuestionMark } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 
-export default function UnknownApp() {
+const UnknownApp = () => {
   const { isAuthenticated } = useAuthenticationStatus();
 
   return (
@@ -50,3 +50,5 @@ export default function UnknownApp() {
     </Grid>
   );
 }
+
+export default UnknownApp;

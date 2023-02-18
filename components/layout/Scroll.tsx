@@ -3,7 +3,7 @@ import { Fab, useScrollTrigger, Zoom, Box } from '@mui/material';
 import { KeyboardArrowUp } from '@mui/icons-material';
 import { Container } from '@mui/system';
 
-export default function Scroll({ children }: any) {
+const Scroll = ({ children }: any) => {
   const trigger = useScrollTrigger({
     target:
       typeof document !== 'undefined'
@@ -62,3 +62,5 @@ export default function Scroll({ children }: any) {
     </Box>
   );
 }
+
+export default Scroll;

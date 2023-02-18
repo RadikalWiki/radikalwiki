@@ -1,7 +1,7 @@
 import { useScreen } from 'hooks';
 import { useEffect, useRef, useState } from 'react';
 
-export default function MsOfficeViewer({ file }: { file: any }) {
+const MsOfficeViewer = ({ file }: { file: any }) => {
   const screen = useScreen();
   const [height, setHeight] = useState('0px');
 
@@ -25,3 +25,5 @@ export default function MsOfficeViewer({ file }: { file: any }) {
     )
   );
 }
+
+export default MsOfficeViewer;

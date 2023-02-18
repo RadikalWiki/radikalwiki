@@ -29,7 +29,7 @@ const abriviateName = (name: string) =>
     ? name
     : name?.split(' ').map((s) => (s ? s[0].toUpperCase() : ''));
 
-export default function UserButton() {
+const UserButton = () => {
   const router = useRouter();
   const displayName = useUserDisplayName();
   const [session, setSession] = useSession();
@@ -143,3 +143,5 @@ export default function UserButton() {
     </>
   );
 }
+
+export default UserButton;

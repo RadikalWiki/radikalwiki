@@ -14,7 +14,7 @@ import { nodes, order_by, resolved } from 'gql';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { Node } from 'hooks';
 
-export default function SortApp({ node }: { node: Node }) {
+const SortApp = ({ node }: { node: Node }) => {
   const [list, setList] = useState<Partial<nodes>[]>([]);
   const query = node.useQuery();
 
@@ -104,3 +104,5 @@ export default function SortApp({ node }: { node: Node }) {
     </>
   );
 }
+
+export default SortApp;

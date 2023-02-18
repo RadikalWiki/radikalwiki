@@ -12,7 +12,7 @@ import { Event, Group, Subject } from '@mui/icons-material';
 import { IconId } from 'mime';
 import { Node } from 'hooks';
 
-export default function UserApp({ node }: { node: Node }) {
+const UserApp = ({ node }: { node: Node }) => {
   const query = useQuery();
   const nodes = query.nodes({
     where: {
@@ -100,3 +100,5 @@ export default function UserApp({ node }: { node: Node }) {
     </>
   );
 }
+
+export default UserApp;

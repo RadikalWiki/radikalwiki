@@ -4,7 +4,7 @@ import { Loader, PathLoader } from 'comps';
 import { fromId } from 'core/path';
 import { usePath, useSession } from 'hooks';
 
-export default function Path() {
+const Path = () => {
   const router = useRouter();
   const fullpath = usePath();
 
@@ -26,3 +26,5 @@ export default function Path() {
   if (fullpath.length === 0) return null;
   return <PathLoader namespaces={[]} fullpath={fullpath} />;
 }
+
+export default Path;

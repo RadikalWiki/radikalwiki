@@ -43,13 +43,13 @@ const marks = [
     label: '250%',
   },
 ];
-export default function ContentToolbar({
+const ContentToolbar = ({
   node,
   child,
 }: {
   node: Node;
   child: boolean;
-}) {
+}) => {
   const query = node.useQuery();
   const update = node.useUpdate();
   const context = node.useContext();
@@ -198,3 +198,5 @@ export default function ContentToolbar({
     </>
   );
 }
+
+export default ContentToolbar;

@@ -17,7 +17,7 @@ import { fromId } from 'core/path';
 import { Node } from 'hooks';
 import { nhost } from 'nhost';
 
-export default function Editor({ node }: { node: Node }) {
+const Editor = ({ node }: { node: Node }) => {
   const router = useRouter();
   const query = node.useQuery();
   const update = node.useUpdate();
@@ -160,3 +160,5 @@ export default function Editor({ node }: { node: Node }) {
     </>
   );
 }
+
+export default Editor;

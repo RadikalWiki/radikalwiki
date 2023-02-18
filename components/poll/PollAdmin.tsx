@@ -5,7 +5,7 @@ import { AdminCard } from 'comps';
 import { Node, useNode } from 'hooks';
 import { Stop } from '@mui/icons-material';
 
-export default function PollAdmin({ node }: { node: Node }) {
+const PollAdmin = ({ node }: { node: Node }) => {
   const sub = node.useSubs();
   const update = node.useUpdate();
   const data = sub?.data();
@@ -55,3 +55,5 @@ export default function PollAdmin({ node }: { node: Node }) {
     </AdminCard>
   );
 }
+
+export default PollAdmin;

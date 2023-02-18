@@ -1,7 +1,6 @@
 import { createTheme, ThemeOptions, useMediaQuery } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { useSession } from 'hooks';
-import React from 'react';
 
 export const theme: ThemeOptions = {
   typography: {
@@ -54,7 +53,7 @@ const dark = createTheme({
   },
 });
 
-export default function useTheme() {
+const useTheme = () => {
   const [session] = useSession();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   return (session?.theme === undefined && prefersDarkMode) ||
@@ -62,3 +61,5 @@ export default function useTheme() {
     ? dark
     : light;
 }
+
+export default useTheme;

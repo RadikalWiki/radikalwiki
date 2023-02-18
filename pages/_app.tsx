@@ -6,13 +6,13 @@ import { NhostProvider } from '@nhost/nextjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-export default function App({
+const App = ({
   Component,
   pageProps,
 }: {
   Component: ComponentType<any>;
   pageProps: any;
-}) {
+}) => {
   useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -43,3 +43,5 @@ export default function App({
     </>
   );
 }
+
+export default App;

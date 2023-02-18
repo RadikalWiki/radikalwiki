@@ -4,13 +4,13 @@ import { Save } from '@mui/icons-material';
 import { useRouter } from 'next/router';
 import { Node } from 'hooks';
 
-export default function SortFab({
+const SortFab = ({
   node,
   elements,
 }: {
   node: Node;
   elements: any;
-}) {
+}) => {
   const router = useRouter();
   const update = node.useUpdate();
 
@@ -39,3 +39,5 @@ export default function SortFab({
     </Tooltip>
   );
 }
+
+export default SortFab;

@@ -114,7 +114,7 @@ const ListSuspense = () => {
   );
 };
 
-export default function InvitesUserList() {
+const InvitesUserList = () => {
   return (
     <HeaderCard
       avatar={
@@ -134,3 +134,5 @@ export default function InvitesUserList() {
     </HeaderCard>
   );
 }
+
+export default InvitesUserList;

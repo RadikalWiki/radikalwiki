@@ -1,4 +1,4 @@
-export default function Error({ name, message, stack }: any) {
+const Error = ({ name, message, stack }: any) => {
   return (
     <>
       <p>An error occurred on client</p>
@@ -16,3 +16,5 @@ export default function Error({ name, message, stack }: any) {
 Error.getInitialProps = ({ res, err }: any) => {
   return { name: err?.name, message: err?.message, stack: err?.stack };
 };
+
+export default Error;

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Loader from './Loader';
 
-export default function PathLoader({
+const PathLoader = ({
   namespaces,
   parentId,
   fullpath,
@@ -14,7 +14,7 @@ export default function PathLoader({
   namespaces: string[];
   parentId?: string;
   fullpath: string[];
-}) {
+}) => {
   const query = useQuery();
   const [session, setSession] = useSession();
   const where = {
@@ -48,4 +48,6 @@ export default function PathLoader({
       fullpath={fullpath}
     />
   );
-}
+};
+
+export default PathLoader;

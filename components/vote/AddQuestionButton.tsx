@@ -3,7 +3,7 @@ import { AddContentDialog, AutoButton } from 'comps';
 import { PlusOne } from '@mui/icons-material';
 import { Node, useNode } from 'hooks';
 
-export default function AddQuestionButton({ node }: { node: Node }) {
+const AddQuestionButton = ({ node }: { node: Node }) => {
   const [open, setOpen] = useState(false);
   const query = node.useQuery();
 
@@ -25,4 +25,6 @@ export default function AddQuestionButton({ node }: { node: Node }) {
       />
     </>
   );
-}
+};
+
+export default AddQuestionButton;

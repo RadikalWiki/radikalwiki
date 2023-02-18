@@ -87,7 +87,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function SearchField() {
+const SearchField = () => {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [searchMode, setSearchMode] = useState(false);
@@ -263,3 +263,5 @@ export default function SearchField() {
     autocomplete
   );
 }
+
+export default SearchField;

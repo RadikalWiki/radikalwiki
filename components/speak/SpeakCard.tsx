@@ -30,13 +30,13 @@ const timeString = (time: number) => {
   return `${minFmt}:${secFmt}`;
 };
 
-export default function SpeakCard({
+const SpeakCard = ({
   node,
   time,
 }: {
   node: Node;
   time: number;
-}) {
+}) => {
   const screen = useScreen();
   const userId = useUserId();
   const get = node.useSubsGet();
@@ -150,3 +150,5 @@ export default function SpeakCard({
     </Card>
   );
 }
+
+export default SpeakCard;

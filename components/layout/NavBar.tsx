@@ -25,7 +25,7 @@ const getState = (path: string) =>
     ? 'admin'
     : 'folder';
 
-export default function NavBar() {
+const NavBar = () => {
   const [session] = useSession();
   const router = useRouter();
   const [state, setState] = useState(getState(router.pathname));
@@ -83,3 +83,5 @@ export default function NavBar() {
     </AppBar>
   );
 }
+
+export default NavBar;

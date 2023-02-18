@@ -4,7 +4,7 @@ import { Add } from '@mui/icons-material';
 import { AddContentDialog } from 'comps';
 import { Node, useNode, useScreen } from 'hooks';
 
-export default function AddContentFab({ node }: { node: Node }) {
+const AddContentFab = ({ node }: { node: Node }) => {
   const trigger = useScrollTrigger({
     target:
       typeof document !== 'undefined'
@@ -51,3 +51,5 @@ export default function AddContentFab({ node }: { node: Node }) {
     </>
   );
 }
+
+export default AddContentFab;

@@ -1,6 +1,8 @@
 import React from 'react';
 import { AuthForm } from 'comps';
 
-export default function Reset() {
+const Reset = () => {
   return <AuthForm mode="login-email" />;
 }
+
+export default Reset;

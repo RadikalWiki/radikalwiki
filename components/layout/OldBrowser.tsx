@@ -5,7 +5,7 @@ import { Container } from '@mui/system';
 import { HeaderCard } from 'comps';
 import platform from 'platform';
 
-export default function OldBrowser() {
+const OldBrowser = () => {
   return (
     <Container>
       <HeaderCard
@@ -45,3 +45,5 @@ export default function OldBrowser() {
     </Container>
   );
 }
+
+export default OldBrowser;

@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider, useMediaQuery } from '@mui/material';
 import { useTheme } from 'hooks';
 
-export default function Theme({ children }: { children?: any }) {
+const Theme = ({ children }: { children?: any }) => {
   const theme = useTheme();
 
   return (
@@ -11,3 +11,5 @@ export default function Theme({ children }: { children?: any }) {
     </ThemeProvider>
   );
 }
+
+export default Theme;

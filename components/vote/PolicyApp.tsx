@@ -3,7 +3,7 @@ import { ChangeList, ContentApp, PollList, FolderDial } from 'comps';
 import { Node } from 'hooks';
 import { Stack } from '@mui/material';
 
-export default function PolicyApp({ node }: { node: Node }) {
+const PolicyApp = ({ node }: { node: Node }) => {
   return (
     <Stack spacing={1}>
       <ContentApp node={node} />
@@ -13,3 +13,5 @@ export default function PolicyApp({ node }: { node: Node }) {
     </Stack>
   );
 }
+
+export default PolicyApp;

@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { FolderApp, ContentApp } from 'comps';
 import { Node } from 'hooks';
 
-export default function GroupApp({ node }: { node: Node }) {
+const GroupApp = ({ node }: { node: Node }) => {
   return (
     <Stack spacing={1}>
       <ContentApp node={node} hideMembers />
@@ -10,3 +10,5 @@ export default function GroupApp({ node }: { node: Node }) {
     </Stack>
   );
 }
+
+export default GroupApp;

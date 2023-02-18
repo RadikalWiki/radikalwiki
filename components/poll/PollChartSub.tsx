@@ -70,7 +70,8 @@
 //   );
 // };
 
-// export default function PollChartSub({ node }: { node: Node }) {
+// export default PollChartSub;
+// const PollChartSub = ({ node }: { node: Node }) => {
 //   const screen = useScreen();
 //   const poll = node.useSubs();
 

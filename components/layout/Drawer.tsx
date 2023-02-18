@@ -260,13 +260,13 @@ const DrawerList = ({
   );
 };
 
-export default function Drawer({
+const Drawer = ({
   open,
   setOpen,
 }: {
   open: boolean;
   setOpen: (val: boolean) => void;
-}) {
+}) => {
   const router = useRouter();
   const [session, setSession] = useSession();
   const largeScreen = useMediaQuery('(min-width:1200px)');
@@ -459,3 +459,5 @@ export default function Drawer({
     </MuiDrawer>
   );
 }
+
+export default Drawer;

@@ -16,7 +16,7 @@ export const SessionContext = createContext<
   [Session | null, SessionSetter] | null
 >(null);
 
-export default function useSession(): [Session | null, SessionSetter] {
+const useSession = (): [Session | null, SessionSetter] => {
   const [session, setCtxSession] = useContext(SessionContext) || [null, null];
 
   useEffect(() => {
@@ -34,3 +34,5 @@ export default function useSession(): [Session | null, SessionSetter] {
 
   return [session, setSession];
 }
+
+export default useSession;

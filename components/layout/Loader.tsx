@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { Box } from '@mui/system';
 import { MimeLoader, AppLoader, HomeApp, UnknownApp } from 'comps';
 
-export default function Loader({ app, id }: { app?: string; id?: string }) {
+const Loader = ({ app, id }: { app?: string; id?: string }) => {
   const router = useRouter();
 
   if (!router.query.app && app === 'home') {
@@ -35,3 +35,5 @@ export default function Loader({ app, id }: { app?: string; id?: string }) {
     );
   }
 }
+
+export default Loader;

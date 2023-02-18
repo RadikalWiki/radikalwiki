@@ -41,7 +41,7 @@ import { IconId } from 'mime';
 import { Node, useNode, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
 
-function ChildListElement({ id, index }: { id: string; index: number }) {
+const ChildListElement = ({ id, index }: { id: string; index: number }) => {
   const node = useNode({ id });
   const query = node.useQuery();
   const router = useRouter();
@@ -83,7 +83,7 @@ function ChildListElement({ id, index }: { id: string; index: number }) {
   return id ? item : null;
 }
 
-function ChildListRaw({ node }: { node: Node }) {
+const ChildListRaw = ({ node }: { node: Node }) => {
   const children = node.useQuery()?.children({
     where: { mimeId: { _eq: 'vote/change' } },
     order_by: [{ index: order_by.asc }],
@@ -120,7 +120,7 @@ function ChildListRaw({ node }: { node: Node }) {
   );
 }
 
-export default function ChangeList({ node }: { node: Node }) {
+const ChangeList = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const router = useRouter();
   const query = node.useQuery();
@@ -158,3 +158,5 @@ export default function ChangeList({ node }: { node: Node }) {
     </Card>
   );
 }
+
+export default ChangeList;

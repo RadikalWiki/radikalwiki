@@ -3,7 +3,7 @@ import { Grid } from '@mui/material';
 import { Node, useScreen, useSession } from 'hooks';
 import { SpeakDial, SpeakAdmin, SpeakCard } from 'comps';
 
-export default function SpeakApp({ node }: { node: Node }) {
+const SpeakApp = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const [session] = useSession();
   const [time, setTime] = useState(0);
@@ -48,3 +48,5 @@ export default function SpeakApp({ node }: { node: Node }) {
     </>
   );
 }
+
+export default SpeakApp;

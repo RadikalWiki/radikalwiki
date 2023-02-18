@@ -3,7 +3,7 @@ import { InvitesTextField, InvitesFab, MembersDataGrid } from 'comps';
 import { Stack } from '@mui/material';
 import { Node } from 'hooks';
 
-export default function MemberApp({ node }: { node: Node }) {
+const MemberApp = ({ node }: { node: Node }) => {
   if (!node?.id) return null;
 
   return (
@@ -16,3 +16,5 @@ export default function MemberApp({ node }: { node: Node }) {
     </>
   );
 }
+
+export default MemberApp;

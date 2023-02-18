@@ -4,7 +4,7 @@ import { PlusOne } from '@mui/icons-material';
 import { Node, useNode } from 'hooks';
 import { useUserDisplayName } from '@nhost/nextjs';
 
-export default function AddChangeButton({ node }: { node: Node }) {
+const AddChangeButton = ({ node }: { node: Node }) => {
   const displayName = useUserDisplayName();
   const [open, setOpen] = useState(false);
   const query = node.useQuery();
@@ -35,3 +35,5 @@ export default function AddChangeButton({ node }: { node: Node }) {
     </>
   );
 }
+
+export default AddChangeButton;

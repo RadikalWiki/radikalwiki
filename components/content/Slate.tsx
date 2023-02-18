@@ -183,7 +183,6 @@ const withHtml = (editor: any) => {
     if (html) {
       const parsed = new DOMParser().parseFromString(html, 'text/html');
       const fragment = deserialize(parsed.body);
-      // eslint-disable-next-line functional/no-try-statement
       try {
         Transforms.insertFragment(editor, fragment);
       } catch (error) {
@@ -203,7 +202,7 @@ const validate = (value: any) => {
   else return [{ type: 'paragraph', children: [{ text: '' }] }];
 };
 
-export default function Slate({
+const Slate = ({
   value,
   onChange,
   readOnly = false,
@@ -211,7 +210,7 @@ export default function Slate({
   value?: any;
   onChange?: any;
   readOnly: boolean;
-}) {
+}) => {
   const editorRef = useRef<ReactEditor>();
   if (!editorRef.current)
     editorRef.current = withHtml(withHistory(withReact(createEditor() as any)));
@@ -648,3 +647,5 @@ const LinkButton = () => {
     </>
   );
 };
+
+export default Slate;

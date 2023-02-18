@@ -3,7 +3,7 @@ import { PollAdmin } from 'comps';
 import { Node, useScreen } from 'hooks';
 import { Stack } from '@mui/material';
 
-export default function PollApp({ node }: { node: Node }) {
+const PollApp = ({ node }: { node: Node }) => {
   const screen = useScreen();
 
   return (
@@ -13,3 +13,5 @@ export default function PollApp({ node }: { node: Node }) {
     </Stack>
   );
 }
+
+export default PollApp;

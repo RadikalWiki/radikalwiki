@@ -1,7 +1,7 @@
 import { parse, ParseConfig } from 'papaparse';
 import { Input } from '@mui/material';
 
-export default function CSVReader({
+const CSVReader = ({
   children,
   parseOptions,
   onFileLoaded,
@@ -9,7 +9,7 @@ export default function CSVReader({
   children: any;
   parseOptions?: ParseConfig;
   onFileLoaded: any;
-}) {
+}) => {
   const handleChangeFile = (e: any) => {
     const reader = new FileReader();
     const files = e.target.files;
@@ -37,3 +37,5 @@ export default function CSVReader({
     </>
   );
 }
+
+export default CSVReader;

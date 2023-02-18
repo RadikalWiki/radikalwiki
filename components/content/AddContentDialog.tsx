@@ -21,7 +21,7 @@ import { Node } from 'hooks';
 import { FileUploader } from 'comps';
 import { v4 as uuid } from 'uuid';
 
-export default function AddContentDialog({
+const AddContentDialog = ({
   node,
   open,
   setOpen,
@@ -35,7 +35,7 @@ export default function AddContentDialog({
   mimes: string[];
   initTitel?: string;
   redirect?: boolean;
-}) {
+}) => {
   const router = useRouter();
   const [titel, setTitel] = useState<string>(initTitel ?? '');
   const [text, setText] = useState<string>('');
@@ -182,3 +182,5 @@ export default function AddContentDialog({
     </Dialog>
   );
 }
+
+export default AddContentDialog;

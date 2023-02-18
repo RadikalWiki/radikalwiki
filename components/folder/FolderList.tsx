@@ -23,7 +23,7 @@ import { MimeAvatar } from 'comps';
 import { Node, useSession } from 'hooks';
 import { useUserId } from '@nhost/nextjs';
 
-export default function FolderList({ node }: { node: Node }) {
+const FolderList = ({ node }: { node: Node }) => {
   const [session, setSession] = useSession();
   const isOwner = node.useQuery()?.isContextOwner;
   const userId = useUserId();
@@ -126,3 +126,5 @@ export default function FolderList({ node }: { node: Node }) {
     </TransitionGroup>
   );
 }
+
+export default FolderList;

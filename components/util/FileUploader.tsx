@@ -4,13 +4,13 @@ import { Box } from '@mui/system';
 import { nhost } from 'nhost';
 import { useState } from 'react';
 
-export default function FileUploader({
+const FileUploader = ({
   text,
   onNewFile,
 }: {
   text: string;
   onNewFile: Function;
-}) {
+}) => {
   const [loading, setLoading] = useState(false);
   const handleChangeFile = async (e: any) => {
     setLoading(true);
@@ -55,3 +55,5 @@ export default function FileUploader({
     </Box>
   );
 }
+
+export default FileUploader;

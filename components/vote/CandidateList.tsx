@@ -16,7 +16,7 @@ import { useUserId } from '@nhost/nextjs';
 import { nhost } from 'nhost';
 import { useEffect, useState } from 'react';
 
-export default function CandidateList({ node }: { node: Node }) {
+const CandidateList = ({ node }: { node: Node }) => {
   const router = useRouter();
   const screen = useScreen();
   const largeScreen = useMediaQuery('(min-width:1200px)');
@@ -113,3 +113,5 @@ export default function CandidateList({ node }: { node: Node }) {
     </ImageList>
   );
 }
+
+export default CandidateList;

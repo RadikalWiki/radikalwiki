@@ -5,13 +5,13 @@ import { UserButton, HideOnScroll, SearchField } from 'comps';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { drawerWidth } from 'core/constants';
 
-export default function TopBar({
+const TopBar = ({
   openDrawer,
   setOpenDrawer,
 }: {
   openDrawer: boolean;
   setOpenDrawer: Function;
-}) {
+}) => {
   const { isAuthenticated } = useAuthenticationStatus();
   const largeScreen = useMediaQuery('(min-width:1200px)');
 
@@ -60,3 +60,5 @@ export default function TopBar({
     </>
   );
 }
+
+export default TopBar

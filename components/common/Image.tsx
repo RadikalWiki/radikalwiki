@@ -5,7 +5,7 @@ import { BrokenImage } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import NextImage from 'next/image';
 
-export default function Image({
+const Image = ({
   src,
   alt,
   onLoad,
@@ -21,7 +21,7 @@ export default function Image({
   onError?: Function;
   animationDuration?: number;
   aspectRatio?: number;
-}) {
+}) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
@@ -106,3 +106,5 @@ export default function Image({
     </Box>
   );
 }
+
+export default Image;
