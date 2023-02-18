@@ -208,8 +208,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       getOpts(param)
     );
     return (param?: { id?: string }) => {
-      if (!(param?.id && nodeId)) return Promise.reject("");
-      return deleteNode({ args: param?.id ?? nodeId });
+      return deleteNode({ args: param?.id ?? nodeId! });
     };
   };
 
@@ -223,10 +222,9 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       getOpts(param)
     );
     return ({ id, set }: { id?: string; set: nodes_set_input }) => {
-      if (!(id && nodeId)) return Promise.reject("");
       return updateNode({
         args: {
-          id: id ?? nodeId,
+          id: id ?? nodeId!,
           set,
         },
       });
