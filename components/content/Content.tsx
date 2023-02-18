@@ -12,9 +12,9 @@ const Content = ({
   fontSize: string;
 }) => {
   const query = node.useQuery();
-  const [image, setImage] = useState<string | null>(null);
-  const [content, setContent] = useState<string>();
   const data = query?.data();
+  const [image, setImage] = useState<string | null>(null);
+  const [content, setContent] = useState<string>(structuredClone(data?.content));
 
   useEffect(() => {
     const fetch = async () => {
