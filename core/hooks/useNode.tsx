@@ -35,11 +35,11 @@ type Param = {
 };
 
 export type Node = {
-  id: string;
+  id?: string;
   name: Maybe<string | undefined>;
   mimeId: Maybe<string | undefined>;
-  contextId: string;
-  parentId: string;
+  contextId?: Maybe<string | undefined>;
+  parentId?: Maybe<string | undefined>;
   namespace: Maybe<string | undefined>;
   useQuery: () => Maybe<nodes> | undefined;
   useSubs: () => Maybe<nodes>;
@@ -59,18 +59,18 @@ export type Node = {
     name?: string;
     namespace?: string;
     mimeId: string;
-    data?: any;
-    parentId?: string;
-    contextId?: string;
+    data?: unknown;
+    parentId?: string | undefined;
+    contextId?: string | undefined;
     mutable?: boolean;
     attachable?: boolean;
     index?: number;
-  }) => Promise<{ id: string; namespace?: string }>;
-  useDelete: (param?: Param) => (param?: { id?: string }) => Promise<string>;
+  }) => Promise<{ id: Maybe<string | undefined>; namespace?: string }>;
+  useDelete: (param?: Param) => (param?: { id?: string }) => Promise<string | undefined>;
   useUpdate: (
     param?: Param
-  ) => ({ id, set }: { id?: string; set: nodes_set_input }) => Promise<void>;
-  useSet: () => (name: string, nodeId: string | null) => Promise<void>;
+  ) => ({ id, set }: { id?: string; set: nodes_set_input }) => Promise<string | undefined>;
+  useSet: () => (name: string, nodeId: string | null) => Promise<string | undefined>;
   useGet: () => (name: string) => Maybe<nodes> | undefined;
   useSubsGet: () => (name: string) => Maybe<nodes> | undefined;
   useParent: () => Node;
@@ -86,9 +86,9 @@ export type Node = {
     delete: () => Promise<number | undefined>;
   };
   useMember: (param?: Param) => {
-    insert: (member: members_insert_input) => Promise<number | undefined>;
-    update: (id: string, set: members_set_input) => Promise<string>;
-    delete: (id: string) => Promise<number | undefined>;
+    insert: (member: members_insert_input) => Promise<string | undefined>;
+    update: (id: string, set: members_set_input) => Promise<string | undefined>;
+    delete: (id: string) => Promise<string | undefined>;
   };
   useChildren: (param?: Param) => {
     delete: (where: nodes_bool_exp) => Promise<number | undefined>;
@@ -113,7 +113,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   const mimeId = node?.mimeId;
   const nodeContextId = node?.contextId;
   const namespace = node?.namespace;
-  const refetchQueries = [node, node?.data, query?.node({ id: parentId })];
+  const refetchQueries = [node, node?.data, query?.node({ id: parentId! })];
 
   const getOpts = (param?: Param) => ({
     refetchQueries:
@@ -207,8 +207,10 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       (mutation, id: string) => mutation.deleteNode({ id })?.id,
       getOpts(param)
     );
-    return (param?: { id?: string }) =>
-      deleteNode({ args: param?.id ?? nodeId });
+    return (param?: { id?: string }) => {
+      if (!(param?.id && nodeId)) return Promise.reject("");
+      return deleteNode({ args: param?.id ?? nodeId });
+    };
   };
 
   const useUpdate = (param?: Param) => {
@@ -220,13 +222,15 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
         })?.id,
       getOpts(param)
     );
-    return ({ id, set }: { id?: string; set: nodes_set_input }) =>
-      updateNode({
+    return ({ id, set }: { id?: string; set: nodes_set_input }) => {
+      if (!(id && nodeId)) return Promise.reject("");
+      return updateNode({
         args: {
           id: id ?? nodeId,
           set,
         },
       });
+    };
   };
 
   const useMembers = (param?: Param) => {
@@ -318,8 +322,8 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   const useChildren = (Comp: any) => node?.children().map(({ id }) => <ChildNode id={id} Comp={Comp} />);
   */
 
-  const useContext = () => useNode({ id: nodeContextId });
-  const useParent = () => useNode({ id: parentId });
+  const useContext = () => useNode({ id: nodeContextId! });
+  const useParent = () => useNode({ id: parentId! });
   return {
     id: nodeId,
     name,

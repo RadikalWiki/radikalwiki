@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { Link as NextLink } from 'comps';
-import { Card, Divider, List, ListItem, ListItemText } from '@mui/material';
+import { Card, Divider, List, ListItemButton, ListItemText } from '@mui/material';
 import { useQuery } from 'gql';
 
 const EventList = () => {
@@ -12,12 +12,12 @@ const EventList = () => {
   return (
     <Card sx={{ m: 0 }}>
       <List sx={{ m: 0 }}>
-        {events?.map(({ id = 0, name }) => (
+        {events?.map(({ id = "", name }) => (
           <Fragment key={id}>
             <Divider />
-            <ListItem button component={NextLink} href={id}>
+            <ListItemButton component={NextLink} href={id}>
               <ListItemText primary={name} />
-            </ListItem>
+            </ListItemButton>
           </Fragment>
         ))}
         <Divider />

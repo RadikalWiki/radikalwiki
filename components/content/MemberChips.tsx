@@ -23,7 +23,7 @@ const MemberChips = ({ node, child }: { node: Node; child?: boolean }) => {
       </Tooltip>
     )) ?? [];
   return (
-    <Collapse in={members?.[0]?.id && members?.length !== 0}>
+    <Collapse in={!!members?.[0]?.id && members?.length !== 0}>
       <Stack direction="row" spacing={0.5} sx={{ p: child ? 0 : 1 }}>
         {chips}
       </Stack>

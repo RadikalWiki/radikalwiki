@@ -1,6 +1,6 @@
 import { query, resolved } from 'gql';
 
-const toId = async (path: string[], parentId?: string): Promise<string> => {
+const toId = async (path: string[], parentId?: string): Promise<string | undefined> => {
   const where = {
     _and: [
       { namespace: { _eq: path.at(-1) } },
@@ -14,7 +14,7 @@ const toId = async (path: string[], parentId?: string): Promise<string> => {
   return path.length > 0 ? toId(path.slice(1), id) : id;
 };
 
-const fromId = async (id?: string): Promise<string[]> => {
+const fromId = async (id?: string | null): Promise<string[]> => {
   if (!id) return [];
   return await resolved(async () => {
     const node = query.node({ id });

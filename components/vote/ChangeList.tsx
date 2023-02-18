@@ -94,7 +94,7 @@ const ChildListRaw = ({ node }: { node: Node }) => {
       <TransitionGroup>
         {children?.map(({ id }, index) => (
           <Collapse key={id ?? 0}>
-            <ChildListElement id={id} index={index} />
+            {id && <ChildListElement id={id} index={index} />}
           </Collapse>
         ))}
         {children?.length == 0 && (

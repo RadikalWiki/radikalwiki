@@ -91,13 +91,14 @@ const SearchField = () => {
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<
-    { id: string; name?: string; parent: { name?: string } }[]
+    { id?: string; name?: string; parent: { name?: string } }[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
 
-  const goto = async (id: string) => {
+  const goto = async (id?: string) => {
+    if (!id) return;
     const path = await fromId(id);
     router.push('/' + path.join('/'));
     setOpen(false);
@@ -195,9 +196,11 @@ const SearchField = () => {
               goto(option.id);
             }}
           >
-            <ListItemIcon sx={{ color: 'secondary.main' }}>
-              <MimeIconId id={option?.id} />
-            </ListItemIcon>
+            {option.id && (
+              <ListItemIcon sx={{ color: 'secondary.main' }}>
+                <MimeIconId id={option?.id} />
+              </ListItemIcon>
+            )}
             <ListItemText secondary={option.parent?.name}>
               {option.name}
             </ListItemText>

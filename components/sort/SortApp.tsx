@@ -66,7 +66,7 @@ const SortApp = ({ node }: { node: Node }) => {
                   list.map((node, index: number) => (
                     <Draggable
                       key={node.id}
-                      draggableId={node.id}
+                      draggableId={node.id!}
                       index={index}
                     >
                       {(provided, snapshot) => (
@@ -78,9 +78,9 @@ const SortApp = ({ node }: { node: Node }) => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            <ListItemAvatar>
+                            {node.id && <ListItemAvatar>
                               <MimeAvatarId id={node.id} />
-                            </ListItemAvatar>
+                            </ListItemAvatar>}
                             <ListItemText primary={node.name} />
                           </ListItem>
                         </Fragment>

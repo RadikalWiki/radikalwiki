@@ -81,20 +81,20 @@ const FolderList = ({ node }: { node: Node }) => {
         const avatar = (
           <MimeAvatar
             mimeId={child.data({ path: 'type' }) ?? mimeId}
-            index={findIndex(id)}
+            index={findIndex(id!)}
           />
         );
         return !id ? null : (
           <Collapse key={id ?? 0}>
             <ListItemButton
-              selected={session?.selected?.includes(child.id)}
+              selected={session?.selected?.includes(child.id!)}
               onClick={handleOnClick(namespace)}
             >
               <ListItemAvatar>{avatar}</ListItemAvatar>
               <ListItemText primary={<Typography>{name}</Typography>} />
               {isOwner ? (
                 <Tooltip title="Kopier" onClick={handleSelect(id)}>
-                  {session?.selected?.includes(child.id) ? (
+                  {session?.selected?.includes(child.id!) ? (
                     <CheckBox />
                   ) : (
                     <CheckBoxOutlineBlankOutlined />

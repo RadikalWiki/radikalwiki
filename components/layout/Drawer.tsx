@@ -163,7 +163,7 @@ const DrawerElement = ({
             </Box>
           }
         >
-          {childrenCount > 0 && (
+          {childrenCount > 0 && query.id && (
             <DrawerList
               key={query.id ?? 0}
               id={query.id}
@@ -232,7 +232,7 @@ const DrawerList = ({
 
   const number = children.filter((child) => child.mime?.icon == 'number');
   const letter = children.filter((child) => child.mime?.icon == 'letter');
-  const findIndex = (id: string) => {
+  const findIndex = (id?: string) => {
     const numberIndex = number.findIndex((elem) => elem.id === id);
     if (numberIndex !== -1) return numberIndex;
     const letterIndex = letter.findIndex((elem) => elem.id === id);
@@ -276,7 +276,6 @@ const Drawer = ({
     id: home ? undefined : session?.prefix?.id,
   });
   const query = node.useQuery();
-  //const context = node.useContext();
 
   const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
@@ -341,17 +340,19 @@ const Drawer = ({
       </ListItemButton>
       <Divider />
       <Suspense fallback={<CircularProgress />}>
-        <DrawerList
-          id={node.id}
-          path={session?.prefix?.path ?? []}
-          fullpath={path}
-          open={listOpen}
-          setOpen={setListOpen}
-          setDrawerOpen={setOpen}
-          index={0}
-          childIndex={0}
-          siblings={0}
-        />
+        {node.id && (
+          <DrawerList
+            id={node.id}
+            path={session?.prefix?.path ?? []}
+            fullpath={path}
+            open={listOpen}
+            setOpen={setListOpen}
+            setDrawerOpen={setOpen}
+            index={0}
+            childIndex={0}
+            siblings={0}
+          />
+        )}
       </Suspense>
     </List>
   );

@@ -24,7 +24,8 @@ const PollListSuspense = ({ node }: { node: Node }) => {
   const polls = query?.children({
     where: { mimeId: { _eq: 'vote/poll' } },
   });
-  const handleDeletePoll = (id: string) => async () => {
+  const handleDeletePoll = (id?: string) => async () => {
+    if (!id) return;
     await $delete({ id });
   };
 
@@ -45,8 +46,8 @@ const PollListSuspense = ({ node }: { node: Node }) => {
     >
       <Divider />
       <List>
-        {polls?.map(({ id = 0, namespace, children_aggregate, createdAt }) => (
-          <Fragment key={id}>
+        {polls?.map(({ id, namespace, children_aggregate, createdAt }) => (
+          <Fragment key={id ?? 0}>
             <ListItem
               button
               component={NextLink}
@@ -73,7 +74,7 @@ const PollListSuspense = ({ node }: { node: Node }) => {
                 </ListItemAvatar>
               </Tooltip>
               <ListItemText
-                primary={`${new Date(createdAt).toLocaleString('da-DK')}`}
+                primary={`${new Date(createdAt!).toLocaleString('da-DK')}`}
               />
               {owner && (
                 <ListItemSecondaryAction>

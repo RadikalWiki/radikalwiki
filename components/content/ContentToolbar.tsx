@@ -71,11 +71,12 @@ const ContentToolbar = ({
     await update({ set: { mutable: false } });
   };
 
-  const handleAddPoll = (_: any) => {
+  const handleAddPoll = () => {
     setOpenPollDialog(true);
   };
 
-  const handleFocus = (id: string | null) => async (_: any) => {
+  const handleFocus = (id?: string | null) => async () => {
+    if (id === undefined) return;
     await set('active', id);
   };
 

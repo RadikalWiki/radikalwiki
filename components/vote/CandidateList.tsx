@@ -60,6 +60,7 @@ const CandidateList = ({ node }: { node: Node }) => {
   const handleOnClick = (namespace?: string) => async () => {
     const path = `${router.asPath}/${namespace}`.substring(1).split('/');
     const id = await toId(path);
+    if (!id) return; 
     await resolved(() => {
       const node = query?.node({ id });
       node?.id;

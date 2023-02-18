@@ -72,7 +72,8 @@
   "gqty": {
     "react": true,
     "scalarTypes": {
-      "DateTime": "string"
+      "timestamptz": "string",
+      "uuid": "string"
     },
     "introspection": {
       "endpoint": "core/gql/schema.gql"

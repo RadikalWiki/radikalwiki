@@ -71,7 +71,7 @@ const PollDialog = ({
       },
     });
 
-    await contextSet('active', poll.id);
+    await contextSet('active', poll.id ?? null);
     router.push(`${router.asPath.split('?')[0]}/${poll.namespace}`);
     setLoading(false);
   };

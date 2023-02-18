@@ -20,9 +20,10 @@ import { getLetter } from 'mime';
 import { DeleteDialog } from 'comps';
 
 const checkIfSuperParent = async (
-  id: string,
-  superParentId: string
+  id?: string,
+  superParentId?: string
 ): Promise<boolean> => {
+  if (!(id && superParentId)) return false;
   const parentId = await resolved(() => q.node({ id })?.parentId);
   console.log('id: ' + id);
   console.log('parentId: ' + parentId);
@@ -33,7 +34,7 @@ const checkIfSuperParent = async (
     ? true
     : parentId === null
     ? false
-    : checkIfSuperParent(parentId, superParentId);
+    : checkIfSuperParent(parentId!, superParentId);
 };
 
 const FolderDial = ({ node }: { node: Node }) => {
@@ -114,7 +115,7 @@ const FolderDial = ({ node }: { node: Node }) => {
         ? '<br>' +
           (
             await Promise.all(
-              children.map(async (id) => await formatContent(id, level + 1))
+              children.map(async (id) => await formatContent(id!, level + 1))
             )
           ).join('<br>')
         : ''
@@ -122,6 +123,7 @@ const FolderDial = ({ node }: { node: Node }) => {
   };
 
   const handleExport = async () => {
+    if (!id) return;
     const nodes = await resolved(() =>
       q
         .node({ id })
@@ -144,7 +146,7 @@ const FolderDial = ({ node }: { node: Node }) => {
     const html = nodes
       ? (
           await Promise.all(
-            nodes.map(async (content) => await formatContent(content.id, 2))
+            nodes.map(async (content) => await formatContent(content.id!, 2))
           )
         ).join('<br><br>')
       : '';
@@ -171,7 +173,8 @@ const FolderDial = ({ node }: { node: Node }) => {
     document.body.removeChild(link);
   };
 
-  const copy = async (copyId: string, parentId: string) => {
+  const copy = async (copyId?: string | null, parentId?: string | null) => {
+    if (!copyId) return;
     const node = await resolved(() => {
       const { name, namespace, mimeId, data, mutable, attachable, index } =
         q.node({ id: copyId })!;
@@ -183,7 +186,7 @@ const FolderDial = ({ node }: { node: Node }) => {
         attachable,
         index,
         data: data(),
-        parentId,
+        parentId: parentId!,
       };
     });
     const children = await resolved(() =>
@@ -197,7 +200,9 @@ const FolderDial = ({ node }: { node: Node }) => {
         .members({ where: { parentId: { _eq: copyId } } })
         .map(({ name, nodeId, email }) => ({ name, nodeId, email, parentId }))
     );
+    if (node.parentId === null) return;
     const newNode = await nodeInsert(node);
+    if (!newNode.id) return;
     await nodeMembers.insert({ members, parentId: newNode.id });
 
     children?.map((id) => copy(id, newNode.id));

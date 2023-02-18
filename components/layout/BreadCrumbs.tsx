@@ -114,7 +114,7 @@ const BreadcrumbsLink = ({
       {namespaces.length === fullpath.length &&
         router.query.app !== undefined && (
           <Box
-            key={node?.id + router.query.app ?? 0}
+            key={`${node?.id}${router.query.app}`}
             sx={{
               alignItems: 'center',
               display: 'flex',

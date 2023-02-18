@@ -55,17 +55,19 @@ const ListSuspense = () => {
   });
 
   const [updateMember] = useMutation(
-    (mutation, args: { id?: string; set: members_set_input }) =>
+    (mutation, args: { id?: string; set: members_set_input }) => {
+      if (!args.id) return;
       mutation.updateMember({
         pk_columns: { id: args.id },
         _set: args.set,
-      })?.id,
+      })?.id;
+    },
     {
       refetchQueries: [invites, events],
     }
   );
 
-  const handleAcceptInvite = (id: string) => async () => {
+  const handleAcceptInvite = (id?: string) => async () => {
     await updateMember({
       args: { id, set: { accepted: true, nodeId: userId } },
     });
@@ -76,19 +78,21 @@ const ListSuspense = () => {
 
   return (
     <List>
-      {invites.map(({ id = 0, parent }) => {
+      {invites.map(({ id, parent }) => {
         const item = (
           <ListItem
-            key={id}
+            key={id ?? 0}
             secondaryAction={
               <IconButton onClick={handleAcceptInvite(id)}>
                 <Add />
               </IconButton>
             }
           >
-            <ListItemAvatar>
-              <MimeAvatarId id={parent?.id} />
-            </ListItemAvatar>
+            {parent?.id && (
+              <ListItemAvatar>
+                <MimeAvatarId id={parent?.id} />
+              </ListItemAvatar>
+            )}
             <ListItemText primary={parent?.name} />
           </ListItem>
         );
