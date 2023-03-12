@@ -37,7 +37,7 @@ const HomeApp = () => {
                   Log ind eller registrer dig i toppanelet.
                 </Typography>
                 <Typography>
-                  Husk at bruge den e-mail, som du registrerede dig med hos RU.
+                  Husk at bruge den email, som du registrerede dig med hos RU.
                 </Typography>
               </>
             )) || (

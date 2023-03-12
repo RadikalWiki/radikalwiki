@@ -24,7 +24,7 @@ const Unverified = () => {
   return (
     <Container>
       <HeaderCard
-        title="Verificer din e-mail"
+        title="Verificer din email"
         avatar={
           <Avatar
             sx={{
@@ -38,10 +38,10 @@ const Unverified = () => {
         <Divider />
         <CardContent>
           <Typography>
-            Du skulle gerne have modtaget en verifications e-mail.
+            Du skulle gerne have modtaget en verifications email.
           </Typography>
           <Typography>Brug den til at aktivere din bruger.</Typography>
-          <Typography>Tjek eventuelt om e-mailen er endt i spam.</Typography>
+          <Typography>Tjek eventuelt om emailen er endt i spam.</Typography>
         </CardContent>
       </HeaderCard>
     </Container>

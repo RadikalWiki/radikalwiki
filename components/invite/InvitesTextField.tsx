@@ -75,7 +75,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
               color="primary"
               variant="outlined"
               label="Inviter"
-              placeholder="Navn eller E-mail"
+              placeholder="Navn eller Email"
             />
           )}
         />

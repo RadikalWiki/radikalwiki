@@ -60,7 +60,7 @@ const UserButton = () => {
     setAnchorEl(null);
   };
 
-  const handleUser = (mode: 'login' | 'register' | 'reset-password') => () => {
+  const handleUser = (mode: 'login' | 'register' | 'set-password') => () => {
     setAnchorEl(null);
     router.push(`/user/${mode}`);
   };
@@ -107,7 +107,7 @@ const UserButton = () => {
           //  </ListItemIcon>
           //  <ListItemText>Profil</ListItemText>
           //</MenuItem>,
-          <MenuItem key="reset" onClick={handleUser('reset-password')}>
+          <MenuItem key="reset" onClick={handleUser('set-password')}>
             <ListItemIcon>
               <LockReset />
             </ListItemIcon>

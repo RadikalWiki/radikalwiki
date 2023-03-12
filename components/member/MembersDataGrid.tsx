@@ -18,7 +18,7 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
     },
     {
       field: 'email',
-      headerName: 'E-Mail',
+      headerName: 'EMail',
 
       editable: true,
       width: 200,
