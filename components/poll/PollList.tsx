@@ -11,14 +11,14 @@ import {
   ListItemSecondaryAction,
   IconButton,
   Divider,
+  ListItemButton,
 } from '@mui/material';
 import { Cancel, HowToVote } from '@mui/icons-material';
-import { useRouter } from 'next/router';
 import { IconId } from 'mime';
-import { Node, useScreen } from 'hooks';
+import { Node, useLink, useScreen } from 'hooks';
 
 const PollListSuspense = ({ node }: { node: Node }) => {
-  const router = useRouter();
+  const link = useLink();
   const query = node.useQuery();
   const $delete = node.useDelete();
   const polls = query?.children({
@@ -48,10 +48,8 @@ const PollListSuspense = ({ node }: { node: Node }) => {
       <List>
         {polls?.map(({ id, namespace, children_aggregate, createdAt }) => (
           <Fragment key={id ?? 0}>
-            <ListItem
-              button
-              component={NextLink}
-              href={`${router.asPath}/${namespace}`}
+            <ListItemButton
+              onClick={() => link.push([namespace!])}
             >
               <Tooltip title="Antal stemmer">
                 <ListItemAvatar>
@@ -88,7 +86,7 @@ const PollListSuspense = ({ node }: { node: Node }) => {
                   </IconButton>
                 </ListItemSecondaryAction>
               )}
-            </ListItem>
+            </ListItemButton>
             <Divider />
           </Fragment>
         ))}

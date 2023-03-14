@@ -5,18 +5,18 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
 import { useUserId } from '@nhost/nextjs';
 import { fromId } from 'core/path';
 import { order_by, resolved, useQuery } from 'gql';
-import { useSession } from 'hooks';
-import { useRouter } from 'next/router';
+import { useLink, useSession } from 'hooks';
 import { startTransition } from 'react';
 
 const HomeList = ({ setOpen }: { setOpen: Function }) => {
-  const router = useRouter();
+  const link = useLink();
   const userId = useUserId();
   const query = useQuery();
   const [_, setSession] = useSession();
@@ -34,7 +34,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
     },
   });
 
-  const handleEventSelect = (id: any) => async () => {
+  const handleEventSelect = (id: string) => async () => {
     const prefix = await resolved(() => {
       const node = query.node({ id });
       return {
@@ -54,7 +54,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
         },
       });
       setOpen(false);
-      router.push(`/${path.join('/')}`);
+      link.id(id)
     });
   };
 
@@ -70,19 +70,18 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           <ListItemText primary="Begivenheder" />
         </ListItem>
         <Divider />
-        {events.map(({ id = 0, name }) => {
+        {events.map(({ id = "0", name }) => {
           const item = (
-            <ListItem
+            <ListItemButton
               key={id}
-              hidden={id == 0}
-              button
+              hidden={id == "0"}
               onClick={handleEventSelect(id)}
             >
               <ListItemIcon>
                 <Event />
               </ListItemIcon>
               <ListItemText primary={name} />
-            </ListItem>
+            </ListItemButton>
           );
           return id ? item : null;
         })}

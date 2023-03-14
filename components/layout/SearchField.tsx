@@ -19,9 +19,8 @@ import {
 } from '@mui/material';
 import { fromId } from 'core/path';
 import { nodes, query, resolved } from 'gql';
-import { useSession } from 'hooks';
-import { MimeAvatar, MimeAvatarId, MimeIconId } from 'comps';
-import { useRouter } from 'next/router';
+import { useLink, useSession } from 'hooks';
+import { MimeAvatar, MimeIconId } from 'comps';
 import { forwardRef, Fragment, useEffect, useRef, useState } from 'react';
 import Breadcrumbs from './BreadCrumbs';
 
@@ -84,7 +83,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const SearchField = () => {
-  const router = useRouter();
+  const link = useLink();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [searchMode, setSearchMode] = useState(false);
   const [input, setInput] = useState('');
@@ -99,8 +98,7 @@ const SearchField = () => {
 
   const goto = async (id?: string) => {
     if (!id) return;
-    const path = await fromId(id);
-    router.push('/' + path.join('/'));
+    link.id(id)
     setOpen(false);
     setInput('');
   };

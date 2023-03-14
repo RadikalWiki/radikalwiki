@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Loader, PathLoader } from 'comps';
+import { PathLoader } from 'comps';
 import { fromId } from 'core/path';
-import { usePath, useSession } from 'hooks';
+import { usePath } from 'hooks';
 
 const Path = () => {
   const router = useRouter();

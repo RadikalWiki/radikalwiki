@@ -6,7 +6,6 @@ import {
   ContentToolbar,
   AutoButton,
 } from 'comps';
-import { useRouter } from 'next/router';
 import {
   ExpandMore,
   ExpandLess,
@@ -36,13 +35,13 @@ import {
 } from '@mui/material';
 import { nodes, order_by } from 'gql';
 import { IconId } from 'mime';
-import { Node, useScreen } from 'hooks';
+import { Node, useLink, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
 import { useUserId } from '@nhost/nextjs';
 
 const QuestionList = ({ node }: { node: Node }) => {
   const screen = useScreen();
-  const router = useRouter();
+  const link = useLink();
   const query = node.useQuery();
   const $delete = node.useDelete();
   const userId = useUserId();
@@ -71,7 +70,7 @@ const QuestionList = ({ node }: { node: Node }) => {
                 <AutoButton
                   text="Sorter"
                   icon={<LowPriority />}
-                  onClick={() => router.push(`${router.asPath}?app=sort`)}
+                  onClick={() => link.push([], "sort")}
                 />
               )}
               <AddQuestionButton node={node} />

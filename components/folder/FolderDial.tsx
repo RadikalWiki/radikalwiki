@@ -10,10 +10,8 @@ import {
   Delete,
   ContentPaste,
 } from '@mui/icons-material';
-import { useRouter } from 'next/router';
 import { resolved, query as q, order_by } from 'gql';
-import { Node, useScreen, useSession } from 'hooks';
-import { fromId } from 'core/path';
+import { Node, useLink, useScreen, useSession } from 'hooks';
 import HTMLtoDOCX from 'html-to-docx';
 import { toHtml } from 'core/document';
 import { getLetter } from 'mime';
@@ -42,7 +40,7 @@ const FolderDial = ({ node }: { node: Node }) => {
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const router = useRouter();
+  const link = useLink();
   const query = node.useQuery();
   const id = query?.id;
   const nodeInsert = node.useInsert();
@@ -298,7 +296,7 @@ const FolderDial = ({ node }: { node: Node }) => {
             }
             tooltipTitle="Sorter"
             tooltipOpen
-            onClick={() => router.push(`${router.asPath}?app=sort`)}
+            onClick={() => link.push([], "sort")}
           />
           <SpeedDialAction
             icon={

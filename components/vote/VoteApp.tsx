@@ -28,12 +28,11 @@ import {
   HowToVote,
   Refresh,
 } from '@mui/icons-material';
-import { useUserEmail, useUserId } from '@nhost/nextjs';
+import { useUserId } from '@nhost/nextjs';
 
 const VoteApp = ({ node }: { node: Node }) => {
   const [session] = useSession();
   const userId = useUserId();
-  const email = useUserEmail();
   const router = useRouter();
   const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(false);

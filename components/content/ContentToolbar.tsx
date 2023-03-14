@@ -16,8 +16,7 @@ import {
   People,
   ZoomIn,
 } from '@mui/icons-material';
-import { Node, useNode, useSession } from 'hooks';
-import { useRouter } from 'next/router';
+import { Node, useLink, useNode, useSession } from 'hooks';
 import { AutoButton, DeleteDialog, PollDialog } from 'comps';
 import { useState } from 'react';
 
@@ -43,19 +42,13 @@ const marks = [
     label: '250%',
   },
 ];
-const ContentToolbar = ({
-  node,
-  child,
-}: {
-  node: Node;
-  child: boolean;
-}) => {
+const ContentToolbar = ({ node, child }: { node: Node; child?: boolean }) => {
   const query = node.useQuery();
   const update = node.useUpdate();
   const context = node.useContext();
   const set = context.useSet();
   const [_, setSession] = useSession();
-  const router = useRouter();
+  const link = useLink();
   const [openPollDialog, setOpenPollDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState<any>(null);
@@ -120,7 +113,7 @@ const ContentToolbar = ({
               key="member"
               text="Medlemmer"
               icon={<People />}
-              onClick={() => router.push(`${router.asPath}?app=member`)}
+              onClick={() => link.push([], 'member')}
             />
           ),
         ]}
@@ -136,11 +129,7 @@ const ContentToolbar = ({
             key="edit"
             text="Rediger"
             icon={<Edit />}
-            onClick={() =>
-              router.push(
-                `${router.asPath + (child ? `/${namespace}` : '')}?app=editor`
-              )
-            }
+            onClick={() => link.push(child ? [namespace!] : [], 'editor')}
           />
         )}
         {query?.mutable && (
@@ -198,6 +187,6 @@ const ContentToolbar = ({
       ]}
     </>
   );
-}
+};
 
 export default ContentToolbar;

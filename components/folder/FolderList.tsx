@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import {
   Avatar,
   Collapse,
@@ -20,14 +19,14 @@ import {
 import { nodes, order_by } from 'gql';
 import { TransitionGroup } from 'react-transition-group';
 import { MimeAvatar } from 'comps';
-import { Node, useSession } from 'hooks';
+import { Node, useLink, useSession } from 'hooks';
 import { useUserId } from '@nhost/nextjs';
 
 const FolderList = ({ node }: { node: Node }) => {
   const [session, setSession] = useSession();
   const isOwner = node.useQuery()?.isContextOwner;
   const userId = useUserId();
-  const router = useRouter();
+  const link = useLink()
   const query = node.useQuery();
 
   const children =
@@ -52,7 +51,7 @@ const FolderList = ({ node }: { node: Node }) => {
     }) ?? [];
 
   const handleOnClick = (namespace?: string) => async () => {
-    router.push(`${router.asPath}/${namespace}`);
+    link.push([namespace!])
   };
 
   const number = children.filter((child) => child.mime?.icon == 'number');

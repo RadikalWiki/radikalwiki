@@ -5,7 +5,7 @@ import {
   BottomNavigationAction,
 } from '@mui/material';
 import { HowToVote, RecordVoiceOver, Folder } from '@mui/icons-material';
-import { useSession } from 'hooks';
+import { useLink, useSession } from 'hooks';
 import { useRouter } from 'next/router';
 
 const getState = (path: string) =>
@@ -28,6 +28,7 @@ const getState = (path: string) =>
 const NavBar = () => {
   const [session] = useSession();
   const router = useRouter();
+  const link = useLink();
   const [state, setState] = useState(getState(router.pathname));
 
   useEffect(() => {
@@ -36,7 +37,7 @@ const NavBar = () => {
   }, [router.asPath]);
 
   const handleFolder = async () => {
-    await router.push(localStorage?.path ?? session?.prefix?.path.join('/'));
+    await link.path(localStorage?.path ?? session?.prefix?.path)
     const scroll = document.querySelector('#scroll');
     scroll?.scrollTo(0, JSON.parse(localStorage.scroll ?? 0));
   };

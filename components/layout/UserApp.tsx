@@ -5,6 +5,7 @@ import {
   ListItemText,
   ListItemAvatar,
   Avatar,
+  ListItemButton,
 } from '@mui/material';
 import { HeaderCard, Link } from 'comps';
 import { useQuery } from 'gql';
@@ -33,14 +34,13 @@ const UserApp = ({ node }: { node: Node }) => {
               },
             })
             .map(({ parent, node }) => (
-              <ListItem
+              <ListItemButton
                 key={node?.id ?? 0}
-                button
                 component={Link}
                 href={parent?.id ?? ''}
               >
                 <ListItemText primary={parent?.name} />
-              </ListItem>
+              </ListItemButton>
             )) ?? (
             <ListItem>
               <ListItemText primary="Ingen medlemskaber" />
@@ -60,14 +60,13 @@ const UserApp = ({ node }: { node: Node }) => {
               },
             })
             .map(({ parent, node }) => (
-              <ListItem
+              <ListItemButton
                 key={node?.id ?? 0}
-                button
                 component={Link}
                 href={parent?.id ?? ''}
               >
                 <ListItemText primary={parent?.name} />
-              </ListItem>
+              </ListItemButton>
             )) ?? (
             <ListItem>
               <ListItemText primary="Ingen medlemskaber" />

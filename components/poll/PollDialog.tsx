@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import {
   Dialog,
   DialogTitle,
@@ -13,7 +12,7 @@ import {
   Typography,
   Divider,
 } from '@mui/material';
-import { Node, useSession } from 'hooks';
+import { Node, useLink, useSession } from 'hooks';
 import { PlayArrow } from '@mui/icons-material';
 
 const PollDialog = ({
@@ -25,7 +24,7 @@ const PollDialog = ({
   open: boolean;
   setOpen: Function;
 }) => {
-  const router = useRouter();
+  const link = useLink();
   const [session] = useSession();
   const [loading, setLoading] = useState(false);
   const get = node.useSubsGet();
@@ -72,7 +71,7 @@ const PollDialog = ({
     });
 
     await contextSet('active', poll.id ?? null);
-    router.push(`${router.asPath.split('?')[0]}/${poll.namespace}`);
+    link.push([poll.namespace!])
     setLoading(false);
   };
 

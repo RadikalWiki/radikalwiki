@@ -1,8 +1,7 @@
 import React from 'react';
 import { Fab, Tooltip } from '@mui/material';
 import { Save } from '@mui/icons-material';
-import { useRouter } from 'next/router';
-import { Node } from 'hooks';
+import { Node, useLink } from 'hooks';
 
 const SortFab = ({
   node,
@@ -11,7 +10,7 @@ const SortFab = ({
   node: Node;
   elements: any;
 }) => {
-  const router = useRouter();
+  const link = useLink();
   const update = node.useUpdate();
 
   const handleClick = async () => {
@@ -20,7 +19,7 @@ const SortFab = ({
       return update({ id, set });
     });
     await Promise.all(proms);
-    router.push(router.asPath.split('?')[0]);
+    link.push([])
   };
 
   return (

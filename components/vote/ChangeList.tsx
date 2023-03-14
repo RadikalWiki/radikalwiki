@@ -8,7 +8,6 @@ import {
   MimeAvatar,
   MemberChips,
 } from 'comps';
-import { useRouter } from 'next/router';
 import {
   ExpandMore,
   ExpandLess,
@@ -35,24 +34,23 @@ import {
   Typography,
   Chip,
   Skeleton,
+  ListItemButton,
 } from '@mui/material';
 import { order_by } from 'gql';
 import { IconId } from 'mime';
-import { Node, useNode, useScreen } from 'hooks';
+import { Node, useLink, useNode, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
 
 const ChildListElement = ({ id, index }: { id: string; index: number }) => {
   const node = useNode({ id });
   const query = node.useQuery();
-  const router = useRouter();
+  const link = useLink();
   const [open, setOpen] = useState(false);
 
   const item = (
     <>
-      <ListItem
-        button
-        component={NextLink}
-        href={`${router.asPath}/${query?.namespace}`}
+      <ListItemButton
+        onClick={() => link.push([query?.namespace!])}
       >
         <ListItemAvatar>
           <MimeAvatar mimeId={query?.mimeId} index={index} />
@@ -71,7 +69,7 @@ const ChildListElement = ({ id, index }: { id: string; index: number }) => {
             {open ? <ExpandLess /> : <ExpandMore />}
           </IconButton>
         </ListItemSecondaryAction>
-      </ListItem>
+      </ListItemButton>
       <Divider />
       <Collapse in={open}>
         <ContentToolbar node={node} child />
@@ -120,7 +118,7 @@ const ChildListRaw = ({ node }: { node: Node }) => {
 
 const ChangeList = ({ node }: { node: Node }) => {
   const screen = useScreen();
-  const router = useRouter();
+  const link = useLink();
   const query = node.useQuery();
 
   if (screen) return null;
@@ -144,7 +142,7 @@ const ChangeList = ({ node }: { node: Node }) => {
               <AutoButton
                 text="Sorter"
                 icon={<LowPriority />}
-                onClick={() => router.push(`${router.asPath}?app=sort`)}
+                onClick={() => link.push([], "sort")}
               />
             )}
             <AddChangeButton node={node} />

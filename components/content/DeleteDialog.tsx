@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import {
   Dialog,
   DialogTitle,
@@ -7,7 +6,7 @@ import {
   Button,
   Divider,
 } from '@mui/material';
-import { Node } from 'hooks';
+import { Node, useLink } from 'hooks';
 import { Delete } from '@mui/icons-material';
 import { fromId } from 'core/path';
 
@@ -21,14 +20,13 @@ const PollDialog = ({
   setOpen: Function;
 }) => {
   const query = node.useQuery();
-  const router = useRouter();
+  const link = useLink();
   const $delete = node.useDelete();
   const parentId = query?.parentId;
 
   const handleDelete = async () => {
     await $delete();
-    const path = await fromId(parentId);
-    router.push('/' + path.join('/'));
+    link.pop();
   };
 
   const getMarks = (count: number) =>

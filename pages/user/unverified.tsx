@@ -12,12 +12,12 @@ import { useRouter } from 'next/router';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 
 const Unverified = () => {
-  const { push } = useRouter();
+  const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
 
   useEffect(() => {
     if (isAuthenticated) {
-      push('/');
+      router.push('/');
     }
   }, [isAuthenticated]);
 

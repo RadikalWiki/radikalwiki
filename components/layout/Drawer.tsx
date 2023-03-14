@@ -23,12 +23,11 @@ import {
   FileOpen,
   Home,
 } from '@mui/icons-material';
-import { useSession, usePath, useNode } from 'hooks';
+import { useSession, usePath, useNode, useLink } from 'hooks';
 import { fromId } from 'core/path';
 import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from 'comps';
 import { order_by, resolved, nodes } from 'gql';
 import { useState, startTransition, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/router';
 import { drawerWidth } from 'core/constants';
 import { Box } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
@@ -54,7 +53,7 @@ const DrawerElement = ({
   childIndex: number;
   iconIndex?: number;
 }) => {
-  const router = useRouter();
+  const link = useLink();
   const slicedPath = fullpath.slice(0, path.length);
   const userId = useUserId();
 
@@ -96,14 +95,13 @@ const DrawerElement = ({
         onClick={() => {
           startTransition(() => {
             setDrawerOpen(false);
-            router.push(`${path.join('/')}`);
+            link.path(path)
           });
         }}
       >
         <ListItemIcon
           sx={{ color: selected ? 'primary.main' : 'secondary.main' }}
         >
-          {/* <Icon id={child?.id} index={iconIndex} /> */}
           <MimeIcon
             mimeId={query.data({ path: 'type' }) ?? query.mimeId}
             index={iconIndex}
@@ -267,7 +265,7 @@ const Drawer = ({
   open: boolean;
   setOpen: (val: boolean) => void;
 }) => {
-  const router = useRouter();
+  const link = useLink();
   const [session, setSession] = useSession();
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const path = usePath();
@@ -289,8 +287,7 @@ const Drawer = ({
         })?.[0]?.nodeId,
       { noCache: true }
     );
-    const path = await fromId(id ?? contextId);
-    await router.push(`/${path.join('/')}`);
+    await link.id(id ?? contextId!);
     setOpen(false);
   };
 
@@ -398,7 +395,7 @@ const Drawer = ({
         <Toolbar
           onClick={() => {
             if (!home) {
-              router.push(`/${(session?.prefix?.path ?? path).join('/')}`);
+              link.path(session?.prefix?.path ?? path);
               setOpen(false);
             }
           }}
@@ -417,7 +414,7 @@ const Drawer = ({
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
-                  router.back();
+                  link.back();
                 });
               }}
             >
@@ -429,7 +426,7 @@ const Drawer = ({
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
-                  router.push('/');
+                  link.path([]);
                 });
               }}
             >

@@ -2,7 +2,6 @@ import { Slide, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import { useQuery } from 'gql';
 import { useSession } from 'hooks';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Loader from './Loader';
 

@@ -15,9 +15,8 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { useRouter } from 'next/router';
 import { IconId, getName } from 'mime';
-import { Node } from 'hooks';
+import { Node, useLink } from 'hooks';
 import { FileUploader } from 'comps';
 import { v4 as uuid } from 'uuid';
 
@@ -36,7 +35,7 @@ const AddContentDialog = ({
   initTitel?: string;
   redirect?: boolean;
 }) => {
-  const router = useRouter();
+  const link = useLink();
   const [titel, setTitel] = useState<string>(initTitel ?? '');
   const [text, setText] = useState<string>('');
   const [mimeId, setMimeId] = useState(mimes?.[0] ?? '');
@@ -66,7 +65,7 @@ const AddContentDialog = ({
     setFileId(undefined);
     setFileName(undefined);
 
-    if (redirect) router.push(`${router.asPath}/${namespace}`);
+    if (redirect) link.push([namespace]);
   };
 
   return (

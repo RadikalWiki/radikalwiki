@@ -5,19 +5,16 @@ import {
   ImageListItemBar,
   useMediaQuery,
 } from '@mui/material';
-import { Node, useScreen } from 'hooks';
+import { Node, useLink, useScreen } from 'hooks';
 import { IconId } from 'mime';
 import { Image } from 'comps';
-import { useRouter } from 'next/router';
-import { query, resolved } from 'gql';
-import { toId } from 'core/path';
 import { Box } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
 import { nhost } from 'nhost';
 import { useEffect, useState } from 'react';
 
 const CandidateList = ({ node }: { node: Node }) => {
-  const router = useRouter();
+  const link = useLink();
   const screen = useScreen();
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const userId = useUserId();
@@ -57,20 +54,6 @@ const CandidateList = ({ node }: { node: Node }) => {
 
   if (screen) return null;
 
-  const handleOnClick = (namespace?: string) => async () => {
-    const path = `${router.asPath}/${namespace}`.substring(1).split('/');
-    const id = await toId(path);
-    if (!id) return; 
-    await resolved(() => {
-      const node = query?.node({ id });
-      node?.id;
-      node?.name;
-      node?.mimeId;
-    });
-
-    router.push(`${router.asPath}/${namespace}`);
-  };
-
   return (
     <ImageList cols={largeScreen ? 2 : 1} sx={{ m: 0 }}>
       {children?.map(({ id, name, namespace }, index) =>
@@ -78,7 +61,7 @@ const CandidateList = ({ node }: { node: Node }) => {
           <ImageListItem
             key={id ?? 0}
             sx={{ borderRadius: '70px', cursor: 'pointer' }}
-            onClick={handleOnClick(namespace)}
+            onClick={() => link.push([namespace!])}
           >
             {images?.[index] ? (
               <Image

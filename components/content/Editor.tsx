@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { AuthorTextField, AutoButton, Slate, FileUploader, Image } from 'comps';
-import { useRouter } from 'next/router';
 import { resolved } from 'gql';
 import {
   Box,
@@ -14,11 +13,11 @@ import {
 } from '@mui/material';
 import { Publish, Save, Delete } from '@mui/icons-material';
 import { fromId } from 'core/path';
-import { Node } from 'hooks';
+import { Node, useLink } from 'hooks';
 import { nhost } from 'nhost';
 
 const Editor = ({ node }: { node: Node }) => {
-  const router = useRouter();
+  const link = useLink();
   const query = node.useQuery();
   const update = node.useUpdate();
   const $delete = node.useDelete();
@@ -86,14 +85,13 @@ const Editor = ({ node }: { node: Node }) => {
     await update({
       set: { name, data: { content: newContent, image: fileId }, mutable },
     });
-    router.push(router.asPath.split('?')[0]);
+    link.push([]);
   };
 
   const handleDelete = async () => {
     await nodeMembers.delete();
     await $delete();
-    const path = await fromId(parentId);
-    router.push('/' + path.join('/'));
+    link.pop();
   };
 
   const editable = query?.mutable && query?.isOwner;

@@ -19,14 +19,8 @@ const Layout = ({ children }: { children?: any }) => {
   const [showing, setShowing] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [session, setSession] = useSession();
-  const { asPath, push } = useRouter();
+  const router = useRouter();
   const { isAuthenticated, isLoading } = useAuthenticationStatus();
-
-  //useEffect(() => {
-  //  if (!asPath.match(/^\/user\/|^\/$/) && !isLoading && !isAuthenticated) {
-  //    push("/user/login");
-  //  }
-  //}, [isLoading, isAuthenticated, asPath, push]);
 
   //const refresh = () => nhost.auth.refreshSession();
 
@@ -55,7 +49,7 @@ const Layout = ({ children }: { children?: any }) => {
   if (outdated) return <OldBrowser />;
   if (!showing) return null;
 
-  if (asPath.match(/\?app=screen/) && isAuthenticated) return children;
+  if (router.query.app === "screen" && isAuthenticated) return children;
 
   return (
     <>
@@ -71,7 +65,7 @@ const Layout = ({ children }: { children?: any }) => {
           <Box sx={{ p: 8 }} />
         </Scroll>
       </Box>
-      {!asPath.match(/^\/user\/$/) && isAuthenticated && <NavBar />}
+      {!router.asPath.match(/^\/user\/$/) && isAuthenticated && <NavBar />}
     </>
   );
 }
