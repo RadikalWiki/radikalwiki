@@ -61,7 +61,8 @@ const ChildListElement = ({ id, index }: { id: string; index: number }) => {
         />
         <ListItemSecondaryAction>
           <IconButton
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
               setOpen(!open);
             }}
             size="large"
@@ -97,7 +98,7 @@ const ChildListRaw = ({ node }: { node: Node }) => {
         ))}
         {children?.length == 0 && (
           <Collapse key={-1}>
-            <ListItem button>
+            <ListItemButton>
               <ListItemAvatar>
                 <Avatar
                   sx={{
@@ -108,7 +109,7 @@ const ChildListRaw = ({ node }: { node: Node }) => {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary="Ingen ændringsforslag" />
-            </ListItem>
+            </ListItemButton>
           </Collapse>
         )}
       </TransitionGroup>
