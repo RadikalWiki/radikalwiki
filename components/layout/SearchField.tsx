@@ -21,7 +21,7 @@ import { fromId } from 'core/path';
 import { nodes, query, resolved } from 'gql';
 import { useLink, useSession } from 'hooks';
 import { MimeAvatar, MimeIconId } from 'comps';
-import { forwardRef, Fragment, useEffect, useRef, useState } from 'react';
+import { forwardRef, Fragment, startTransition, useEffect, useRef, useState } from 'react';
 import Breadcrumbs from './BreadCrumbs';
 
 const SearchBoxRef = (props: any, ref?: any) => (
@@ -234,7 +234,7 @@ const SearchField = () => {
                 ) : null,
               }}
             />
-            <IconButton onClick={() => setSearchMode(false)}>
+            <IconButton onClick={() => startTransition(() => setSearchMode(false))}>
               <Avatar sx={{ bgcolor: 'secondary.main' }}>
                 <SearchOff />
               </Avatar>
@@ -249,7 +249,7 @@ const SearchField = () => {
     <SearchBox>
       <Stack direction="row">
         <Breadcrumbs />
-        <IconButton onClick={() => setSearchMode(true)}>
+        <IconButton onClick={() => startTransition(() => setSearchMode(true))}>
           <MimeAvatar mimeId="app/search" />
         </IconButton>
       </Stack>
