@@ -26,7 +26,7 @@ const FolderList = ({ node }: { node: Node }) => {
   const [session, setSession] = useSession();
   const isOwner = node.useQuery()?.isContextOwner;
   const userId = useUserId();
-  const link = useLink()
+  const link = useLink();
   const query = node.useQuery();
 
   const children =
@@ -51,7 +51,7 @@ const FolderList = ({ node }: { node: Node }) => {
     }) ?? [];
 
   const handleOnClick = (namespace?: string) => async () => {
-    link.push([namespace!])
+    link.push([namespace!]);
   };
 
   const number = children.filter((child) => child.mime?.icon == 'number');
@@ -81,6 +81,7 @@ const FolderList = ({ node }: { node: Node }) => {
           <MimeAvatar
             mimeId={child.data({ path: 'type' }) ?? mimeId}
             index={findIndex(id!)}
+            name={name}
           />
         );
         return !id ? null : (
@@ -124,6 +125,6 @@ const FolderList = ({ node }: { node: Node }) => {
       )}
     </TransitionGroup>
   );
-}
+};
 
 export default FolderList;

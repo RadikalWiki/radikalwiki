@@ -7,16 +7,19 @@ import { MimeSkeleton } from 'comps';
 const MimeIcon = ({
   mimeId,
   index,
+  name,
 }: {
   mimeId: Maybe<string | undefined>;
   index?: number;
-}) => <IconId mimeId={mimeId} index={index} />;
+  name?: string;
+}) => <IconId mimeId={mimeId} index={index} name={name} />;
 
 const Icon = ({ node }: { node: Node }) => {
   const query = node.useQuery();
   const type = query?.data?.({ path: 'type' });
   const mimeId = query?.mimeId;
   const id = type ?? mimeId;
+  const name = query?.name;
   const index =
     query?.parent
       ?.children({
@@ -29,7 +32,7 @@ const Icon = ({ node }: { node: Node }) => {
         order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
       })
       .findIndex((child) => child.id === node.id) ?? 0;
-  return <IconId mimeId={id} index={index} />;
+  return <IconId name={name} mimeId={id} index={index} />;
 };
 
 const MimeIconNode = withSuspense(Icon, MimeSkeleton);

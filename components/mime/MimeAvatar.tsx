@@ -9,9 +9,11 @@ import { MimeSkeleton } from 'comps';
 const MimeAvatar = ({
   mimeId,
   index,
+  name,
 }: {
   mimeId: Maybe<string | undefined>;
   index?: number;
+  name?: string;
 }) => {
   const screen = useScreen();
   return (
@@ -20,7 +22,7 @@ const MimeAvatar = ({
         bgcolor: screen ? 'primary.main' : 'secondary.main',
       }}
     >
-      <IconId mimeId={mimeId} index={index} avatar />
+      <IconId name={name} mimeId={mimeId} index={index} avatar />
     </MuiAvatar>
   );
 };
@@ -31,6 +33,7 @@ const Avatar = ({ node }: { node: Node }) => {
   const type = query?.data?.({ path: 'type' });
   const mimeId = query?.mimeId;
   const id = type ?? mimeId;
+  const name = query?.name;
   const index =
     query?.parent
       ?.children({
@@ -54,7 +57,7 @@ const Avatar = ({ node }: { node: Node }) => {
         bgcolor: screen ? 'primary.main' : 'secondary.main',
       }}
     >
-      <IconId mimeId={id} index={index} avatar />
+      <IconId name={name} mimeId={id} index={index} avatar />
     </MuiAvatar>
   );
   return query?.mutable && !screen ? (

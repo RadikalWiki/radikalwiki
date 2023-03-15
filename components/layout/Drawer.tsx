@@ -95,7 +95,7 @@ const DrawerElement = ({
         onClick={() => {
           startTransition(() => {
             setDrawerOpen(false);
-            link.path(path)
+            link.path(path);
           });
         }}
       >
@@ -105,6 +105,7 @@ const DrawerElement = ({
           <MimeIcon
             mimeId={query.data({ path: 'type' }) ?? query.mimeId}
             index={iconIndex}
+            name={query.name}
           />
         </ListItemIcon>
         <ListItemText>
@@ -434,7 +435,7 @@ const Drawer = ({
             </IconButton>
           ) : null}
           <Box sx={{ flexGrow: 1 }} />
-          <MimeAvatar mimeId={query?.mimeId} />
+          <MimeAvatar name={query?.name} mimeId={query?.mimeId} />
           <Typography sx={{ pl: 1 }} color="#fff" variant="h6">
             {node?.name}
           </Typography>

@@ -26,8 +26,14 @@ import MicrosoftExcelIcon from './svg/microsoft-excel.svg';
 import MicrosoftWordIcon from './svg/microsoft-word.svg';
 import FilePdfBoxIcon from './svg/file-pdf-box.svg';
 import VideoBoxIcon from './svg/video-box.svg';
-import { Avatar as MuiAvatar, Skeleton, Typography } from '@mui/material';
+import {
+  Avatar as MuiAvatar,
+  Badge,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import { Maybe } from 'gql';
+import { Box } from '@mui/system';
 
 const getLetter = (index: number) => {
   const f = String.fromCharCode(65 + (index % 26));
@@ -37,10 +43,12 @@ const getLetter = (index: number) => {
 const IconId = ({
   mimeId,
   index,
+  name,
   avatar,
 }: {
   mimeId: Maybe<string | undefined>;
   index?: number;
+  name?: string;
   avatar?: boolean;
 }) => {
   switch (mimeId) {
@@ -53,7 +61,28 @@ const IconId = ({
     case 'wiki/event':
       return <Event />;
     case 'wiki/folder':
-      return <Folder />;
+      return (
+        <Box>
+          <Folder
+            sx={{
+              fontSize: 32,
+              position: avatar ? 'relative' : 'absolute',
+              marginLeft: avatar ? '0px' : '-3px',
+              marginTop: avatar ? '0px' : '-3px',
+            }}
+          />
+          <Typography
+            sx={{
+              color: (t) => (avatar ? t.palette.secondary.main : 'white'),
+              position: avatar ? 'absolute' : 'relative',
+              top: avatar ? 8 : 3,
+              left: avatar ? 16 : 8,
+            }}
+          >
+            <b>{name?.[0]}</b>
+          </Typography>
+        </Box>
+      );
     case 'wiki/document':
       return <Article />;
     case 'wiki/file':
