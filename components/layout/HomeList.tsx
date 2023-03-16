@@ -26,9 +26,17 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
       _and: [
         { mimeId: { _eq: 'wiki/event' } },
         {
-          members: {
-            _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
-          },
+          _or: [
+            { ownerId: { _eq: userId } },
+            {
+              members: {
+                _and: [
+                  { accepted: { _eq: true } },
+                  { nodeId: { _eq: userId } },
+                ],
+              },
+            },
+          ],
         },
       ],
     },
@@ -39,9 +47,17 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
       _and: [
         { mimeId: { _eq: 'wiki/group' } },
         {
-          members: {
-            _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
-          },
+          _or: [
+            { ownerId: { _eq: userId } },
+            {
+              members: {
+                _and: [
+                  { accepted: { _eq: true } },
+                  { nodeId: { _eq: userId } },
+                ],
+              },
+            },
+          ],
         },
       ],
     },
