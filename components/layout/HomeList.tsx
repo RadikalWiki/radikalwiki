@@ -1,4 +1,4 @@
-import { Event, EventBusy } from '@mui/icons-material';
+import { Event, EventBusy, Group, GroupRemove } from '@mui/icons-material';
 import {
   Avatar,
   Divider,
@@ -33,8 +33,21 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
       ],
     },
   });
+  const groups = query.nodes({
+    order_by: [{ createdAt: order_by.desc }],
+    where: {
+      _and: [
+        { mimeId: { _eq: 'wiki/group' } },
+        {
+          members: {
+            _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
+          },
+        },
+      ],
+    },
+  });
 
-  const handleEventSelect = (id: string) => async () => {
+  const handleContextSelect = (id: string) => async () => {
     const prefix = await resolved(() => {
       const node = query.node({ id });
       return {
@@ -54,12 +67,47 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
         },
       });
       setOpen(false);
-      link.id(id)
+      link.id(id);
     });
   };
 
   return (
     <>
+      <List>
+        <ListItem key={-1}>
+          <ListItemAvatar>
+            <Avatar sx={{ bgcolor: 'secondary.main' }}>
+              <Group />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary="Grupper" />
+        </ListItem>
+        <Divider />
+        {groups.map(({ id = '0', name }) => {
+          const item = (
+            <ListItemButton
+              key={id}
+              hidden={id == '0'}
+              onClick={handleContextSelect(id)}
+            >
+              <ListItemIcon>
+                <Group />
+              </ListItemIcon>
+              <ListItemText primary={name} />
+            </ListItemButton>
+          );
+          return id ? item : null;
+        })}
+        {!groups?.[0]?.id && (
+          <ListItem key={-2}>
+            <ListItemIcon>
+              <GroupRemove />
+            </ListItemIcon>
+            <ListItemText primary="Ingen grupper" />
+          </ListItem>
+        )}
+      </List>
+      <Divider />
       <List>
         <ListItem key={-1}>
           <ListItemAvatar>
@@ -70,12 +118,12 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           <ListItemText primary="Begivenheder" />
         </ListItem>
         <Divider />
-        {events.map(({ id = "0", name }) => {
+        {events.map(({ id = '0', name }) => {
           const item = (
             <ListItemButton
               key={id}
-              hidden={id == "0"}
-              onClick={handleEventSelect(id)}
+              hidden={id == '0'}
+              onClick={handleContextSelect(id)}
             >
               <ListItemIcon>
                 <Event />
@@ -97,6 +145,6 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
       <Divider />
     </>
   );
-}
+};
 
 export default HomeList;
