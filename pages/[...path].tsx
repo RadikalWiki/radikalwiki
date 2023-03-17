@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PathLoader } from 'comps';
 import { fromId } from 'core/path';
@@ -8,7 +8,7 @@ import { useAuthenticationStatus } from '@nhost/nextjs';
 const Path = () => {
   const router = useRouter();
   const fullpath = usePath();
-  const { isLoading } = useAuthenticationStatus()
+  const { isLoading } = useAuthenticationStatus();
 
   // Redirect uuid v4 to full path
   useEffect(() => {
@@ -26,7 +26,11 @@ const Path = () => {
   }, [fullpath]);
 
   if (isLoading || fullpath.length === 0) return null;
-  return <PathLoader namespaces={[]} fullpath={fullpath} />;
-}
+  return (
+    <Suspense fallback={null}>
+      <PathLoader namespaces={[]} fullpath={fullpath} />
+    </Suspense>
+  );
+};
 
 export default Path;
