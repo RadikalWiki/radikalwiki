@@ -48,7 +48,15 @@ const Avatar = ({ node }: { node: Node }) => {
       .findIndex((child) => child.id === node.id) ?? 0;
 
   if (id === undefined) {
-    return <Skeleton variant="circular" width={40} height={40} />;
+    return (
+      <MuiAvatar
+        sx={{
+          bgcolor: screen ? 'primary.main' : 'secondary.main',
+        }}
+      >
+        {' '}
+      </MuiAvatar>
+    );
   }
 
   const avatar = (
