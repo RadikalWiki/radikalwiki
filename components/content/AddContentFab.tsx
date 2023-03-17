@@ -18,7 +18,11 @@ const AddContentFab = ({ node }: { node: Node }) => {
   const parent = node.useQuery();
   const mimes =
     parent
-      ?.inserts({ where: { hidden: { _eq: false } } })
+      ?.inserts({
+        where: {
+          _or: [{ context: { _eq: true } }, { hidden: { _eq: false } }],
+        },
+      })
       ?.map((mime) => mime.id!) ?? [];
 
   if (screen || !parent?.attachable || !mimes?.[0]) return null;
@@ -50,6 +54,6 @@ const AddContentFab = ({ node }: { node: Node }) => {
       />
     </>
   );
-}
+};
 
 export default AddContentFab;
