@@ -47,11 +47,6 @@ const HomeApp = () => {
                   Accepter venligst dine invitationer til grupper og
                   begivenheder.
                 </Typography>
-                <Typography sx={{ mb: 1 }}>
-                  Det vil give dig mulighed til at kunne vælge begivenhederne i
-                  toppanelet og få adgang til mappen, afstemninger og
-                  talerlisten.
-                </Typography>
                 <Typography>
                   Hvis der ikke forekommer nogen invitationer, så har du højst
                   sandsynligt brugt en anden email, end den som er registreret
