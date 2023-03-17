@@ -3,7 +3,7 @@ import { Box } from '@mui/system';
 import { useQuery } from 'gql';
 import { useSession } from 'hooks';
 import { useEffect, useState } from 'react';
-import Loader from './Loader';
+import { Loader } from 'comps';
 
 const PathLoader = ({
   namespaces,

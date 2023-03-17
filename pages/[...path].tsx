@@ -3,10 +3,12 @@ import { useRouter } from 'next/router';
 import { PathLoader } from 'comps';
 import { fromId } from 'core/path';
 import { usePath } from 'hooks';
+import { useAuthenticationStatus } from '@nhost/nextjs';
 
 const Path = () => {
   const router = useRouter();
   const fullpath = usePath();
+  const { isLoading } = useAuthenticationStatus()
 
   // Redirect uuid v4 to full path
   useEffect(() => {
@@ -23,7 +25,7 @@ const Path = () => {
       });
   }, [fullpath]);
 
-  if (fullpath.length === 0) return null;
+  if (isLoading || fullpath.length === 0) return null;
   return <PathLoader namespaces={[]} fullpath={fullpath} />;
 }
 
