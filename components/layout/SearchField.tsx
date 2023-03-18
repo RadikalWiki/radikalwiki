@@ -1,4 +1,4 @@
-import { Search, SearchOff } from '@mui/icons-material';
+import { SearchOff } from '@mui/icons-material';
 import {
   alpha,
   Autocomplete,
@@ -15,14 +15,18 @@ import {
   ListItemText,
   Paper,
   Stack,
-  styled,
 } from '@mui/material';
-import { fromId } from 'core/path';
-import { nodes, query, resolved } from 'gql';
+import { query, resolved } from 'gql';
 import { useLink, useSession } from 'hooks';
-import { MimeAvatar, MimeIconId } from 'comps';
-import { forwardRef, Fragment, startTransition, useEffect, useRef, useState } from 'react';
-import Breadcrumbs from './BreadCrumbs';
+import { MimeAvatar, MimeIconId, Breadcrumbs } from 'comps';
+import {
+  forwardRef,
+  Fragment,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from 'react';
 
 const SearchBoxRef = (props: any, ref?: any) => (
   <Box
@@ -68,24 +72,10 @@ const StyledInputRef = (props: InputBaseProps, ref?: any) => (
 
 const StyledInput = forwardRef(StyledInputRef);
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  '& .MuiInputBase-input': {
-    color: 'white',
-    '&::placeholder': {
-      opacity: 1,
-    },
-    width: '100%',
-    padding: theme.spacing(1.5, 1, 1.5, 0),
-    // vertical padding + font size from searchIcon
-    //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
-    transition: theme.transitions.create('width'),
-  },
-}));
-
 const SearchField = () => {
   const link = useLink();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [searchMode, setSearchMode] = useState(false);
+  const [searchMode, setSearchMode2] = useState(false);
   const [input, setInput] = useState('');
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
@@ -95,12 +85,17 @@ const SearchField = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
+  const [_, startTransition] = useTransition();
 
   const goto = async (id?: string) => {
     if (!id) return;
-    link.id(id)
+    link.id(id);
     setOpen(false);
     setInput('');
+  };
+
+  const setSearchMode = (a: any) => {
+    console.trace(a), setSearchMode2(a);
   };
 
   const search = async (name: string) => {
@@ -136,8 +131,7 @@ const SearchField = () => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.ctrlKey === true && event.key === 'k') {
         event.preventDefault();
-        setSearchMode(!searchMode);
-        inputRef.current?.focus?.();
+        startTransition(() => setSearchMode(!searchMode));
       }
     };
 
@@ -146,7 +140,7 @@ const SearchField = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
     };
-  }, []);
+  }, [searchMode]);
 
   const autocomplete = (
     <Autocomplete
@@ -155,22 +149,24 @@ const SearchField = () => {
       inputValue={input}
       onOpen={() => setOpen(true)}
       onClose={() => setOpen(false)}
-      onKeyDown={(e) => {
-        if (e.key === 'ArrowDown')
-          setSelectIndex(
-            options.length - 1 > selectIndex ? selectIndex + 1 : selectIndex
+      onKeyDown={(e) =>
+        startTransition(() => {
+          if (e.key === 'ArrowDown')
+            setSelectIndex(
+              options.length - 1 > selectIndex ? selectIndex + 1 : selectIndex
+            );
+          if (e.key === 'ArrowUp')
+            setSelectIndex(selectIndex > 0 ? selectIndex - 1 : selectIndex);
+          if (e.key === 'Enter') {
+            setSearchMode(false);
+            if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id);
+          }
+          const scroll = document.querySelector(
+            `#o${options?.[selectIndex]?.id}`
           );
-        if (e.key === 'ArrowUp')
-          setSelectIndex(selectIndex > 0 ? selectIndex - 1 : selectIndex);
-        if (e.key === 'Enter') {
-          setSearchMode(false);
-          if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id);
-        }
-        const scroll = document.querySelector(
-          `#o${options?.[selectIndex]?.id}`
-        );
-        scroll?.scrollIntoView();
-      }}
+          scroll?.scrollIntoView();
+        })
+      }
       noOptionsText="Intet resultat"
       loadingText="Loader..."
       isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -217,7 +213,7 @@ const SearchField = () => {
       renderInput={(params) => (
         <SearchBox ref={params.InputProps.ref}>
           <Stack direction="row">
-            <IconButton onClick={() => setSearchMode(false)}>
+            <IconButton>
               <MimeAvatar mimeId="app/search" />
             </IconButton>
             <StyledInput
@@ -235,7 +231,9 @@ const SearchField = () => {
                 ) : null,
               }}
             />
-            <IconButton onClick={() => startTransition(() => setSearchMode(false))}>
+            <IconButton
+              onClick={() => startTransition(() => setSearchMode(false))}
+            >
               <Avatar sx={{ bgcolor: 'secondary.main' }}>
                 <SearchOff />
               </Avatar>
@@ -246,7 +244,9 @@ const SearchField = () => {
     />
   );
 
-  return !searchMode ? (
+  return searchMode ? (
+    autocomplete
+  ) : (
     <SearchBox>
       <Stack direction="row">
         <Breadcrumbs />
@@ -255,8 +255,6 @@ const SearchField = () => {
         </IconButton>
       </Stack>
     </SearchBox>
-  ) : (
-    autocomplete
   );
 };
 
