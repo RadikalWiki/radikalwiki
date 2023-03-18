@@ -75,7 +75,7 @@ const StyledInput = forwardRef(StyledInputRef);
 const SearchField = () => {
   const link = useLink();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [searchMode, setSearchMode2] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
   const [input, setInput] = useState('');
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
@@ -92,10 +92,6 @@ const SearchField = () => {
     link.id(id);
     setOpen(false);
     setInput('');
-  };
-
-  const setSearchMode = (a: any) => {
-    console.trace(a), setSearchMode2(a);
   };
 
   const search = async (name: string) => {
