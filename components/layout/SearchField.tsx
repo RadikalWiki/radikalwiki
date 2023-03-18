@@ -16,8 +16,8 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
-import { query, resolved } from 'gql';
-import { useLink, useSession } from 'hooks';
+import { order_by, query, resolved } from 'gql';
+import { useLink, usePath, useSession } from 'hooks';
 import { MimeAvatar, MimeIconId, Breadcrumbs } from 'comps';
 import {
   forwardRef,
@@ -27,6 +27,7 @@ import {
   useState,
   useTransition,
 } from 'react';
+import { fromId } from 'core/path';
 
 const SearchBoxRef = (props: any, ref?: any) => (
   <Box
@@ -80,16 +81,44 @@ const SearchField = () => {
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<
-    { id?: string; name?: string; parent: { name?: string } }[]
+    { id?: string; name?: string; parent: { name?: string }, context?: boolean }[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
   const [_, startTransition] = useTransition();
+  const path = usePath();
 
-  const goto = async (id?: string) => {
+  const handleContextSelect = async (id: string) => {
+    const prefix = await resolved(() => {
+      const node = query.node({ id });
+      return {
+        id: node?.id,
+        name: node?.name ?? '',
+        mime: node?.mimeId!,
+        namespace: node?.namespace,
+      };
+    });
+
+    const path = await fromId(id);
+    startTransition(() => {
+      setSession({
+        prefix: {
+          ...prefix,
+          path,
+        },
+      });
+      link.id(id);
+    });
+  };
+
+  const goto = async (id?: string, context?: boolean) => {
     if (!id) return;
-    link.id(id);
+    if (context) {
+      await handleContextSelect(id)
+    } else {
+      await link.id(id);
+    }
     setOpen(false);
     setInput('');
   };
@@ -101,18 +130,20 @@ const SearchField = () => {
         .nodes({
           where: {
             _and: [
-              { mime: { hidden: { _eq: false } } },
-              { contextId: { _eq: session?.prefix?.id } },
+              { mime: { _or: [{hidden: { _eq: false } }, { context: { _eq: true } }] } },
+              path.length == 0 ? {} : { contextId: { _eq: session?.prefix?.id } },
               { name: { _ilike: `%${name}%` } },
             ],
           },
           limit: name ? 10 : 0,
+          order_by: [{ mime: { context: order_by.desc } }]
         })
-        .map(({ id, name, mimeId, parent }) => ({
+        .map(({ id, name, mimeId, parent, mime }) => ({
           id,
           name,
           mimeId,
           parent: { name: parent?.name },
+          context: mime?.context
         }))
     );
     setOptions(nodes);
@@ -155,7 +186,7 @@ const SearchField = () => {
             setSelectIndex(selectIndex > 0 ? selectIndex - 1 : selectIndex);
           if (e.key === 'Enter') {
             setSearchMode(false);
-            if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id);
+            if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id, options?.[selectIndex]?.context);
           }
           const scroll = document.querySelector(
             `#o${options?.[selectIndex]?.id}`
@@ -183,7 +214,7 @@ const SearchField = () => {
             selected={selected === option.id}
             onClick={() => {
               setSearchMode(false);
-              goto(option.id);
+              goto(option.id, option.context);
             }}
           >
             {option.id && (
