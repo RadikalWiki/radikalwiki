@@ -149,6 +149,8 @@ const IconId = ({
       return <InterpreterMode />;
     case 'application/pdf':
       return <FilePdfBoxIcon fill="currentColor" height="24" width="24" />;
+    case 'app/home':
+      return <Home />;
     case 'app/editor':
       return <Edit />;
     case 'app/sort':

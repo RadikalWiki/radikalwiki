@@ -5,6 +5,7 @@ import {
   Skeleton,
   Typography,
   Collapse,
+  Avatar,
 } from '@mui/material';
 import { alpha, Box } from '@mui/system';
 import { useQuery } from 'gql';
@@ -106,6 +107,37 @@ const BreadcrumbsLink = ({
                 }}
               >
                 {node?.name ?? 'Ukendt'}
+              </Typography>
+            </Collapse>
+          </>
+        </Box>
+      )}
+      {fullpath.length == 0 && (
+        <Box
+          key={node?.id ?? 0}
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            ml: -1,
+            cursor: 'pointer',
+          }}
+        >
+          <>
+            <MimeAvatar mimeId="app/home" />
+            <Collapse orientation="horizontal" in={true}>
+              <Typography
+                ref={divRef}
+                color="#fff"
+                sx={{
+                  overflowY: 'hidden',
+                  ml: 0.5,
+                  mr: 2,
+                  maxHeight: 48,
+                  maxWidth: 300,
+                  hyphens: 'auto',
+                }}
+              >
+                Hjem
               </Typography>
             </Collapse>
           </>
@@ -229,6 +261,6 @@ const Breadcrumbs = () => {
       />
     </Box>
   );
-}
+};
 
 export default Breadcrumbs;
