@@ -225,6 +225,7 @@ const SearchField = () => {
                 // eslint-disable-next-line functional/immutable-data
                 inputRef.current = input;
               }}
+              autoFocus
               placeholder="Søg"
               fullWidth
               inputProps={{
