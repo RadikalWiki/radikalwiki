@@ -11,18 +11,8 @@ import { useRouter } from 'next/router';
 const getState = (path: string) =>
   path.includes('app=vote')
     ? 'vote'
-    : path.includes('group')
-    ? 'group'
-    : path.includes('event')
-    ? 'event'
-    : path.includes('folder') ||
-      path.includes('content') ||
-      path.includes('poll')
-    ? 'folder'
     : path.includes('app=speak')
     ? 'speak'
-    : path.includes('admin')
-    ? 'admin'
     : 'folder';
 
 const NavBar = () => {
@@ -37,7 +27,7 @@ const NavBar = () => {
   }, [router.asPath]);
 
   const handleFolder = async () => {
-    await link.path(localStorage?.path ?? session?.prefix?.path)
+    await link.path(localStorage?.path.slice(1).split('/') ?? session?.prefix?.path)
     const scroll = document.querySelector('#scroll');
     scroll?.scrollTo(0, JSON.parse(localStorage.scroll ?? 0));
   };
