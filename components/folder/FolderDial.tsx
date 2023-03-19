@@ -87,18 +87,20 @@ const FolderDial = ({ node }: { node: Node }) => {
         })
         .map(({ id }) => id)
     );
-    const members = await resolved(() =>
+
+    const node = await resolved(() => {
+      const node = q.node({ id });
+      if (node)
+        return { name: node.name, data: node.data(), mimeId: node.mimeId, context: node.mime?.context };
+    });
+
+    const members = node?.context ? [] : await resolved(() =>
       q
         .node({ id })
         ?.members()
         ?.map((m) => m.name ?? m.user?.displayName)
         .join(', ')
     );
-    const node = await resolved(() => {
-      const node = q.node({ id });
-      if (node)
-        return { name: node.name, data: node.data(), mimeId: node.mimeId };
-    });
 
     const prefix =
       node?.mimeId == 'vote/policy'
@@ -106,9 +108,12 @@ const FolderDial = ({ node }: { node: Node }) => {
         : node?.mimeId == 'vote/change'
         ? `${index + 1}: `
         : '';
+
+    const formatedMembers = members?.length ? `<i>Stillet af: ${members}</i>` : "";
+
     return `<h${level}>${prefix}${
       node?.name
-    }</h${level}><i>Stillet af: ${members}</i>${toHtml(node?.data?.content)}${
+    }</h${level}>${formatedMembers}${toHtml(node?.data?.content)}${
       children
         ? '<br>' +
           (
@@ -122,32 +127,8 @@ const FolderDial = ({ node }: { node: Node }) => {
 
   const handleExport = async () => {
     if (!id) return;
-    const nodes = await resolved(() =>
-      q
-        .node({ id })
-        ?.children({
-          order_by: [{ index: order_by.asc }],
-          where: {
-            mimeId: {
-              _in: [
-                'vote/position',
-                'vote/candidate',
-                'vote/policy',
-                'vote/change',
-              ],
-            },
-          },
-        })
-        .map(({ id }) => ({ id }))
-    );
 
-    const html = nodes
-      ? (
-          await Promise.all(
-            nodes.map(async (content) => await formatContent(content.id!, 2))
-          )
-        ).join('<br><br>')
-      : '';
+    const html = await formatContent(id!, 1);
 
     const blob = await HTMLtoDOCX(html as string, '', {
       table: { row: { cantSplit: true } },

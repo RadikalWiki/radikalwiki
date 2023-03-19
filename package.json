@@ -24,7 +24,7 @@
     "encoding": "^0.1.13",
     "gqty": "^2.3.0",
     "graphql": "^16.5.0",
-    "html-to-docx": "^1.4.0",
+    "html-to-docx": "https://github.com/corwinstephen/fixed-html-to-docx",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",
     "next": "^13.1.6",
