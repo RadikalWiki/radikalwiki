@@ -61,7 +61,7 @@ const IconId = ({
     case 'wiki/event':
       return <Event />;
     case 'wiki/folder':
-      return (
+      return name?.[0] ? (
         <Box>
           <Folder
             sx={{
@@ -82,6 +82,8 @@ const IconId = ({
             <b>{name?.[0]}</b>
           </Typography>
         </Box>
+      ) : (
+        <Folder />
       );
     case 'wiki/document':
       return <Article />;
