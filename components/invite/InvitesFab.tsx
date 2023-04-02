@@ -1,20 +1,20 @@
 import React from 'react';
 import { Fab } from '@mui/material';
 import { GroupAdd } from '@mui/icons-material';
-import { CSVReader } from 'comps';
+import { SheetReader } from 'comps';
 import { Node, useNode } from 'hooks';
 
 const InvitesFab = ({ node }: { node: Node }) => {
   const parentId = node.id;
   const nodeMembers = node.useMembers();
   const handleFile = async (
-    fileData: { forname: string; efternavn: string; email: string }[]
+    fileData: { Fornavn: string; Efternavn: string; Email: string }[]
   ) => {
     const members = fileData
-      .filter((r) => r?.email)
-      .map((r: any) => ({
-        name: `${r.fornavn} ${r.efternavn}`,
-        email: r?.email?.toLowerCase(),
+      .filter((r) => r?.Email)
+      .map((r) => ({
+        name: `${r.Fornavn} ${r.Efternavn}`,
+        email: r?.Email?.toLowerCase(),
         parentId,
       }));
     await nodeMembers.insert({ members });
@@ -29,7 +29,7 @@ const InvitesFab = ({ node }: { node: Node }) => {
   };
 
   return (
-    <CSVReader parseOptions={parseOptions} onFileLoaded={handleFile}>
+    <SheetReader onFileLoaded={handleFile}>
       <Fab
         sx={{
           position: 'fixed',
@@ -44,7 +44,7 @@ const InvitesFab = ({ node }: { node: Node }) => {
         <GroupAdd />
         import
       </Fab>
-    </CSVReader>
+    </SheetReader>
   );
 }
 

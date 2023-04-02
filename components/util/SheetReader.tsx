@@ -1,27 +1,29 @@
-import { parse, ParseConfig } from 'papaparse';
+import { read, utils } from 'xlsx';
 import { Input } from '@mui/material';
+import { ChangeEventHandler } from 'react';
 
-const CSVReader = ({
+const SheetReader = ({
   children,
-  parseOptions,
   onFileLoaded,
 }: {
   children: any;
-  parseOptions?: ParseConfig;
-  onFileLoaded: any;
+  onFileLoaded: Function;
 }) => {
-  const handleChangeFile = (e: any) => {
+  const handleChangeFile: ChangeEventHandler<HTMLInputElement> = (e) => {
     const reader = new FileReader();
     const files = e.target.files;
 
-    if (files.length > 0) {
+    if (files?.length) {
       // eslint-disable-next-line functional/immutable-data
       reader.onload = (e: any) => {
-        const data = parse(reader.result as string, parseOptions);
-        onFileLoaded(data?.data ?? []);
+        const wb = read(reader.result);
+        const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+
+        console.log(data)
+        onFileLoaded(data ?? []);
       };
 
-      reader.readAsText(files[0]);
+      reader.readAsArrayBuffer(files[0]);
     }
   };
 
@@ -38,4 +40,4 @@ const CSVReader = ({
   );
 }
 
-export default CSVReader;
+export default SheetReader;

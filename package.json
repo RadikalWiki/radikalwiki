@@ -38,7 +38,8 @@
     "slate-history": "^0.66.0",
     "slate-hyperscript": "^0.77.0",
     "slate-react": "^0.80.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "build": "export VERCEL_GIT_COMMIT_SHA=$(git rev-parse HEAD) && yarn build:gqty && yarn build:next",
