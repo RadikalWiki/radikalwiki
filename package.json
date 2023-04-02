@@ -34,10 +34,10 @@
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.2.0",
     "react-transition-group": "^4.4.4",
-    "slate": "^0.80.0",
-    "slate-history": "^0.66.0",
+    "slate": "^0.91.4",
+    "slate-history": "^0.86.0",
     "slate-hyperscript": "^0.77.0",
-    "slate-react": "^0.80.0",
+    "slate-react": "^0.92.0",
     "uuid": "^8.3.2",
     "xlsx": "^0.18.5"
   },
