@@ -5,10 +5,13 @@ import {
   members_constraint,
   members_insert_input,
   members_set_input,
+  mutation,
   nodes,
   nodes_bool_exp,
   nodes_insert_input,
   nodes_set_input,
+  permissions,
+  permissions_insert_input,
   relations_constraint,
   relations_insert_input,
   relations_update_column,
@@ -66,11 +69,25 @@ export type Node = {
     attachable?: boolean;
     index?: number;
   }) => Promise<{ id: Maybe<string | undefined>; namespace?: string }>;
-  useDelete: (param?: Param) => (param?: { id?: string }) => Promise<string | undefined>;
+  useDelete: (
+    param?: Param
+  ) => (param?: { id?: string }) => Promise<string | undefined>;
   useUpdate: (
     param?: Param
-  ) => ({ id, set }: { id?: string; set: nodes_set_input }) => Promise<string | undefined>;
-  useSet: () => (name: string, nodeId: string | null) => Promise<string | undefined>;
+  ) => ({
+    id,
+    set,
+  }: {
+    id?: string;
+    set: nodes_set_input;
+  }) => Promise<string | undefined>;
+  usePermissions: () => {
+    insert: (perms: permissions_insert_input[]) => Promise<number | undefined>;
+  };
+  useSet: () => (
+    name: string,
+    nodeId: string | null
+  ) => Promise<string | undefined>;
   useGet: () => (name: string) => Maybe<nodes> | undefined;
   useSubsGet: () => (name: string) => Maybe<nodes> | undefined;
   useParent: () => Node;
@@ -231,6 +248,19 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     };
   };
 
+  const usePermissions = () => {
+    const [insertPermissions] = useMutation(
+      (mutation, { perms }: { perms: permissions_insert_input[] }) => {
+        return mutation.insertPermissions({ objects: perms })?.affected_rows;
+      }
+    );
+
+    return {
+      insert: (perms: permissions_insert_input[]) =>
+        insertPermissions({ args: { perms } }),
+    };
+  };
+
   const useMembers = (param?: Param) => {
     const [insertMembers] = useMutation(
       (
@@ -334,6 +364,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     useInsert,
     useDelete,
     useUpdate,
+    usePermissions,
     useContext,
     useParent,
     useSet,
