@@ -177,7 +177,7 @@ const AddContentDialog = ({
     if (!namespace) return;
 
     if (await resolved(() => query.mime({ id: mimeId })?.context)) {
-      await update({ id: id!, set: { contextId: id } });
+      await update({ id: id!, set: { contextId: id, mutable: false } });
       const perms = contextPerm.map((perm) => ({
         ...perm,
         contextId: id,
