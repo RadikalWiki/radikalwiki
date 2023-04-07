@@ -8,12 +8,35 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@mui/material';
 import { useUserId } from '@nhost/nextjs';
 import { fromId } from 'core/path';
 import { order_by, resolved, useQuery } from 'gql';
 import { useLink, useSession } from 'hooks';
 import { startTransition } from 'react';
+
+const abriv: {[name: string]: string} = {
+  "Hovedbestyrelsesmøde": "HB",
+  "Landsmøde": "LM",
+}
+
+const abrivContextName = (name?: string) => {
+  const split = name
+    ?.trim()
+    .split(' ')
+    .filter((name) => name[0] === name[0].toUpperCase() && !(/[0-9]/.test(name) && name.length > 1))
+    .map(name => abriv[name] ? abriv[name] : name[0])
+
+  switch (split?.length) {
+    case 1:
+      return split[0];
+    case 2:
+      return split[0] + split[1];
+    case 3:
+      return split[0] + split[1] + split[2];
+  }
+};
 
 const HomeList = ({ setOpen }: { setOpen: Function }) => {
   const link = useLink();
@@ -107,7 +130,13 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
               onClick={handleContextSelect(id)}
             >
               <ListItemIcon>
-                <Group />
+                {
+                  <Avatar sx={{ width: 34, height: 34 }}>
+                    <Typography fontSize={15}>
+                      {abrivContextName(name)}
+                    </Typography>{' '}
+                  </Avatar>
+                }
               </ListItemIcon>
               <ListItemText primary={name} />
             </ListItemButton>
@@ -142,7 +171,13 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
               onClick={handleContextSelect(id)}
             >
               <ListItemIcon>
-                <Event />
+                {
+                  <Avatar sx={{ width: 34, height: 34 }}>
+                    <Typography fontSize={15}>
+                      {abrivContextName(name)}
+                    </Typography>{' '}
+                  </Avatar>
+                }
               </ListItemIcon>
               <ListItemText primary={name} />
             </ListItemButton>
