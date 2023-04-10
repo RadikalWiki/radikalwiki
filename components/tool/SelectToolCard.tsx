@@ -1,7 +1,6 @@
 import {
   CardActions,
   Box,
-  Divider,
   Popover,
   Paper,
   Slider,
