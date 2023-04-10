@@ -20,7 +20,6 @@ const FolderApp = ({
         <Collapse in={expand}>
           <List sx={{ m: 0 }}>
             <Suspense fallback={null}>
-              <Divider />
               <FolderList node={node} />
             </Suspense>
           </List>

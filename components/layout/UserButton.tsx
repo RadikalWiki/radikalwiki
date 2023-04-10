@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Button,
   IconButton,
@@ -7,6 +7,7 @@ import {
   Menu,
   MenuItem,
   useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Link } from 'comps';
 import {
@@ -23,6 +24,7 @@ import { useSession } from 'hooks';
 import { useRouter } from 'next/router';
 import { nhost } from 'nhost';
 import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
+import { ThemeModeContext } from 'core/theme/ThemeModeContext';
 
 const abriviateName = (name: string) =>
   name?.split(' ').length === 1
@@ -36,6 +38,8 @@ const UserButton = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const { isAuthenticated } = useAuthenticationStatus();
+  const { toggleThemeMode, resetThemeMode } = useContext(ThemeModeContext);
+  const { palette } = useTheme();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const theme =
     (session?.theme == undefined && prefersDarkMode) ||
@@ -133,11 +137,11 @@ const UserButton = () => {
             <ListItemText>Registrer</ListItemText>
           </MenuItem>,
         ]}
-        <MenuItem key="theme" onClick={handleTheme}>
+        <MenuItem key="theme" onClick={toggleThemeMode}>
           <ListItemIcon>
-            {theme === 'dark' ? <Brightness7 /> : <Brightness4 />}
+            {palette.mode == 'light' ?  <Brightness4 /> : <Brightness7 />}
           </ListItemIcon>
-          <ListItemText>{theme === 'dark' ? 'Lys' : 'Mørk'}</ListItemText>
+          <ListItemText>{palette.mode == 'light' ? 'Mørk' : 'Lys' }</ListItemText>
         </MenuItem>
       </Menu>
     </>

@@ -6,7 +6,7 @@ const Theme = ({ children }: { children?: any }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       {children}
     </ThemeProvider>
   );

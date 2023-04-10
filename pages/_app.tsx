@@ -1,10 +1,15 @@
 import React, { useEffect, ComponentType } from 'react';
 import Head from 'next/head';
-import { Layout, SessionProvider, Theme } from 'comps';
+import { Layout, SessionProvider } from 'comps';
 import { nhost } from 'nhost';
 import { NhostProvider } from '@nhost/nextjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import M3ThemeProvider from 'core/theme/M3ThemeProvider';
+import ThemeModeProvider, {
+  ThemeModeContext,
+} from 'core/theme/ThemeModeContext';
+import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
 
 const App = ({
   Component,
@@ -32,16 +37,20 @@ const App = ({
       <NhostProvider nhost={nhost}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <SessionProvider>
-            <Theme>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </Theme>
+            <ThemeModeProvider>
+              <ThemeSchemeProvider>
+                <M3ThemeProvider>
+                  <Layout>
+                    <Component {...pageProps} />
+                  </Layout>
+                </M3ThemeProvider>
+              </ThemeSchemeProvider>
+            </ThemeModeProvider>
           </SessionProvider>
         </LocalizationProvider>
       </NhostProvider>
     </>
   );
-}
+};
 
 export default App;
