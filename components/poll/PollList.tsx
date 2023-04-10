@@ -10,7 +10,6 @@ import {
   Avatar,
   ListItemSecondaryAction,
   IconButton,
-  Divider,
   ListItemButton,
 } from '@mui/material';
 import { Cancel, HowToVote } from '@mui/icons-material';
@@ -44,7 +43,6 @@ const PollListSuspense = ({ node }: { node: Node }) => {
       }
       title="Afstemninger"
     >
-      <Divider />
       <List>
         {polls?.map(({ id, namespace, children_aggregate, createdAt }) => (
           <Fragment key={id ?? 0}>
@@ -87,7 +85,6 @@ const PollListSuspense = ({ node }: { node: Node }) => {
                 </ListItemSecondaryAction>
               )}
             </ListItemButton>
-            <Divider />
           </Fragment>
         ))}
       </List>

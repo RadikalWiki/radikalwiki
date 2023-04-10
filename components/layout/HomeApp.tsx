@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Typography, CardContent, Grid, Avatar, Divider } from '@mui/material';
+import { Typography, CardContent, Grid, Avatar } from '@mui/material';
 import { AddContentFab, HeaderCard, InvitesUserList } from 'comps';
 import { useNode } from 'hooks';
 import { Hail } from '@mui/icons-material';
@@ -29,7 +29,6 @@ const HomeApp = () => {
             </Avatar>
           }
         >
-          <Divider />
           <CardContent>
             {(!isAuthenticated && (
               <>

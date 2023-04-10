@@ -5,7 +5,6 @@ import {
   Avatar,
   Box,
   CircularProgress,
-  Divider,
   IconButton,
   InputBase,
   InputBaseProps,
@@ -226,13 +225,11 @@ const SearchField = () => {
               {option.name}
             </ListItemText>
           </ListItemButton>
-          <Divider />
         </Fragment>
       )}
       PaperComponent={(props) => (
         <Paper {...props} sx={{ height: '100%' }}>
           <List dense>
-            <Divider />
             {props.children}
           </List>
         </Paper>

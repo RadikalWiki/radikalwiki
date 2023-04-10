@@ -22,7 +22,6 @@ import {
   Collapse,
   Card,
   CardHeader,
-  Divider,
   IconButton,
   List,
   ListItem,
@@ -71,11 +70,9 @@ const ChildListElement = ({ id, index }: { id: string; index: number }) => {
           </IconButton>
         </ListItemSecondaryAction>
       </ListItemButton>
-      <Divider />
       <Collapse in={open}>
         <ContentToolbar node={node} child />
         <Content node={node} fontSize="100%" />
-        <Divider />
       </Collapse>
     </>
   );
@@ -150,7 +147,6 @@ const ChangeList = ({ node }: { node: Node }) => {
           </CardActions>
         }
       />
-      <Divider />
       <ChildListRaw node={node!} />
     </Card>
   );

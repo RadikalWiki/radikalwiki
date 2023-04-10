@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Avatar,
   CardContent,
-  Divider,
   Grid,
   Stack,
   Typography,
@@ -29,7 +28,6 @@ const UnknownApp = () => {
             </Avatar>
           }
         >
-          <Divider />
           <CardContent>
             <Typography sx={{ mb: 1 }}>
               Dokumentet er ikke tilgængelig.

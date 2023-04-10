@@ -3,7 +3,6 @@ import {
   Typography,
   CardContent,
   Avatar,
-  Divider,
   Container,
 } from '@mui/material';
 import { HeaderCard } from 'comps';
@@ -35,7 +34,6 @@ const Unverified = () => {
           </Avatar>
         }
       >
-        <Divider />
         <CardContent>
           <Typography>
             Du skulle gerne have modtaget en verifications email.

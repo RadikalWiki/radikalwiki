@@ -1,7 +1,6 @@
 import { Event, EventBusy, Group, GroupRemove } from '@mui/icons-material';
 import {
   Avatar,
-  Divider,
   List,
   ListItem,
   ListItemAvatar,
@@ -121,7 +120,6 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItemAvatar>
           <ListItemText primary="Grupper" />
         </ListItem>
-        <Divider />
         {groups.map(({ id = '0', name }) => {
           const item = (
             <ListItemButton
@@ -152,7 +150,6 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItem>
         )}
       </List>
-      <Divider />
       <List>
         <ListItem key={-1}>
           <ListItemAvatar>
@@ -162,7 +159,6 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItemAvatar>
           <ListItemText primary="Begivenheder" />
         </ListItem>
-        <Divider />
         {events.map(({ id = '0', name }) => {
           const item = (
             <ListItemButton
@@ -193,7 +189,6 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItem>
         )}
       </List>
-      <Divider />
     </>
   );
 };

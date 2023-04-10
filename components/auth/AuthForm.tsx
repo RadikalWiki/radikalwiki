@@ -7,7 +7,6 @@ import {
   Avatar,
   Typography,
   Stack,
-  Divider,
   CircularProgress,
   Box,
 } from '@mui/material';
@@ -332,12 +331,6 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
               />
             )}
           </Box>
-          {['login'].includes(mode) && <Divider
-            sx={{
-              mt: 1,
-              width: '100%',
-            }}
-          />}
           {['login'].includes(mode) && (
             <Button
               color='secondary'

@@ -1,4 +1,4 @@
-import { Card, Collapse, Divider, Stack } from '@mui/material';
+import { Card, Collapse, Stack } from '@mui/material';
 import {
   ContentToolbar,
   FileLoader,

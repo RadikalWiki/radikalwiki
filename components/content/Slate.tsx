@@ -22,7 +22,6 @@ import { HistoryEditor, withHistory } from 'slate-history';
 import {
   Button,
   ButtonGroup,
-  Divider,
   FormControl,
   IconButton,
   InputBase,
@@ -234,7 +233,6 @@ const Slate = ({
             <AlignButtons />
             <LinkButton />
           </Stack>
-          <Divider />
         </>
       )}
       {(!readOnly ||
@@ -621,7 +619,6 @@ const LinkButton = () => {
             value={(marks as any)?.link ?? ''}
             onChange={handleChange}
           />
-          <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
           <IconButton
             sx={{ p: '10px' }}
             color="inherit"

@@ -11,7 +11,6 @@ import {
   Box,
   CircularProgress,
   Collapse,
-  Divider,
   IconButton,
   List,
   ListItem,
@@ -130,8 +129,6 @@ const InvitesUserList = () => (
     }
     title="Invitationer"
   >
-    <Divider />
-
     <ListSuspense />
   </HeaderCard>
 );

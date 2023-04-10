@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Avatar,
   Collapse,
-  Divider,
   ListItem,
   ListItemAvatar,
   ListItemButton,
@@ -102,7 +101,6 @@ const FolderList = ({ node }: { node: Node }) => {
                 </Tooltip>
               ) : null}
             </ListItemButton>
-            <Divider />
           </Collapse>
         );
       })}
@@ -120,7 +118,6 @@ const FolderList = ({ node }: { node: Node }) => {
             </ListItemAvatar>
             <ListItemText primary="Intet indhold" />
           </ListItem>
-          <Divider />
         </Collapse>
       )}
     </TransitionGroup>

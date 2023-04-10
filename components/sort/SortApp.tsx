@@ -4,7 +4,6 @@ import { SortFab, MimeAvatarId } from 'comps';
 import {
   Avatar,
   Card,
-  Divider,
   List,
   ListItem,
   ListItemAvatar,
@@ -71,7 +70,6 @@ const SortApp = ({ node }: { node: Node }) => {
                     >
                       {(provided, snapshot) => (
                         <Fragment>
-                          {!snapshot.isDragging && <Divider />}
                           <ListItem
                             component="li"
                             ref={provided.innerRef}
@@ -87,9 +85,7 @@ const SortApp = ({ node }: { node: Node }) => {
                       )}
                     </Draggable>
                   ))}
-                {snapshot.isDraggingOver && <Divider />}
                 {provided.placeholder}
-                <Divider />
               </List>
             )}
           </Droppable>

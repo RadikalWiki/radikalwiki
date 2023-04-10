@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, CardContent, Avatar, Divider } from '@mui/material';
+import { Typography, CardContent, Avatar } from '@mui/material';
 import { BrowserNotSupported } from '@mui/icons-material';
 import { Container } from '@mui/system';
 import { HeaderCard } from 'comps';
@@ -19,7 +19,6 @@ const OldBrowser = () => (
         </Avatar>
       }
     >
-      <Divider />
       <CardContent>
         <>
           <Typography sx={{ mb: 1 }}>

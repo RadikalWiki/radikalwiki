@@ -7,7 +7,6 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
-  Divider,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -210,7 +209,6 @@ const VoteApp = ({ node }: { node: Node }) => {
           title={poll?.name}
           avatar={<MimeAvatarId id={poll?.data()?.nodeId} />}
         />
-        <Divider />
         <CardContent>
           <form onSubmit={handleSubmit}>
             <FormControl error={error}>

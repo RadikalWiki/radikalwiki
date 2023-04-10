@@ -3,7 +3,6 @@ import { AuthorTextField, AutoButton, Slate, FileUploader, Image } from 'comps';
 import { resolved } from 'gql';
 import {
   Box,
-  Divider,
   Card,
   CardActions,
   CardContent,
@@ -111,7 +110,6 @@ const Editor = ({ node }: { node: Node }) => {
             />
           )}
         </CardActions>
-        <Divider />
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>

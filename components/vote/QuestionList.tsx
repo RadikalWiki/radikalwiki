@@ -21,7 +21,6 @@ import {
   Collapse,
   Card,
   CardHeader,
-  Divider,
   IconButton,
   List,
   ListItem,
@@ -78,7 +77,6 @@ const QuestionList = ({ node }: { node: Node }) => {
           )
         }
       />
-      <Divider />
       <List>
         <TransitionGroup>
           {children?.map((child, index) => {

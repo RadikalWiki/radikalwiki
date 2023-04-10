@@ -10,7 +10,6 @@ import {
   Slider,
   Stack,
   Typography,
-  Divider,
 } from '@mui/material';
 import { Node, useLink, useSession } from 'hooks';
 import { PlayArrow } from '@mui/icons-material';
@@ -84,7 +83,6 @@ const PollDialog = ({
   return (
     <Dialog open={open} onClose={() => setOpen(false)}>
       <DialogTitle>Ny Afstemning</DialogTitle>
-      <Divider />
       <DialogContent>
         <Stack spacing={2}>
           {!['vote/policy', 'vote/change'].includes(query?.mimeId ?? '') &&

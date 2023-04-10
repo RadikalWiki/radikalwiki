@@ -19,7 +19,6 @@
 //   Typography,
 //   Box,
 //   CardContent,
-//   Divider,
 // } from "@mui/material";
 // import { Node, useScreen, useSession } from "hooks";
 // import { nodes, Maybe, useSubscription, String_comparison_exp } from "gql";
@@ -35,7 +34,6 @@
 //         title={title}
 //         avatar={<MimeAvatarId id={chartData.nodeId} />}
 //       />
-//       <Divider />
 //       {chartData?.options?.map((opt: any, index: number) => (
 //         <Box key={index} />
 //       ))}

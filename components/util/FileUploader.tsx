@@ -1,5 +1,5 @@
 import { UploadFile } from '@mui/icons-material';
-import { Button, CircularProgress, Divider, Input } from '@mui/material';
+import { Button, CircularProgress, Input } from '@mui/material';
 import { Box } from '@mui/system';
 import { nhost } from 'nhost';
 import { useState } from 'react';

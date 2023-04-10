@@ -1,7 +1,6 @@
 import {
   CardActions,
   Box,
-  Divider,
   Popover,
   Paper,
   Slider,
@@ -141,7 +140,6 @@ const ContentToolbar = ({ node, child }: { node: Node; child?: boolean }) => {
           />
         )}
       </CardActions>
-      <Divider />
       <DeleteDialog
         open={openDeleteDialog}
         setOpen={setOpenDeleteDialog}

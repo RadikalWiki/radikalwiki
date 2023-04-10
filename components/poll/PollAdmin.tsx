@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Divider } from '@mui/material';
+import { Button } from '@mui/material';
 import { useRefetch } from 'gql';
 import { AdminCard } from 'comps';
 import { Node, useNode } from 'hooks';
@@ -41,7 +41,6 @@ const PollAdmin = ({ node }: { node: Node }) => {
 
   return (
     <AdminCard title="Administrer Afstemning">
-      <Divider />
       <Button
         size="large"
         color="secondary"

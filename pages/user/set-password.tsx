@@ -2,7 +2,7 @@ import React from 'react';
 import { AuthForm, HeaderCard } from 'comps';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { Container, Stack } from '@mui/system';
-import { Avatar, CardContent, Divider, Typography } from '@mui/material';
+import { Avatar, CardContent, Typography } from '@mui/material';
 import { MarkEmailRead } from '@mui/icons-material';
 
 const Reset = () => {
@@ -21,7 +21,6 @@ const Reset = () => {
           </Avatar>
         }
       >
-        <Divider />
         <CardContent>
           <Stack spacing={1.5}>
             <Typography>
