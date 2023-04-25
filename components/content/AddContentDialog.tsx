@@ -187,25 +187,25 @@ const AddContentDialog = ({
           .replace(']', '}'),
       }));
       await permInsert(perms);
+
+      const prefix = await resolved(() => {
+        const node = query.node({ id: id! });
+        return {
+          id: node?.id,
+          name: node?.name ?? '',
+          mime: node?.mimeId!,
+          namespace: node?.namespace,
+        };
+      });
+
+      const path = await fromId(id);
+      setSession({
+        prefix: {
+          ...prefix,
+          path,
+        },
+      });
     }
-
-    const prefix = await resolved(() => {
-      const node = query.node({ id: id! });
-      return {
-        id: node?.id,
-        name: node?.name ?? '',
-        mime: node?.mimeId!,
-        namespace: node?.namespace,
-      };
-    });
-
-    const path = await fromId(id);
-    setSession({
-      prefix: {
-        ...prefix,
-        path,
-      },
-    });
 
     // Reset fields
     setOpen(false);
