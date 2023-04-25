@@ -126,7 +126,6 @@ const BreadcrumbsLink = ({
             <Collapse orientation="horizontal" in={true}>
               <Typography
                 ref={divRef}
-                color="#fff"
                 sx={{
                   overflowY: 'hidden',
                   ml: 0.5,
