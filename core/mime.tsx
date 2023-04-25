@@ -65,7 +65,6 @@ const IconId = ({
         <Box sx={{ color: "inherit" }}>
           <Folder
             sx={{
-              color: "primary",
               fontSize: 32,
               position: avatar ? 'relative' : 'absolute',
               marginLeft: avatar ? '0px' : '-3px',
@@ -74,7 +73,7 @@ const IconId = ({
           />
           <Typography
             sx={{
-              color: "secondary.main",
+              color: t => avatar ? "secondary.main" : t.palette.secondary.contrastText,
               position: avatar ? 'absolute' : 'relative',
               top: avatar ? 8 : 3,
               left: avatar ? 16 : 8,
@@ -105,6 +104,7 @@ const IconId = ({
             sx={{
               width: 24,
               height: 24,
+              bgcolor: "secondary.main",
             }}
           >
             <Typography fontSize={18}>
@@ -132,6 +132,7 @@ const IconId = ({
             sx={{
               width: 24,
               height: 24,
+              bgcolor: "secondary.main",
             }}
           >
             <Typography fontSize={18}>

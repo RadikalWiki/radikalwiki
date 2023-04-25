@@ -90,7 +90,6 @@ const DrawerElement = ({
       <ListItemButton
         sx={{
           pl: 1 + index,
-          color: selected ? 'primary.main' : '',
         }}
         selected={selected}
         onClick={() => {
@@ -101,7 +100,7 @@ const DrawerElement = ({
         }}
       >
         <ListItemIcon
-          sx={{ color: selected ? 'primary.main' : 'secondary.main' }}
+          sx={{ color: 'secondary.main' }}
         >
           <MimeIcon
             mimeId={query.data({ path: 'type' }) ?? query.mimeId}
