@@ -62,9 +62,10 @@ const IconId = ({
       return <Event />;
     case 'wiki/folder':
       return name?.[0] ? (
-        <Box>
+        <Box sx={{ color: "inherit" }}>
           <Folder
             sx={{
+              color: "primary",
               fontSize: 32,
               position: avatar ? 'relative' : 'absolute',
               marginLeft: avatar ? '0px' : '-3px',
@@ -73,7 +74,7 @@ const IconId = ({
           />
           <Typography
             sx={{
-              color: (t) => (avatar ? t.palette.secondary.main : 'white'),
+              color: "secondary.main",
               position: avatar ? 'absolute' : 'relative',
               top: avatar ? 8 : 3,
               left: avatar ? 16 : 8,
@@ -104,11 +105,9 @@ const IconId = ({
             sx={{
               width: 24,
               height: 24,
-              color: 'inherit',
-              bgcolor: 'currentColor',
             }}
           >
-            <Typography sx={{ color: '#fff' }} fontSize={18}>
+            <Typography fontSize={18}>
               {getLetter(index)}
             </Typography>
           </MuiAvatar>
@@ -125,7 +124,7 @@ const IconId = ({
     case 'vote/change':
       return index !== undefined && index !== -1 ? (
         avatar ? (
-          <Typography fontSize={24} sx={{ color: '#fff' }}>
+          <Typography fontSize={24} sx={{ color: 'inherit' }}>
             {index + 1}
           </Typography>
         ) : (
@@ -133,11 +132,9 @@ const IconId = ({
             sx={{
               width: 24,
               height: 24,
-              color: 'inherit',
-              bgcolor: 'currentColor',
             }}
           >
-            <Typography sx={{ color: '#fff' }} fontSize={18}>
+            <Typography fontSize={18}>
               {index + 1}
             </Typography>
           </MuiAvatar>

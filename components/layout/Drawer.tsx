@@ -13,6 +13,7 @@ import {
   alpha,
   Toolbar,
   CircularProgress,
+  AppBar,
 } from '@mui/material';
 import {
   ChevronLeft,
@@ -401,17 +402,16 @@ const Drawer = ({
             }
           }}
           sx={{
+            bgcolor: theme => alpha(theme.palette.primary.main, 0.15),
             cursor: 'pointer',
             ml: largeScreen ? -2 : 0,
-            bgcolor: 'primary.main',
-            '&:hover, &:focus': {
-              bgcolor: (t) => alpha(t.palette.primary.main, 0.9),
-            },
+            //'&:hover, &:focus': {
+            //  bgcolor: (t) => alpha(t.palette.primary.main, 0.9),
+            //},
           }}
         >
           {home ? (
             <IconButton
-              sx={{ color: '#fff' }}
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
@@ -423,7 +423,6 @@ const Drawer = ({
             </IconButton>
           ) : path.length > 0 ? (
             <IconButton
-              sx={{ color: '#fff' }}
               onClick={(e) => {
                 e.stopPropagation();
                 startTransition(() => {
@@ -436,13 +435,12 @@ const Drawer = ({
           ) : null}
           <Box sx={{ flexGrow: 1 }} />
           <MimeAvatar name={query?.name} mimeId={query?.mimeId} />
-          <Typography sx={{ pl: 1 }} color="#fff" variant="h6">
+          <Typography sx={{ pl: 1 }} variant="h6">
             {node?.name}
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           {!largeScreen && (
             <IconButton
-              sx={{ color: '#fff' }}
               onClick={(e) => {
                 e.stopPropagation();
                 setOpen(false);

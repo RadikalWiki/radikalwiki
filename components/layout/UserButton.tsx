@@ -74,12 +74,11 @@ const UserButton = () => {
   return (
     <>
       {isAuthenticated ? (
-        <IconButton sx={{ ml: 2 }} color="inherit" onClick={handleClick}>
+        <IconButton sx={{ ml: 2 }} onClick={handleClick}>
           <AccountCircle />
         </IconButton>
       ) : (
         <Button
-          color="inherit"
           onClick={handleClick}
           endIcon={<AccountCircle />}
         >

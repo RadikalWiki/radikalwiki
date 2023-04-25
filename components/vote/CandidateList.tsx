@@ -83,8 +83,6 @@ const CandidateList = ({ node }: { node: Node }) => {
                     m: 1,
                     height: 32,
                     width: 32,
-                    bgcolor: '#ffffff',
-                    color: 'primary.main',
                   }}
                 >
                   <IconId mimeId="vote/candidate" />

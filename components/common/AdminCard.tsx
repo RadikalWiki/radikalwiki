@@ -6,7 +6,7 @@ const AdminCard = ({ children, title }: { children: any; title: string }) => (
   <Card sx={{ m: 0, bgcolor: 'primary.main' }}>
     <CardHeader
       title={
-        <Typography variant="h5" sx={{ color: '#fff' }}>
+        <Typography variant="h5" >
           {title}
         </Typography>
       }

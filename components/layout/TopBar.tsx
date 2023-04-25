@@ -28,7 +28,6 @@ const TopBar = ({
                 }
               : {}
           }
-          enableColorOnDark
         >
           <Toolbar>
             {isAuthenticated && [
@@ -59,6 +58,6 @@ const TopBar = ({
       <Box sx={{ p: 4 }} />
     </>
   );
-}
+};
 
-export default TopBar
+export default TopBar;

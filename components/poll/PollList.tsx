@@ -64,7 +64,7 @@ const PollListSuspense = ({ node }: { node: Node }) => {
                         bgcolor: 'secondary.main',
                       }}
                     >
-                      <HowToVote sx={{ color: '#fff' }} />
+                      <HowToVote />
                     </Avatar>
                   </Badge>
                 </ListItemAvatar>

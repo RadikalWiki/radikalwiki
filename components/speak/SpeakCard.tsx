@@ -55,7 +55,7 @@ const SpeakCard = ({
     <Card sx={{ m: 0 }}>
       <CardHeader
         title={
-          <Typography variant="h5" sx={{ color: '#fff' }}>
+          <Typography variant="h5">
             Talerliste
           </Typography>
         }
@@ -81,13 +81,12 @@ const SpeakCard = ({
               pb: 0.5,
             }}
           >
-            <Typography variant="h4" sx={{ color: '#fff' }}>
+            <Typography variant="h4">
               {timeString(time)}
             </Typography>
           </Paper>
         }
         sx={{
-          bgcolor: 'secondary.main',
           color: (t) => t.palette.secondary.contrastText,
         }}
       />

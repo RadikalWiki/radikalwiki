@@ -44,11 +44,10 @@ const SpeakAdmin = ({
   return (
     (owner && (
       <AdminCard title="Administrer Talerlisten">
-        <ButtonGroup variant="contained" sx={{ m: 2 }}>
+        <ButtonGroup variant="contained" sx={{ m: 2, boxShadow: 0 }}>
           <Button
             color="secondary"
             size="large"
-            sx={{ color: '#fff' }}
             endIcon={mutable ? <Lock /> : <LockOpen />}
             onClick={() => handleLockSpeak(!mutable)}
           >
@@ -59,7 +58,6 @@ const SpeakAdmin = ({
             color="secondary"
             size="large"
             endIcon={<Clear />}
-            sx={{ color: '#fff' }}
             onClick={handleRemoveSpeaks}
           >
             Ryd
@@ -67,7 +65,6 @@ const SpeakAdmin = ({
           <Button
             color="secondary"
             size="large"
-            sx={{ color: '#fff' }}
             endIcon={time == 0 ? <PlayArrow /> : <Stop />}
             onClick={() => handleTimerSet(time > 0 ? 0 : timeBox)}
           >
