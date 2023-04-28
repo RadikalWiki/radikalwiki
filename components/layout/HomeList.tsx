@@ -125,9 +125,10 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
             <ListItemButton
               key={id}
               hidden={id == '0'}
+              dense
               onClick={handleContextSelect(id)}
             >
-              <ListItemIcon>
+              <ListItemAvatar>
                 {
                   <Avatar sx={{ width: 34, height: 34 }}>
                     <Typography fontSize={15}>
@@ -135,7 +136,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
                     </Typography>{' '}
                   </Avatar>
                 }
-              </ListItemIcon>
+              </ListItemAvatar>
               <ListItemText primary={name} />
             </ListItemButton>
           );
@@ -164,9 +165,10 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
             <ListItemButton
               key={id}
               hidden={id == '0'}
+              dense
               onClick={handleContextSelect(id)}
             >
-              <ListItemIcon>
+              <ListItemAvatar>
                 {
                   <Avatar sx={{ width: 34, height: 34 }}>
                     <Typography fontSize={15}>
@@ -174,7 +176,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
                     </Typography>{' '}
                   </Avatar>
                 }
-              </ListItemIcon>
+              </ListItemAvatar>
               <ListItemText primary={name} />
             </ListItemButton>
           );
