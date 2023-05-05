@@ -1,10 +1,4 @@
-import {
-  CardActions,
-  Box,
-  Popover,
-  Paper,
-  Slider,
-} from '@mui/material';
+import { CardActions, Box, Popover, Paper, Slider, Card } from '@mui/material';
 import {
   Delete,
   Edit,
@@ -76,7 +70,7 @@ const ContentToolbar = ({ node, child }: { node: Node; child?: boolean }) => {
     return null;
 
   return (
-    <>
+    <Card sx={{ m: 0 }}>
       <CardActions>
         {query?.isContextOwner && [
           <AutoButton
@@ -183,7 +177,7 @@ const ContentToolbar = ({ node, child }: { node: Node; child?: boolean }) => {
           </Paper>
         </Popover>,
       ]}
-    </>
+    </Card>
   );
 };
 
