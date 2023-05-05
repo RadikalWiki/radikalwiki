@@ -30,7 +30,7 @@ import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from 'comps';
 import { order_by, resolved, nodes } from 'gql';
 import { useState, startTransition, useEffect, Suspense } from 'react';
 import { drawerWidth } from 'core/constants';
-import { Box } from '@mui/system';
+import { Box, darken, lighten } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
 
 const DrawerElement = ({
@@ -99,9 +99,7 @@ const DrawerElement = ({
           });
         }}
       >
-        <ListItemIcon
-          sx={{ color: 'secondary.main' }}
-        >
+        <ListItemIcon>
           <MimeIcon
             mimeId={query.data({ path: 'type' }) ?? query.mimeId}
             index={iconIndex}
@@ -205,7 +203,6 @@ const DrawerList = ({
 }) => {
   const node = useNode({ id });
   const query = node.useQuery();
-  const slicedPath = fullpath.slice(0, path.length);
   const userId = useUserId();
 
   const children =
@@ -325,13 +322,13 @@ const Drawer = ({
         href={`/${session?.prefix?.path?.join('/')}?app=screen`}
         target="_blank"
       >
-        <ListItemIcon sx={{ color: 'secondary.main' }}>
+        <ListItemIcon>
           <ConnectedTv />
         </ListItemIcon>
         <ListItemText primary="Skærm" />
       </ListItemButton>
       <ListItemButton onClick={handleCurrent}>
-        <ListItemIcon sx={{ color: 'secondary.main' }}>
+        <ListItemIcon>
           <FileOpen />
         </ListItemIcon>
         <ListItemText primary="Aktuelle Punkt" />
@@ -363,9 +360,10 @@ const Drawer = ({
               width: drawerWidth,
               flexShrink: 0,
               '& .MuiDrawer-paper': {
+                ml: '64px',
                 width: drawerWidth,
-                height: `calc(100% - 64px)`,
                 boxSizing: 'border-box',
+                borderRadius: '0px 20px 20px 0px',
               },
             }
           : {
@@ -401,7 +399,10 @@ const Drawer = ({
             }
           }}
           sx={{
-            bgcolor: theme => alpha(theme.palette.primary.main, 0.15),
+            background: (theme) =>
+              theme.palette.mode === 'dark'
+                ? darken(theme.palette.primary.main, 0.9)
+                : lighten(theme.palette.primary.main, 0.9),
             cursor: 'pointer',
             ml: largeScreen ? -2 : 0,
             //'&:hover, &:focus': {
@@ -419,17 +420,6 @@ const Drawer = ({
               }}
             >
               <ChevronLeft />
-            </IconButton>
-          ) : path.length > 0 ? (
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                startTransition(() => {
-                  link.path([]);
-                });
-              }}
-            >
-              <Home />
             </IconButton>
           ) : null}
           <Box sx={{ flexGrow: 1 }} />
