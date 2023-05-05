@@ -30,13 +30,7 @@ const timeString = (time: number) => {
   return `${minFmt}:${secFmt}`;
 };
 
-const SpeakCard = ({
-  node,
-  time,
-}: {
-  node: Node;
-  time: number;
-}) => {
+const SpeakCard = ({ node, time }: { node: Node; time: number }) => {
   const screen = useScreen();
   const userId = useUserId();
   const get = node.useSubsGet();
@@ -54,11 +48,7 @@ const SpeakCard = ({
   return (
     <Card sx={{ m: 0 }}>
       <CardHeader
-        title={
-          <Typography variant="h5">
-            Talerliste
-          </Typography>
-        }
+        title={<Typography variant="h5">Talerliste</Typography>}
         avatar={
           <Avatar
             sx={{
@@ -81,14 +71,16 @@ const SpeakCard = ({
               pb: 0.5,
             }}
           >
-            <Typography variant="h4">
+            <Typography
+              variant="h4"
+              sx={{
+                color: (t) => t.palette.secondary.contrastText,
+              }}
+            >
               {timeString(time)}
             </Typography>
           </Paper>
         }
-        sx={{
-          color: (t) => t.palette.secondary.contrastText,
-        }}
       />
       <List>
         <TransitionGroup>
@@ -148,6 +140,6 @@ const SpeakCard = ({
       </List>
     </Card>
   );
-}
+};
 
 export default SpeakCard;
