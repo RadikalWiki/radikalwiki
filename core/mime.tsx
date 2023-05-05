@@ -62,7 +62,7 @@ const IconId = ({
       return <Event />;
     case 'wiki/folder':
       return name?.[0] ? (
-        <Box sx={{ color: "inherit" }}>
+        <Box sx={{ color: 'inherit' }}>
           <Folder
             sx={{
               fontSize: 32,
@@ -73,7 +73,8 @@ const IconId = ({
           />
           <Typography
             sx={{
-              color: t => avatar ? "secondary.main" : t.palette.secondary.contrastText,
+              color: (t) =>
+                avatar ? 'secondary.main' : t.palette.secondary.contrastText,
               position: avatar ? 'absolute' : 'relative',
               top: avatar ? 8 : 3,
               left: avatar ? 16 : 8,
@@ -104,10 +105,17 @@ const IconId = ({
             sx={{
               width: 24,
               height: 24,
-              bgcolor: "secondary.main",
+              color: 'currentColor',
+              bgcolor: 'currentColor',
             }}
           >
-            <Typography fontSize={18}>
+            <Typography
+              fontSize={18}
+              sx={{
+                color: (t) =>
+                  avatar ? 'secondary.main' : t.palette.common.white,
+              }}
+            >
               {getLetter(index)}
             </Typography>
           </MuiAvatar>
@@ -132,10 +140,17 @@ const IconId = ({
             sx={{
               width: 24,
               height: 24,
-              bgcolor: "secondary.main",
+              color: 'currentColor',
+              bgcolor: 'currentColor',
             }}
           >
-            <Typography fontSize={18}>
+            <Typography
+              fontSize={18}
+              sx={{
+                color: (t) =>
+                  avatar ? 'secondary.main' : t.palette.common.white,
+              }}
+            >
               {index + 1}
             </Typography>
           </MuiAvatar>
