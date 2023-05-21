@@ -235,6 +235,7 @@ const AddContentDialog = ({
               fullWidth
               value={titel}
               onChange={(e) => setTitel(e.target.value)}
+              inputProps={{ maxLength: 100 }}
             />
           )}
           {mimes.length > 1 && (
