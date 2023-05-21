@@ -29,6 +29,7 @@ const Editor = ({ node }: { node: Node }) => {
   const [content, setContent] = useState<any>();
   const [fileId, setFileId] = useState<any>();
   const [image, setImage] = useState<any>();
+  const [authorError, setAuthorError] = useState<string | undefined>();
 
   useEffect(() => {
     if (query) {
@@ -74,13 +75,17 @@ const Editor = ({ node }: { node: Node }) => {
 
   const handleSave = (mutable?: boolean) => async () => {
     if (!['wiki/group', 'wiki/event'].includes(query?.mimeId!)) {
+      if (members.length === 0) {
+        setAuthorError('Tilføj mindst 1 forfatter');
+        return;
+      }
       await nodeMembers.delete();
       await nodeMembers.insert({
         members: members.map((member) => ({ ...member, mimeId: undefined })),
       });
     }
     const newContent =
-      content.length >= 1 && content[0].children[0].text === ''
+      content?.length >= 1 && content[0].children[0].text === ''
         ? content.slice(1)
         : content;
 
@@ -118,7 +123,12 @@ const Editor = ({ node }: { node: Node }) => {
             </Grid>
             {!['wiki/group', 'wiki/event'].includes(query?.mimeId!) && (
               <Grid item xs={12}>
-                <AuthorTextField value={members} onChange={setMembers} />
+                <AuthorTextField
+                  value={members}
+                  onChange={setMembers}
+                  setAuthorError={setAuthorError}
+                  authorError={authorError}
+                />
               </Grid>
             )}
             <Grid item>

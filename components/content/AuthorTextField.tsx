@@ -13,9 +13,13 @@ type Option = { name?: string; mimeId?: string; nodeId?: string };
 const AuthorTextField = ({
   value,
   onChange,
+  authorError,
+  setAuthorError
 }: {
   value: Option[];
-  onChange: any;
+  onChange: Function;
+  authorError?: string;
+  setAuthorError: Function;
 }) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = useState('');
@@ -79,6 +83,7 @@ const AuthorTextField = ({
         onChange(newValue);
       }}
       onInputChange={(_, newInputValue) => {
+        setAuthorError()
         setInputValue(newInputValue);
       }}
       renderOption={(props, option) => (
@@ -110,6 +115,8 @@ const AuthorTextField = ({
           variant="outlined"
           label="Forfattere"
           placeholder="Tilføj Forfatter"
+          error={!!authorError}
+          helperText={authorError}
         />
       )}
     />
