@@ -30,10 +30,9 @@ const FileUploader = ({
       />
       <label htmlFor="input-file">
         <Button
-          color="primary"
-          fullWidth
+          color="secondary"
           component="span"
-          variant="contained"
+          variant="outlined"
           startIcon={<UploadFile />}
           disabled={loading}
         >
@@ -54,6 +53,6 @@ const FileUploader = ({
       )}
     </Box>
   );
-}
+};
 
 export default FileUploader;

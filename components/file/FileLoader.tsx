@@ -1,6 +1,6 @@
 import { Node } from 'hooks';
 import { nhost } from 'nhost';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 import {
   VideoViewer,
   ImageViewer,
@@ -22,7 +22,9 @@ const FileLoader = ({ node }: { node: Node }) => {
         setFile(presignedUrl?.url);
       }
     };
-    fetch();
+    startTransition(() => {
+      fetch();
+    });
   }, [data]);
 
   switch (data?.type) {
@@ -50,6 +52,6 @@ const FileLoader = ({ node }: { node: Node }) => {
   }
 
   return null;
-}
+};
 
 export default FileLoader;

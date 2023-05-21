@@ -1,4 +1,4 @@
-import { SearchOff } from '@mui/icons-material';
+import { Menu, SearchOff } from '@mui/icons-material';
 import {
   alpha,
   Autocomplete,
@@ -14,13 +14,16 @@ import {
   ListItemText,
   Paper,
   Stack,
+  Tooltip,
+  useMediaQuery,
 } from '@mui/material';
 import { order_by, query, resolved } from 'gql';
 import { useLink, usePath, useSession } from 'hooks';
-import { MimeAvatar, MimeIconId, Breadcrumbs } from 'comps';
+import { MimeAvatar, MimeIconId, Breadcrumbs, Bar } from 'comps';
 import {
   forwardRef,
   Fragment,
+  startTransition,
   useEffect,
   useRef,
   useState,
@@ -28,43 +31,19 @@ import {
 } from 'react';
 import { fromId } from 'core/path';
 
-const SearchBoxRef = (props: any, ref?: any) => (
-  <Box
-    {...props}
-    ref={ref}
-    sx={{
-      position: 'relative',
-      borderRadius: (t) => t.shape.borderRadius,
-      backgroundColor: (t) => alpha(t.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: (t) => alpha(t.palette.common.white, 0.25),
-      },
-      marginLeft: {
-        sm: (t) => t.spacing(1),
-        md: 0,
-      },
-      width: '100%',
-    }}
-  />
-);
-
-const SearchBox = forwardRef(SearchBoxRef);
-
 const StyledInputRef = (props: InputBaseProps, ref?: any) => (
   <InputBase
     {...props}
     ref={ref}
     sx={{
       '& .MuiInputBase-input': {
-        color: 'white',
         '&::placeholder': {
           opacity: 1,
         },
         width: '100%',
-        padding: (t) => t.spacing(1.5, 1, 1.5, 0),
-        // vertical padding + font size from searchIcon
-        //paddingLeft: `calc(1em + ${theme.spacing(6)})`,
+        padding: (t) => t.spacing(1.5, 1, 1.5, 2),
         transition: (t) => t.transitions.create('width'),
+        color: 'common.white',
       },
     }}
   />
@@ -72,7 +51,31 @@ const StyledInputRef = (props: InputBaseProps, ref?: any) => (
 
 const StyledInput = forwardRef(StyledInputRef);
 
-const SearchField = () => {
+const MenuAvatar = ({
+  openDrawer,
+  setOpenDrawer,
+}: {
+  openDrawer: boolean;
+  setOpenDrawer: (val: boolean) => void;
+}) => {
+  return (
+    <Tooltip title="Menu">
+      <IconButton onClick={() => startTransition(() => setOpenDrawer(true))}>
+        <Avatar sx={{ bgcolor: 'secondary.main' }}>
+          <Menu />
+        </Avatar>
+      </IconButton>
+    </Tooltip>
+  );
+};
+
+const SearchField = ({
+  openDrawer,
+  setOpenDrawer,
+}: {
+  openDrawer: boolean;
+  setOpenDrawer: (val: boolean) => void;
+}) => {
   const link = useLink();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [searchMode, setSearchMode] = useState(false);
@@ -80,13 +83,19 @@ const SearchField = () => {
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<
-    { id?: string; name?: string; parent: { name?: string }, context?: boolean }[]
+    {
+      id?: string;
+      name?: string;
+      parent: { name?: string };
+      context?: boolean;
+    }[]
   >([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] = useState<string>();
   const [selectIndex, setSelectIndex] = useState(0);
   const [_, startTransition] = useTransition();
   const path = usePath();
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const handleContextSelect = async (id: string) => {
     const prefix = await resolved(() => {
@@ -114,7 +123,7 @@ const SearchField = () => {
   const goto = async (id?: string, context?: boolean) => {
     if (!id) return;
     if (context) {
-      await handleContextSelect(id)
+      await handleContextSelect(id);
     } else {
       await link.id(id);
     }
@@ -129,20 +138,26 @@ const SearchField = () => {
         .nodes({
           where: {
             _and: [
-              { mime: { _or: [{hidden: { _eq: false } }, { context: { _eq: true } }] } },
-              path.length == 0 ? {} : { contextId: { _eq: session?.prefix?.id } },
+              {
+                mime: {
+                  _or: [{ hidden: { _eq: false } }, { context: { _eq: true } }],
+                },
+              },
+              path.length == 0
+                ? {}
+                : { contextId: { _eq: session?.prefix?.id } },
               { name: { _ilike: `%${name}%` } },
             ],
           },
           limit: name ? 10 : 0,
-          order_by: [{ mime: { context: order_by.desc } }]
+          order_by: [{ mime: { context: order_by.desc } }],
         })
         .map(({ id, name, mimeId, parent, mime }) => ({
           id,
           name,
           mimeId,
           parent: { name: parent?.name },
-          context: mime?.context
+          context: mime?.context,
         }))
     );
     setOptions(nodes);
@@ -150,7 +165,9 @@ const SearchField = () => {
   };
 
   useEffect(() => {
-    setSelected(options?.[selectIndex]?.id);
+    startTransition(() => {
+      setSelected(options?.[selectIndex]?.id);
+    });
   }, [options, selectIndex]);
 
   useEffect(() => {
@@ -185,7 +202,8 @@ const SearchField = () => {
             setSelectIndex(selectIndex > 0 ? selectIndex - 1 : selectIndex);
           if (e.key === 'Enter') {
             setSearchMode(false);
-            if (options?.[selectIndex]?.id) goto(options?.[selectIndex]?.id, options?.[selectIndex]?.context);
+            if (options?.[selectIndex]?.id)
+              goto(options?.[selectIndex]?.id, options?.[selectIndex]?.context);
           }
           const scroll = document.querySelector(
             `#o${options?.[selectIndex]?.id}`
@@ -229,17 +247,19 @@ const SearchField = () => {
       )}
       PaperComponent={(props) => (
         <Paper {...props} sx={{ height: '100%' }}>
-          <List dense>
-            {props.children}
-          </List>
+          <List dense>{props.children}</List>
         </Paper>
       )}
       renderInput={(params) => (
-        <SearchBox ref={params.InputProps.ref}>
+        <Bar ref={params.InputProps.ref}>
           <Stack direction="row">
-            <IconButton>
-              <MimeAvatar mimeId="app/search" />
-            </IconButton>
+            {!largeScreen && (
+              <MenuAvatar
+                openDrawer={openDrawer}
+                setOpenDrawer={setOpenDrawer}
+              />
+            )}
+
             <StyledInput
               inputRef={(input) => {
                 // eslint-disable-next-line functional/immutable-data
@@ -263,7 +283,7 @@ const SearchField = () => {
               </Avatar>
             </IconButton>
           </Stack>
-        </SearchBox>
+        </Bar>
       )}
     />
   );
@@ -271,14 +291,17 @@ const SearchField = () => {
   return searchMode ? (
     autocomplete
   ) : (
-    <SearchBox>
+    <Bar>
       <Stack direction="row">
+        {!largeScreen && (
+          <MenuAvatar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+        )}
         <Breadcrumbs />
         <IconButton onClick={() => startTransition(() => setSearchMode(true))}>
           <MimeAvatar mimeId="app/search" />
         </IconButton>
       </Stack>
-    </SearchBox>
+    </Bar>
   );
 };
 

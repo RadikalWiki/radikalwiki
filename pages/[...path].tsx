@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, startTransition, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { PathLoader } from 'comps';
 import { fromId } from 'core/path';
@@ -21,7 +21,9 @@ const Path = () => {
     )
       fromId(fullpath[0]).then((path) => {
         if (path.length == 0) return;
-        router.push(`${path.join('/')}`);
+        startTransition(() => {
+          router.push(`${path.join('/')}`);
+        });
       });
   }, [fullpath]);
 

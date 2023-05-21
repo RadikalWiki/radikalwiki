@@ -1,51 +1,33 @@
 import React, { useContext, useState } from 'react';
 import {
-  Button,
   IconButton,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { Link } from 'comps';
 import {
-  AccountCircle,
   Brightness4,
   Brightness7,
-  Face,
   HowToReg,
   LockReset,
   Login,
   Logout,
+  ManageAccounts,
 } from '@mui/icons-material';
-import { useSession } from 'hooks';
 import { useRouter } from 'next/router';
 import { nhost } from 'nhost';
-import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
+import { useAuthenticationStatus } from '@nhost/nextjs';
 import { ThemeModeContext } from 'core/theme/ThemeModeContext';
 
-const abriviateName = (name: string) =>
-  name?.split(' ').length === 1
-    ? name
-    : name?.split(' ').map((s) => (s ? s[0].toUpperCase() : ''));
-
-const UserButton = () => {
+const UserMenu = ({ list }: { list?: boolean }) => {
   const router = useRouter();
-  const displayName = useUserDisplayName();
-  const [session, setSession] = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
-  const largeScreen = useMediaQuery('(min-width:1200px)');
   const { isAuthenticated } = useAuthenticationStatus();
-  const { toggleThemeMode, resetThemeMode } = useContext(ThemeModeContext);
+  const { toggleThemeMode } = useContext(ThemeModeContext);
   const { palette } = useTheme();
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme =
-    (session?.theme == undefined && prefersDarkMode) ||
-    session?.theme === 'dark'
-      ? 'dark'
-      : 'light';
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -53,10 +35,6 @@ const UserButton = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const handleTheme = () => {
-    setSession({ theme: theme === 'dark' ? 'light' : 'dark' });
   };
 
   const handleLogout = async () => {
@@ -69,29 +47,38 @@ const UserButton = () => {
     router.push(`/user/${mode}`);
   };
 
-  const name = largeScreen ? displayName : abriviateName(displayName as string);
-
   return (
     <>
-      {isAuthenticated ? (
-        <IconButton sx={{ ml: 2 }} onClick={handleClick}>
-          <AccountCircle />
-        </IconButton>
-      ) : (
-        <Button
+      {list ? (
+        <ListItemButton
           onClick={handleClick}
-          endIcon={<AccountCircle />}
+          sx={{
+            minHeight: 48,
+            justifyContent: 'center',
+            px: 2.5,
+          }}
         >
-          Log ind
-        </Button>
+          <ListItemIcon
+            sx={{
+              mr: 'auto',
+              justifyContent: 'center',
+            }}
+          >
+            <ManageAccounts />
+          </ListItemIcon>
+        </ListItemButton>
+      ) : (
+        <IconButton onClick={handleClick}>
+          <ManageAccounts />
+        </IconButton>
       )}
       <Menu
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'center',
         }}
         transformOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'center',
         }}
         anchorEl={anchorEl}
@@ -138,13 +125,15 @@ const UserButton = () => {
         ]}
         <MenuItem key="theme" onClick={toggleThemeMode}>
           <ListItemIcon>
-            {palette.mode == 'light' ?  <Brightness4 /> : <Brightness7 />}
+            {palette.mode == 'light' ? <Brightness4 /> : <Brightness7 />}
           </ListItemIcon>
-          <ListItemText>{palette.mode == 'light' ? 'Mørk' : 'Lys' }</ListItemText>
+          <ListItemText>
+            {palette.mode == 'light' ? 'Mørk' : 'Lys'}
+          </ListItemText>
         </MenuItem>
       </Menu>
     </>
   );
-}
+};
 
-export default UserButton;
+export default UserMenu;

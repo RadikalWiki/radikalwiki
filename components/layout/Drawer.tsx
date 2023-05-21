@@ -4,37 +4,40 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Divider,
-  Collapse,
   Typography,
   ListItemSecondaryAction,
   IconButton,
   useMediaQuery,
-  alpha,
   Toolbar,
-  CircularProgress,
   AppBar,
+  Skeleton,
+  Stack,
+  Avatar,
 } from '@mui/material';
 import {
-  ChevronLeft,
   Close,
   ConnectedTv,
   ExpandLess,
   ExpandMore,
   FileOpen,
-  Home,
 } from '@mui/icons-material';
 import { useSession, usePath, useNode, useLink } from 'hooks';
 import { fromId } from 'core/path';
-import { Link as NextLink, MimeAvatar, MimeIcon, HomeList } from 'comps';
-import { order_by, resolved, nodes } from 'gql';
-import { useState, startTransition, useEffect, Suspense } from 'react';
+import { Link as NextLink, MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
+import { order_by, resolved } from 'gql';
+import {
+  useState,
+  startTransition,
+  useEffect,
+  Suspense,
+  useDeferredValue,
+} from 'react';
 import { drawerWidth } from 'core/constants';
-import { Box, darken, lighten } from '@mui/system';
+import { Box } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
 
 const DrawerElement = ({
-  query,
+  id,
   path,
   fullpath,
   open,
@@ -44,7 +47,7 @@ const DrawerElement = ({
   childIndex,
   iconIndex,
 }: {
-  query: nodes;
+  id: string;
   path: string[];
   fullpath: string[];
   open: boolean[][];
@@ -54,6 +57,8 @@ const DrawerElement = ({
   childIndex: number;
   iconIndex?: number;
 }) => {
+  const node = useNode({ id });
+  const query = node.useQuery();
   const link = useLink();
   const slicedPath = fullpath.slice(0, path.length);
   const userId = useUserId();
@@ -61,6 +66,8 @@ const DrawerElement = ({
   const selected =
     path.length === slicedPath.length &&
     path.every((v, i) => v === slicedPath[i]);
+
+  const expanded = (open[index]?.[childIndex] ?? false) || selected;
 
   const childrenCount =
     query
@@ -101,9 +108,9 @@ const DrawerElement = ({
       >
         <ListItemIcon>
           <MimeIcon
-            mimeId={query.data({ path: 'type' }) ?? query.mimeId}
+            mimeId={query?.data({ path: 'type' }) ?? query?.mimeId}
             index={iconIndex}
-            name={query.name}
+            name={query?.name}
           />
         </ListItemIcon>
         <ListItemText>
@@ -144,26 +151,26 @@ const DrawerElement = ({
           </ListItemSecondaryAction>
         )}
       </ListItemButton>
-      <Collapse
-        mountOnEnter
-        in={(open[index]?.[childIndex] ?? false) || selected}
-      >
+
+      {expanded && (
         <Suspense
-          fallback={
-            <Box
+          fallback={[...Array(childrenCount).keys()].map((key) => (
+            <ListItemButton
+              key={key}
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
+                pl: index + 2,
               }}
             >
-              <CircularProgress />
-            </Box>
-          }
+              <ListItemIcon>
+                <Skeleton variant="circular" width={24} height={24} />
+              </ListItemIcon>
+            </ListItemButton>
+          ))}
         >
-          {childrenCount > 0 && query.id && (
+          {childrenCount > 0 && query?.id && (
             <DrawerList
-              key={query.id ?? 0}
-              id={query.id}
+              key={query?.id ?? 0}
+              id={query?.id}
               path={path}
               fullpath={fullpath}
               open={open}
@@ -171,11 +178,10 @@ const DrawerElement = ({
               index={index}
               childIndex={childIndex}
               setDrawerOpen={setDrawerOpen}
-              siblings={length}
             />
           )}
         </Suspense>
-      </Collapse>
+      )}
     </>
   );
 };
@@ -189,7 +195,6 @@ const DrawerList = ({
   setDrawerOpen,
   index,
   childIndex,
-  siblings,
 }: {
   id: string;
   path: string[];
@@ -199,7 +204,6 @@ const DrawerList = ({
   setDrawerOpen: Function;
   index: number;
   childIndex: number;
-  siblings: number;
 }) => {
   const node = useNode({ id });
   const query = node.useQuery();
@@ -238,59 +242,42 @@ const DrawerList = ({
 
   return (
     <>
-      {children?.map((child, childIndex) => (
-        <DrawerElement
-          key={child.id ?? 0}
-          query={child}
-          path={path.concat([child?.namespace!])}
-          fullpath={fullpath}
-          open={open}
-          setOpen={setOpen}
-          index={index + 1}
-          childIndex={childIndex}
-          iconIndex={findIndex(child.id)}
-          setDrawerOpen={setDrawerOpen}
-        />
-      ))}
+      {children?.map(
+        ({ id, namespace }, childIndex) =>
+          id && (
+            <DrawerElement
+              key={id ?? 0}
+              id={id}
+              path={path.concat([namespace!])}
+              fullpath={fullpath}
+              open={open}
+              setOpen={setOpen}
+              index={index + 1}
+              childIndex={childIndex}
+              iconIndex={findIndex(id)}
+              setDrawerOpen={setDrawerOpen}
+            />
+          )
+      )}
     </>
   );
 };
 
-const Drawer = ({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: (val: boolean) => void;
-}) => {
+const MenuList = ({ setOpen }: { setOpen: Function }) => {
   const link = useLink();
+  const [listOpenValue, setListOpen] = useState<boolean[][]>([]);
+  const listOpen = useDeferredValue(listOpenValue);
   const [session, setSession] = useSession();
-  const largeScreen = useMediaQuery('(min-width:1200px)');
   const path = usePath();
-  const home = path.length === 0;
   const node = useNode({
-    id: home ? undefined : session?.prefix?.id,
+    id: session?.prefix?.id,
   });
   const query = node.useQuery();
 
-  const [listOpen, setListOpen] = useState<boolean[][]>([]);
-
   const contextId = session?.prefix?.id ?? node?.contextId;
 
-  const handleCurrent = async () => {
-    const id = await resolved(
-      () =>
-        query?.context?.relations({
-          where: { name: { _eq: 'active' } },
-        })?.[0]?.nodeId,
-      { noCache: true }
-    );
-    await link.id(id ?? contextId!);
-    setOpen(false);
-  };
-
   useEffect(() => {
-    if (session?.prefix === undefined && !home) {
+    if (session?.prefix === undefined) {
       Promise.all([
         fromId(contextId),
         resolved(() => {
@@ -303,20 +290,40 @@ const Drawer = ({
           };
         }),
       ]).then(([path, prefix]) => {
-        setSession({
-          prefix: {
-            ...prefix,
-            path,
-          },
+        startTransition(() => {
+          setSession({
+            prefix: {
+              ...prefix,
+              path,
+            },
+          });
         });
       });
     }
   }, [session, setSession]);
 
-  const list = home ? (
-    <HomeList setOpen={setOpen} />
-  ) : (
-    <List sx={{ pt: 0, pb: 0, width: '100%' }}>
+  const handleCurrent = async () => {
+    const id = await resolved(
+      () =>
+        query?.context?.relations({
+          where: { name: { _eq: 'active' } },
+        })?.[0]?.nodeId,
+      { noCache: true }
+    );
+    startTransition(() => {
+      link.id(id ?? contextId!);
+      setOpen(false);
+    });
+  };
+
+  return (
+    <List
+      sx={{
+        pt: 0,
+        pb: 0,
+        width: '100%',
+      }}
+    >
       <ListItemButton
         component={NextLink}
         href={`/${session?.prefix?.path?.join('/')}?app=screen`}
@@ -333,23 +340,58 @@ const Drawer = ({
         </ListItemIcon>
         <ListItemText primary="Aktuelle Punkt" />
       </ListItemButton>
-      <Divider />
-      <Suspense fallback={<CircularProgress />}>
-        {node.id && (
-          <DrawerList
-            id={node.id}
-            path={session?.prefix?.path ?? []}
-            fullpath={path}
-            open={listOpen}
-            setOpen={setListOpen}
-            setDrawerOpen={setOpen}
-            index={0}
-            childIndex={0}
-            siblings={0}
-          />
-        )}
-      </Suspense>
+      {node.id && (
+        <DrawerList
+          id={node.id}
+          path={session?.prefix?.path ?? []}
+          fullpath={path}
+          open={listOpen}
+          setOpen={setListOpen}
+          setDrawerOpen={setOpen}
+          index={0}
+          childIndex={0}
+        />
+      )}
     </List>
+  );
+};
+
+const Title = () => {
+  const [session] = useSession();
+  const node = useNode({
+    id: session?.prefix?.id,
+  });
+  const query = node.useQuery();
+
+  return (
+    <>
+      <IconButton>
+        <MimeAvatar name={query?.name} mimeId={query?.mimeId} />
+      </IconButton>
+      <Typography sx={{ m: 2, color: 'common.white' }}>{node?.name}</Typography>
+    </>
+  );
+};
+
+const Drawer = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (val: boolean) => void;
+}) => {
+  const link = useLink();
+  const largeScreen = useMediaQuery('(min-width:1200px)');
+  const path = usePath();
+  const [session] = useSession();
+  const home = path.length === 0;
+
+  const list = home ? (
+    <Suspense>
+      <HomeList setOpen={setOpen} />
+    </Suspense>
+  ) : (
+    <MenuList setOpen={setOpen} />
   );
 
   return (
@@ -360,7 +402,7 @@ const Drawer = ({
               width: drawerWidth,
               flexShrink: 0,
               '& .MuiDrawer-paper': {
-                ml: '64px',
+                ml: '40px',
                 width: drawerWidth,
                 boxSizing: 'border-box',
                 borderRadius: '0px 20px 20px 0px',
@@ -388,7 +430,18 @@ const Drawer = ({
           },
           overflowY: 'auto',
           WebkitOverflowScrolling: 'touch',
-          height: 'calc(100vh - 64px)',
+          pb: 8,
+        }}
+      >
+        {list}
+      </Box>
+      <AppBar
+        elevation={0}
+        sx={{
+          top: 'auto',
+          bottom: 0,
+          background: 'transparent',
+          boxShadow: 'none',
         }}
       >
         <Toolbar
@@ -399,48 +452,53 @@ const Drawer = ({
             }
           }}
           sx={{
-            background: (theme) =>
-              theme.palette.mode === 'dark'
-                ? darken(theme.palette.primary.main, 0.9)
-                : lighten(theme.palette.primary.main, 0.9),
+            pr: 1,
+            pl: 1,
             cursor: 'pointer',
-            ml: largeScreen ? -2 : 0,
-            //'&:hover, &:focus': {
-            //  bgcolor: (t) => alpha(t.palette.primary.main, 0.9),
-            //},
+            borderRadius: '20px',
+            width: largeScreen ? `${drawerWidth}px` : '100%',
+
+            bottom: 0,
+            position: 'absolute',
+            ml: largeScreen ? 5 : 0,
           }}
+          disableGutters
         >
-          {home ? (
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                startTransition(() => {
-                  link.back();
-                });
-              }}
-            >
-              <ChevronLeft />
-            </IconButton>
-          ) : null}
-          <Box sx={{ flexGrow: 1 }} />
-          <MimeAvatar name={query?.name} mimeId={query?.mimeId} />
-          <Typography sx={{ pl: 1 }} variant="h6">
-            {node?.name}
-          </Typography>
-          <Box sx={{ flexGrow: 1 }} />
-          {!largeScreen && (
-            <IconButton
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpen(false);
-              }}
-            >
-              <Close />
-            </IconButton>
-          )}
+          <Bar>
+            <Stack direction="row">
+              {home ? (
+                <>
+                  <IconButton>
+                    <MimeAvatar mimeId="app/home" />
+                  </IconButton>
+                  <Typography sx={{ m: 2, color: 'common.white' }}>
+                    Hjem
+                  </Typography>
+                </>
+              ) : (
+                <Suspense>
+                  <Title />
+                </Suspense>
+              )}
+              <Box sx={{ flexGrow: 1 }} />
+              {!largeScreen && (
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startTransition(() => {
+                      setOpen(false);
+                    });
+                  }}
+                >
+                  <Avatar sx={{ bgcolor: 'secondary.main' }}>
+                    <Close />
+                  </Avatar>
+                </IconButton>
+              )}
+            </Stack>
+          </Bar>
         </Toolbar>
-        {list}
-      </Box>
+      </AppBar>
     </MuiDrawer>
   );
 };

@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import { AuthorTextField, AutoButton, Slate, FileUploader, Image } from 'comps';
-import { resolved } from 'gql';
+import React, { useState, useEffect, startTransition } from 'react';
 import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  TextField,
-  Grid,
-  Paper,
-} from '@mui/material';
-import { Publish, Save, Delete } from '@mui/icons-material';
-import { fromId } from 'core/path';
+  AuthorTextField,
+  AutoButton,
+  Slate,
+  FileUploader,
+  Image,
+  DeleteButton,
+  PublishButton,
+} from 'comps';
+import { resolved } from 'gql';
+import { Card, CardContent, TextField, Grid, ButtonGroup } from '@mui/material';
+import { Save } from '@mui/icons-material';
 import { Node, useLink } from 'hooks';
 import { nhost } from 'nhost';
+import { Stack } from '@mui/system';
 
 const Editor = ({ node }: { node: Node }) => {
   const link = useLink();
   const query = node.useQuery();
   const update = node.useUpdate();
-  const $delete = node.useDelete();
   const nodeMembers = node.useMembers();
-  const parentId = query?.parentId;
   const data = query?.data();
 
-  const [expand, setExpand] = useState(true);
   const [name, setName] = useState('');
   const [members, setMembers] = useState<
     { nodeId: string; name?: string; email?: string }[]
@@ -35,27 +32,33 @@ const Editor = ({ node }: { node: Node }) => {
 
   useEffect(() => {
     if (query) {
-      if (!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '')) {
-        const fetchMembers = async () => {
-          const members = await resolved(() =>
-            query?.members().map(({ nodeId, name, email, node }) => ({
-              nodeId: nodeId!,
-              name: name!,
-              email: email!,
-              mimeId: node?.mimeId,
-            }))
-          );
-          if (members?.[0]?.nodeId || members?.[0]?.email || members?.[0]?.name)
-            setMembers(members);
+      startTransition(() => {
+        if (!['wiki/group', 'wiki/event'].includes(query?.mimeId!)) {
+          const fetchMembers = async () => {
+            const members = await resolved(() =>
+              query?.members().map(({ nodeId, name, email, node }) => ({
+                nodeId: nodeId!,
+                name: name!,
+                email: email!,
+                mimeId: node?.mimeId,
+              }))
+            );
+            if (
+              members?.[0]?.nodeId ||
+              members?.[0]?.email ||
+              members?.[0]?.name
+            )
+              setMembers(members);
+          };
+          fetchMembers();
+        }
+        const fetch = async () => {
+          setName(query.name ?? '');
+          setContent(structuredClone(data?.content));
+          setFileId(data?.image);
         };
-        fetchMembers();
-      }
-      const fetch = async () => {
-        setName(query.name ?? '');
-        setContent(structuredClone(data?.content));
-        setFileId(data?.image);
-      };
-      fetch();
+        fetch();
+      });
     }
   }, [query]);
 
@@ -70,7 +73,7 @@ const Editor = ({ node }: { node: Node }) => {
   }, [fileId]);
 
   const handleSave = (mutable?: boolean) => async () => {
-    if (!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '')) {
+    if (!['wiki/group', 'wiki/event'].includes(query?.mimeId!)) {
       await nodeMembers.delete();
       await nodeMembers.insert({
         members: members.map((member) => ({ ...member, mimeId: undefined })),
@@ -87,60 +90,51 @@ const Editor = ({ node }: { node: Node }) => {
     link.push([]);
   };
 
-  const handleDelete = async () => {
-    await nodeMembers.delete();
-    await $delete();
-    link.pop();
-  };
-
-  const editable = query?.mutable && query?.isOwner;
-
   return (
     <>
       <Card sx={{ m: 0 }}>
-        <CardActions>
-          <AutoButton text="Slet" icon={<Delete />} onClick={handleDelete} />
-          <Box sx={{ flexGrow: 1 }} />
-          <AutoButton text="Gem" icon={<Save />} onClick={handleSave()} />
-          {editable && (
-            <AutoButton
-              text="Indsend"
-              icon={<Publish />}
-              onClick={handleSave(false)}
-            />
-          )}
-        </CardActions>
         <CardContent>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <TextField
-                value={name}
-                onChange={(e: any) => setName(e.target.value)}
-                label="Titel"
-                variant="outlined"
-                fullWidth
-              />
+              <Stack spacing={2} direction={'row'} alignItems="center">
+                <TextField
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  label="Titel"
+                  variant="outlined"
+                  fullWidth
+                  multiline
+                />
+                <ButtonGroup>
+                  <DeleteButton node={node} />
+                  <AutoButton
+                    text="Gem"
+                    icon={<Save />}
+                    onClick={handleSave()}
+                  />
+                  <PublishButton node={node} />
+                </ButtonGroup>
+              </Stack>
             </Grid>
-            {!['wiki/group', 'wiki/event'].includes(query?.mimeId ?? '') && (
+            {!['wiki/group', 'wiki/event'].includes(query?.mimeId!) && (
               <Grid item xs={12}>
                 <AuthorTextField value={members} onChange={setMembers} />
               </Grid>
             )}
+            <Grid item>
+              <FileUploader
+                text="Upload Billede"
+                onNewFile={async ({ fileId }: { fileId: string }) => {
+                  setFileId(fileId);
+                }}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <Grid container>
-                <Grid item xs={9}>
-                  <FileUploader
-                    text="Upload Billede"
-                    onNewFile={async ({ fileId }: { fileId: string }) => {
-                      setFileId(fileId);
-                    }}
-                  />
-                </Grid>
                 {image && (
                   <Grid item xs={3}>
-                    <Paper sx={{ p: 1, m: 1 }}>
-                      <Image alt="Billede for indhold" src={image} />
-                    </Paper>
+                    <Image alt="Billede for indhold" src={image} />
                   </Grid>
                 )}
               </Grid>

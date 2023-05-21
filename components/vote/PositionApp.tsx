@@ -3,7 +3,6 @@ import {
   ContentApp,
   PollList,
   CandidateList,
-  AddContentFab,
   FolderDial,
   QuestionList,
 } from 'comps';
@@ -12,11 +11,10 @@ import { Stack } from '@mui/material';
 
 const PositionApp = ({ node }: { node: Node }) => (
   <Stack spacing={1}>
-    <ContentApp node={node} />
+    <ContentApp node={node} add />
     <CandidateList node={node} />
     <QuestionList node={node} />
     <PollList node={node} />
-    <AddContentFab node={node} />
     <FolderDial node={node} />
   </Stack>
 );

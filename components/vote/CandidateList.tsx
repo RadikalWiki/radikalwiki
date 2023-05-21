@@ -11,7 +11,7 @@ import { Image } from 'comps';
 import { Box } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
 import { nhost } from 'nhost';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
 const CandidateList = ({ node }: { node: Node }) => {
   const link = useLink();
@@ -49,7 +49,9 @@ const CandidateList = ({ node }: { node: Node }) => {
       );
       setImages(preUrls.map((preUrl) => preUrl?.presignedUrl?.url ?? '') ?? []);
     };
-    fetch();
+    startTransition(() => {
+      fetch();
+    });
   }, [JSON.stringify(imageIds)]);
 
   if (screen) return null;
@@ -73,13 +75,14 @@ const CandidateList = ({ node }: { node: Node }) => {
               <Box sx={{ height: '50px' }}></Box>
             )}
             <ImageListItemBar
-              sx={{ borderRadius: '10px' }}
+              sx={{ borderRadius: '20px', color: 'white' }}
               title={name}
               position="top"
               actionPosition="left"
               actionIcon={
                 <Avatar
                   sx={{
+                    bgcolor: 'secondary.main',
                     m: 1,
                     height: 32,
                     width: 32,

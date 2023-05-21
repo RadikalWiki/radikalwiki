@@ -142,6 +142,7 @@ const AddContentDialog = ({
   mimes,
   initTitel,
   redirect,
+  app,
 }: {
   node: Node;
   open: boolean;
@@ -149,6 +150,7 @@ const AddContentDialog = ({
   mimes: string[];
   initTitel?: string;
   redirect?: boolean;
+  app?: string;
 }) => {
   const link = useLink();
   const [titel, setTitel] = useState<string>(initTitel ?? '');
@@ -214,7 +216,7 @@ const AddContentDialog = ({
     setFileId(undefined);
     setFileName(undefined);
 
-    if (redirect) link.push([namespace]);
+    if (redirect) link.push([namespace], app);
   };
 
   return (

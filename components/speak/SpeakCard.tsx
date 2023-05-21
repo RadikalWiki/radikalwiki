@@ -69,12 +69,13 @@ const SpeakCard = ({ node, time }: { node: Node; time: number }) => {
               pr: 2,
               pt: 0.5,
               pb: 0.5,
+              borderRadius: '20px',
             }}
           >
             <Typography
               variant="h4"
               sx={{
-                color: (t) => t.palette.secondary.contrastText,
+                color: 'common.white',
               }}
             >
               {timeString(time)}

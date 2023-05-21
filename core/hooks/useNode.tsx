@@ -17,7 +17,7 @@ import {
   relations_update_column,
   resolved,
   useMutation,
-  useQuery as gqtyUseQuery,
+  useQuery as useQueryGqty,
   useSubscription,
 } from 'gql';
 import { usePath } from 'hooks';
@@ -45,6 +45,7 @@ export type Node = {
   parentId?: Maybe<string | undefined>;
   namespace: Maybe<string | undefined>;
   useQuery: () => Maybe<nodes> | undefined;
+  useQuery2: () => Maybe<nodes> | undefined;
   useSubs: () => Maybe<nodes>;
   useInsert: (
     param?: Param
@@ -116,15 +117,19 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   const where = {
     where: param?.where ?? { parentId: { _is_null: true } },
   };
+  const query = useQueryGqty();
   const useQuery = () => {
-    const query = gqtyUseQuery();
+    const query = useQueryGqty();
     return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
   };
-  const query = gqtyUseQuery();
+  const useQuery2 = () => {
+    //const query = useQueryGqty();
+    return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
+  };
   const node = param?.id
     ? query.node({ id: param?.id })
     : query.nodes(where)?.[0];
-  const nodeId = param?.id ?? node?.id;
+  const nodeId = node?.id;
   const name = node?.name;
   const parentId = node?.parentId;
   const mimeId = node?.mimeId;
@@ -360,6 +365,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     mimeId,
     namespace,
     useQuery,
+    useQuery2,
     useSubs,
     useInsert,
     useDelete,

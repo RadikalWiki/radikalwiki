@@ -1,23 +1,8 @@
-import React, { Children, Suspense, useState } from 'react';
-import {
-  Link as NextLink,
-  AddQuestionButton,
-  Content,
-  ContentToolbar,
-  AutoButton,
-} from 'comps';
-import {
-  ExpandMore,
-  ExpandLess,
-  LowPriority,
-  LockOpen,
-  Face,
-  DoNotDisturb,
-  Delete,
-} from '@mui/icons-material';
+import React from 'react';
+import { AddQuestionButton, AutoButton, MemberChips } from 'comps';
+import { LowPriority, Face, DoNotDisturb, Delete } from '@mui/icons-material';
 import {
   Avatar,
-  Badge,
   Collapse,
   Card,
   CardHeader,
@@ -27,16 +12,16 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
-  Tooltip,
   CardActions,
   Typography,
   Chip,
 } from '@mui/material';
-import { nodes, order_by } from 'gql';
+import { order_by } from 'gql';
 import { IconId } from 'mime';
 import { Node, useLink, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
 import { useUserId } from '@nhost/nextjs';
+import { Stack } from '@mui/system';
 
 const QuestionList = ({ node }: { node: Node }) => {
   const screen = useScreen();
@@ -69,7 +54,7 @@ const QuestionList = ({ node }: { node: Node }) => {
                 <AutoButton
                   text="Sorter"
                   icon={<LowPriority />}
-                  onClick={() => link.push([], "sort")}
+                  onClick={() => link.push([], 'sort')}
                 />
               )}
               <AddQuestionButton node={node} />
@@ -145,6 +130,6 @@ const QuestionList = ({ node }: { node: Node }) => {
       </List>
     </Card>
   );
-}
+};
 
 export default QuestionList;

@@ -1,9 +1,7 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 import {
-  Link as NextLink,
   AddChangeButton,
   Content,
-  ContentToolbar,
   AutoButton,
   MimeAvatar,
   MemberChips,
@@ -12,33 +10,27 @@ import {
   ExpandMore,
   ExpandLess,
   LowPriority,
-  LockOpen,
-  Face,
   DoNotDisturb,
 } from '@mui/icons-material';
 import {
   Avatar,
-  Badge,
   Collapse,
   Card,
   CardHeader,
   IconButton,
   List,
-  ListItem,
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
-  Tooltip,
   CardActions,
   Typography,
-  Chip,
-  Skeleton,
   ListItemButton,
 } from '@mui/material';
 import { order_by } from 'gql';
 import { IconId } from 'mime';
 import { Node, useLink, useNode, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
+import { Stack } from '@mui/system';
 
 const ChildListElement = ({ id, index }: { id: string; index: number }) => {
   const node = useNode({ id });
@@ -48,16 +40,14 @@ const ChildListElement = ({ id, index }: { id: string; index: number }) => {
 
   const item = (
     <>
-      <ListItemButton
-        onClick={() => link.push([query?.namespace!])}
-      >
+      <ListItemButton onClick={() => link.push([query?.namespace!])}>
         <ListItemAvatar>
           <MimeAvatar mimeId={query?.mimeId} index={index} />
         </ListItemAvatar>
-        <ListItemText
-          primary={query?.name}
-          secondary={<MemberChips node={node} child />}
-        />
+        <Stack>
+          <Typography>{query?.name}</Typography>
+          <MemberChips node={node} child />
+        </Stack>
         <ListItemSecondaryAction>
           <IconButton
             onClick={(e) => {
@@ -71,7 +61,6 @@ const ChildListElement = ({ id, index }: { id: string; index: number }) => {
         </ListItemSecondaryAction>
       </ListItemButton>
       <Collapse in={open}>
-        <ContentToolbar node={node} child />
         <Content node={node} fontSize="100%" />
       </Collapse>
     </>
@@ -140,7 +129,7 @@ const ChangeList = ({ node }: { node: Node }) => {
               <AutoButton
                 text="Sorter"
                 icon={<LowPriority />}
-                onClick={() => link.push([], "sort")}
+                onClick={() => link.push([], 'sort')}
               />
             )}
             <AddChangeButton node={node} />

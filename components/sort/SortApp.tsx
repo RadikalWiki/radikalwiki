@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { startTransition, useEffect } from 'react';
 import { Fragment, useState } from 'react';
 import { SortFab, MimeAvatarId } from 'comps';
 import {
@@ -39,7 +39,9 @@ const SortApp = ({ node }: { node: Node }) => {
         );
         setList(children);
       };
-      fetch();
+      startTransition(() => {
+        fetch();
+      });
     }
   }, [query]);
 
@@ -76,9 +78,11 @@ const SortApp = ({ node }: { node: Node }) => {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                           >
-                            {node.id && <ListItemAvatar>
-                              <MimeAvatarId id={node.id} />
-                            </ListItemAvatar>}
+                            {node.id && (
+                              <ListItemAvatar>
+                                <MimeAvatarId id={node.id} />
+                              </ListItemAvatar>
+                            )}
                             <ListItemText primary={node.name} />
                           </ListItem>
                         </Fragment>

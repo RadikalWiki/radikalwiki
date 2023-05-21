@@ -1,4 +1,4 @@
-import { Node, useNode, useScreen } from 'hooks';
+import { Node, useNode } from 'hooks';
 import {
   FolderApp,
   ContentApp,
@@ -43,20 +43,14 @@ const SelectApp = ({ mimeId, node }: { mimeId: string; node: Node }) => {
     default:
       return null;
   }
-}
+};
 
 const MimeLoader = (param?: { id?: string; mimeId?: string }) => {
-  const screen = useScreen();
   const node = useNode({ id: param?.id });
   const router = useRouter();
   if ((!node?.mimeId && !param?.mimeId) || !router.query.path) return null;
 
-  return (
-    <>
-      {screen && <ContentHeader node={node} />}
-      <SelectApp mimeId={param?.mimeId ?? node.mimeId ?? ''} node={node} />
-    </>
-  );
-}
+  return <SelectApp mimeId={param?.mimeId ?? node.mimeId ?? ''} node={node} />;
+};
 
 export default MimeLoader;

@@ -73,8 +73,7 @@ const IconId = ({
           />
           <Typography
             sx={{
-              color: (t) =>
-                avatar ? 'secondary.main' : t.palette.secondary.contrastText,
+              color: avatar ? 'secondary.main' : 'common.white',
               position: avatar ? 'absolute' : 'relative',
               top: avatar ? 8 : 3,
               left: avatar ? 16 : 8,
@@ -112,8 +111,7 @@ const IconId = ({
             <Typography
               fontSize={18}
               sx={{
-                color: (t) =>
-                  avatar ? 'secondary.main' : t.palette.common.white,
+                color: avatar ? 'secondary.main' : 'common.white',
               }}
             >
               {getLetter(index)}
@@ -147,8 +145,7 @@ const IconId = ({
             <Typography
               fontSize={18}
               sx={{
-                color: (t) =>
-                  avatar ? 'secondary.main' : t.palette.common.white,
+                color: avatar ? 'secondary.main' : 'common.white',
               }}
             >
               {index + 1}
@@ -178,6 +175,10 @@ const IconId = ({
       return <Search />;
     case 'app/member':
       return <Group />;
+    case 'app/folder':
+      return <Folder />;
+    case 'app/screen':
+      return <Folder />;
     case undefined:
       return <Skeleton variant="circular" width={24} height={24} />;
     default:

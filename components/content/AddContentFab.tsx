@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Collapse, Fab, useScrollTrigger, Zoom } from '@mui/material';
+import { Fab, useScrollTrigger, Zoom } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { AddContentDialog } from 'comps';
-import { Node, useNode, useScreen } from 'hooks';
+import { Node, useScreen } from 'hooks';
 
 const AddContentFab = ({ node }: { node: Node }) => {
   const trigger = useScrollTrigger({
@@ -15,9 +15,9 @@ const AddContentFab = ({ node }: { node: Node }) => {
   });
   const screen = useScreen();
   const [open, setOpen] = useState(false);
-  const parent = node.useQuery();
+  const query = node.useQuery();
   const mimes =
-    parent
+    query
       ?.inserts({
         where: {
           _or: [{ context: { _eq: true } }, { hidden: { _eq: false } }],
@@ -25,7 +25,7 @@ const AddContentFab = ({ node }: { node: Node }) => {
       })
       ?.map((mime) => mime.id!) ?? [];
 
-  if (screen || !parent?.attachable || !mimes?.[0]) return null;
+  if (screen || !query?.attachable || !mimes?.[0]) return null;
 
   return (
     <>
@@ -33,7 +33,7 @@ const AddContentFab = ({ node }: { node: Node }) => {
         <Fab
           sx={{
             position: 'fixed',
-            bottom: (t) => t.spacing(9),
+            bottom: (t) => t.spacing(16),
             right: (t) => t.spacing(3),
           }}
           variant={!trigger ? 'extended' : 'circular'}

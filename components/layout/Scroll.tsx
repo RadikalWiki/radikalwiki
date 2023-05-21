@@ -1,66 +1,33 @@
 import React from 'react';
-import { Fab, useScrollTrigger, Zoom, Box } from '@mui/material';
-import { KeyboardArrowUp } from '@mui/icons-material';
-import { Container } from '@mui/system';
+import { Box, useMediaQuery } from '@mui/material';
 
 const Scroll = ({ children }: any) => {
-  const trigger = useScrollTrigger({
-    target:
-      typeof document !== 'undefined'
-        ? document.querySelector('#scroll') || undefined
-        : undefined,
-    disableHysteresis: true,
-    threshold: 100,
-  });
-
-  const handleClick = (_: any) => {
-    const scroll = document.querySelector('#scroll');
-    if (scroll) {
-      scroll.scrollTo({ behavior: 'smooth', top: 0 });
-    }
-
-    const anchor = document.querySelector('#top-scroll');
-    if (anchor) {
-      anchor.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  };
-
+  const largeScreen = useMediaQuery('(min-width:1200px)');
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box id="top-anchor" />
-      <Box
-        id="scroll"
-        sx={{
-          // Disable scroll (Firefox)
-          scrollbarWidth: 'none',
-          // Disable scroll (Webkit)
-          '::-webkit-scrollbar': {
-            display: 'none',
-          },
-          overflowY: 'auto',
-          WebkitOverflowScrolling: 'touch',
-          height: 'calc(100vh - 64px)',
-        }}
-      >
+    <Box
+      id="scroll"
+      sx={{
+        // Disable scroll (Firefox)
+        scrollbarWidth: 'none',
+        // Disable scroll (Webkit)
+        '::-webkit-scrollbar': {
+          display: 'none',
+        },
+        overflowY: 'auto',
+        WebkitOverflowScrolling: 'touch',
+        height: '100%',
+        position: 'fixed',
+        width: largeScreen ? 'calc(100vw - 400px)' : '100%',
+        left: largeScreen ? '440px' : '0px',
+        pr: largeScreen ? 8 : 0,
+      }}
+    >
+      <>
         {children}
-      </Box>
-      <Zoom in={trigger}>
-        <Box
-          onClick={handleClick}
-          role="presentation"
-          sx={{
-            position: 'fixed',
-            bottom: (t) => t.spacing(9),
-            left: (t) => t.spacing(3),
-          }}
-        >
-          <Fab color="primary" size="small">
-            <KeyboardArrowUp />
-          </Fab>
-        </Box>
-      </Zoom>
+        <Box sx={{ p: 4 }} />
+      </>
     </Box>
   );
-}
+};
 
 export default Scroll;

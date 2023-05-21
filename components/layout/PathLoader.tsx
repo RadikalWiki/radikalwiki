@@ -1,8 +1,6 @@
-import { Slide, Typography } from '@mui/material';
-import { Box } from '@mui/system';
 import { useQuery } from 'gql';
 import { useSession } from 'hooks';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect } from 'react';
 import { Loader } from 'comps';
 
 const PathLoader = ({
@@ -15,7 +13,7 @@ const PathLoader = ({
   fullpath: string[];
 }) => {
   const query = useQuery();
-  const [session, setSession] = useSession();
+  const [, setSession] = useSession();
   const where = {
     _and: [
       { namespace: { _eq: namespaces.at(-1) } },
@@ -34,7 +32,9 @@ const PathLoader = ({
     if (selected) {
       // eslint-disable-next-line functional/immutable-data
       document.title = name ?? 'RadikalWiki';
-      setSession({ nodeId: nodeId ?? null });
+      startTransition(() => {
+        setSession({ nodeId: nodeId ?? null });
+      });
     }
   }, [name, selected]);
 

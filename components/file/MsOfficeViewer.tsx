@@ -1,5 +1,5 @@
 import { useScreen } from 'hooks';
-import { useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useRef, useState } from 'react';
 
 const MsOfficeViewer = ({ file }: { file: any }) => {
   const screen = useScreen();
@@ -8,7 +8,9 @@ const MsOfficeViewer = ({ file }: { file: any }) => {
   useEffect(() => {
     const scroll =
       document.querySelector('#scroll') ?? document.scrollingElement;
-    setHeight(`${(scroll?.scrollHeight ?? 0) - (screen ? 100 : 210)}px`);
+    startTransition(() => {
+      setHeight(`${(scroll?.scrollHeight ?? 0) - (screen ? 100 : 210)}px`);
+    });
   }, []);
 
   return (
@@ -23,6 +25,6 @@ const MsOfficeViewer = ({ file }: { file: any }) => {
       />
     )
   );
-}
+};
 
 export default MsOfficeViewer;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import { resolved, query, order_by } from 'gql';
@@ -45,7 +45,9 @@ const InvitesTextField = ({ node }: { node: Node }) => {
 
       setOptions(newOptions);
     };
-    fetch();
+    startTransition(() => {
+      fetch();
+    });
   }, [users, inputValue, query]);
 
   return (
@@ -87,6 +89,6 @@ const InvitesTextField = ({ node }: { node: Node }) => {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default InvitesTextField;

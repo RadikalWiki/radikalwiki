@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Avatar,
-  CardContent,
-  Grid,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Avatar, CardContent, Grid, Typography } from '@mui/material';
 import { HeaderCard } from 'comps';
 import { QuestionMark } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
@@ -38,8 +32,8 @@ const UnknownApp = () => {
             </Typography>
             {!isAuthenticated && (
               <Typography>
-                Du kan måske få adgang til dokumentet ved at logge ind i
-                toppanelet.
+                Du kan måske få adgang til dokumentet ved at logge ind til
+                venstre.
               </Typography>
             )}
           </CardContent>
@@ -47,6 +41,6 @@ const UnknownApp = () => {
       </Grid>
     </Grid>
   );
-}
+};
 
 export default UnknownApp;

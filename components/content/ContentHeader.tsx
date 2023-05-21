@@ -1,32 +1,70 @@
 import { CardHeader, Skeleton, Typography } from '@mui/material';
-import { MimeAvatarNode, ExpandButton, MemberChips } from 'comps';
+import {
+  MimeAvatarNode,
+  ExpandButton,
+  MemberChips,
+  ContentToolbar,
+  MimeAvatar,
+} from 'comps';
 import { Suspense } from 'react';
 import { Node, useScreen } from 'hooks';
+import { Stack } from '@mui/system';
 
-const Title = ({ node }: { node: Node }) => {
+const Title = ({
+  node,
+  hideMembers,
+}: {
+  node: Node;
+  hideMembers?: boolean;
+}) => {
   const query = node.useQuery();
+  const screen = useScreen();
   return query?.name ? (
-    <Typography variant="h5" sx={{ color: 'inherit' }}>
-      {query?.name}
-    </Typography>
+    <Stack>
+      <Typography variant={screen ? 'h5' : 'body1'} sx={{ color: 'inherit' }}>
+        {query?.name}
+      </Typography>
+    </Stack>
   ) : null;
 };
 
-const ContentHeader = ({ node }: { node: Node }) => {
+const ContentHeader = ({
+  node,
+  hideMembers,
+  child,
+  add,
+}: {
+  node: Node;
+  hideMembers?: boolean;
+  child?: boolean;
+  add?: boolean;
+}) => {
   return (
-    <CardHeader
-      title={
-        <Suspense fallback={<Skeleton width={10} />}>
-          <Title node={node} />
-        </Suspense>
-      }
-      avatar={<MimeAvatarNode node={node} />}
-      sx={{
-        bgcolor: 'secondary.main',
-        color: (t) => t.palette.secondary.contrastText,
-        borderRadius: "4px 4px 0px 0px",
-      }}
-    />
+    <>
+      <CardHeader
+        title={
+          child ? (
+            'Mappe'
+          ) : (
+            <Suspense fallback={<Skeleton width={10} />}>
+              <Title node={node} hideMembers={hideMembers} />
+            </Suspense>
+          )
+        }
+        avatar={
+          child ? (
+            <MimeAvatar mimeId="app/folder" />
+          ) : (
+            <MimeAvatarNode node={node} />
+          )
+        }
+        sx={{
+          borderRadius: '4px 4px 0px 0px',
+        }}
+        action={<ContentToolbar child={child} add={add} node={node} />}
+      />
+      {!hideMembers && <MemberChips node={node} />}
+    </>
   );
 };
 

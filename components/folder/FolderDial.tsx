@@ -7,7 +7,6 @@ import {
   SupervisorAccount,
   Lock,
   LockOpen,
-  Delete,
   ContentPaste,
 } from '@mui/icons-material';
 import { resolved, query as q, order_by } from 'gql';
@@ -15,7 +14,6 @@ import { Node, useLink, useScreen, useSession } from 'hooks';
 import HTMLtoDOCX from 'html-to-docx';
 import { toHtml } from 'core/document';
 import { getLetter } from 'mime';
-import { DeleteDialog } from 'comps';
 
 const checkIfSuperParent = async (
   id?: string,
@@ -23,10 +21,6 @@ const checkIfSuperParent = async (
 ): Promise<boolean> => {
   if (!(id && superParentId)) return false;
   const parentId = await resolved(() => q.node({ id })?.parentId);
-  console.log('id: ' + id);
-  console.log('parentId: ' + parentId);
-  console.log('superParentId: ' + superParentId);
-  console.log();
 
   return id == superParentId || parentId === superParentId
     ? true
@@ -39,7 +33,6 @@ const FolderDial = ({ node }: { node: Node }) => {
   const screen = useScreen();
   const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
   const link = useLink();
   const query = node.useQuery();
   const id = query?.id;
@@ -67,7 +60,7 @@ const FolderDial = ({ node }: { node: Node }) => {
             })
             .map(({ id }) => ({ id }))
         )
-      )?.findIndex((e: any) => e.id === id) ?? 0;
+      )?.findIndex((e) => e.id === id) ?? 0;
 
     const children = await resolved(() =>
       q
@@ -91,16 +84,23 @@ const FolderDial = ({ node }: { node: Node }) => {
     const node = await resolved(() => {
       const node = q.node({ id });
       if (node)
-        return { name: node.name, data: node.data(), mimeId: node.mimeId, context: node.mime?.context };
+        return {
+          name: node.name,
+          data: node.data(),
+          mimeId: node.mimeId,
+          context: node.mime?.context,
+        };
     });
 
-    const members = node?.context ? [] : await resolved(() =>
-      q
-        .node({ id })
-        ?.members()
-        ?.map((m) => m.name ?? m.user?.displayName)
-        .join(', ')
-    );
+    const members = node?.context
+      ? []
+      : await resolved(() =>
+          q
+            .node({ id })
+            ?.members()
+            ?.map((m) => m.name ?? m.user?.displayName)
+            .join(', ')
+        );
 
     const prefix =
       node?.mimeId == 'vote/policy'
@@ -109,7 +109,9 @@ const FolderDial = ({ node }: { node: Node }) => {
         ? `${index + 1}: `
         : '';
 
-    const formatedMembers = members?.length ? `<i>Stillet af: ${members}</i>` : "";
+    const formatedMembers = members?.length
+      ? `<i>Stillet af: ${members}</i>`
+      : '';
 
     return `<h${level}>${prefix}${
       node?.name
@@ -140,7 +142,7 @@ const FolderDial = ({ node }: { node: Node }) => {
     // eslint-disable-next-line functional/immutable-data
     link.href = blobUrl;
     // eslint-disable-next-line functional/immutable-data
-    link.download = `${query?.name} Eksport.docx`;
+    link.download = `${query?.name}.docx`;
     document.body.appendChild(link);
     link.dispatchEvent(
       new MouseEvent('click', {
@@ -204,10 +206,6 @@ const FolderDial = ({ node }: { node: Node }) => {
     session?.selected?.map((id) => copy(id, node.id));
   };
 
-  const handleDelete = async () => {
-    setOpenDelete(true);
-  };
-
   const handleLockChildren = async () => {
     await nodeUpdate({ set: { attachable: !query?.attachable } });
   };
@@ -223,7 +221,7 @@ const FolderDial = ({ node }: { node: Node }) => {
           ariaLabel="Administrer mappe"
           sx={{
             position: 'fixed',
-            bottom: (t) => t.spacing(17),
+            bottom: (t) => t.spacing(24),
             right: (t) => t.spacing(3),
           }}
           icon={<SupervisorAccount />}
@@ -240,14 +238,6 @@ const FolderDial = ({ node }: { node: Node }) => {
             tooltipTitle="Indsæt"
             tooltipOpen
             onClick={handlePaste}
-          />
-          <SpeedDialAction
-            icon={
-              <Avatar sx={{ bgcolor: 'primary.main' }}>{<Delete />}</Avatar>
-            }
-            tooltipTitle="Slet"
-            tooltipOpen
-            onClick={handleDelete}
           />
           <SpeedDialAction
             icon={
@@ -277,7 +267,7 @@ const FolderDial = ({ node }: { node: Node }) => {
             }
             tooltipTitle="Sorter"
             tooltipOpen
-            onClick={() => link.push([], "sort")}
+            onClick={() => link.push([], 'sort')}
           />
           <SpeedDialAction
             icon={
@@ -291,7 +281,6 @@ const FolderDial = ({ node }: { node: Node }) => {
           />
         </SpeedDial>
       </Zoom>
-      <DeleteDialog open={openDelete} setOpen={setOpenDelete} node={node} />
     </>
   );
 };

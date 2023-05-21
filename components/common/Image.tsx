@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { CircularProgress } from '@mui/material';
-import { common, grey } from '@mui/material/colors';
+import { grey } from '@mui/material/colors';
 import { BrokenImage } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import NextImage from 'next/image';
@@ -58,7 +58,6 @@ const Image = ({
   return (
     <Box
       sx={{
-        backgroundColor: common.white,
         paddingTop: `calc(1 / ${aspectRatio} * 100%)`,
         position: 'relative',
       }}
@@ -70,7 +69,7 @@ const Image = ({
           alt={alt}
           ref={imageRef}
           style={{
-            borderRadius: '10px',
+            borderRadius: '20px',
             width: '100%',
             height: '100%',
             position: 'absolute',
@@ -106,6 +105,6 @@ const Image = ({
       </Box>
     </Box>
   );
-}
+};
 
 export default Image;

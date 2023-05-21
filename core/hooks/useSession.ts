@@ -1,4 +1,4 @@
-import { useEffect, createContext, useContext } from 'react';
+import { useEffect, createContext, useContext, startTransition } from 'react';
 
 export type Session = {
   path?: string;
@@ -21,7 +21,9 @@ const useSession = (): [Session | null, SessionSetter] => {
 
   useEffect(() => {
     if (!session && setCtxSession && localStorage.session) {
-      setCtxSession(JSON.parse(localStorage.session));
+      startTransition(() => {
+        setCtxSession(JSON.parse(localStorage.session));
+      });
     }
   }, [session]);
 
@@ -33,6 +35,6 @@ const useSession = (): [Session | null, SessionSetter] => {
   };
 
   return [session, setSession];
-}
+};
 
 export default useSession;

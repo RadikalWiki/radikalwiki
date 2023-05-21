@@ -2,19 +2,15 @@ import { Grid, Box, Paper, Collapse } from '@mui/material';
 import { Slate, Image } from 'comps';
 import { Node } from 'hooks';
 import { nhost } from 'nhost';
-import { useEffect, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
-const Content = ({
-  node,
-  fontSize,
-}: {
-  node: Node;
-  fontSize: string;
-}) => {
+const Content = ({ node, fontSize }: { node: Node; fontSize: string }) => {
   const query = node.useQuery();
   const data = query?.data();
   const [image, setImage] = useState<string | null>(null);
-  const [content, setContent] = useState<string>(structuredClone(data?.content));
+  const [content, setContent] = useState<string>(
+    structuredClone(data?.content)
+  );
 
   useEffect(() => {
     const fetch = async () => {
@@ -26,9 +22,11 @@ const Content = ({
         setImage(presignedUrl?.url ?? null);
       }
     };
-    fetch();
-    setContent(structuredClone(data?.content));
-  }, [data?.content, data?.image]);
+    startTransition(() => {
+      fetch();
+      setContent(structuredClone(data?.content));
+    });
+  }, [JSON.stringify(data?.content), data?.image]);
 
   return (
     <Grid container spacing={2}>
@@ -41,13 +39,11 @@ const Content = ({
       </Grid>
       {image && (
         <Grid item xs={12} sm={4}>
-          <Paper sx={{ p: 1, m: 1 }}>
-            <Image alt="Billede for indhold" layout="fill" src={image} />
-          </Paper>
+          <Image alt="Billede for indhold" layout="fill" src={image} />
         </Grid>
       )}
     </Grid>
   );
-}
+};
 
 export default Content;

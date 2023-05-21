@@ -7,7 +7,6 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { Stack } from '@mui/system';
 import { Node, useScreen } from 'hooks';
 import { IconId } from 'mime';
 
@@ -17,7 +16,7 @@ const MemberChips = ({ node, child }: { node: Node; child?: boolean }) => {
   const chips =
     members?.map(({ id, name, node, user }) => (
       <Grid item key={id ?? 0}>
-        <Tooltip  title="Forfatter">
+        <Tooltip title="Forfatter">
           <Chip
             icon={node?.mimeId ? <IconId mimeId={node?.mimeId} /> : <Face />}
             size={screen ? 'medium' : 'small'}
@@ -33,7 +32,7 @@ const MemberChips = ({ node, child }: { node: Node; child?: boolean }) => {
     )) ?? [];
   return (
     <Collapse in={!!members?.[0]?.id && members?.length !== 0}>
-      <Grid container spacing={0.5} sx={{ p: child ? 0 : 1 }}>
+      <Grid container spacing={0.5} sx={{ ml: child ? 0 : 1 }}>
         {chips}
       </Grid>
     </Collapse>

@@ -9,4 +9,7 @@ export { default as MemberChips } from './MemberChips';
 export { default as EditorApp } from './EditorApp';
 export { default as Editor } from './Editor';
 export { default as Slate } from './Slate';
-export { default as DeleteDialog } from './DeleteDialog';
+export { default as DeleteButton } from './DeleteButton';
+export { default as PublishButton } from './PublishButton';
+export { default as DownloadButton } from './DownloadButton';
+export { default as AddContentButton } from './AddContentButton';

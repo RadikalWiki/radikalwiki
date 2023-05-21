@@ -1,5 +1,5 @@
 import { LockOpen } from '@mui/icons-material';
-import { Badge, Tooltip, Avatar as MuiAvatar, Skeleton } from '@mui/material';
+import { Badge, Tooltip, Avatar as MuiAvatar } from '@mui/material';
 import { Maybe, order_by } from 'gql';
 import { withSuspense } from 'hoc';
 import { Node, useNode, useScreen } from 'hooks';
@@ -19,7 +19,7 @@ const MimeAvatar = ({
   return (
     <MuiAvatar
       sx={{
-        bgcolor: screen ? 'primary.main' : 'secondary.main',
+        bgcolor: 'secondary.main',
       }}
     >
       <IconId name={name} mimeId={mimeId} index={index} avatar />
@@ -28,7 +28,6 @@ const MimeAvatar = ({
 };
 
 const Avatar = ({ node }: { node: Node }) => {
-  const screen = useScreen();
   const query = node?.useQuery();
   const type = query?.data?.({ path: 'type' });
   const mimeId = query?.mimeId;
@@ -51,7 +50,7 @@ const Avatar = ({ node }: { node: Node }) => {
     return (
       <MuiAvatar
         sx={{
-          bgcolor: screen ? 'primary.main' : 'secondary.main',
+          bgcolor: 'secondary.main',
         }}
       >
         {' '}
@@ -62,13 +61,13 @@ const Avatar = ({ node }: { node: Node }) => {
   const avatar = (
     <MuiAvatar
       sx={{
-        bgcolor: screen ? 'primary.main' : 'secondary.main',
+        bgcolor: 'secondary.main',
       }}
     >
       <IconId name={name} mimeId={id} index={index} avatar />
     </MuiAvatar>
   );
-  return query?.mutable && !screen ? (
+  return query?.mutable ? (
     <Badge
       overlap="circular"
       anchorOrigin={{

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AddContentDialog, AutoButton } from 'comps';
 import { PlusOne } from '@mui/icons-material';
-import { Node, useNode } from 'hooks';
+import { Node } from 'hooks';
 import { useUserDisplayName } from '@nhost/nextjs';
 
 const AddChangeButton = ({ node }: { node: Node }) => {
@@ -31,6 +31,7 @@ const AddChangeButton = ({ node }: { node: Node }) => {
         open={open}
         setOpen={setOpen}
         redirect
+        app="editor"
       />
     </>
   );

@@ -1,26 +1,11 @@
-import {
-  Breadcrumbs as MuiBreadcrumbs,
-  Link,
-  Stack,
-  Skeleton,
-  Typography,
-  Collapse,
-  Avatar,
-} from '@mui/material';
-import { alpha, Box } from '@mui/system';
+import { Typography, Collapse, useMediaQuery } from '@mui/material';
+import { Box } from '@mui/system';
 import { useQuery } from 'gql';
 import { useSession, usePath } from 'hooks';
-import { Suspense, useEffect, useRef, useState } from 'react';
-import {
-  Link as NextLink,
-  MimeAvatar,
-  MimeAvatarId,
-  MimeIcon,
-  MimeIconId,
-} from 'comps';
+import { Suspense, startTransition, useEffect, useRef, useState } from 'react';
+import { MimeAvatar, MimeAvatarId } from 'comps';
 import { getName } from 'mime';
 import { useRouter } from 'next/router';
-//import { toWhere } from "core/path";
 
 const BreadcrumbsLink = ({
   parentId,
@@ -59,8 +44,14 @@ const BreadcrumbsLink = ({
   }, []);
 
   const handleClick = () => {
-    if (open[index]) router.push(`/${namespaces.slice(0, index).join('/')}`);
-    else setOpen([...new Array(index).fill(false), true]);
+    if (open[index]) {
+      if (namespaces.length === fullpath.length && !router.query.app) {
+        const scroll = document.querySelector('#scroll');
+        scroll?.scrollTo({ behavior: 'smooth', top: 0 });
+      } else {
+        router.push(`/${namespaces.slice(0, index).join('/')}`);
+      }
+    } else setOpen([...new Array(index).fill(false), true]);
   };
 
   return (
@@ -103,6 +94,7 @@ const BreadcrumbsLink = ({
                   maxHeight: 48,
                   maxWidth: 300,
                   hyphens: 'auto',
+                  color: 'common.white',
                 }}
               >
                 {node?.name ?? 'Ukendt'}
@@ -133,6 +125,7 @@ const BreadcrumbsLink = ({
                   maxHeight: 48,
                   maxWidth: 300,
                   hyphens: 'auto',
+                  color: 'common.white',
                 }}
               >
                 Hjem
@@ -177,6 +170,7 @@ const BreadcrumbsLink = ({
                     maxHeight: 48,
                     maxWidth: 300,
                     hyphens: 'auto',
+                    color: 'common.white',
                   }}
                 >
                   {getName(`app/${router.query.app}`) ?? 'Ukendt'}
@@ -206,6 +200,7 @@ const Breadcrumbs = () => {
   const router = useRouter();
   const path = usePath();
   const [open, setOpen] = useState<boolean[]>([]);
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const initOpen = [
     ...new Array(path.length + (router.query.app === undefined ? 0 : 1)).fill(
@@ -215,7 +210,9 @@ const Breadcrumbs = () => {
   ];
 
   useEffect(() => {
-    if (path.length > 0) setOpen(initOpen);
+    startTransition(() => {
+      if (path.length > 0) setOpen(initOpen);
+    });
   }, [path]);
 
   const prefix = session?.prefix?.path ?? [];
@@ -238,7 +235,7 @@ const Breadcrumbs = () => {
         display: 'flex',
         width: '100%',
         overflowX: 'scroll',
-        pl: 2,
+        pl: largeScreen ? 2 : 1,
         // Disable scroll (Firefox)
         scrollbarWidth: 'none',
         // Disable scroll (Webkit)
@@ -248,14 +245,16 @@ const Breadcrumbs = () => {
         WebkitOverflowScrolling: 'touch',
       }}
     >
-      <BreadcrumbsLink
-        namespaces={[]}
-        fullpath={path}
-        open={open}
-        setOpen={setOpen}
-        index={0}
-        start={start}
-      />
+      <Suspense fallback={null}>
+        <BreadcrumbsLink
+          namespaces={[]}
+          fullpath={path}
+          open={open}
+          setOpen={setOpen}
+          index={0}
+          start={start}
+        />
+      </Suspense>
     </Box>
   );
 };

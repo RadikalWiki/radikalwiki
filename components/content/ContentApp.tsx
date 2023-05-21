@@ -1,19 +1,25 @@
 import { Card } from '@mui/material';
-import { Content, ContentToolbar, MemberChips } from 'comps';
+import { Content, ContentHeader } from 'comps';
 import { Node, useScreen } from 'hooks';
-import { useState } from 'react';
+import { Suspense } from 'react';
 
-const ContentApp = (param: { node: Node; hideMembers?: boolean }) => {
+const ContentApp = ({
+  node,
+  hideMembers,
+  add,
+}: {
+  node: Node;
+  hideMembers?: boolean;
+  add?: boolean;
+}) => {
   const screen = useScreen();
-  const [expand, setExpand] = useState(true);
   return (
-    <>
-      {!screen && <ContentToolbar node={param.node} child={false} />}
-      <Card sx={{ m: 0 }}>
-        {!param.hideMembers && <MemberChips node={param.node} />}
-        <Content node={param.node} fontSize={screen ? '150%' : '100%'} />
-      </Card>
-    </>
+    <Card sx={{ m: 0 }}>
+      <ContentHeader hideMembers={hideMembers} add={add} node={node} />
+      <Suspense>
+        <Content node={node} fontSize={screen ? '150%' : '100%'} />
+      </Suspense>
+    </Card>
   );
 };
 

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, startTransition, useEffect, useState } from 'react';
 import {
-  NavBar,
   Scroll,
-  TopBar,
+  BottomBar,
   SessionProvider,
   OldBrowser,
   Drawer,
+  MobileMenu,
+  AppDrawer,
 } from 'comps';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { useRouter } from 'next/router';
-import { Container, Box, useMediaQuery, Grid } from '@mui/material';
-import { nhost } from 'nhost';
+import { Container, Box, useMediaQuery } from '@mui/material';
 import { checkVersion } from 'core/util';
 import { useSession } from 'hooks';
 
@@ -20,17 +20,14 @@ const Layout = ({ children }: { children?: any }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [session, setSession] = useSession();
   const router = useRouter();
-  const { isAuthenticated, isLoading } = useAuthenticationStatus();
-
-  //const refresh = () => nhost.auth.refreshSession();
+  const { isLoading } = useAuthenticationStatus();
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   useEffect(() => {
-    setOutdated(typeof window !== 'undefined' && !checkVersion());
-    setShowing(true);
-    //window.addEventListener("focus", refresh);
-    //return () => {
-    //  window.removeEventListener("focus", refresh);
-    //};
+    startTransition(() => {
+      setOutdated(typeof window !== 'undefined' && !checkVersion());
+      setShowing(true);
+    });
   }, []);
 
   useEffect(() => {
@@ -47,27 +44,37 @@ const Layout = ({ children }: { children?: any }) => {
   }, [session, setSession]);
 
   if (outdated) return <OldBrowser />;
-  if (!showing) return null;
+  if (!showing || isLoading) return null;
 
-  if (router.query.app === "screen" && isAuthenticated) return children;
+  if (router.query.app === 'screen' || router.asPath.startsWith('/user'))
+    return children;
 
   return (
     <>
       <Box sx={{ display: 'flex' }}>
-        {isAuthenticated && (
-          <Drawer open={openDrawer} setOpen={() => setOpenDrawer(false)} />
-        )}
         <Scroll>
-          <TopBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
           {typeof window !== 'undefined' && (
-            <Container sx={{ pl: 0, pr: 0, pt: 1 }}>{children}</Container>
+            <Container sx={{ pl: 1, pr: 1, pt: 1 }} disableGutters>
+              {children}
+            </Container>
           )}
-          <Box sx={{ p: 8 }} />
+          <BottomBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         </Scroll>
+        {largeScreen && (
+          <AppDrawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+        )}
+
+        <Drawer
+          open={openDrawer}
+          setOpen={() => startTransition(() => setOpenDrawer(false))}
+        />
+
+        {!largeScreen && (
+          <MobileMenu openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+        )}
       </Box>
-      {!router.asPath.match(/^\/user\/$/) && isAuthenticated && <NavBar />}
     </>
   );
-}
+};
 
 export default Layout;

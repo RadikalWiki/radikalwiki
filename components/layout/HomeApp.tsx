@@ -33,7 +33,7 @@ const HomeApp = () => {
             {(!isAuthenticated && (
               <>
                 <Typography>
-                  Log ind eller registrer dig i toppanelet.
+                  Log ind eller registrer dig til venstre.
                 </Typography>
                 <Typography>
                   Husk at bruge den email, som du registrerede dig med hos RU.
@@ -66,6 +66,6 @@ const HomeApp = () => {
       )}
     </Grid>
   );
-}
+};
 
 export default HomeApp;

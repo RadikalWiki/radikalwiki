@@ -1,10 +1,5 @@
-import React, { useEffect } from 'react';
-import {
-  Typography,
-  CardContent,
-  Avatar,
-  Container,
-} from '@mui/material';
+import React, { startTransition, useEffect } from 'react';
+import { Typography, CardContent, Avatar, Container } from '@mui/material';
 import { HeaderCard } from 'comps';
 import { MarkEmailRead } from '@mui/icons-material';
 import { useRouter } from 'next/router';
@@ -16,7 +11,9 @@ const Unverified = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      router.push('/');
+      startTransition(() => {
+        router.push('/');
+      });
     }
   }, [isAuthenticated]);
 
@@ -44,6 +41,6 @@ const Unverified = () => {
       </HeaderCard>
     </Container>
   );
-}
+};
 
 export default Unverified;
