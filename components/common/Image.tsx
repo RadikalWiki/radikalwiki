@@ -73,13 +73,12 @@ const Image = ({
             width: '100%',
             height: '100%',
             position: 'absolute',
-            objectFit: 'inherit',
+            objectFit: 'cover',
             cursor: 'inherit',
             top: 0,
             left: 0,
             ...imageTransition,
           }}
-          fill
           onLoad={handleLoadImage}
           onError={handleImageError}
         />
