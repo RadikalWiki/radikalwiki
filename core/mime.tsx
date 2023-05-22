@@ -24,6 +24,7 @@ import {
 } from '@mui/icons-material';
 import MicrosoftExcelIcon from './svg/microsoft-excel.svg';
 import MicrosoftWordIcon from './svg/microsoft-word.svg';
+import MicrosoftPowerpointIcon from './svg/microsoft-powerpoint.svg';
 import FilePdfBoxIcon from './svg/file-pdf-box.svg';
 import VideoBoxIcon from './svg/video-box.svg';
 import {
@@ -184,6 +185,7 @@ const IconId = ({
     default:
   }
 
+  console.log(mimeId)
   // eslint-disable-next-line jsx-a11y/alt-text
   if (mimeId?.includes('image/')) return <Image />;
   if (mimeId?.includes('audio/')) return <MusicNote />;
@@ -191,6 +193,8 @@ const IconId = ({
     return <VideoBoxIcon fill="currentColor" height="24" width="24" />;
   if (mimeId?.includes('spreadsheet'))
     return <MicrosoftExcelIcon fill="currentColor" height="24" width="24" />;
+  if (mimeId?.includes('presentation'))
+    return <MicrosoftPowerpointIcon fill="currentColor" height="24" width="24" />;
   if (mimeId?.includes('document'))
     return <MicrosoftWordIcon fill="currentColor" height="24" width="24" />;
 
