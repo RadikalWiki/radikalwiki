@@ -74,7 +74,7 @@ const Editor = ({ node }: { node: Node }) => {
   }, [fileId]);
 
   const handleSave = (mutable?: boolean) => async () => {
-    if (!['wiki/group', 'wiki/event'].includes(query?.mimeId!)) {
+    if (!['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate'].includes(query?.mimeId!)) {
       if (members.length === 0) {
         setAuthorError('Tilføj mindst 1 forfatter');
         return;
@@ -121,7 +121,7 @@ const Editor = ({ node }: { node: Node }) => {
                 </ButtonGroup>
               </Stack>
             </Grid>
-            {!['wiki/group', 'wiki/event'].includes(query?.mimeId!) && (
+            {!['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate'].includes(query?.mimeId!) && (
               <Grid item xs={12}>
                 <AuthorTextField
                   value={members}
