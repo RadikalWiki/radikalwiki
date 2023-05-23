@@ -15,17 +15,21 @@ import { order_by, resolved, useQuery } from 'gql';
 import { useLink, useSession } from 'hooks';
 import { startTransition } from 'react';
 
-const abriv: {[name: string]: string} = {
-  "Hovedbestyrelsesmøde": "HB",
-  "Landsmøde": "LM",
-}
+const abriv: { [name: string]: string } = {
+  Hovedbestyrelsesmøde: 'HB',
+  Landsmøde: 'LM',
+};
 
 const abrivContextName = (name?: string) => {
   const split = name
     ?.trim()
     .split(' ')
-    .filter((name) => name[0] === name[0].toUpperCase() && !(/[0-9]/.test(name) && name.length > 1))
-    .map(name => abriv[name] ? abriv[name] : name[0])
+    .filter(
+      (name) =>
+        name[0] === name[0].toUpperCase() &&
+        !(/[0-9]/.test(name) && name.length > 1)
+    )
+    .map((name) => (abriv[name] ? abriv[name] : name[0]));
 
   switch (split?.length) {
     case 1:
@@ -42,48 +46,52 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
   const userId = useUserId();
   const query = useQuery();
   const [_, setSession] = useSession();
-  const events = query.nodes({
-    order_by: [{ createdAt: order_by.desc }],
-    where: {
-      _and: [
-        { mimeId: { _eq: 'wiki/event' } },
-        {
-          _or: [
-            { ownerId: { _eq: userId } },
+  const events = !userId
+    ? []
+    : query.nodes({
+        order_by: [{ createdAt: order_by.desc }],
+        where: {
+          _and: [
+            { mimeId: { _eq: 'wiki/event' } },
             {
-              members: {
-                _and: [
-                  { accepted: { _eq: true } },
-                  { nodeId: { _eq: userId } },
-                ],
-              },
+              _or: [
+                { ownerId: { _eq: userId } },
+                {
+                  members: {
+                    _and: [
+                      { accepted: { _eq: true } },
+                      { nodeId: { _eq: userId } },
+                    ],
+                  },
+                },
+              ],
             },
           ],
         },
-      ],
-    },
-  });
-  const groups = query.nodes({
-    order_by: [{ createdAt: order_by.desc }],
-    where: {
-      _and: [
-        { mimeId: { _eq: 'wiki/group' } },
-        {
-          _or: [
-            { ownerId: { _eq: userId } },
+      });
+  const groups = !userId
+    ? []
+    : query.nodes({
+        order_by: [{ createdAt: order_by.desc }],
+        where: {
+          _and: [
+            { mimeId: { _eq: 'wiki/group' } },
             {
-              members: {
-                _and: [
-                  { accepted: { _eq: true } },
-                  { nodeId: { _eq: userId } },
-                ],
-              },
+              _or: [
+                { ownerId: { _eq: userId } },
+                {
+                  members: {
+                    _and: [
+                      { accepted: { _eq: true } },
+                      { nodeId: { _eq: userId } },
+                    ],
+                  },
+                },
+              ],
             },
           ],
         },
-      ],
-    },
-  });
+      });
 
   const handleContextSelect = (id: string) => async () => {
     const prefix = await resolved(() => {
@@ -130,7 +138,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
             >
               <ListItemAvatar>
                 {
-                  <Avatar sx={{ width: 34, height: 34 }}>
+                  <Avatar sx={{ width: 30, height: 30 }}>
                     <Typography fontSize={15}>
                       {abrivContextName(name)}
                     </Typography>{' '}
@@ -144,9 +152,11 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
         })}
         {!groups?.[0]?.id && (
           <ListItem key={-2}>
-            <ListItemIcon>
-              <GroupRemove />
-            </ListItemIcon>
+            <ListItemAvatar>
+              <Avatar sx={{ width: 30, height: 30 }}>
+                <GroupRemove />
+              </Avatar>
+            </ListItemAvatar>
             <ListItemText primary="Ingen grupper" />
           </ListItem>
         )}
@@ -170,7 +180,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
             >
               <ListItemAvatar>
                 {
-                  <Avatar sx={{ width: 34, height: 34 }}>
+                  <Avatar sx={{ width: 30, height: 30 }}>
                     <Typography fontSize={15}>
                       {abrivContextName(name)}
                     </Typography>{' '}
@@ -184,9 +194,11 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
         })}
         {!events?.[0]?.id && (
           <ListItem key={-2}>
-            <ListItemIcon>
-              <EventBusy />
-            </ListItemIcon>
+            <ListItemAvatar>
+              <Avatar sx={{ width: 30, height: 30 }}>
+                <EventBusy />
+              </Avatar>
+            </ListItemAvatar>
             <ListItemText primary="Ingen begivenheder" />
           </ListItem>
         )}
