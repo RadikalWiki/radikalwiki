@@ -18,6 +18,7 @@ const AddQuestionButton = ({ node }: { node: Node }) => {
     <>
       <AutoButton text="Spørgsmål" icon={<PlusOne />} onClick={handleSubmit} />
       <AddContentDialog
+        mutable={false}
         node={node}
         mimes={['vote/question']}
         open={open}

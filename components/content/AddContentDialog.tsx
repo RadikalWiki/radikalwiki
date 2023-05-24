@@ -143,6 +143,7 @@ const AddContentDialog = ({
   initTitel,
   redirect,
   app,
+  mutable = true,
 }: {
   node: Node;
   open: boolean;
@@ -151,6 +152,7 @@ const AddContentDialog = ({
   initTitel?: string;
   redirect?: boolean;
   app?: string;
+  mutable?: boolean;
 }) => {
   const link = useLink();
   const [titel, setTitel] = useState<string>(initTitel ?? '');
@@ -169,6 +171,7 @@ const AddContentDialog = ({
       name: titel,
       namespace: mimeId == 'vote/question' ? uuid() : undefined,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
+      mutable,
       data:
         mimeId == 'wiki/file'
           ? { fileId, type }
