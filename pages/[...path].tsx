@@ -30,7 +30,7 @@ const Path = () => {
   if (isLoading || fullpath.length === 0) return null;
   return (
     <Suspense fallback={null}>
-      <PathLoader namespaces={[]} fullpath={fullpath} />
+      <PathLoader keys={[]} fullpath={fullpath} />
     </Suspense>
   );
 };

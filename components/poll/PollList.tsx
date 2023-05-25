@@ -44,10 +44,10 @@ const PollListSuspense = ({ node }: { node: Node }) => {
       title="Afstemninger"
     >
       <List>
-        {polls?.map(({ id, namespace, children_aggregate, createdAt }) => (
+        {polls?.map(({ id, key, children_aggregate, createdAt }) => (
           <Fragment key={id ?? 0}>
             <ListItemButton
-              onClick={() => link.push([namespace!])}
+              onClick={() => link.push([key!])}
             >
               <Tooltip title="Antal stemmer">
                 <ListItemAvatar>

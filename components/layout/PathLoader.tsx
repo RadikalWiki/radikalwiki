@@ -4,11 +4,11 @@ import { startTransition, useEffect } from 'react';
 import { Loader } from 'comps';
 
 const PathLoader = ({
-  namespaces,
+  keys,
   parentId,
   fullpath,
 }: {
-  namespaces: string[];
+  keys: string[];
   parentId?: string;
   fullpath: string[];
 }) => {
@@ -16,7 +16,7 @@ const PathLoader = ({
   const [, setSession] = useSession();
   const where = {
     _and: [
-      { namespace: { _eq: namespaces.at(-1) } },
+      { key: { _eq: keys.at(-1) } },
       parentId
         ? { parentId: { _eq: parentId } }
         : { parentId: { _is_null: true } },
@@ -26,8 +26,8 @@ const PathLoader = ({
   const nodeId = node?.id;
   const name = node?.name;
   const selected =
-    namespaces.length === fullpath.length &&
-    namespaces.every((v, i) => v === fullpath[i]);
+    keys.length === fullpath.length &&
+    keys.every((v, i) => v === fullpath[i]);
   useEffect(() => {
     if (selected) {
       // eslint-disable-next-line functional/immutable-data
@@ -42,7 +42,7 @@ const PathLoader = ({
     <Loader id={node?.id} />
   ) : (
     <PathLoader
-      namespaces={[...namespaces, fullpath[namespaces.length]]}
+      keys={[...keys, fullpath[keys.length]]}
       parentId={node?.id}
       fullpath={fullpath}
     />

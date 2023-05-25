@@ -8,7 +8,7 @@ const prefetch = async (
 ): Promise<string | undefined> => {
   const where = {
     _and: parentId
-      ? [{ namespace: { _eq: path.at(0) } }, { parentId: { _eq: parentId } }]
+      ? [{ key: { _eq: path.at(0) } }, { parentId: { _eq: parentId } }]
       : [{ parentId: { _is_null: true } }],
   };
   const id = await resolved(() => {

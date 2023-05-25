@@ -167,9 +167,9 @@ const AddContentDialog = ({
   const [_, setSession] = useSession();
 
   const handleSubmit = async () => {
-    const { id, namespace } = await insert({
+    const { id, key } = await insert({
       name: titel,
-      namespace: mimeId == 'vote/question' ? uuid() : undefined,
+      key: mimeId == 'vote/question' ? uuid() : undefined,
       mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
       mutable,
       data:
@@ -179,7 +179,7 @@ const AddContentDialog = ({
           ? { text }
           : undefined,
     });
-    if (!namespace) return;
+    if (!key) return;
 
     if (await resolved(() => query.mime({ id: mimeId })?.context)) {
       await update({ id: id!, set: { contextId: id, mutable: false } });
@@ -199,7 +199,7 @@ const AddContentDialog = ({
           id: node?.id,
           name: node?.name ?? '',
           mime: node?.mimeId!,
-          namespace: node?.namespace,
+          key: node?.key,
         };
       });
 
@@ -219,7 +219,7 @@ const AddContentDialog = ({
     setFileId(undefined);
     setFileName(undefined);
 
-    if (redirect) link.push([namespace], app);
+    if (redirect) link.push([key], app);
   };
 
   return (

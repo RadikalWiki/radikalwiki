@@ -3,7 +3,7 @@ import { query, resolved } from 'gql';
 const toId = async (path: string[], parentId?: string): Promise<string | undefined> => {
   const where = {
     _and: [
-      { namespace: { _eq: path.at(-1) } },
+      { key: { _eq: path.at(-1) } },
       parentId
         ? { parentId: { _eq: parentId } }
         : { parentId: { _is_null: true } },
@@ -19,9 +19,9 @@ const fromId = async (id?: string | null): Promise<string[]> => {
   return await resolved(async () => {
     const node = query.node({ id });
     const parentId = node?.parentId;
-    const namespace = node?.namespace;
+    const key = node?.key;
     if (!parentId) return [];
-    return (await fromId(parentId)).concat(namespace ? [namespace] : []);
+    return (await fromId(parentId)).concat(key ? [key] : []);
   });
 };
 

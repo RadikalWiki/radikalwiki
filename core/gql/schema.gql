@@ -2433,6 +2433,324 @@ enum cursor_ordering {
 }
 
 """
+columns and relationships of "fields"
+"""
+type fields {
+  data(
+    """JSON select path"""
+    path: String
+  ): jsonb
+
+  """
+  A computed field, executes function "data_id"
+  """
+  dataId: uuid
+  id: uuid!
+  mime: String!
+  name: String!
+
+  """An object relationship"""
+  parent: nodes
+  parentId: uuid!
+}
+
+"""
+aggregated selection of "fields"
+"""
+type fields_aggregate {
+  aggregate: fields_aggregate_fields
+  nodes: [fields!]!
+}
+
+input fields_aggregate_bool_exp {
+  count: fields_aggregate_bool_exp_count
+}
+
+input fields_aggregate_bool_exp_count {
+  arguments: [fields_select_column!]
+  distinct: Boolean
+  filter: fields_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "fields"
+"""
+type fields_aggregate_fields {
+  count(columns: [fields_select_column!], distinct: Boolean): Int!
+  max: fields_max_fields
+  min: fields_min_fields
+}
+
+"""
+order by aggregate values of table "fields"
+"""
+input fields_aggregate_order_by {
+  count: order_by
+  max: fields_max_order_by
+  min: fields_min_order_by
+}
+
+"""append existing jsonb value of filtered columns with new jsonb value"""
+input fields_append_input {
+  data: jsonb
+}
+
+"""
+input type for inserting array relation for remote table "fields"
+"""
+input fields_arr_rel_insert_input {
+  data: [fields_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: fields_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "fields". All fields are combined with a logical 'AND'.
+"""
+input fields_bool_exp {
+  _and: [fields_bool_exp!]
+  _not: fields_bool_exp
+  _or: [fields_bool_exp!]
+  data: jsonb_comparison_exp
+  dataId: uuid_comparison_exp
+  id: uuid_comparison_exp
+  mime: String_comparison_exp
+  name: String_comparison_exp
+  parent: nodes_bool_exp
+  parentId: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "fields"
+"""
+enum fields_constraint {
+  """
+  unique or primary key constraint on columns "id"
+  """
+  fields_id_key
+
+  """
+  unique or primary key constraint on columns "name", "parent_id"
+  """
+  fields_parent_id_name_key
+
+  """
+  unique or primary key constraint on columns "id"
+  """
+  fields_pkey
+}
+
+"""
+delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+"""
+input fields_delete_at_path_input {
+  data: [String!]
+}
+
+"""
+delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+"""
+input fields_delete_elem_input {
+  data: Int
+}
+
+"""
+delete key/value pair or string element. key/value pairs are matched based on their key value
+"""
+input fields_delete_key_input {
+  data: String
+}
+
+"""
+input type for inserting data into table "fields"
+"""
+input fields_insert_input {
+  data: jsonb
+  id: uuid
+  mime: String
+  name: String
+  parent: nodes_obj_rel_insert_input
+  parentId: uuid
+}
+
+"""aggregate max on columns"""
+type fields_max_fields {
+  id: uuid
+  mime: String
+  name: String
+  parentId: uuid
+}
+
+"""
+order by max() on columns of table "fields"
+"""
+input fields_max_order_by {
+  id: order_by
+  mime: order_by
+  name: order_by
+  parentId: order_by
+}
+
+"""aggregate min on columns"""
+type fields_min_fields {
+  id: uuid
+  mime: String
+  name: String
+  parentId: uuid
+}
+
+"""
+order by min() on columns of table "fields"
+"""
+input fields_min_order_by {
+  id: order_by
+  mime: order_by
+  name: order_by
+  parentId: order_by
+}
+
+"""
+response of any mutation on the table "fields"
+"""
+type fields_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [fields!]!
+}
+
+"""
+on_conflict condition type for table "fields"
+"""
+input fields_on_conflict {
+  constraint: fields_constraint!
+  update_columns: [fields_update_column!]! = []
+  where: fields_bool_exp
+}
+
+"""Ordering options when selecting data from "fields"."""
+input fields_order_by {
+  data: order_by
+  dataId: order_by
+  id: order_by
+  mime: order_by
+  name: order_by
+  parent: nodes_order_by
+  parentId: order_by
+}
+
+"""primary key columns input for table: fields"""
+input fields_pk_columns_input {
+  id: uuid!
+}
+
+"""prepend existing jsonb value of filtered columns with new jsonb value"""
+input fields_prepend_input {
+  data: jsonb
+}
+
+"""
+select columns of table "fields"
+"""
+enum fields_select_column {
+  """column name"""
+  data
+
+  """column name"""
+  id
+
+  """column name"""
+  mime
+
+  """column name"""
+  name
+
+  """column name"""
+  parentId
+}
+
+"""
+input type for updating data in table "fields"
+"""
+input fields_set_input {
+  data: jsonb
+  id: uuid
+  mime: String
+  name: String
+  parentId: uuid
+}
+
+"""
+Streaming cursor of the table "fields"
+"""
+input fields_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: fields_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input fields_stream_cursor_value_input {
+  data: jsonb
+  id: uuid
+  mime: String
+  name: String
+  parentId: uuid
+}
+
+"""
+update columns of table "fields"
+"""
+enum fields_update_column {
+  """column name"""
+  data
+
+  """column name"""
+  id
+
+  """column name"""
+  mime
+
+  """column name"""
+  name
+
+  """column name"""
+  parentId
+}
+
+input fields_updates {
+  """append existing jsonb value of filtered columns with new jsonb value"""
+  _append: fields_append_input
+
+  """
+  delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+  """
+  _delete_at_path: fields_delete_at_path_input
+
+  """
+  delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+  """
+  _delete_elem: fields_delete_elem_input
+
+  """
+  delete key/value pair or string element. key/value pairs are matched based on their key value
+  """
+  _delete_key: fields_delete_key_input
+
+  """prepend existing jsonb value of filtered columns with new jsonb value"""
+  _prepend: fields_prepend_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: fields_set_input
+  where: fields_bool_exp!
+}
+
+"""
 columns and relationships of "storage.files"
 """
 type files {
@@ -3863,6 +4181,19 @@ type mutation_root {
   ): users_mutation_response
 
   """
+  delete data from the table: "fields"
+  """
+  delete_fields(
+    """filter the rows which have to be deleted"""
+    where: fields_bool_exp!
+  ): fields_mutation_response
+
+  """
+  delete single row from the table: "fields"
+  """
+  delete_fields_by_pk(id: uuid!): fields
+
+  """
   insert a single row into the table: "auth.providers"
   """
   insertAuthProvider(
@@ -4191,6 +4522,28 @@ type mutation_root {
     """upsert condition"""
     on_conflict: users_on_conflict
   ): users_mutation_response
+
+  """
+  insert data into the table: "fields"
+  """
+  insert_fields(
+    """the rows to be inserted"""
+    objects: [fields_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: fields_on_conflict
+  ): fields_mutation_response
+
+  """
+  insert a single row into the table: "fields"
+  """
+  insert_fields_one(
+    """the row to be inserted"""
+    object: fields_insert_input!
+
+    """upsert condition"""
+    on_conflict: fields_on_conflict
+  ): fields
 
   """
   update single row of the table: "auth.providers"
@@ -4749,6 +5102,76 @@ type mutation_root {
   ): [buckets_mutation_response]
 
   """
+  update data of the table: "fields"
+  """
+  update_fields(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: fields_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: fields_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: fields_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: fields_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: fields_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: fields_set_input
+
+    """filter the rows which have to be updated"""
+    where: fields_bool_exp!
+  ): fields_mutation_response
+
+  """
+  update single row of the table: "fields"
+  """
+  update_fields_by_pk(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: fields_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: fields_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: fields_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: fields_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: fields_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: fields_set_input
+    pk_columns: fields_pk_columns_input!
+  ): fields
+
+  """
+  update multiples rows of table: "fields"
+  """
+  update_fields_many(
+    """updates to execute, in order"""
+    updates: [fields_updates!]!
+  ): [fields_mutation_response]
+
+  """
   update multiples rows of table: "storage.files"
   """
   update_files_many(
@@ -4890,6 +5313,47 @@ type nodes {
   A computed field, executes function "delete"
   """
   delete: Boolean
+
+  """An array relationship"""
+  fields(
+    """distinct select on columns"""
+    distinct_on: [fields_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fields_order_by!]
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): [fields!]!
+
+  """An aggregate relationship"""
+  fields_aggregate(
+    """distinct select on columns"""
+    distinct_on: [fields_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fields_order_by!]
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): fields_aggregate!
+
+  """
+  A computed field, executes function "get_index"
+  """
+  getIndex: Int
   id: uuid!
   index: Int!
 
@@ -4927,6 +5391,7 @@ type nodes {
   A computed field, executes function "is_owner"
   """
   isOwner: Boolean
+  key: String!
 
   """An array relationship"""
   members(
@@ -4969,7 +5434,6 @@ type nodes {
   mimeId: String
   mutable: Boolean!
   name: String!
-  namespace: String!
 
   """An object relationship"""
   owner: users
@@ -5225,19 +5689,22 @@ input nodes_bool_exp {
   createdAt: timestamptz_comparison_exp
   data: jsonb_comparison_exp
   delete: Boolean_comparison_exp
+  fields: fields_bool_exp
+  fields_aggregate: fields_aggregate_bool_exp
+  getIndex: Int_comparison_exp
   id: uuid_comparison_exp
   index: Int_comparison_exp
   insert: Boolean_comparison_exp
   inserts: mimes_bool_exp
   isContextOwner: Boolean_comparison_exp
   isOwner: Boolean_comparison_exp
+  key: String_comparison_exp
   members: members_bool_exp
   members_aggregate: members_aggregate_bool_exp
   mime: mimes_bool_exp
   mimeId: String_comparison_exp
   mutable: Boolean_comparison_exp
   name: String_comparison_exp
-  namespace: String_comparison_exp
   owner: users_bool_exp
   ownerId: uuid_comparison_exp
   owners: users_bool_exp
@@ -5258,7 +5725,7 @@ unique or primary key constraints on table "nodes"
 """
 enum nodes_constraint {
   """
-  unique or primary key constraint on columns "namespace", "parent_id"
+  unique or primary key constraint on columns "key", "parent_id"
   """
   nodes_parent_id_namespace_key
 
@@ -5306,14 +5773,15 @@ input nodes_insert_input {
   contextId: uuid
   createdAt: timestamptz
   data: jsonb
+  fields: fields_arr_rel_insert_input
   id: uuid
   index: Int
+  key: String
   members: members_arr_rel_insert_input
   mime: mimes_obj_rel_insert_input
   mimeId: String
   mutable: Boolean
   name: String
-  namespace: String
   owner: users_obj_rel_insert_input
   ownerId: uuid
   parent: nodes_obj_rel_insert_input
@@ -5329,9 +5797,9 @@ type nodes_max_fields {
   createdAt: timestamptz
   id: uuid
   index: Int
+  key: String
   mimeId: String
   name: String
-  namespace: String
   ownerId: uuid
   parentId: uuid
   updatedAt: timestamptz
@@ -5345,9 +5813,9 @@ input nodes_max_order_by {
   createdAt: order_by
   id: order_by
   index: order_by
+  key: order_by
   mimeId: order_by
   name: order_by
-  namespace: order_by
   ownerId: order_by
   parentId: order_by
   updatedAt: order_by
@@ -5359,9 +5827,9 @@ type nodes_min_fields {
   createdAt: timestamptz
   id: uuid
   index: Int
+  key: String
   mimeId: String
   name: String
-  namespace: String
   ownerId: uuid
   parentId: uuid
   updatedAt: timestamptz
@@ -5375,9 +5843,9 @@ input nodes_min_order_by {
   createdAt: order_by
   id: order_by
   index: order_by
+  key: order_by
   mimeId: order_by
   name: order_by
-  namespace: order_by
   ownerId: order_by
   parentId: order_by
   updatedAt: order_by
@@ -5423,18 +5891,20 @@ input nodes_order_by {
   createdAt: order_by
   data: order_by
   delete: order_by
+  fields_aggregate: fields_aggregate_order_by
+  getIndex: order_by
   id: order_by
   index: order_by
   insert: order_by
   inserts_aggregate: mimes_aggregate_order_by
   isContextOwner: order_by
   isOwner: order_by
+  key: order_by
   members_aggregate: members_aggregate_order_by
   mime: mimes_order_by
   mimeId: order_by
   mutable: order_by
   name: order_by
-  namespace: order_by
   owner: users_order_by
   ownerId: order_by
   owners_aggregate: users_aggregate_order_by
@@ -5481,6 +5951,9 @@ enum nodes_select_column {
   index
 
   """column name"""
+  key
+
+  """column name"""
   mimeId
 
   """column name"""
@@ -5488,9 +5961,6 @@ enum nodes_select_column {
 
   """column name"""
   name
-
-  """column name"""
-  namespace
 
   """column name"""
   ownerId
@@ -5534,10 +6004,10 @@ input nodes_set_input {
   data: jsonb
   id: uuid
   index: Int
+  key: String
   mimeId: String
   mutable: Boolean
   name: String
-  namespace: String
   ownerId: uuid
   parentId: uuid
   updatedAt: timestamptz
@@ -5598,10 +6068,10 @@ input nodes_stream_cursor_value_input {
   data: jsonb
   id: uuid
   index: Int
+  key: String
   mimeId: String
   mutable: Boolean
   name: String
-  namespace: String
   ownerId: uuid
   parentId: uuid
   updatedAt: timestamptz
@@ -5642,6 +6112,9 @@ enum nodes_update_column {
   index
 
   """column name"""
+  key
+
+  """column name"""
   mimeId
 
   """column name"""
@@ -5649,9 +6122,6 @@ enum nodes_update_column {
 
   """column name"""
   name
-
-  """column name"""
-  namespace
 
   """column name"""
   ownerId
@@ -5763,7 +6233,6 @@ type permissions {
   id: uuid!
   insert: Boolean!
   mimeId: String
-  name: String!
 
   """An object relationship"""
   node: nodes
@@ -5851,7 +6320,6 @@ input permissions_bool_exp {
   id: uuid_comparison_exp
   insert: Boolean_comparison_exp
   mimeId: String_comparison_exp
-  name: String_comparison_exp
   node: nodes_bool_exp
   nodeId: uuid_comparison_exp
   parents: _text_comparison_exp
@@ -5881,7 +6349,6 @@ input permissions_insert_input {
   id: uuid
   insert: Boolean
   mimeId: String
-  name: String
   node: nodes_obj_rel_insert_input
   nodeId: uuid
   parents: _text
@@ -5895,7 +6362,6 @@ type permissions_max_fields {
   contextId: uuid
   id: uuid
   mimeId: String
-  name: String
   nodeId: uuid
   role: String
 }
@@ -5907,7 +6373,6 @@ input permissions_max_order_by {
   contextId: order_by
   id: order_by
   mimeId: order_by
-  name: order_by
   nodeId: order_by
   role: order_by
 }
@@ -5917,7 +6382,6 @@ type permissions_min_fields {
   contextId: uuid
   id: uuid
   mimeId: String
-  name: String
   nodeId: uuid
   role: String
 }
@@ -5929,7 +6393,6 @@ input permissions_min_order_by {
   contextId: order_by
   id: order_by
   mimeId: order_by
-  name: order_by
   nodeId: order_by
   role: order_by
 }
@@ -5963,7 +6426,6 @@ input permissions_order_by {
   id: order_by
   insert: order_by
   mimeId: order_by
-  name: order_by
   node: nodes_order_by
   nodeId: order_by
   parents: order_by
@@ -5998,9 +6460,6 @@ enum permissions_select_column {
 
   """column name"""
   mimeId
-
-  """column name"""
-  name
 
   """column name"""
   nodeId
@@ -6068,7 +6527,6 @@ input permissions_set_input {
   id: uuid
   insert: Boolean
   mimeId: String
-  name: String
   nodeId: uuid
   parents: _text
   role: String
@@ -6095,7 +6553,6 @@ input permissions_stream_cursor_value_input {
   id: uuid
   insert: Boolean
   mimeId: String
-  name: String
   nodeId: uuid
   parents: _text
   role: String
@@ -6124,9 +6581,6 @@ enum permissions_update_column {
 
   """column name"""
   mimeId
-
-  """column name"""
-  name
 
   """column name"""
   nodeId
@@ -6507,6 +6961,45 @@ type query_root {
     """filter the rows returned"""
     where: buckets_bool_exp
   ): buckets_aggregate!
+
+  """An array relationship"""
+  fields(
+    """distinct select on columns"""
+    distinct_on: [fields_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fields_order_by!]
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): [fields!]!
+
+  """An aggregate relationship"""
+  fields_aggregate(
+    """distinct select on columns"""
+    distinct_on: [fields_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fields_order_by!]
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): fields_aggregate!
+
+  """fetch data from the table: "fields" using primary key columns"""
+  fields_by_pk(id: uuid!): fields
 
   """fetch data from the table: "storage.files" using primary key columns"""
   file(id: uuid!): files
@@ -7520,6 +8013,59 @@ type subscription_root {
     """filter the rows returned"""
     where: buckets_bool_exp
   ): [buckets!]!
+
+  """An array relationship"""
+  fields(
+    """distinct select on columns"""
+    distinct_on: [fields_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fields_order_by!]
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): [fields!]!
+
+  """An aggregate relationship"""
+  fields_aggregate(
+    """distinct select on columns"""
+    distinct_on: [fields_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [fields_order_by!]
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): fields_aggregate!
+
+  """fetch data from the table: "fields" using primary key columns"""
+  fields_by_pk(id: uuid!): fields
+
+  """
+  fetch data from the table in a streaming manner: "fields"
+  """
+  fields_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [fields_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: fields_bool_exp
+  ): [fields!]!
 
   """fetch data from the table: "storage.files" using primary key columns"""
   file(id: uuid!): files

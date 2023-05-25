@@ -22,7 +22,7 @@ import {
 } from 'gql';
 import { usePath } from 'hooks';
 
-const getNamespace = (name?: string) =>
+const getKey = (name?: string) =>
   name
     ?.trim()
     .toLocaleLowerCase()
@@ -43,7 +43,7 @@ export type Node = {
   mimeId: Maybe<string | undefined>;
   contextId?: Maybe<string | undefined>;
   parentId?: Maybe<string | undefined>;
-  namespace: Maybe<string | undefined>;
+  key: Maybe<string | undefined>;
   useQuery: () => Maybe<nodes> | undefined;
   useQuery2: () => Maybe<nodes> | undefined;
   useSubs: () => Maybe<nodes>;
@@ -51,7 +51,7 @@ export type Node = {
     param?: Param
   ) => ({
     name,
-    namespace,
+    key,
     mimeId,
     data,
     parentId,
@@ -61,7 +61,7 @@ export type Node = {
     index,
   }: {
     name?: string;
-    namespace?: string;
+    key?: string;
     mimeId: string;
     data?: unknown;
     parentId?: string | undefined;
@@ -69,7 +69,7 @@ export type Node = {
     mutable?: boolean;
     attachable?: boolean;
     index?: number;
-  }) => Promise<{ id: Maybe<string | undefined>; namespace?: string }>;
+  }) => Promise<{ id: Maybe<string | undefined>; key?: string }>;
   useDelete: (
     param?: Param
   ) => (param?: { id?: string }) => Promise<string | undefined>;
@@ -134,7 +134,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   const parentId = node?.parentId;
   const mimeId = node?.mimeId;
   const nodeContextId = node?.contextId;
-  const namespace = node?.namespace;
+  const key = node?.key;
   const refetchQueries = [node, node?.data, query?.node({ id: parentId! })];
 
   const getOpts = (param?: Param) => ({
@@ -188,7 +188,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     );
     return async ({
       name,
-      namespace,
+      key,
       mimeId,
       data,
       parentId,
@@ -198,7 +198,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       index,
     }: {
       name?: string;
-      namespace?: string;
+      key?: string;
       mimeId: string;
       data?: any;
       parentId?: string;
@@ -210,7 +210,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       const childId = await insertNode({
         args: {
           name,
-          namespace: getNamespace(namespace ?? name),
+          key: getKey(key ?? name),
           data,
           parentId: parentId ? parentId : nodeId,
           mimeId,
@@ -220,7 +220,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
           index,
         },
       });
-      return { id: childId, namespace: getNamespace(namespace ?? name) };
+      return { id: childId, key: getKey(key ?? name) };
     };
   };
 
@@ -363,7 +363,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     parentId,
     contextId: nodeContextId,
     mimeId,
-    namespace,
+    key,
     useQuery,
     useQuery2,
     useSubs,

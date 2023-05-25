@@ -10,7 +10,7 @@ import { useRouter } from 'next/router';
 const BreadcrumbsLink = ({
   parentId,
   fullpath,
-  namespaces,
+  keys,
   open,
   setOpen,
   index,
@@ -18,7 +18,7 @@ const BreadcrumbsLink = ({
 }: {
   parentId?: string;
   fullpath: string[];
-  namespaces: string[];
+  keys: string[];
   open: boolean[];
   setOpen: Function;
   index: number;
@@ -30,7 +30,7 @@ const BreadcrumbsLink = ({
   const where = {
     _and: parentId
       ? [
-          { namespace: { _eq: namespaces.at(-1) } },
+          { key: { _eq: keys.at(-1) } },
           { parentId: { _eq: parentId } },
         ]
       : [{ parentId: { _is_null: true } }],
@@ -38,18 +38,18 @@ const BreadcrumbsLink = ({
   const node = query.nodes({ where }).at(0);
 
   useEffect(() => {
-    if (namespaces.length === fullpath.length) {
+    if (keys.length === fullpath.length) {
       divRef.current?.scrollIntoView({ behavior: 'smooth' });
     }
   }, []);
 
   const handleClick = () => {
     if (open[index]) {
-      if (namespaces.length === fullpath.length && !router.query.app) {
+      if (keys.length === fullpath.length && !router.query.app) {
         const scroll = document.querySelector('#scroll');
         scroll?.scrollTo({ behavior: 'smooth', top: 0 });
       } else {
-        router.push(`/${namespaces.slice(0, index).join('/')}`);
+        router.push(`/${keys.slice(0, index).join('/')}`);
       }
     } else setOpen([...new Array(index).fill(false), true]);
   };
@@ -72,7 +72,7 @@ const BreadcrumbsLink = ({
               ...open.slice(0, index),
               true,
               ...new Array(
-                namespaces.length - index ? namespaces.length - index : 0
+                keys.length - index ? keys.length - index : 0
               ).fill(false),
             ];
             setOpen(newOpen);
@@ -134,7 +134,7 @@ const BreadcrumbsLink = ({
           </>
         </Box>
       )}
-      {namespaces.length === fullpath.length &&
+      {keys.length === fullpath.length &&
         router.query.app !== undefined && (
           <Box
             key={`${node?.id}${router.query.app}`}
@@ -151,8 +151,8 @@ const BreadcrumbsLink = ({
                 ...open.slice(0, index + 1),
                 true,
                 ...new Array(
-                  namespaces.length - index + 1
-                    ? namespaces.length - index + 1
+                  keys.length - index + 1
+                    ? keys.length - index + 1
                     : 0
                 ).fill(false),
               ];
@@ -179,12 +179,12 @@ const BreadcrumbsLink = ({
             </>
           </Box>
         )}
-      {namespaces.length !== fullpath.length && node?.id && (
+      {keys.length !== fullpath.length && node?.id && (
         <BreadcrumbsLink
           key={index + 1}
           parentId={node.id}
           fullpath={fullpath}
-          namespaces={[...namespaces, fullpath[namespaces.length]]}
+          keys={[...keys, fullpath[keys.length]]}
           open={open}
           setOpen={setOpen}
           index={index + 1}
@@ -247,7 +247,7 @@ const Breadcrumbs = () => {
     >
       <Suspense fallback={null}>
         <BreadcrumbsLink
-          namespaces={[]}
+          keys={[]}
           fullpath={path}
           open={open}
           setOpen={setOpen}

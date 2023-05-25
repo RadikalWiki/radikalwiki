@@ -243,12 +243,12 @@ const DrawerList = ({
   return (
     <>
       {children?.map(
-        ({ id, namespace }, childIndex) =>
+        ({ id, key }, childIndex) =>
           id && (
             <DrawerElement
               key={id ?? 0}
               id={id}
-              path={path.concat([namespace!])}
+              path={path.concat([key!])}
               fullpath={fullpath}
               open={open}
               setOpen={setOpen}
@@ -286,7 +286,7 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
             id: node?.id,
             name: node?.name ?? '',
             mime: node?.mimeId!,
-            namespace: node?.namespace,
+            key: node?.key,
           };
         }),
       ]).then(([path, prefix]) => {

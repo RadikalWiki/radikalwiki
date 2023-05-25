@@ -58,12 +58,12 @@ const CandidateList = ({ node }: { node: Node }) => {
 
   return (
     <ImageList cols={largeScreen ? 2 : 1} sx={{ m: 0 }}>
-      {children?.map(({ id, name, namespace }, index) =>
+      {children?.map(({ id, name, key }, index) =>
         !id ? null : (
           <ImageListItem
             key={id ?? 0}
             sx={{ borderRadius: '70px', cursor: 'pointer' }}
-            onClick={() => link.push([namespace!])}
+            onClick={() => link.push([key!])}
           >
             {images?.[index] ? (
               <Image

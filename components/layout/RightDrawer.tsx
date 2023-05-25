@@ -64,7 +64,7 @@ const Drawer = ({
             id: node?.id,
             name: node?.name ?? '',
             mime: node?.mimeId!,
-            namespace: node?.namespace,
+            key: node?.key,
           };
         }),
       ]).then(([path, prefix]) => {

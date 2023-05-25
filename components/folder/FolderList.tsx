@@ -49,8 +49,8 @@ const FolderList = ({ node }: { node: Node }) => {
       },
     }) ?? [];
 
-  const handleOnClick = (namespace?: string) => async () => {
-    link.push([namespace!]);
+  const handleOnClick = (key?: string) => async () => {
+    link.push([key!]);
   };
 
   const number = children.filter((child) => child.mime?.icon == 'number');
@@ -75,7 +75,7 @@ const FolderList = ({ node }: { node: Node }) => {
   return (
     <TransitionGroup>
       {children.map((child) => {
-        const { id, mimeId, name, namespace } = child;
+        const { id, mimeId, name, key } = child;
         const avatar = (
           <MimeAvatar
             mimeId={child.data({ path: 'type' }) ?? mimeId}
@@ -87,7 +87,7 @@ const FolderList = ({ node }: { node: Node }) => {
           <Collapse key={id ?? 0}>
             <ListItemButton
               selected={session?.selected?.includes(child.id!)}
-              onClick={handleOnClick(namespace)}
+              onClick={handleOnClick(key)}
             >
               <ListItemAvatar>{avatar}</ListItemAvatar>
               <ListItemText primary={<Typography>{name}</Typography>} />

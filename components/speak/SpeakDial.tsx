@@ -22,7 +22,7 @@ const SpeakDial = ({ node }: { node: Node }) => {
     insert({
       name: displayName,
       parentId: id,
-      namespace: `${displayName?.toLocaleLowerCase()}-${time}`,
+      key: `${displayName?.toLocaleLowerCase()}-${time}`,
       mimeId: 'speak/speak',
       data: type,
     });

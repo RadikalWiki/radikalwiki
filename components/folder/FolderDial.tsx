@@ -157,11 +157,11 @@ const FolderDial = ({ node }: { node: Node }) => {
   const copy = async (copyId?: string | null, parentId?: string | null) => {
     if (!copyId) return;
     const node = await resolved(() => {
-      const { name, namespace, mimeId, data, mutable, attachable, index } =
+      const { name, key, mimeId, data, mutable, attachable, index } =
         q.node({ id: copyId })!;
       return {
         name,
-        namespace,
+        key,
         mimeId: mimeId!,
         mutable,
         attachable,

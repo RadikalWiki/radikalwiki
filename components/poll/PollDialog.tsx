@@ -53,12 +53,12 @@ const PollDialog = ({
   const handleAddPoll = async () => {
     setLoading(true);
     if (pollId) await update({ id: pollId, set: { mutable: false } });
-    const namespace = new Date(new Date().getTime() + (session?.timeDiff ?? 0))
+    const key = new Date(new Date().getTime() + (session?.timeDiff ?? 0))
       .toLocaleString()
       .replaceAll('/', '');
     const poll = await insert({
       name: query?.name,
-      namespace,
+      key,
       mimeId: 'vote/poll',
       data: {
         minVote: voteCount[0],
@@ -70,7 +70,7 @@ const PollDialog = ({
     });
 
     await contextSet('active', poll.id ?? null);
-    link.push([poll.namespace!])
+    link.push([poll.key!])
     setLoading(false);
   };
 

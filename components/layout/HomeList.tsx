@@ -100,7 +100,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
         id: node?.id,
         name: node?.name ?? '',
         mime: node?.mimeId!,
-        namespace: node?.namespace,
+        key: node?.key,
       };
     });
 
