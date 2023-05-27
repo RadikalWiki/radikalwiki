@@ -146,7 +146,7 @@ const Editor = ({ node }: { node: Node }) => {
             <Grid item>
               <FileUploader
                 text="Upload Billede"
-                onNewFile={async ({ fileId }: { fileId?: string }) => {
+                onNewFile={({ fileId }: { fileId?: string }) => {
                   fileId && setFileId(fileId);
                 }}
               />

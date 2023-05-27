@@ -108,7 +108,7 @@ const NodeToolCard = ({ node }: { node: Node }) => {
         ? '<br>' +
           (
             await Promise.all(
-              children.map(async (id) => await formatContent(id!, level + 1))
+              children.map((id) => formatContent(id!, level + 1))
             )
           ).join('<br>')
         : ''

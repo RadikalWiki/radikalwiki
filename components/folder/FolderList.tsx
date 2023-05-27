@@ -48,7 +48,7 @@ const FolderList = ({ node }: { node: Node }) => {
       },
     }) ?? [];
 
-  const handleOnClick = (key?: string) => async () => {
+  const handleOnClick = (key?: string) => () => {
     link.push([key!]);
   };
 

@@ -62,7 +62,7 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
     },
   ];
 
-  const handleCellEditCommit = async ({
+  const handleCellEditCommit = ({
     id,
     field,
     value,
@@ -73,7 +73,7 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
   }) => {
     if (typeof value != 'boolean' && !['name', 'email'].includes(field)) return;
     const set = { [field]: value };
-    await member.update(String(id), set);
+    member.update(String(id), set);
   };
 
   const rows = query

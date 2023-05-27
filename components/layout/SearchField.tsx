@@ -219,11 +219,11 @@ const SearchField = ({
       getOptionLabel={(option) => option.name ?? ''}
       options={options}
       loading={isLoading}
-      onInputChange={async (e, value) => {
+      onInputChange={(e, value) => {
         if (e) {
           setInput(value);
           setSelectIndex(0);
-          await search(value);
+          search(value);
         }
       }}
       renderOption={(props, option) => (

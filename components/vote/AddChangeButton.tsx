@@ -11,7 +11,7 @@ const AddChangeButton = ({ node }: { node: Node }) => {
 
   const name = query?.mimeId == 'vote/position' ? displayName : '';
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     setOpen(true);
   };
 

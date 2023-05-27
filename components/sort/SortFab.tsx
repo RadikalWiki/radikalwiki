@@ -15,10 +15,9 @@ const SortFab = ({
   const update = node.useUpdate();
 
   const handleClick = async () => {
-    const proms = elements.map(async ({ id }, index: number) => {
-      const set = { index };
-      return update({ id, set });
-    });
+    const proms = elements.map(({ id }, index: number) =>
+      update({ id, set: { index } })
+    );
     await Promise.all(proms);
     link.push([]);
   };

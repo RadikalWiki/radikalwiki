@@ -22,9 +22,9 @@ const PollListSuspense = ({ node }: { node: Node }) => {
   const polls = query?.children({
     where: { mimeId: { _eq: 'vote/poll' } },
   });
-  const handleDeletePoll = (id?: string) => async () => {
+  const handleDeletePoll = (id?: string) => () => {
     if (!id) return;
-    await $delete({ id });
+    $delete({ id });
   };
 
   const owner = query?.isContextOwner;
@@ -45,9 +45,7 @@ const PollListSuspense = ({ node }: { node: Node }) => {
       <List>
         {polls?.map(({ id, key, children_aggregate, createdAt }) => (
           <Fragment key={id ?? 0}>
-            <ListItemButton
-              onClick={() => link.push([key!])}
-            >
+            <ListItemButton onClick={() => link.push([key!])}>
               <Tooltip title="Antal stemmer">
                 <ListItemAvatar>
                   <Badge
@@ -91,7 +89,7 @@ const PollListSuspense = ({ node }: { node: Node }) => {
   );
 
   return polls?.[0]?.id ? card : null;
-}
+};
 
 const PollList = ({ node }: { node: Node }) => {
   const screen = useScreen();
@@ -102,6 +100,6 @@ const PollList = ({ node }: { node: Node }) => {
       <PollListSuspense node={node} />
     </Suspense>
   );
-}
+};
 
 export default PollList;

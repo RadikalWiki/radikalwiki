@@ -120,7 +120,7 @@ const FolderDial = ({ node }: { node: Node }) => {
         ? '<br>' +
           (
             await Promise.all(
-              children.map(async (id) => await formatContent(id!, level + 1))
+              children.map((id) => formatContent(id!, level + 1))
             )
           ).join('<br>')
         : ''
@@ -157,8 +157,9 @@ const FolderDial = ({ node }: { node: Node }) => {
   const copy = async (copyId?: string | null, parentId?: string | null) => {
     if (!copyId) return;
     const node = await resolved(() => {
-      const { name, key, mimeId, data, mutable, attachable, index } =
-        q.node({ id: copyId })!;
+      const { name, key, mimeId, data, mutable, attachable, index } = q.node({
+        id: copyId,
+      })!;
       return {
         name,
         key,
@@ -195,9 +196,7 @@ const FolderDial = ({ node }: { node: Node }) => {
     if (
       (
         await Promise.all(
-          session?.selected?.map(async (id) =>
-            checkIfSuperParent(node.id, id)
-          ) ?? []
+          session?.selected?.map((id) => checkIfSuperParent(node.id, id)) ?? []
         )
       ).some((e) => e)
     ) {
@@ -206,12 +205,12 @@ const FolderDial = ({ node }: { node: Node }) => {
     session?.selected?.map((id) => copy(id, node.id));
   };
 
-  const handleLockChildren = async () => {
-    await nodeUpdate({ set: { attachable: !query?.attachable } });
+  const handleLockChildren = () => {
+    nodeUpdate({ set: { attachable: !query?.attachable } });
   };
 
-  const handleLockContent = async () => {
-    await nodeUpdate({ set: { mutable: !query?.mutable } });
+  const handleLockContent = () => {
+    nodeUpdate({ set: { mutable: !query?.mutable } });
   };
 
   return (

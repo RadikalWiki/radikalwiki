@@ -15,8 +15,8 @@ const PublishButton = ({ node }: { node: Node }) => {
   const update = node.useUpdate();
   const query = node.useQuery();
 
-  const handlePublish = async () => {
-    await update({ set: { mutable: false } });
+  const handlePublish = () => {
+    update({ set: { mutable: false } });
   };
 
   if (!query?.mutable) return null;

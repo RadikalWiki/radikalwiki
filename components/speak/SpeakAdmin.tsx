@@ -4,13 +4,7 @@ import { AdminCard } from 'comps';
 import { Clear, LockOpen, Lock, PlayArrow, Stop } from '@mui/icons-material';
 import { Node } from 'hooks';
 
-const SpeakAdmin = ({
-  node,
-  time,
-}: {
-  node: Node;
-  time: number;
-}) => {
+const SpeakAdmin = ({ node, time }: { node: Node; time: number }) => {
   const get = node.useSubsGet();
   const speakerlist = get('speakerlist');
   const update = node.useUpdate({ refetch: false });
@@ -18,8 +12,8 @@ const SpeakAdmin = ({
   const [timeBox, setTimeBox] = useState(120);
   const id = speakerlist?.id;
 
-  const handleRemoveSpeaks = async () => {
-    await children.delete({
+  const handleRemoveSpeaks = () => {
+    children.delete({
       _and: [
         { mimeId: { _eq: 'speak/speak' } },
         {
@@ -29,13 +23,13 @@ const SpeakAdmin = ({
     });
   };
 
-  const handleLockSpeak = async (mutable: boolean) => {
-    await update({ id, set: { mutable } });
+  const handleLockSpeak = (mutable: boolean) => {
+    update({ id, set: { mutable } });
   };
 
-  const handleTimerSet = async (time: number) => {
+  const handleTimerSet = (time: number) => {
     const updatedAt = new Date();
-    await update({ id, set: { data: { time, updatedAt } } });
+    update({ id, set: { data: { time, updatedAt } } });
   };
 
   const owner = speakerlist?.isContextOwner;
@@ -97,6 +91,6 @@ const SpeakAdmin = ({
     )) ||
     null
   );
-}
+};
 
 export default SpeakAdmin;
