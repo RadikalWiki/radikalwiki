@@ -1,14 +1,10 @@
 import {
   Box,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
 } from '@mui/material';
 import { useApps } from 'hooks';
 import { IconId } from 'mime';
-import UserMenu from './UserMenu';
+import { UserMenu } from 'comps';
 import { Stack } from '@mui/system';
 
 const AppList = () => {

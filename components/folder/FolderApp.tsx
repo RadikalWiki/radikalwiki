@@ -1,7 +1,7 @@
 import { Card, Collapse, List } from '@mui/material';
 import { ContentHeader, FolderDial, FolderList } from 'comps';
 import { Node, useScreen } from 'hooks';
-import { Suspense, useState } from 'react';
+import { Suspense } from 'react';
 
 const FolderApp = ({ node, child }: { node: Node; child?: boolean }) => {
   const screen = useScreen();

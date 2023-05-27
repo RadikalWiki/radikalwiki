@@ -1,4 +1,4 @@
-import { Grid, Box, Paper, Collapse } from '@mui/material';
+import { Grid, Box, Collapse } from '@mui/material';
 import { Slate, Image } from 'comps';
 import { Node } from 'hooks';
 import { nhost } from 'nhost';

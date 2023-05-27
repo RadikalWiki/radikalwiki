@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 import { useRefetch } from 'gql';
 import { AdminCard } from 'comps';
-import { Node, useNode } from 'hooks';
+import { Node } from 'hooks';
 import { Stop } from '@mui/icons-material';
 
 const PollAdmin = ({ node }: { node: Node }) => {

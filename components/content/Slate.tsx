@@ -2,8 +2,6 @@
 import React, {
   ChangeEventHandler,
   useCallback,
-  useEffect,
-  useMemo,
   useRef,
 } from 'react';
 import isHotkey from 'is-hotkey';
@@ -22,8 +20,6 @@ import {
   createEditor,
   Descendant,
   Element as SlateElement,
-  Node as SlateNode,
-  BaseEditor,
 } from 'slate';
 import { HistoryEditor, withHistory } from 'slate-history';
 import {
@@ -38,7 +34,6 @@ import {
   Popper,
   Select,
   Stack,
-  TextField,
   ToggleButton,
   ToggleButtonGroup,
   Link as MuiLink,

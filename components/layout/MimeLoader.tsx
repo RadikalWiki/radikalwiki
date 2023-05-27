@@ -11,7 +11,6 @@ import {
   HomeApp,
   CandidateApp,
   FileApp,
-  ContentHeader,
 } from 'comps';
 import { useRouter } from 'next/router';
 

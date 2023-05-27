@@ -14,7 +14,7 @@ import {
   CheckBoxOutlineBlankOutlined,
   DoNotDisturb,
 } from '@mui/icons-material';
-import { nodes, order_by } from 'gql';
+import { order_by } from 'gql';
 import { TransitionGroup } from 'react-transition-group';
 import { MimeAvatar } from 'comps';
 import { Node, useLink, useSession } from 'hooks';

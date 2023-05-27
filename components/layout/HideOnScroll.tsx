@@ -1,5 +1,5 @@
 import { Slide } from '@mui/material';
-import { useEffect, useState, UIEvent, EventHandler, ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 const HideOnScroll = ({ children }: { children: JSX.Element }) => {
   const [scrollPosition, setScrollPosition] = useState(0);

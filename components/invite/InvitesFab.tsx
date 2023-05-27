@@ -2,7 +2,7 @@ import React from 'react';
 import { Fab } from '@mui/material';
 import { GroupAdd } from '@mui/icons-material';
 import { SheetReader } from 'comps';
-import { Node, useNode } from 'hooks';
+import { Node } from 'hooks';
 
 const InvitesFab = ({ node }: { node: Node }) => {
   const parentId = node.id;

@@ -1,3 +1,4 @@
+/*
 import React, { Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 import { ExpandMore, ExpandLess, Policy } from '@mui/icons-material';
@@ -21,7 +22,6 @@ import {
 } from '@mui/material';
 import { mimes, permissions, useQuery } from 'gql';
 
-/*
 function PermListElement({
   perm,
   index,
@@ -155,3 +155,6 @@ const PermList = ({ id }: { id: string }) => {
   );
 }
 */
+
+const PermList = null;
+export default PermList;

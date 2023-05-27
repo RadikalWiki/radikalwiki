@@ -2,7 +2,7 @@ import { order_by } from 'gql';
 import { DataGrid, GridActionsCellItem, GridColumns } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
 import { Delete } from '@mui/icons-material';
-import { Node, useNode } from 'hooks';
+import { Node } from 'hooks';
 
 const MembersDataGrid = ({ node }: { node: Node }) => {
   const query = node.useQuery();

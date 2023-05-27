@@ -6,7 +6,6 @@ import React, {
 } from 'react';
 import {
   Avatar,
-  Badge,
   Button,
   Card,
   CardContent,
@@ -19,7 +18,6 @@ import {
   Radio,
   Stack,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import { useSession } from 'hooks';
 import { useRouter } from 'next/router';
@@ -27,7 +25,6 @@ import { Node } from 'hooks';
 import { HeaderCard, MimeAvatarId, MimeLoader } from 'comps';
 import {
   DoNotDisturb,
-  Hail,
   HowToReg,
   HowToVote,
   Refresh,

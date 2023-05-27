@@ -1,4 +1,4 @@
-import React, { FormEventHandler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   Container,
@@ -15,7 +15,6 @@ import { nhost } from 'nhost';
 import { Email, HowToReg, LockReset, Login } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { FormEvent } from 'react';
-import { ChangeEvent } from 'react';
 import { ChangeEventHandler } from 'react';
 
 type Mode = 'login' | 'register' | 'reset-password' | 'set-password';

@@ -2,7 +2,6 @@ import React, { startTransition, useEffect } from 'react';
 import { Fragment, useState } from 'react';
 import { SortFab, MimeAvatarId } from 'comps';
 import {
-  Avatar,
   Card,
   List,
   ListItem,

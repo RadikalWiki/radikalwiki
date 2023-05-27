@@ -3,7 +3,6 @@ import {
   Chip,
   Collapse,
   Grid,
-  Skeleton,
   Tooltip,
   Typography,
 } from '@mui/material';

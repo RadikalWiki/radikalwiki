@@ -1,8 +1,7 @@
 import React, { Fragment, Suspense } from 'react';
-import { HeaderCard, Link as NextLink } from 'comps';
+import { HeaderCard } from 'comps';
 import {
   List,
-  ListItem,
   ListItemText,
   Tooltip,
   ListItemAvatar,

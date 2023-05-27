@@ -5,7 +5,6 @@ import {
   VoteApp,
   ScreenApp,
   MemberApp,
-  PermApp,
 } from 'comps';
 import { useNode } from 'hooks';
 

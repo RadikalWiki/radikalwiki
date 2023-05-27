@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import { avatars } from 'comps';
-import { useSession, useNode, Node } from 'hooks';
+import { useSession, Node } from 'hooks';
 import { useUserDisplayName } from '@nhost/nextjs';
 
 const SpeakDial = ({ node }: { node: Node }) => {

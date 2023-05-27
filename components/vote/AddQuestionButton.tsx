@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { AddContentDialog, AutoButton } from 'comps';
 import { PlusOne } from '@mui/icons-material';
-import { Node, useNode } from 'hooks';
+import { Node } from 'hooks';
 
 const AddQuestionButton = ({ node }: { node: Node }) => {
   const [open, setOpen] = useState(false);

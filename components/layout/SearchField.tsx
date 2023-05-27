@@ -1,9 +1,7 @@
 import { Menu, SearchOff } from '@mui/icons-material';
 import {
-  alpha,
   Autocomplete,
   Avatar,
-  Box,
   CircularProgress,
   IconButton,
   InputBase,

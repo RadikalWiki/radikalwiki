@@ -2,7 +2,7 @@ import React, { startTransition, useEffect, useState } from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import { resolved, query, order_by } from 'gql';
-import { Node, useNode } from 'hooks';
+import { Node } from 'hooks';
 
 type Option = {
   name?: string;

@@ -1,5 +1,5 @@
 import { CardActions, Box, Card } from '@mui/material';
-import { Delete, Edit, Publish, People, GetApp } from '@mui/icons-material';
+import { Edit, People, GetApp } from '@mui/icons-material';
 import { Node, useLink } from 'hooks';
 import { AutoButton, DeleteButton, PublishButton } from 'comps';
 import { useState } from 'react';

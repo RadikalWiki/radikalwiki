@@ -1,5 +1,5 @@
 import React from 'react';
-import { AddQuestionButton, AutoButton, MemberChips } from 'comps';
+import { AddQuestionButton, AutoButton } from 'comps';
 import { LowPriority, Face, DoNotDisturb, Delete } from '@mui/icons-material';
 import {
   Avatar,

@@ -2,15 +2,11 @@ import {
   useQuery,
   useMutation,
   members_set_input,
-  useSubscription,
   useRefetch,
   client,
 } from 'gql';
 import {
   Avatar,
-  Box,
-  CircularProgress,
-  Collapse,
   IconButton,
   List,
   ListItem,
@@ -19,9 +15,7 @@ import {
 } from '@mui/material';
 import { Add, ContactMail, DoNotDisturb } from '@mui/icons-material';
 import { HeaderCard, MimeAvatarId } from 'comps';
-import { Suspense } from 'react';
 import { useUserEmail, useUserId } from '@nhost/nextjs';
-import { TransitionGroup } from 'react-transition-group';
 
 const ListSuspense = () => {
   const refetch = useRefetch();

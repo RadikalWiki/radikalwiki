@@ -1,8 +1,7 @@
-import React, { Suspense, startTransition, useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import {
   Scroll,
   BottomBar,
-  SessionProvider,
   OldBrowser,
   Drawer,
   MobileMenu,

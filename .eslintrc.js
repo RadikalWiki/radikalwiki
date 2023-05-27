@@ -18,6 +18,7 @@ module.exports = {
     'functional/no-mixed-types': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
     'react-hooks/exhaustive-deps': 'off',
+    'unused-imports/no-unused-imports': 'error',
     'no-restricted-syntax': [
       'error',
       'FunctionExpression',
