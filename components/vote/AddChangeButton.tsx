@@ -35,6 +35,6 @@ const AddChangeButton = ({ node }: { node: Node }) => {
       />
     </>
   );
-}
+};
 
 export default AddChangeButton;
