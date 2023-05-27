@@ -1,7 +1,7 @@
-import { useScrollTrigger, Slide } from '@mui/material';
-import { ReactElement, useEffect, useState } from 'react';
+import { Slide } from '@mui/material';
+import { useEffect, useState, UIEvent, EventHandler, ReactNode } from 'react';
 
-const HideOnScroll = ({ children }: { children: ReactElement }) => {
+const HideOnScroll = ({ children }: { children: JSX.Element }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [show, setShow] = useState(true);
 
@@ -11,8 +11,8 @@ const HideOnScroll = ({ children }: { children: ReactElement }) => {
     return () => scroll?.removeEventListener('scroll', handleScroll);
   }, [scrollPosition]);
 
-  const handleScroll = (event: any) => {
-    const newScrollPosition = event.target.scrollTop;
+  const handleScroll = (event: Event) => {
+    const newScrollPosition = (event.target as HTMLDivElement)?.scrollTop;
     if (Math.abs(scrollPosition - newScrollPosition) > 4) {
       setShow(scrollPosition > newScrollPosition);
     }

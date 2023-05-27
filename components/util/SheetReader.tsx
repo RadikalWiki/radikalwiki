@@ -6,7 +6,7 @@ const SheetReader = ({
   children,
   onFileLoaded,
 }: {
-  children: any;
+  children: JSX.Element;
   onFileLoaded: Function;
 }) => {
   const handleChangeFile: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -15,11 +15,11 @@ const SheetReader = ({
 
     if (files?.length) {
       // eslint-disable-next-line functional/immutable-data
-      reader.onload = (e: any) => {
+      reader.onload = () => {
         const wb = read(reader.result);
         const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
 
-        console.log(data)
+        console.log(data);
         onFileLoaded(data ?? []);
       };
 
@@ -38,6 +38,6 @@ const SheetReader = ({
       <label htmlFor="input-file">{children}</label>
     </>
   );
-}
+};
 
 export default SheetReader;

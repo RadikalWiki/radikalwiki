@@ -8,11 +8,11 @@ const HeaderCard = ({
   subtitle,
   action,
 }: {
-  children?: any;
+  children?: JSX.Element;
   title: string;
-  avatar?: any;
+  avatar?: JSX.Element;
   subtitle?: string;
-  action?: any;
+  action?: JSX.Element;
 }) => (
   <Card sx={{ m: 0 }}>
     <CardHeader

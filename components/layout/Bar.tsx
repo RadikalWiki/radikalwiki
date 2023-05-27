@@ -1,7 +1,7 @@
-import { Box, alpha } from '@mui/material';
-import { forwardRef } from 'react';
+import { Box, BoxProps, alpha } from '@mui/material';
+import { ForwardedRef, forwardRef } from 'react';
 
-const BarRef = (props: any, ref?: any) => (
+const BarRef = (props: BoxProps, ref?: ForwardedRef<HTMLDivElement>) => (
   <Box
     {...props}
     ref={ref}

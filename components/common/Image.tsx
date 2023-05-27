@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { ReactEventHandler, useRef, useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { grey } from '@mui/material/colors';
 import { BrokenImage } from '@mui/icons-material';
@@ -14,9 +14,9 @@ const Image = ({
   aspectRatio = 1,
   ...image
 }: {
-  src: any;
-  alt: any;
-  layout?: any;
+  src: string;
+  alt: string;
+  layout?: string;
   onLoad?: Function;
   onError?: Function;
   animationDuration?: number;
@@ -26,7 +26,7 @@ const Image = ({
   const [error, setError] = useState(false);
   const imageRef = useRef<HTMLImageElement>(null);
 
-  const handleLoadImage = (e: any) => {
+  const handleLoadImage: ReactEventHandler<HTMLImageElement> = (e) => {
     setLoaded(true);
     setError(false);
     if (onLoad) {
@@ -34,7 +34,7 @@ const Image = ({
     }
   };
 
-  const handleImageError = (e: any) => {
+  const handleImageError: ReactEventHandler<HTMLImageElement> = (e) => {
     if (src) {
       setError(true);
       if (onError) {

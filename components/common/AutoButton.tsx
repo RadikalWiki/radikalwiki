@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { Button, useMediaQuery, IconButton, Tooltip } from '@mui/material';
 
 const AutoButton = ({
@@ -7,8 +7,8 @@ const AutoButton = ({
   onClick,
 }: {
   text: string;
-  icon: any;
-  onClick: any;
+  icon: JSX.Element;
+  onClick: MouseEventHandler<HTMLButtonElement>;
 }) => {
   const largeScreen = useMediaQuery('(min-width:1200px)');
 
@@ -26,6 +26,6 @@ const AutoButton = ({
       <Tooltip title={text}>{icon}</Tooltip>
     </IconButton>
   );
-}
+};
 
 export default AutoButton;

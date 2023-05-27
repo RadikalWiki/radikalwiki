@@ -10,7 +10,7 @@ import {
 } from 'comps';
 
 const FileLoader = ({ node }: { node: Node }) => {
-  const [file, setFile] = useState<any>(null);
+  const [file, setFile] = useState<string | undefined>();
   const data = node.useQuery()?.data();
 
   useEffect(() => {

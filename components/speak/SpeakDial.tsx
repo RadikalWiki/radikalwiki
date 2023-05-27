@@ -14,7 +14,7 @@ const SpeakDial = ({ node }: { node: Node }) => {
   const insert = node.useInsert({ refetch: false });
   const id = speakerlist?.id;
 
-  const handleAddSpeak = (type: string) => (_: any) => {
+  const handleAddSpeak = (type: string) => () => {
     setOpen(false);
     const time = new Date(
       new Date().getTime() + (session?.timeDiff ?? 0)
@@ -55,6 +55,6 @@ const SpeakDial = ({ node }: { node: Node }) => {
       )}
     </SpeedDial>
   );
-}
+};
 
 export default SpeakDial;

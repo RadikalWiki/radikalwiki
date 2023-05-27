@@ -1,5 +1,11 @@
 /* eslint-disable functional/immutable-data */
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, {
+  ChangeEventHandler,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import isHotkey from 'is-hotkey';
 import { jsx } from 'slate-hyperscript';
 import {
@@ -7,7 +13,8 @@ import {
   withReact,
   useSlate,
   Slate as SlateEditor,
-  ReactEditor,
+  RenderLeafProps,
+  RenderElementProps,
 } from 'slate-react';
 import {
   Editor,
@@ -53,6 +60,17 @@ import {
 } from '@mui/icons-material';
 import { Box } from '@mui/system';
 import { Link as NextLink } from 'comps';
+import {
+  CustomEditor,
+  CustomElement,
+  CustomText,
+  ElementType,
+  LIST_TYPES,
+  STYLE_TYPES,
+  StyleType,
+  TEXT_ALIGN_TYPES,
+  TextAlignType,
+} from 'core/types/slate';
 
 const HOTKEYS = {
   'mod+b': 'bold',
@@ -60,7 +78,7 @@ const HOTKEYS = {
   'mod+u': 'underline',
   'mod+`': 'code',
 };
-const STYLE_NAMES: Record<string, string> = {
+const STYLE_NAMES: Record<StyleType, string> = {
   paragraph: 'Normal Tekst',
   'heading-one': 'Overskrift 1',
   'heading-two': 'Overskrift 2',
@@ -69,36 +87,14 @@ const STYLE_NAMES: Record<string, string> = {
   'heading-five': 'Overskrift 5',
   'heading-six': 'Overskrift 6',
   'block-quote': 'Blok',
+  'block-pre': 'Uformateret',
 };
-const STYLE_TYPES = [
-  'paragraph',
-  'heading-one',
-  'heading-two',
-  'heading-three',
-  'heading-four',
-  'heading-five',
-  'heading-six',
-  'block-quote',
-];
-const LIST_TYPES = ['numbered-list', 'bulleted-list'];
-const TEXT_ALIGN_TYPES = ['left', 'center', 'right', 'justify'];
-
-type EditorNode = {
-  code?: boolean;
-  strikethrough?: boolean;
-  italic?: boolean;
-  bold?: boolean;
-  underline?: boolean;
-  link?: string;
-};
-
-type EditorElement = { type?: string; text: string } | SlateElement;
 
 const ELEMENT_TAGS: Record<
   string,
-  (el?: Element) => Omit<EditorElement, 'children'>
+  (el?: Element) => Omit<CustomElement, 'children'>
 > = {
-  BLOCKQUOTE: () => ({ type: 'quote' }),
+  BLOCKQUOTE: () => ({ type: 'block-quote' }),
   H1: () => ({ type: 'heading-one' }),
   H2: () => ({ type: 'heading-two' }),
   H3: () => ({ type: 'heading-three' }),
@@ -109,12 +105,12 @@ const ELEMENT_TAGS: Record<
   LI: () => ({ type: 'list-item' }),
   OL: () => ({ type: 'numbered-list' }),
   P: () => ({ type: 'paragraph' }),
-  PRE: () => ({ type: 'code' }),
+  PRE: () => ({ type: 'block-pre' }),
   UL: () => ({ type: 'bulleted-list' }),
 };
 
 // COMPAT: `B` is omitted here because Google Docs uses `<b>` in weird ways.
-const TEXT_TAGS: Record<string, (el?: Element) => EditorNode> = {
+const TEXT_TAGS: Record<string, (el?: Element) => Omit<CustomText, 'text'>> = {
   CODE: () => ({ code: true }),
   DEL: () => ({ strikethrough: true }),
   EM: () => ({ italic: true }),
@@ -125,7 +121,9 @@ const TEXT_TAGS: Record<string, (el?: Element) => EditorNode> = {
   A: (el) => ({ link: el?.getAttribute('href') ?? '' }),
 };
 
-const deserialize = (el: any) => {
+const deserialize = (
+  el: HTMLElement | ChildNode
+): CustomElement | string | null | (string | null | Descendant)[] => {
   if (el.nodeType === 3) {
     return el.textContent;
   } else if (el.nodeType !== 1) {
@@ -142,10 +140,8 @@ const deserialize = (el: any) => {
       ? el.childNodes[0]
       : el;
 
-  const parentChildren: any = Array.from(parent.childNodes)
-    .map(deserialize)
-    .flat();
-  const children: any =
+  const parentChildren = Array.from(parent.childNodes).map(deserialize).flat();
+  const children =
     parentChildren.length === 0 ? [{ text: '' }] : parentChildren;
 
   if (el.nodeName === 'BODY') {
@@ -153,35 +149,35 @@ const deserialize = (el: any) => {
   }
 
   if (ELEMENT_TAGS[nodeName]) {
-    const attrs = ELEMENT_TAGS[nodeName](el);
+    const attrs = ELEMENT_TAGS[nodeName](el as Element);
     return jsx('element', attrs, children);
   }
 
   if (TEXT_TAGS[nodeName]) {
-    const attrs = TEXT_TAGS[nodeName](el);
-    return children.map((child: any) => jsx('text', attrs, child));
+    const attrs = TEXT_TAGS[nodeName](el as Element);
+    return children.map((child) => jsx('text', attrs, child));
   }
 
   return children;
 };
 
-const withHtml = (editor: any) => {
+const withHtml = (editor: CustomEditor) => {
   const { insertData, isInline, isVoid } = editor;
 
-  editor.isInline = (element: any) => {
+  editor.isInline = (element) => {
     return element.type === 'link' ? true : isInline(element);
   };
 
-  editor.isVoid = (element: any) => {
+  editor.isVoid = (element) => {
     return element.type === 'image' ? true : isVoid(element);
   };
 
-  editor.insertData = (data: any) => {
+  editor.insertData = (data) => {
     const html = data.getData('text/html');
 
     if (html) {
       const parsed = new DOMParser().parseFromString(html, 'text/html');
-      const fragment = deserialize(parsed.body);
+      const fragment = deserialize(parsed.body) as Descendant[];
       try {
         Transforms.insertFragment(editor, fragment);
       } catch (error) {
@@ -196,7 +192,7 @@ const withHtml = (editor: any) => {
   return editor;
 };
 
-const validate = (value: any) => {
+const validate = (value?: Descendant[]): Descendant[] => {
   if (Array.isArray(value)) return value;
   else return [{ type: 'paragraph', children: [{ text: '' }] }];
 };
@@ -206,19 +202,27 @@ const Slate = ({
   onChange,
   readOnly = false,
 }: {
-  value?: any;
-  onChange?: any;
+  value?: Descendant[];
+  onChange?: (value: Descendant[]) => void;
   readOnly: boolean;
 }) => {
-  const editorRef = useRef<ReactEditor>();
+  const editorRef = useRef<CustomEditor>();
   if (!editorRef.current)
-    editorRef.current = withHtml(withHistory(withReact(createEditor() as any)));
+    editorRef.current = withHtml(withHistory(withReact(createEditor())));
   const editor = editorRef.current;
-  const renderElement = useCallback((props: any) => <Element {...props} />, []);
-  const renderLeaf = useCallback((props: any) => <Leaf {...props} />, []);
+  const renderElement = useCallback(
+    (props: RenderElementProps) => <Element {...props} />,
+    []
+  );
+  const renderLeaf = useCallback(
+    (props: RenderLeafProps) => <Leaf {...props} />,
+    []
+  );
   const validated = validate(value);
   if (editor) {
     editor.children = validated;
+  } else {
+    return null;
   }
 
   return (
@@ -236,7 +240,8 @@ const Slate = ({
         </>
       )}
       {(!readOnly ||
-        (validated.length !== 0 && validated[0].children[0].text !== '')) && (
+        (validated.length !== 0 &&
+          (validated as CustomElement[])[0].children?.[0].text !== '')) && (
         <Box sx={{ m: 2 }}>
           <Editable
             renderElement={renderElement}
@@ -245,7 +250,7 @@ const Slate = ({
             readOnly={readOnly}
             onKeyDown={(event) => {
               Object.entries(HOTKEYS).map(([hotkey, mark]) => {
-                if (isHotkey(hotkey, event as any)) {
+                if (isHotkey(hotkey, event)) {
                   event.preventDefault();
                   toggleMark(editor, mark);
                 }
@@ -258,7 +263,7 @@ const Slate = ({
   );
 };
 
-const toggleMark = (editor: any, format: any) => {
+const toggleMark = (editor: CustomEditor, format: string) => {
   const isActive = isMarkActive(editor, format);
 
   if (isActive) {
@@ -269,8 +274,8 @@ const toggleMark = (editor: any, format: any) => {
 };
 
 const currentBlocks = (
-  editor: any,
-  validBlocks: string[],
+  editor: CustomEditor,
+  validBlocks: Readonly<ElementType[]>,
   blockType = 'type',
   prop?: string
 ) => {
@@ -283,22 +288,24 @@ const currentBlocks = (
       match: (n) =>
         !Editor.isEditor(n) &&
         SlateElement.isElement(n) &&
-        validBlocks.includes((n as any)[blockType]),
+        validBlocks.includes(n[blockType] as ElementType),
     })
-  )?.[0];
+  )?.[0] as unknown as CustomElement[] | undefined;
 
   if (!blocks) return undefined;
 
   return blocks.length > 0
     ? blocks
-        .filter((block) => (block as any)[blockType])
-        ?.map((block) =>
-          prop ? (block as any)[prop] : (block as any)[blockType]
-        )
+        .filter((block) => block[blockType])
+        ?.map((block) => (prop ? block[prop] : block[blockType]))
     : undefined;
 };
 
-const isBlockActive = (editor: any, format: string, blockType = 'type') => {
+const isBlockActive = (
+  editor: CustomEditor,
+  format: string,
+  blockType = 'type'
+) => {
   const { selection } = editor;
   if (!selection) return false;
 
@@ -308,19 +315,19 @@ const isBlockActive = (editor: any, format: string, blockType = 'type') => {
       match: (n) =>
         !Editor.isEditor(n) &&
         SlateElement.isElement(n) &&
-        (n as any)[blockType] === format,
+        n[blockType] === format,
     })
   );
 
   return !!match;
 };
 
-const isMarkActive = (editor: BaseEditor, format: string) => {
+const isMarkActive = (editor: CustomEditor, format: string) => {
   const marks = Editor.marks(editor);
-  return marks ? (marks as any)[format] === true : false;
+  return marks ? marks[format] === true : false;
 };
 
-const Element = ({ attributes, children, element }: any) => {
+const Element = ({ attributes, children, element }: RenderElementProps) => {
   const style = { textAlign: element.align };
   switch (element.type) {
     case 'block-quote':
@@ -328,6 +335,12 @@ const Element = ({ attributes, children, element }: any) => {
         <blockquote style={style} {...attributes}>
           {children}
         </blockquote>
+      );
+    case 'block-pre':
+      return (
+        <pre style={style} {...attributes}>
+          {children}
+        </pre>
       );
     case 'bulleted-list':
       return (
@@ -393,7 +406,7 @@ const Element = ({ attributes, children, element }: any) => {
   }
 };
 
-const Leaf = ({ attributes, children, leaf }: any) => {
+const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
   const bold = leaf.bold ? <strong>{children}</strong> : children;
   const code = leaf.code ? <em>{bold}</em> : bold;
   const underline = leaf.underline ? <u>{code}</u> : code;
@@ -419,8 +432,8 @@ const BlockSelect = () => {
         sx={{ width: 145 }}
         value={currentBlocks(editor, STYLE_TYPES) ?? 'paragraph'}
         onChange={(e) =>
-          Transforms.setNodes<EditorElement>(editor, {
-            type: e.target.value as string,
+          Transforms.setNodes<CustomElement>(editor, {
+            type: e.target.value as ElementType,
           })
         }
       >
@@ -457,21 +470,21 @@ const HistoryButtons = () => {
 
 const ListButtons = () => {
   const editor = useSlate();
-  const handleBlock = (e: any, format: string) => {
+  const handleBlock = (_: unknown, format: ElementType) => {
     const isActive = isBlockActive(editor, format, 'type');
 
-    Transforms.unwrapNodes<EditorElement>(editor, {
-      match: (n: EditorElement) =>
+    Transforms.unwrapNodes<CustomElement>(editor, {
+      match: (n) =>
         !Editor.isEditor(n) &&
-        LIST_TYPES.includes((n as any).type) &&
-        SlateElement.isElement(n),
+        SlateElement.isElement(n) &&
+        (LIST_TYPES as unknown as string[]).includes(n.type),
       split: true,
     });
-    const newProperties: any = {
+    const newProperties: CustomElement = {
       type: isActive ? 'paragraph' : 'list-item',
     };
 
-    Transforms.setNodes<SlateElement>(editor, newProperties);
+    Transforms.setNodes<CustomElement>(editor, newProperties);
 
     if (!isActive) {
       const block = { type: format, children: [] };
@@ -497,9 +510,9 @@ const ListButtons = () => {
 
 const AlignButtons = () => {
   const editor = useSlate();
-  const handleBlock = (e: any, block: string) => {
+  const handleBlock = (_: unknown, block: TextAlignType) => {
     const isActive = isBlockActive(editor, block, 'align');
-    const newProperties: any = {
+    const newProperties = {
       align: isActive ? undefined : block,
     };
     Transforms.setNodes<SlateElement>(editor, newProperties);
@@ -541,7 +554,7 @@ const MarkButtons = () => {
       .map((mark) => toggleMark(editor, mark));
   };
 
-  const getMarks = (marks: any) => {
+  const getMarks = (marks: Omit<CustomText, 'text'> | null) => {
     if (!marks) return [];
     return (marks.bold ? ['bold'] : [])
       .concat(marks.italic ? ['italic'] : [])
@@ -573,7 +586,7 @@ const LinkButton = () => {
     setAnchorEl(anchorEl ? null : e.currentTarget);
   };
 
-  const handleChange = (event: any) => {
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     Editor.addMark(editor, 'link', event.target.value);
   };
 
@@ -616,7 +629,7 @@ const LinkButton = () => {
         >
           <InputBase
             sx={{ ml: 1, flex: 1 }}
-            value={(marks as any)?.link ?? ''}
+            value={marks?.link ?? ''}
             onChange={handleChange}
           />
           <IconButton
@@ -631,11 +644,7 @@ const LinkButton = () => {
           </IconButton>
         </Paper>
       </Popper>
-      <ToggleButton
-        value="link"
-        onClick={handleClick}
-        selected={!!(marks as any)?.link}
-      >
+      <ToggleButton value="link" onClick={handleClick} selected={!!marks?.link}>
         <Link />
       </ToggleButton>
     </>

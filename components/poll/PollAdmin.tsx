@@ -28,7 +28,7 @@ const PollAdmin = ({ node }: { node: Node }) => {
     .map((perm) => perm.node?.members_aggregate().aggregate?.count())
     .reduce((total, next) => (total ?? 0) + (next ?? 0), 0);
 
-  const handleStopPoll = async (_: any) => {
+  const handleStopPoll = async () => {
     await update({ set: { mutable: false, data: { ...data, voters } } });
     //await refetch(() =>
     //  node.query
@@ -53,6 +53,6 @@ const PollAdmin = ({ node }: { node: Node }) => {
       </Button>
     </AdminCard>
   );
-}
+};
 
 export default PollAdmin;

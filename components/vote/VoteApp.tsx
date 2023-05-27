@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  FormEvent,
+  ChangeEventHandler,
+} from 'react';
 import {
   Avatar,
   Badge,
@@ -28,6 +33,8 @@ import {
   Refresh,
 } from '@mui/icons-material';
 import { useUserId } from '@nhost/nextjs';
+
+type Vote = boolean[];
 
 const VoteApp = ({ node }: { node: Node }) => {
   const [session] = useSession();
@@ -67,18 +74,18 @@ const VoteApp = ({ node }: { node: Node }) => {
   })?.[0]?.id;
 
   const data = poll?.data();
-  const options = data?.options ?? [];
+  const options: string[] = data?.options ?? [];
   const maxVote = data?.maxVote ?? 1;
   const minVote = data?.minVote ?? 1;
 
-  const [vote, setVote] = useState<any[]>([]);
+  const [vote, setVote] = useState<Vote>([]);
   useEffect(() => {
     if (options?.length !== vote?.length)
       setVote(new Array(options?.length).fill(false));
   }, [options]);
 
-  const validate = (vote: any, submit: boolean) => {
-    const selected = vote.filter((o: any) => o).length;
+  const validate = (vote: Vote, submit: boolean) => {
+    const selected = vote.filter((o) => o).length;
     // Handle blank
     if (selected == 1 && vote[vote.length - 1]) {
       return true;
@@ -109,9 +116,9 @@ const VoteApp = ({ node }: { node: Node }) => {
     return true;
   };
 
-  const handleSubmit = async (event: any) => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     setLoading(true);
-    event.preventDefault();
     if (!validate(vote, true)) {
       return;
     }
@@ -122,12 +129,12 @@ const VoteApp = ({ node }: { node: Node }) => {
       name,
       mimeId: 'vote/vote',
       parentId: poll?.id,
-      data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), []),
+      data: vote.reduce((a, e, i) => (e ? a.concat(i) : a), [] as number[]),
     });
     setLoading(false);
   };
 
-  const handleChangeVote = (e: any) => {
+  const handleChangeVote: ChangeEventHandler<HTMLInputElement> = (e) => {
     const voteOld =
       1 === maxVote && 1 === minVote
         ? new Array(options.length).fill(false)
@@ -213,7 +220,7 @@ const VoteApp = ({ node }: { node: Node }) => {
           <form onSubmit={handleSubmit}>
             <FormControl error={error}>
               <FormGroup>
-                {options?.map((opt: any, index: number) => (
+                {options?.map((opt, index: number) => (
                   <FormControlLabel
                     key={index}
                     value={index}

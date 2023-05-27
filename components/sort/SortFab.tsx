@@ -2,24 +2,25 @@ import React from 'react';
 import { Fab, Tooltip } from '@mui/material';
 import { Save } from '@mui/icons-material';
 import { Node, useLink } from 'hooks';
+import { nodes } from 'gql';
 
 const SortFab = ({
   node,
   elements,
 }: {
   node: Node;
-  elements: any;
+  elements: Partial<nodes>[];
 }) => {
   const link = useLink();
   const update = node.useUpdate();
 
   const handleClick = async () => {
-    const proms = elements.map(async ({ id }: any, index: number) => {
+    const proms = elements.map(async ({ id }, index: number) => {
       const set = { index };
       return update({ id, set });
     });
     await Promise.all(proms);
-    link.push([])
+    link.push([]);
   };
 
   return (
@@ -37,6 +38,6 @@ const SortFab = ({
       </Fab>
     </Tooltip>
   );
-}
+};
 
 export default SortFab;

@@ -6,16 +6,9 @@ import {
   Card,
   CardHeader,
 } from '@mui/material';
-import {
-  Visibility,
-  VisibilityOff,
-  ZoomIn,
-} from '@mui/icons-material';
+import { Visibility, VisibilityOff, ZoomIn } from '@mui/icons-material';
 import { Node, useSession } from 'hooks';
-import {
-  AutoButton,
-  MimeIcon,
-} from 'comps';
+import { AutoButton, MimeIcon } from 'comps';
 import { useState } from 'react';
 
 const marks = [
@@ -40,7 +33,6 @@ const marks = [
     label: '250%',
   },
 ];
-
 
 const ScreenToolCard = ({ node }: { node: Node }) => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null);
@@ -85,10 +77,7 @@ const ScreenToolCard = ({ node }: { node: Node }) => {
         </Paper>
       </Popover>
       <Card elevation={0}>
-        <CardHeader
-          avatar={<MimeIcon mimeId="app/screen" />}
-          title="Skærm"
-        />
+        <CardHeader avatar={<MimeIcon mimeId="app/screen" />} title="Skærm" />
         <CardActions>
           <AutoButton
             key="focus"
@@ -106,7 +95,7 @@ const ScreenToolCard = ({ node }: { node: Node }) => {
             key="zoom"
             text="Zoom"
             icon={<ZoomIn />}
-            onClick={(e: any) => setAnchorEl(e.currentTarget)}
+            onClick={(e) => setAnchorEl(e.currentTarget)}
           />
         </CardActions>
       </Card>

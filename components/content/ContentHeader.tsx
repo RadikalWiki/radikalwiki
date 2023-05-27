@@ -1,22 +1,10 @@
 import { CardHeader, Skeleton, Typography } from '@mui/material';
-import {
-  MimeAvatarNode,
-  ExpandButton,
-  MemberChips,
-  ContentToolbar,
-  MimeAvatar,
-} from 'comps';
+import { MimeAvatarNode, MemberChips, ContentToolbar, MimeAvatar } from 'comps';
 import { Suspense } from 'react';
 import { Node, useScreen } from 'hooks';
 import { Stack } from '@mui/system';
 
-const Title = ({
-  node,
-  hideMembers,
-}: {
-  node: Node;
-  hideMembers?: boolean;
-}) => {
+const Title = ({ node }: { node: Node }) => {
   const query = node.useQuery();
   const screen = useScreen();
   return query?.name ? (
@@ -47,7 +35,7 @@ const ContentHeader = ({
             'Mappe'
           ) : (
             <Suspense fallback={<Skeleton width={10} />}>
-              <Title node={node} hideMembers={hideMembers} />
+              <Title node={node} />
             </Suspense>
           )
         }

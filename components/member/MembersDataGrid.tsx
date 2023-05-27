@@ -67,13 +67,13 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
     field,
     value,
   }: {
-    id: any;
-    field: any;
-    value: any;
+    id: string | number;
+    field: string;
+    value: string;
   }) => {
     if (typeof value != 'boolean' && !['name', 'email'].includes(field)) return;
     const set = { [field]: value };
-    await member.update(id, set);
+    await member.update(String(id), set);
   };
 
   const rows = query

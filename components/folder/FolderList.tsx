@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import {
   Avatar,
   Collapse,
@@ -12,7 +12,6 @@ import {
 import {
   CheckBox,
   CheckBoxOutlineBlankOutlined,
-  ContentCopy,
   DoNotDisturb,
 } from '@mui/icons-material';
 import { nodes, order_by } from 'gql';
@@ -63,14 +62,15 @@ const FolderList = ({ node }: { node: Node }) => {
     return undefined;
   };
 
-  const handleSelect = (id: string) => (e: any) => {
-    e.stopPropagation();
-    if (session?.selected?.includes(id)) {
-      setSession({ selected: session?.selected.filter((cid) => cid !== id) });
-    } else {
-      setSession({ selected: (session?.selected ?? []).concat([id]) });
-    }
-  };
+  const handleSelect: (id: string) => MouseEventHandler<HTMLDivElement> =
+    (id) => (e) => {
+      e.stopPropagation();
+      if (session?.selected?.includes(id)) {
+        setSession({ selected: session?.selected.filter((cid) => cid !== id) });
+      } else {
+        setSession({ selected: (session?.selected ?? []).concat([id]) });
+      }
+    };
 
   return (
     <TransitionGroup>

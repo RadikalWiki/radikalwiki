@@ -1,7 +1,7 @@
 import { useScreen } from 'hooks';
-import { startTransition, useEffect, useRef, useState } from 'react';
+import { startTransition, useEffect, useState } from 'react';
 
-const MsOfficeViewer = ({ file }: { file: any }) => {
+const MsOfficeViewer = ({ file }: { file?: string }) => {
   const screen = useScreen();
   const [height, setHeight] = useState('0px');
 
@@ -13,18 +13,16 @@ const MsOfficeViewer = ({ file }: { file: any }) => {
     });
   }, []);
 
-  return (
-    file && (
-      <iframe
-        width="100%"
-        height={height}
-        frameBorder="0"
-        src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
-          file
-        )}`}
-      />
-    )
-  );
+  return file ? (
+    <iframe
+      width="100%"
+      height={height}
+      frameBorder="0"
+      src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(
+        file
+      )}`}
+    />
+  ) : null;
 };
 
 export default MsOfficeViewer;

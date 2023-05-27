@@ -53,7 +53,7 @@ const NodeToolCard = ({ node }: { node: Node }) => {
             })
             .map(({ id }) => ({ id }))
         )
-      )?.findIndex((e: any) => e.id === id) ?? 0;
+      )?.findIndex((e) => e.id === id) ?? 0;
 
     const children = await resolved(() =>
       q

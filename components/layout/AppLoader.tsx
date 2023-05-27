@@ -6,7 +6,6 @@ import {
   ScreenApp,
   MemberApp,
   PermApp,
-  HomeApp,
 } from 'comps';
 import { useNode } from 'hooks';
 
@@ -34,6 +33,6 @@ const AppLoader = ({ app, id }: { app?: string; id?: string }) => {
   }
 
   return null;
-}
+};
 
 export default AppLoader;

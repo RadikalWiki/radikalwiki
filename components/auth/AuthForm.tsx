@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   Container,
@@ -14,6 +14,9 @@ import { useSession } from 'hooks';
 import { nhost } from 'nhost';
 import { Email, HowToReg, LockReset, Login } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
+import { FormEvent } from 'react';
+import { ChangeEvent } from 'react';
+import { ChangeEventHandler } from 'react';
 
 type Mode = 'login' | 'register' | 'reset-password' | 'set-password';
 
@@ -41,7 +44,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
     }
   }, [isAuthenticated, loading, mode]);
 
-  const onNameChange = (e: any) => {
+  const onNameChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const name = e.target.value;
     setName(name);
     if (name) {
@@ -51,7 +54,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
     }
   };
 
-  const onEmailChange = (e: any) => {
+  const onEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const email = e.target.value;
     setEmail(email);
     if (email) {
@@ -62,7 +65,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
     }
   };
 
-  const onPasswordChange = (e: any) => {
+  const onPasswordChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const password = e.target.value;
     setPassword(password);
     if (password === passwordRepeat || passwordRepeat === '') {
@@ -74,7 +77,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
     }
   };
 
-  const onPasswordRepeatChange = (e: any) => {
+  const onPasswordRepeatChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const passwordRepeat = e.target.value;
     setPasswordRepeat(passwordRepeat);
     if (password === passwordRepeat || passwordRepeat === '') {
@@ -87,12 +90,12 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
 
   const onLogin = async () => {
     if (email == '') {
-      setEmailError("Mangler email")
-      return
+      setEmailError('Mangler email');
+      return;
     }
     if (password == '') {
-      setPasswordError("Mangler kodeord")
-      return
+      setPasswordError('Mangler kodeord');
+      return;
     }
     const { error } = await nhost.auth.signIn({
       email: email.toLowerCase(),
@@ -129,20 +132,20 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
 
   const onRegister = async () => {
     if (name == '') {
-      setNameError("Mangler navn")
-      return
+      setNameError('Mangler navn');
+      return;
     }
     if (email == '') {
-      setEmailError("Mangler email")
-      return
+      setEmailError('Mangler email');
+      return;
     }
     if (password == '') {
-      setPasswordError("Mangler kodeord")
-      return
+      setPasswordError('Mangler kodeord');
+      return;
     }
     if (passwordRepeat === '') {
-      setPasswordRepeatError("Gentag kodeord")
-      return
+      setPasswordRepeatError('Gentag kodeord');
+      return;
     }
     const { error } = await nhost.auth.signUp({
       email: email.toLowerCase(),
@@ -150,13 +153,12 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
       options: { displayName: name },
     });
     if (error) {
-
       switch (error.error) {
         case 'invalid-email':
-          setEmailError("Email er ikke valid")
+          setEmailError('Email er ikke valid');
           break;
         case 'email-already-in-use':
-          setEmailError("Email er allerede i brugt")
+          setEmailError('Email er allerede i brugt');
           break;
         default:
           setEmailError(error?.message);
@@ -169,95 +171,96 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
 
   const onSetPassword = async () => {
     if (password == '') {
-      setPasswordError("Mangler kodeord")
-      return
-    }
-    if (passwordRepeat == '') {
-      setPasswordRepeatError("Gentag kodeord")
-      return
-    }
-    const { error } = await nhost.auth.changePassword({ newPassword: password });
-
-    if (error) {
-      setPasswordError(error.message)
+      setPasswordError('Mangler kodeord');
       return;
     }
-    
+    if (passwordRepeat == '') {
+      setPasswordRepeatError('Gentag kodeord');
+      return;
+    }
+    const { error } = await nhost.auth.changePassword({
+      newPassword: password,
+    });
+
+    if (error) {
+      setPasswordError(error.message);
+      return;
+    }
+
     await router.push('/');
   };
 
   const onSendResetEmail = async () => {
     if (email == '') {
-      setEmailError("Mangler email")
-      return
+      setEmailError('Mangler email');
+      return;
     }
-    const { error } = await nhost.auth.resetPassword({ email: email.toLowerCase() });
+    const { error } = await nhost.auth.resetPassword({
+      email: email.toLowerCase(),
+    });
     if (error) {
       switch (error.error) {
-        case "invalid-email":
-          setEmailError("Invalid email")
+        case 'invalid-email':
+          setEmailError('Invalid email');
           break;
-        case "user-not-found":
-          setEmailError("Ingen bruger eksisterer med denne email")
+        case 'user-not-found':
+          setEmailError('Ingen bruger eksisterer med denne email');
           break;
         default:
-          setEmailError(error.message)
+          setEmailError(error.message);
       }
       return;
     }
     await router.push('/user/set-password');
-  }
+  };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault()
-    setLoading(true)
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
 
     switch (mode) {
       case 'login':
         await onLogin();
         break;
       case 'register':
-        await onRegister()
+        await onRegister();
         break;
       case 'set-password':
-        await onSetPassword()
+        await onSetPassword();
         break;
       case 'reset-password':
-        await onSendResetEmail()
+        await onSendResetEmail();
         break;
     }
     setLoading(false);
-  }
+  };
 
-  const icon = mode === 'login' ? (
-    <Login />
-  ) : mode === 'register' ? (
-    <HowToReg />
-  ) : mode === 'reset-password' ? (
-    <Email />
-  ) : (
-    <LockReset />
-  )
+  const icon =
+    mode === 'login' ? (
+      <Login />
+    ) : mode === 'register' ? (
+      <HowToReg />
+    ) : mode === 'reset-password' ? (
+      <Email />
+    ) : (
+      <LockReset />
+    );
 
-  const text = mode === 'login'
-    ? 'Log Ind'
-    : mode === 'register'
+  const text =
+    mode === 'login'
+      ? 'Log Ind'
+      : mode === 'register'
       ? 'Registrer'
       : mode === 'reset-password'
-        ? 'Nulstil Kodeord'
-        : 'Sæt Kodeord'
+      ? 'Nulstil Kodeord'
+      : 'Sæt Kodeord';
 
-  
   return (
     <Container sx={{ padding: 3 }} maxWidth="xs">
       <form onSubmit={handleSubmit}>
         <Stack spacing={2} alignItems="center">
-          <Avatar sx={{ bgcolor: 'primary.main' }}>
-            {icon}
-          </Avatar>
-          <Typography variant="h5">
-            {text}
-          </Typography>
+          <Avatar sx={{ bgcolor: 'primary.main' }}>{icon}</Avatar>
+          <Typography variant="h5">{text}</Typography>
           {mode === 'register' && (
             <TextField
               fullWidth
@@ -310,10 +313,18 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
             <Button
               color="primary"
               fullWidth
-              type='submit'
+              type="submit"
               variant="contained"
               startIcon={icon}
-              disabled={loading || !!(errorName || errorEmail || errorPassword || errorPasswordRepeat)}
+              disabled={
+                loading ||
+                !!(
+                  errorName ||
+                  errorEmail ||
+                  errorPassword ||
+                  errorPasswordRepeat
+                )
+              }
             >
               {text}
             </Button>
@@ -333,7 +344,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
           </Box>
           {['login'].includes(mode) && (
             <Button
-              color='secondary'
+              color="secondary"
               fullWidth
               variant="contained"
               startIcon={<HowToReg />}
@@ -344,7 +355,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
           )}
           {['login'].includes(mode) && (
             <Button
-              color='secondary'
+              color="secondary"
               fullWidth
               variant="contained"
               startIcon={<Email />}
@@ -357,6 +368,6 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
       </form>
     </Container>
   );
-}
+};
 
 export default LoginForm;

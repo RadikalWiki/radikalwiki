@@ -2,21 +2,23 @@ import { UploadFile } from '@mui/icons-material';
 import { Button, CircularProgress, Input } from '@mui/material';
 import { Box } from '@mui/system';
 import { nhost } from 'nhost';
-import { useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 
 const FileUploader = ({
   text,
   onNewFile,
 }: {
   text: string;
-  onNewFile: Function;
+  onNewFile: ({ fileId, file }: { fileId?: string; file: File }) => void;
 }) => {
   const [loading, setLoading] = useState(false);
-  const handleChangeFile = async (e: any) => {
+  const handleChangeFile: ChangeEventHandler<HTMLInputElement> = async (e) => {
     setLoading(true);
-    const file = e.target.files[0];
-    const res = await nhost.storage.upload({ file });
-    onNewFile({ fileId: res.fileMetadata?.id, file });
+    const file = e.target.files?.[0];
+    if (file) {
+      const res = await nhost.storage.upload({ file });
+      onNewFile({ fileId: res.fileMetadata?.id, file });
+    }
     setLoading(false);
   };
 

@@ -10,7 +10,12 @@ import {
   ListItemText,
 } from '@mui/material';
 import { nodes, order_by, resolved } from 'gql';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  OnDragEndResponder,
+} from 'react-beautiful-dnd';
 import { Node } from 'hooks';
 
 const SortApp = ({ node }: { node: Node }) => {
@@ -45,7 +50,7 @@ const SortApp = ({ node }: { node: Node }) => {
     }
   }, [query]);
 
-  const handleDragEnd = ({ source, destination }: any) => {
+  const handleDragEnd: OnDragEndResponder = ({ source, destination }) => {
     if (destination === undefined || destination === null) return;
     const newList = list.filter((_, index) => index !== source.index);
     const res = [

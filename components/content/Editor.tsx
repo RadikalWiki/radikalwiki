@@ -14,6 +14,8 @@ import { Save } from '@mui/icons-material';
 import { Node, useLink } from 'hooks';
 import { nhost } from 'nhost';
 import { Stack } from '@mui/system';
+import { Descendant } from 'slate';
+import { CustomElement } from 'core/types/slate';
 
 const Editor = ({ node }: { node: Node }) => {
   const link = useLink();
@@ -26,9 +28,9 @@ const Editor = ({ node }: { node: Node }) => {
   const [members, setMembers] = useState<
     { nodeId: string; name?: string; email?: string }[]
   >([]);
-  const [content, setContent] = useState<any>();
-  const [fileId, setFileId] = useState<any>();
-  const [image, setImage] = useState<any>();
+  const [content, setContent] = useState<Descendant[]>([]);
+  const [fileId, setFileId] = useState<string>('');
+  const [image, setImage] = useState<string | undefined>();
   const [authorError, setAuthorError] = useState<string | undefined>();
 
   useEffect(() => {
@@ -74,7 +76,11 @@ const Editor = ({ node }: { node: Node }) => {
   }, [fileId]);
 
   const handleSave = (mutable?: boolean) => async () => {
-    if (!['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate'].includes(query?.mimeId!)) {
+    if (
+      !['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate'].includes(
+        query?.mimeId!
+      )
+    ) {
       if (members.length === 0) {
         setAuthorError('Tilføj mindst 1 forfatter');
         return;
@@ -85,7 +91,8 @@ const Editor = ({ node }: { node: Node }) => {
       });
     }
     const newContent =
-      content?.length >= 1 && content[0].children[0].text === ''
+      content?.length >= 1 &&
+      (content[0] as CustomElement).children?.[0].text === ''
         ? content.slice(1)
         : content;
 
@@ -121,7 +128,12 @@ const Editor = ({ node }: { node: Node }) => {
                 </ButtonGroup>
               </Stack>
             </Grid>
-            {!['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate'].includes(query?.mimeId!) && (
+            {![
+              'wiki/group',
+              'wiki/event',
+              'vote/position',
+              'vote/candidate',
+            ].includes(query?.mimeId!) && (
               <Grid item xs={12}>
                 <AuthorTextField
                   value={members}
@@ -134,8 +146,8 @@ const Editor = ({ node }: { node: Node }) => {
             <Grid item>
               <FileUploader
                 text="Upload Billede"
-                onNewFile={async ({ fileId }: { fileId: string }) => {
-                  setFileId(fileId);
+                onNewFile={async ({ fileId }: { fileId?: string }) => {
+                  fileId && setFileId(fileId);
                 }}
               />
             </Grid>
@@ -153,7 +165,7 @@ const Editor = ({ node }: { node: Node }) => {
         </CardContent>
         <Slate
           value={content}
-          onChange={(value: any) => setContent(structuredClone(value))}
+          onChange={(value) => setContent(structuredClone(value))}
           readOnly={false}
         />
       </Card>

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { MouseEventHandler, useContext, useState } from 'react';
 import {
   IconButton,
   ListItemButton,
@@ -24,12 +24,16 @@ import { ThemeModeContext } from 'core/theme/ThemeModeContext';
 
 const UserMenu = ({ list }: { list?: boolean }) => {
   const router = useRouter();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<
+    HTMLButtonElement | HTMLDivElement | null
+  >(null);
   const { isAuthenticated } = useAuthenticationStatus();
   const { toggleThemeMode } = useContext(ThemeModeContext);
   const { palette } = useTheme();
 
-  const handleClick = (event: any) => {
+  const handleClick: MouseEventHandler<HTMLButtonElement | HTMLDivElement> = (
+    event
+  ) => {
     setAnchorEl(event.currentTarget);
   };
 

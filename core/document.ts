@@ -1,4 +1,28 @@
-const format = (leaf: any) => {
+type Element = {
+  type:
+    | 'block-quote'
+    | 'bulleted-list'
+    | 'numbered-list'
+    | 'list-item'
+    | 'heading-one'
+    | 'heading-two'
+    | 'heading-three'
+    | 'heading-four'
+    | 'heading-five'
+    | 'heading-six';
+  children: Leaf[];
+};
+
+type Leaf = {
+  text: string;
+  link: string;
+  bold: boolean;
+  code: boolean;
+  underline: boolean;
+  italic: boolean;
+};
+
+const format = (leaf: Leaf) => {
   const bold = leaf.bold ? `<strong>${leaf.text}</strong>` : leaf.text;
   const code = leaf.code ? `<em>${bold}</em>` : bold;
   const underline = leaf.underline ? `<u>${code}</u>` : code;
@@ -8,9 +32,9 @@ const format = (leaf: any) => {
   return link;
 };
 
-const toHtml = (doc: any) =>
+const toHtml = (doc: Element[]) =>
   doc
-    ?.map((element: any) => {
+    ?.map((element: Element) => {
       const formatted = element.children.map(format).join('');
       switch (element.type) {
         case 'block-quote':

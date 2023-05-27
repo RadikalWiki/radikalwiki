@@ -1,9 +1,4 @@
-import {
-  IconButton,
-  Paper,
-  Slide,
-  Stack,
-} from '@mui/material';
+import { IconButton, Paper, Slide, Stack } from '@mui/material';
 import { useApps } from 'hooks';
 import { IconId } from 'mime';
 import { useEffect, useState } from 'react';
@@ -26,8 +21,8 @@ const MobileMenu = ({
     return () => scroll?.removeEventListener('scroll', handleScroll);
   }, [scrollPosition]);
 
-  const handleScroll = (event: any) => {
-    const newScrollPosition = event.target.scrollTop;
+  const handleScroll = (event: Event) => {
+    const newScrollPosition = (event.target as HTMLDivElement)?.scrollTop;
 
     if (Math.abs(scrollPosition - newScrollPosition) > 4) {
       setShow(scrollPosition > newScrollPosition);
@@ -48,7 +43,11 @@ const MobileMenu = ({
       >
         <Stack direction="row">
           {apps.map((app) => (
-            <IconButton key={app.mimeId} color={app.active ? 'primary' : undefined} onClick={app.onClick}>
+            <IconButton
+              key={app.mimeId}
+              color={app.active ? 'primary' : undefined}
+              onClick={app.onClick}
+            >
               <IconId mimeId={app.mimeId} />
             </IconButton>
           ))}

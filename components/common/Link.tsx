@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ForwardedRef } from 'react';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 
 type NextComposedProps = Omit<
@@ -7,7 +7,10 @@ type NextComposedProps = Omit<
 > &
   NextLinkProps;
 
-const RawLink = (props: any, ref: any) => {
+const RawLink = (
+  props: NextComposedProps,
+  ref: ForwardedRef<HTMLAnchorElement>
+) => {
   const { as, href, ...other } = props;
 
   return <NextLink href={href} as={as} {...other} ref={ref} />;

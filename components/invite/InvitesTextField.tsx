@@ -4,9 +4,15 @@ import { Autocomplete } from '@mui/material';
 import { resolved, query, order_by } from 'gql';
 import { Node, useNode } from 'hooks';
 
+type Option = {
+  name?: string;
+  email?: string;
+  userId?: string;
+};
+
 const InvitesTextField = ({ node }: { node: Node }) => {
   const nodeMembers = node.useMembers();
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<Option[]>([]);
 
   const handleAddInvites = async () => {
     const members = users.map((user) => ({
@@ -19,7 +25,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
     setUsers([]);
   };
 
-  const [options, setOptions] = useState<any[]>([]);
+  const [options, setOptions] = useState<Option[]>([]);
   const [inputValue, setInputValue] = React.useState('');
 
   useEffect(() => {
@@ -37,7 +43,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
           .map(({ displayName, id }) => ({ name: displayName, userId: id }))
       );
 
-      const newOptions: any[] = ([] as any[]).concat(
+      const newOptions: Option[] = ([] as Option[]).concat(
         users ? users : [],
         res ? res : [],
         inputValue ? [{ name: 'N/A', email: inputValue }] : []
@@ -65,7 +71,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
           autoComplete
           autoHighlight
           onChange={(_, newValue) => {
-            setOptions(newValue ? [newValue, ...options] : options);
+            setOptions(newValue.length ? newValue.concat(options) : options);
             setUsers(newValue);
           }}
           onInputChange={(_, newInputValue) => {

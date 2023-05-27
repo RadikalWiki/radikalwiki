@@ -16,7 +16,7 @@ module.exports = {
     'functional/no-return-void': 'off',
     'functional/no-expression-statements': 'off',
     'functional/no-mixed-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'warn',
+    '@typescript-eslint/no-explicit-any': 'error',
     'react-hooks/exhaustive-deps': 'off',
     'no-restricted-syntax': [
       'error',

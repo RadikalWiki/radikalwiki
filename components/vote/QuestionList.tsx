@@ -21,7 +21,6 @@ import { IconId } from 'mime';
 import { Node, useLink, useScreen } from 'hooks';
 import { TransitionGroup } from 'react-transition-group';
 import { useUserId } from '@nhost/nextjs';
-import { Stack } from '@mui/system';
 
 const QuestionList = ({ node }: { node: Node }) => {
   const screen = useScreen();

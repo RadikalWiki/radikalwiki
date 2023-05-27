@@ -1,5 +1,6 @@
 import { DataGrid, GridToolbar } from '@mui/x-data-grid';
 
+/*
 const numColWidth = 90;
 const columns: any[] = [
   { field: 'name', headerName: 'Afstemning', width: 200 },
@@ -9,7 +10,6 @@ const columns: any[] = [
   { field: 'total', headerName: 'Total', width: numColWidth },
 ];
 
-/*
 const countData = (poll: any) => {
   const res: any[] = [];
   for (const opt of poll.content.pollType.options) {
@@ -60,6 +60,6 @@ const ResultsDataGrid = () => {
     />
   );
   */
-}
+};
 
 export default ResultsDataGrid;

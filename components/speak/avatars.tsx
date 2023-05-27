@@ -10,7 +10,13 @@ import { Avatar } from '@mui/material';
 
 const color = '#fff';
 
-const avatars: { [id: string]: any } = {
+type Avatar = {
+  name: string;
+  priority: number;
+  avatar: JSX.Element;
+};
+
+const avatars: { [id: string]: Avatar } = {
   0: {
     name: 'Tal',
     priority: 0,

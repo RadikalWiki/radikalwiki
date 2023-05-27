@@ -21,6 +21,7 @@ import { order_by, query, resolved } from 'gql';
 import { useLink, usePath, useSession } from 'hooks';
 import { MimeAvatar, MimeIconId, Breadcrumbs, Bar } from 'comps';
 import {
+  ForwardedRef,
   forwardRef,
   Fragment,
   startTransition,
@@ -31,7 +32,10 @@ import {
 } from 'react';
 import { fromId } from 'core/path';
 
-const StyledInputRef = (props: InputBaseProps, ref?: any) => (
+const StyledInputRef = (
+  props: InputBaseProps,
+  ref?: ForwardedRef<HTMLInputElement>
+) => (
   <InputBase
     {...props}
     ref={ref}

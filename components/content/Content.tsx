@@ -3,12 +3,13 @@ import { Slate, Image } from 'comps';
 import { Node } from 'hooks';
 import { nhost } from 'nhost';
 import { startTransition, useEffect, useState } from 'react';
+import { Descendant } from 'slate';
 
 const Content = ({ node, fontSize }: { node: Node; fontSize: string }) => {
   const query = node.useQuery();
   const data = query?.data();
   const [image, setImage] = useState<string | null>(null);
-  const [content, setContent] = useState<string>(
+  const [content, setContent] = useState<Descendant[]>(
     structuredClone(data?.content)
   );
 

@@ -14,7 +14,7 @@ import { Container, Box, useMediaQuery } from '@mui/material';
 import { checkVersion } from 'core/util';
 import { useSession } from 'hooks';
 
-const Layout = ({ children }: { children?: any }) => {
+const Layout = ({ children }: { children: JSX.Element }) => {
   const [outdated, setOutdated] = useState(false);
   const [showing, setShowing] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -53,12 +53,14 @@ const Layout = ({ children }: { children?: any }) => {
     <>
       <Box sx={{ display: 'flex' }}>
         <Scroll>
-          {typeof window !== 'undefined' && (
-            <Container sx={{ pl: 1, pr: 1, pt: 1 }} disableGutters>
-              {children}
-            </Container>
-          )}
-          <BottomBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+          <>
+            {typeof window !== 'undefined' && (
+              <Container sx={{ pl: 1, pr: 1, pt: 1 }} disableGutters>
+                {children}
+              </Container>
+            )}
+            <BottomBar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+          </>
         </Scroll>
         {largeScreen && (
           <AppDrawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />

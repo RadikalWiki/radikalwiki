@@ -158,8 +158,8 @@ const AddContentDialog = ({
   const [titel, setTitel] = useState<string>(initTitel ?? '');
   const [text, setText] = useState<string>('');
   const [mimeId, setMimeId] = useState(mimes?.[0] ?? '');
-  const [fileId, setFileId] = useState<any>();
-  const [type, setType] = useState<any>();
+  const [fileId, setFileId] = useState<string | undefined>();
+  const [type, setType] = useState<string | undefined>();
   const [fileName, setFileName] = useState<string>();
   const insert = node.useInsert();
   const update = node.useUpdate();
@@ -289,13 +289,7 @@ const AddContentDialog = ({
             <>
               <FileUploader
                 text="Upload Fil"
-                onNewFile={async ({
-                  fileId,
-                  file,
-                }: {
-                  fileId: string;
-                  file: any;
-                }) => {
+                onNewFile={({ fileId, file }) => {
                   setFileId(fileId);
                   setType(file.type);
                   setFileName(file.name);

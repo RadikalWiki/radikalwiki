@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, ComponentType } from 'react';
 import Head from 'next/head';
 import { Layout, SessionProvider } from 'comps';
@@ -6,9 +7,7 @@ import { NhostProvider } from '@nhost/nextjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import M3ThemeProvider from 'core/theme/M3ThemeProvider';
-import ThemeModeProvider, {
-  ThemeModeContext,
-} from 'core/theme/ThemeModeContext';
+import ThemeModeProvider from 'core/theme/ThemeModeContext';
 import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
 
 const App = ({
