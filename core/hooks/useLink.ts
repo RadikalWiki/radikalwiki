@@ -16,7 +16,17 @@ const prefetch = async (
     node?.__typename;
     const id = node?.id;
     node?.name;
+
     return id;
+  });
+
+  await resolved(() => {
+    const node = query.node({ id: id! });
+    node?.name;
+    node?.data?.({ path: 'type' });
+    node?.mimeId;
+    node?.getIndex;
+    return node?.id;
   });
 
   return path.length > 1

@@ -1,6 +1,6 @@
 import { LockOpen } from '@mui/icons-material';
 import { Badge, Tooltip, Avatar as MuiAvatar } from '@mui/material';
-import { Maybe, order_by } from 'gql';
+import { Maybe } from 'gql';
 import { withSuspense } from 'hoc';
 import { Node, useNode, useScreen } from 'hooks';
 import { IconId } from 'mime';
@@ -33,18 +33,7 @@ const Avatar = ({ node }: { node: Node }) => {
   const mimeId = query?.mimeId;
   const id = type ?? mimeId;
   const name = query?.name;
-  const index =
-    query?.parent
-      ?.children({
-        where: {
-          _and: [
-            { mutable: { _eq: false } },
-            { mime: { icon: { _in: ['number', 'letter'] } } },
-          ],
-        },
-        order_by: [{ index: order_by.asc }, { createdAt: order_by.asc }],
-      })
-      .findIndex((child) => child.id === node.id) ?? 0;
+  const index = query?.getIndex!;
 
   if (id === undefined) {
     return (
