@@ -21,7 +21,7 @@ const Icon = ({ node }: { node: Node }) => {
   const id = type ?? mimeId;
   const name = query?.name;
   const index = query?.getIndex!;
-  return <IconId name={name} mimeId={id} index={index} />;
+  return <IconId name={name} mimeId={id} index={index - 1} />;
 };
 
 const MimeIconNode = withSuspense(Icon, MimeSkeleton);

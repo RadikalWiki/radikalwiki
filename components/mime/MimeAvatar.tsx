@@ -53,7 +53,7 @@ const Avatar = ({ node }: { node: Node }) => {
         bgcolor: 'secondary.main',
       }}
     >
-      <IconId name={name} mimeId={id} index={index} avatar />
+      <IconId name={name} mimeId={id} index={index - 1} avatar />
     </MuiAvatar>
   );
   return query?.mutable ? (
