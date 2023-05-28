@@ -1,11 +1,5 @@
 import { Face } from '@mui/icons-material';
-import {
-  Chip,
-  Collapse,
-  Grid,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Chip, Collapse, Grid, Tooltip, Typography } from '@mui/material';
 import { Node, useScreen } from 'hooks';
 import { IconId } from 'mime';
 
@@ -20,6 +14,7 @@ const MemberChips = ({ node, child }: { node: Node; child?: boolean }) => {
             icon={node?.mimeId ? <IconId mimeId={node?.mimeId} /> : <Face />}
             size={screen ? 'medium' : 'small'}
             color="secondary"
+            variant="outlined"
             label={
               <Typography variant={screen ? 'h5' : undefined}>
                 {name ?? user?.displayName}
