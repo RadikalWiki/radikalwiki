@@ -5,22 +5,18 @@ import {
   members_constraint,
   members_insert_input,
   members_set_input,
-  mutation,
   nodes,
   nodes_bool_exp,
   nodes_insert_input,
   nodes_set_input,
-  permissions,
   permissions_insert_input,
   relations_constraint,
   relations_insert_input,
   relations_update_column,
-  resolved,
   useMutation,
   useQuery as useQueryGqty,
   useSubscription,
 } from 'gql';
-import { usePath } from 'hooks';
 
 const getKey = (name?: string) =>
   name
@@ -32,7 +28,7 @@ const getKey = (name?: string) =>
 
 type Param = {
   refetch:
-    | ((query: UseQueryReturnValue<GeneratedSchema>, node?: nodes) => any[])
+    | ((query: UseQueryReturnValue<GeneratedSchema>, node?: nodes) => unknown[])
     | boolean
     | undefined;
 };
@@ -200,7 +196,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       name?: string;
       key?: string;
       mimeId: string;
-      data?: any;
+      data?: unknown;
       parentId?: string;
       contextId?: string;
       mutable?: boolean;

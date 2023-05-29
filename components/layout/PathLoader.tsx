@@ -26,8 +26,7 @@ const PathLoader = ({
   const nodeId = node?.id;
   const name = node?.name;
   const selected =
-    keys.length === fullpath.length &&
-    keys.every((v, i) => v === fullpath[i]);
+    keys.length === fullpath.length && keys.every((v, i) => v === fullpath[i]);
   useEffect(() => {
     if (selected) {
       // eslint-disable-next-line functional/immutable-data

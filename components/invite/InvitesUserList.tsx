@@ -3,7 +3,6 @@ import {
   useMutation,
   members_set_input,
   useRefetch,
-  client,
 } from 'gql';
 import {
   Avatar,
@@ -66,7 +65,7 @@ const ListSuspense = () => {
     });
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
-    client.cache.query = {};
+    //client.cache.query = {};
   };
 
   return (
