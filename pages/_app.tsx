@@ -9,6 +9,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import M3ThemeProvider from 'core/theme/M3ThemeProvider';
 import ThemeModeProvider from 'core/theme/ThemeModeContext';
 import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = ({
   Component,
@@ -48,6 +49,7 @@ const App = ({
           </SessionProvider>
         </LocalizationProvider>
       </NhostProvider>
+      <Analytics />
     </>
   );
 };
