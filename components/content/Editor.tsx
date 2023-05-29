@@ -11,11 +11,10 @@ import {
 import { resolved } from 'gql';
 import { Card, CardContent, TextField, Grid, ButtonGroup } from '@mui/material';
 import { Save } from '@mui/icons-material';
-import { Node, useLink } from 'hooks';
+import { Node, useLink, useFile } from 'hooks';
 import { Stack } from '@mui/system';
 import { Descendant } from 'slate';
 import { CustomElement } from 'core/types/slate';
-import useFile from 'core/hooks/useFile';
 
 const Editor = ({ node }: { node: Node }) => {
   const link = useLink();
@@ -24,7 +23,7 @@ const Editor = ({ node }: { node: Node }) => {
   const nodeMembers = node.useMembers();
   const data = query?.data();
   const [fileId, setFileId] = useState<string | undefined>();
-  const image = useFile({ fileId: fileId ?? data?.image });
+  const image = useFile({ fileId: fileId ?? data?.image, image: true });
 
   const [name, setName] = useState('');
   const [members, setMembers] = useState<

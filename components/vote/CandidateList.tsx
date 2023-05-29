@@ -33,7 +33,7 @@ const CandidateList = ({ node }: { node: Node }) => {
   });
 
   const imageIds = children?.map((child) => child.data()?.image);
-  const images = useFiles({ fileIds: imageIds });
+  const images = useFiles({ fileIds: imageIds, image: true });
 
   if (screen) return null;
 

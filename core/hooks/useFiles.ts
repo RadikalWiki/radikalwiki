@@ -6,11 +6,13 @@ const useFiles = ({
   quality,
   width = 500,
   height,
+  image,
 }: {
   fileIds?: string[];
   quality?: number;
   width?: number;
   height?: number;
+  image?: boolean;
 }) => {
   const [files, setFiles] = useState<string[]>([]);
 
@@ -22,9 +24,13 @@ const useFiles = ({
             fileId
               ? nhost.storage.getPresignedUrl({
                   fileId,
-                  quality,
-                  width,
-                  height,
+                  ...(image
+                    ? {
+                        quality,
+                        width,
+                        height,
+                      }
+                    : {}),
                 })
               : Promise.resolve(null)
           )
