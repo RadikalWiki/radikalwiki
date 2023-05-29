@@ -1,6 +1,4 @@
-import { Node } from 'hooks';
-import { nhost } from 'nhost';
-import { startTransition, useEffect, useState } from 'react';
+import { Node, useFile } from 'hooks';
 import {
   VideoViewer,
   ImageViewer,
@@ -10,22 +8,8 @@ import {
 } from 'comps';
 
 const FileLoader = ({ node }: { node: Node }) => {
-  const [file, setFile] = useState<string | undefined>();
   const data = node.useQuery()?.data();
-
-  useEffect(() => {
-    const fetch = async () => {
-      if (data?.fileId) {
-        const { presignedUrl } = await nhost.storage.getPresignedUrl({
-          fileId: data?.fileId,
-        });
-        setFile(presignedUrl?.url);
-      }
-    };
-    startTransition(() => {
-      fetch();
-    });
-  }, [data]);
+  const file = useFile({ fileId: data?.fileId });
 
   switch (data?.type) {
     case 'application/pdf':

@@ -1,33 +1,23 @@
 import { Grid, Box, Collapse } from '@mui/material';
 import { Slate, Image } from 'comps';
+import useFile from 'core/hooks/useFile';
 import { Node } from 'hooks';
-import { nhost } from 'nhost';
 import { startTransition, useEffect, useState } from 'react';
 import { Descendant } from 'slate';
 
 const Content = ({ node, fontSize }: { node: Node; fontSize: string }) => {
   const query = node.useQuery();
   const data = query?.data();
-  const [image, setImage] = useState<string | null>(null);
+  const image = useFile({ fileId: data?.image });
   const [content, setContent] = useState<Descendant[]>(
     structuredClone(data?.content)
   );
 
   useEffect(() => {
-    const fetch = async () => {
-      setImage(null);
-      if (data?.image) {
-        const { presignedUrl } = await nhost.storage.getPresignedUrl({
-          fileId: data?.image,
-        });
-        setImage(presignedUrl?.url ?? null);
-      }
-    };
     startTransition(() => {
-      fetch();
       setContent(structuredClone(data?.content));
     });
-  }, [JSON.stringify(data?.content), data?.image]);
+  }, [JSON.stringify(data?.content)]);
 
   return (
     <Grid container spacing={2}>

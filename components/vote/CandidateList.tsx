@@ -5,20 +5,17 @@ import {
   ImageListItemBar,
   useMediaQuery,
 } from '@mui/material';
-import { Node, useLink, useScreen } from 'hooks';
+import { Node, useLink, useScreen, useFiles } from 'hooks';
 import { IconId } from 'mime';
 import { Image } from 'comps';
 import { Box } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
-import { nhost } from 'nhost';
-import { startTransition, useEffect, useState } from 'react';
 
 const CandidateList = ({ node }: { node: Node }) => {
   const link = useLink();
   const screen = useScreen();
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const userId = useUserId();
-  const [images, setImages] = useState<string[]>([]);
 
   const children = node.useQuery()?.children({
     where: {
@@ -36,23 +33,7 @@ const CandidateList = ({ node }: { node: Node }) => {
   });
 
   const imageIds = children?.map((child) => child.data()?.image);
-
-  useEffect(() => {
-    const fetch = async () => {
-      setImages([]);
-      const preUrls = await Promise.all(
-        imageIds?.map((fileId) =>
-          fileId
-            ? nhost.storage.getPresignedUrl({ fileId })
-            : Promise.resolve(null)
-        ) ?? []
-      );
-      setImages(preUrls.map((preUrl) => preUrl?.presignedUrl?.url ?? '') ?? []);
-    };
-    startTransition(() => {
-      fetch();
-    });
-  }, [JSON.stringify(imageIds)]);
+  const images = useFiles({ fileIds: imageIds });
 
   if (screen) return null;
 

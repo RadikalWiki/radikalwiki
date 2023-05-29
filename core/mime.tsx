@@ -29,7 +29,6 @@ import FilePdfBoxIcon from './svg/file-pdf-box.svg';
 import VideoBoxIcon from './svg/video-box.svg';
 import {
   Avatar as MuiAvatar,
-  Badge,
   Skeleton,
   Typography,
 } from '@mui/material';
@@ -185,7 +184,6 @@ const IconId = ({
     default:
   }
 
-  console.log(mimeId)
   // eslint-disable-next-line jsx-a11y/alt-text
   if (mimeId?.includes('image/')) return <Image />;
   if (mimeId?.includes('audio/')) return <MusicNote />;

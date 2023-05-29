@@ -12,10 +12,10 @@ import { resolved } from 'gql';
 import { Card, CardContent, TextField, Grid, ButtonGroup } from '@mui/material';
 import { Save } from '@mui/icons-material';
 import { Node, useLink } from 'hooks';
-import { nhost } from 'nhost';
 import { Stack } from '@mui/system';
 import { Descendant } from 'slate';
 import { CustomElement } from 'core/types/slate';
+import useFile from 'core/hooks/useFile';
 
 const Editor = ({ node }: { node: Node }) => {
   const link = useLink();
@@ -23,16 +23,17 @@ const Editor = ({ node }: { node: Node }) => {
   const update = node.useUpdate();
   const nodeMembers = node.useMembers();
   const data = query?.data();
+  const [fileId, setFileId] = useState<string | undefined>();
+  const image = useFile({ fileId: fileId ?? data?.image });
 
   const [name, setName] = useState('');
   const [members, setMembers] = useState<
     { nodeId: string; name?: string; email?: string }[]
   >([]);
   const [content, setContent] = useState<Descendant[]>([]);
-  const [fileId, setFileId] = useState<string>('');
-  const [image, setImage] = useState<string | undefined>();
   const [authorError, setAuthorError] = useState<string | undefined>();
 
+  console.log(data)
   useEffect(() => {
     if (query) {
       startTransition(() => {
@@ -58,22 +59,11 @@ const Editor = ({ node }: { node: Node }) => {
         const fetch = async () => {
           setName(query.name ?? '');
           setContent(structuredClone(data?.content));
-          setFileId(data?.image);
         };
         fetch();
       });
     }
-  }, [query]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      const { presignedUrl } = await nhost.storage.getPresignedUrl({ fileId });
-      setImage(presignedUrl?.url);
-    };
-    if (fileId) {
-      fetch();
-    }
-  }, [fileId]);
+  }, [query, JSON.stringify(data?.content)]);
 
   const handleSave = (mutable?: boolean) => async () => {
     if (

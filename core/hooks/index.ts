@@ -9,3 +9,5 @@ export type { Node } from './useNode';
 export { default as usePath } from './usePath';
 export { default as useLink } from './useLink';
 export { default as useApps } from './useApps';
+export { default as useFile } from './useFile';
+export { default as useFiles } from './useFiles';

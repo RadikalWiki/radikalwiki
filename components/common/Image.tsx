@@ -79,6 +79,7 @@ const Image = ({
             left: 0,
             ...imageTransition,
           }}
+          fill
           onLoad={handleLoadImage}
           onError={handleImageError}
         />
