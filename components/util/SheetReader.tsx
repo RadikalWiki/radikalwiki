@@ -19,7 +19,6 @@ const SheetReader = ({
         const wb = read(reader.result);
         const data = utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
 
-        console.log(data);
         onFileLoaded(data ?? []);
       };
 

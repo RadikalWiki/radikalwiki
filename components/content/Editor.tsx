@@ -32,7 +32,6 @@ const Editor = ({ node }: { node: Node }) => {
   const [content, setContent] = useState<Descendant[]>([]);
   const [authorError, setAuthorError] = useState<string | undefined>();
 
-  console.log(data)
   useEffect(() => {
     if (query) {
       startTransition(() => {
