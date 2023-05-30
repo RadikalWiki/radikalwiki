@@ -38,7 +38,7 @@ const M3ThemeProvider: FC<M3ThemeProps> = ({ children }) => {
   return (
     <ThemeProvider theme={m3Theme}>
       <CssBaseline enableColorScheme />
-      {children}.
+      {children}
     </ThemeProvider>
   );
 };
