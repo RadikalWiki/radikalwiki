@@ -1,9 +1,0 @@
-export { default as AddChangeButton } from './AddChangeButton';
-export { default as ChangeList } from './ChangeList';
-export { default as PolicyApp } from './PolicyApp';
-export { default as PositionApp } from './PositionApp';
-export { default as CandidateApp } from './CandidateApp';
-export { default as CandidateList } from './CandidateList';
-export { default as QuestionList } from './QuestionList';
-export { default as AddQuestionButton } from './AddQuestionButton';
-export { default as VoteApp } from './VoteApp';

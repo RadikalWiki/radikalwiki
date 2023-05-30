@@ -1,19 +1,12 @@
-import { Loader } from 'comps';
-import { useRouter } from 'next/router';
-import { startTransition, useEffect } from 'react';
+import { Level1 } from 'comps';
+import { Suspense } from 'react';
 
 const Index = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (router.query.type === 'passwordReset') {
-      startTransition(() => {
-        router.push('/user/set-password');
-      });
-    }
-  }, [router.query]);
-
-  return <Loader app="home" />;
+  return (
+    <Suspense fallback={null}>
+      <Level1 />
+    </Suspense>
+  );
 };
 
 export default Index;

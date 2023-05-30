@@ -72,6 +72,7 @@ export const client = createClient<GeneratedSchema>({
   subscriptionsClient,
   fetchOptions: {
     fetcher: queryFetcher,
+    
   },
 });
 
