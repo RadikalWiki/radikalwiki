@@ -1,4 +1,4 @@
-import { Menu, SearchOff } from '@mui/icons-material';
+import { Menu, Search, SearchOff } from '@mui/icons-material';
 import {
   Autocomplete,
   Avatar,
@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { order_by, query, resolved } from 'gql';
 import { useLink, usePath, useSession } from 'hooks';
-import { MimeAvatar, MimeIconId, Breadcrumbs, Bar } from 'comps';
+import { MimeIconId, Breadcrumbs, Bar } from 'comps';
 import {
   ForwardedRef,
   forwardRef,
@@ -280,7 +280,7 @@ const SearchField = ({
             <IconButton
               onClick={() => startTransition(() => setSearchMode(false))}
             >
-              <Avatar sx={{ bgcolor: 'secondary.main' }}>
+              <Avatar sx={{ bgcolor: 'primary.main' }}>
                 <SearchOff />
               </Avatar>
             </IconButton>
@@ -300,7 +300,9 @@ const SearchField = ({
         )}
         <Breadcrumbs />
         <IconButton onClick={() => startTransition(() => setSearchMode(true))}>
-          <MimeAvatar mimeId="app/search" />
+          <Avatar sx={{ bgcolor: 'primary.main' }}>
+            <Search />
+          </Avatar>
         </IconButton>
       </Stack>
     </Bar>
