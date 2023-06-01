@@ -5,5 +5,7 @@ export { default as PositionApp } from './PositionApp';
 export { default as CandidateApp } from './CandidateApp';
 export { default as CandidateList } from './CandidateList';
 export { default as QuestionList } from './QuestionList';
+export { default as CommentList } from './CommentList';
 export { default as AddQuestionButton } from './AddQuestionButton';
+export { default as AddCommentButton } from './AddCommentButton';
 export { default as VoteApp } from './VoteApp';

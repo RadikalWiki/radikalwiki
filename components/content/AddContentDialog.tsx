@@ -84,6 +84,16 @@ const contextPerm = [
     role: 'member',
   },
   {
+    parents: ['vote/policy', 'vote/change'],
+    active: true,
+    delete: true,
+    insert: true,
+    select: true,
+    update: true,
+    mimeId: 'vote/comment',
+    role: 'member',
+  },
+  {
     parents: ['speak/list'],
     active: true,
     delete: true,

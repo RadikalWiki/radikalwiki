@@ -21,17 +21,14 @@ import {
   LowPriority,
   HowToVote,
   RecordVoiceOver,
+  AddComment,
 } from '@mui/icons-material';
 import MicrosoftExcelIcon from './svg/microsoft-excel.svg';
 import MicrosoftWordIcon from './svg/microsoft-word.svg';
 import MicrosoftPowerpointIcon from './svg/microsoft-powerpoint.svg';
 import FilePdfBoxIcon from './svg/file-pdf-box.svg';
 import VideoBoxIcon from './svg/video-box.svg';
-import {
-  Avatar as MuiAvatar,
-  Skeleton,
-  Typography,
-} from '@mui/material';
+import { Avatar as MuiAvatar, Skeleton, Typography } from '@mui/material';
 import { Maybe } from 'gql';
 import { Box } from '@mui/system';
 
@@ -127,6 +124,8 @@ const IconId = ({
       return <Face />;
     case 'vote/question':
       return <QuestionMark />;
+    case 'vote/comment':
+      return <AddComment />;
     case 'vote/change':
       return index !== undefined && index !== -1 ? (
         avatar ? (
@@ -192,7 +191,9 @@ const IconId = ({
   if (mimeId?.includes('spreadsheet'))
     return <MicrosoftExcelIcon fill="currentColor" height="24" width="24" />;
   if (mimeId?.includes('presentation'))
-    return <MicrosoftPowerpointIcon fill="currentColor" height="24" width="24" />;
+    return (
+      <MicrosoftPowerpointIcon fill="currentColor" height="24" width="24" />
+    );
   if (mimeId?.includes('document'))
     return <MicrosoftWordIcon fill="currentColor" height="24" width="24" />;
 
