@@ -7,6 +7,7 @@ import {
   ListItemButton,
   ListItemText,
   Typography,
+  lighten,
 } from '@mui/material';
 import { useUserId } from '@nhost/nextjs';
 import { fromId } from 'core/path';
@@ -38,6 +39,20 @@ const abrivContextName = (name?: string) => {
     case 3:
       return split[0] + split[1] + split[2];
   }
+};
+
+/**
+ * Convert a string to a color using a hash function
+ * @param str string to convert
+ * @returns hex color in the format #xxxxxx
+ */
+const stringToRgb = (str: string) => {
+  const i = str
+    .split('')
+    .reduce((hash, _, i) => str.charCodeAt(i) + ((hash << 5) - hash), 0);
+  const hash = (i & 0x00ffffff).toString(16).toUpperCase();
+
+  return '#00000'.substring(1, 6 - hash.length) + hash;
 };
 
 const HomeList = ({ setOpen }: { setOpen: Function }) => {
@@ -127,7 +142,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItemAvatar>
           <ListItemText primary="Grupper" />
         </ListItem>
-        {groups.map(({ id = '0', name }) => {
+        {groups.map(({ id = '0', name, key }) => {
           const item = (
             <ListItemButton
               key={id}
@@ -137,7 +152,13 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
             >
               <ListItemAvatar>
                 {
-                  <Avatar sx={{ width: 30, height: 30 }}>
+                  <Avatar
+                    sx={{
+                      width: 35,
+                      height: 35,
+                      bgcolor: (t) => lighten(t.palette.primary.main, 0.3),
+                    }}
+                  >
                     <Typography fontSize={15}>
                       {abrivContextName(name)}
                     </Typography>{' '}
@@ -150,14 +171,16 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           return id ? item : null;
         })}
         {!groups?.[0]?.id && (
-          <ListItem key={-2}>
-            <ListItemAvatar>
-              <Avatar sx={{ width: 30, height: 30 }}>
-                <GroupRemove />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Ingen grupper" />
-          </ListItem>
+          <ListItemButton key={-2}>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar sx={{ width: 35, height: 35 }}>
+                  <GroupRemove />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Ingen grupper" />
+            </ListItem>
+          </ListItemButton>
         )}
       </List>
       <List>
@@ -169,7 +192,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItemAvatar>
           <ListItemText primary="Begivenheder" />
         </ListItem>
-        {events.map(({ id = '0', name }) => {
+        {events.map(({ id = '0', name, key }) => {
           const item = (
             <ListItemButton
               key={id}
@@ -179,7 +202,13 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
             >
               <ListItemAvatar>
                 {
-                  <Avatar sx={{ width: 30, height: 30 }}>
+                  <Avatar
+                    sx={{
+                      width: 35,
+                      height: 35,
+                      bgcolor: (t) => lighten(t.palette.primary.main, 0.3),
+                    }}
+                  >
                     <Typography fontSize={15}>
                       {abrivContextName(name)}
                     </Typography>{' '}
@@ -192,14 +221,16 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           return id ? item : null;
         })}
         {!events?.[0]?.id && (
-          <ListItem key={-2}>
-            <ListItemAvatar>
-              <Avatar sx={{ width: 30, height: 30 }}>
-                <EventBusy />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary="Ingen begivenheder" />
-          </ListItem>
+          <ListItemButton key={-2}>
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar sx={{ width: 35, height: 35 }}>
+                  <EventBusy />
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary="Ingen begivenheder" />
+            </ListItem>
+          </ListItemButton>
         )}
       </List>
     </>
