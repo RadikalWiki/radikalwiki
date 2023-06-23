@@ -1,5 +1,5 @@
 import { ButtonGroup, Stack } from '@mui/material';
-import { Edit } from '@mui/icons-material';
+import { Edit, People } from '@mui/icons-material';
 import { Node, useLink } from 'hooks';
 import {
   AutoButton,
@@ -23,6 +23,14 @@ const ContentToolbar = ({
 
   return (
     <Stack spacing={1} direction="row">
+      {['wiki/event', 'wiki/group'].includes(query?.mimeId ?? '') && query?.isContextOwner && (
+        <AutoButton
+          key="member"
+          text="Medlemmer"
+          icon={<People />}
+          onClick={() => link.push([], 'member')}
+        />
+      )}
       {!child && <DownloadButton node={node} />}
       {!child && (
         <ButtonGroup>
@@ -39,6 +47,7 @@ const ContentToolbar = ({
         </ButtonGroup>
       )}
       {add && <AddContentButton node={node} />}
+
     </Stack>
   );
 };
