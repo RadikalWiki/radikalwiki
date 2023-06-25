@@ -65,7 +65,7 @@ const Editor = ({ node }: { node: Node }) => {
 
   const handleSave = (mutable?: boolean) => async () => {
     if (
-      !['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate'].includes(
+      !['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate', 'wiki/folder'].includes(
         query?.mimeId!
       )
     ) {
