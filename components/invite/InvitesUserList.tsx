@@ -4,6 +4,7 @@ import {
   members_set_input,
   useRefetch,
   client,
+  order_by,
 } from 'gql';
 import {
   Avatar,
@@ -34,18 +35,52 @@ const ListSuspense = () => {
       },
     })
     .filter((invite) => invite.parent?.id);
-  const events = query.nodes({
-    where: {
-      _and: [
-        { mimeId: { _eq: 'wiki/event' } },
-        {
-          members: {
-            _and: [{ accepted: { _eq: true } }, { nodeId: { _eq: userId } }],
-          },
+  const events = !userId
+    ? []
+    : query.nodes({
+        order_by: [{ createdAt: order_by.desc }],
+        where: {
+          _and: [
+            { mimeId: { _eq: 'wiki/event' } },
+            {
+              _or: [
+                { ownerId: { _eq: userId } },
+                {
+                  members: {
+                    _and: [
+                      { accepted: { _eq: true } },
+                      { nodeId: { _eq: userId } },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
         },
-      ],
-    },
-  });
+      });
+  const groups = !userId
+    ? []
+    : query.nodes({
+        order_by: [{ createdAt: order_by.desc }],
+        where: {
+          _and: [
+            { mimeId: { _eq: 'wiki/group' } },
+            {
+              _or: [
+                { ownerId: { _eq: userId } },
+                {
+                  members: {
+                    _and: [
+                      { accepted: { _eq: true } },
+                      { nodeId: { _eq: userId } },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+        },
+      });
 
   const [updateMember] = useMutation(
     (mutation, args: { id?: string; set: members_set_input }) => {
@@ -56,7 +91,7 @@ const ListSuspense = () => {
       })?.id;
     },
     {
-      refetchQueries: [invites, events],
+      refetchQueries: [invites, events, groups],
     }
   );
 
