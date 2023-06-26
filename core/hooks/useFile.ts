@@ -17,6 +17,7 @@ const useFile = ({
   const [file, setFile] = useState<string | undefined>(undefined);
 
   useEffect(() => {
+    setFile(undefined);
     const fetch = async () => {
       if (fileId) {
         const { presignedUrl } = await nhost.storage.getPresignedUrl({

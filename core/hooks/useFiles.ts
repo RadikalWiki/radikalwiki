@@ -17,6 +17,7 @@ const useFiles = ({
   const [files, setFiles] = useState<string[]>([]);
 
   useEffect(() => {
+    setFiles([]);
     const fetch = async () => {
       if (fileIds) {
         const preUrls = await Promise.all(
