@@ -23,7 +23,7 @@ const ContentToolbar = ({
 
   return (
     <Stack spacing={1} direction="row">
-      {['wiki/event', 'wiki/group'].includes(query?.mimeId ?? '') && query?.isContextOwner && (
+      {!child && ['wiki/event', 'wiki/group'].includes(query?.mimeId ?? '') && query?.isContextOwner && (
         <AutoButton
           key="member"
           text="Medlemmer"
