@@ -13,7 +13,7 @@ import { useUserId } from '@nhost/nextjs';
 import { fromId } from 'core/path';
 import { order_by, resolved, useQuery } from 'gql';
 import { useLink, useSession } from 'hooks';
-import { startTransition } from 'react';
+import { Fragment, startTransition } from 'react';
 
 const abriv: { [name: string]: string } = {
   Hovedbestyrelsesmøde: 'HB',
@@ -39,6 +39,21 @@ const abrivContextName = (name?: string) => {
     case 3:
       return split[0] + split[1] + split[2];
   }
+};
+
+const groupBy = <T,>(list: Array<T>, keyGetter: (item: T) => string) => {
+  const map = new Map<string, T[]>();
+  list.forEach((item) => {
+    const key = keyGetter(item);
+    const collection = map.get(key);
+    if (!collection) {
+      map.set(key, [item]);
+    } else {
+      // eslint-disable-next-line functional/immutable-data
+      collection.push(item);
+    }
+  });
+  return map;
 };
 
 /**
@@ -83,6 +98,10 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           ],
         },
       });
+  const eventByYears = groupBy(
+    events,
+    (event) => event.createdAt?.substring(0, 4)!
+  );
   const groups = !userId
     ? []
     : query.nodes({
@@ -192,34 +211,50 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           </ListItemAvatar>
           <ListItemText primary="Begivenheder" />
         </ListItem>
-        {events.map(({ id = '0', name, key }) => {
-          const item = (
-            <ListItemButton
-              key={id}
-              hidden={id == '0'}
-              dense
-              onClick={handleContextSelect(id)}
-            >
-              <ListItemAvatar>
-                {
-                  <Avatar
-                    sx={{
-                      width: 35,
-                      height: 35,
-                      bgcolor: (t) => lighten(t.palette.primary.main, 0.3),
-                    }}
+        {[...eventByYears.entries()].map(([year, events]) => {
+          return (
+            <Fragment key={year ?? 0}>
+              <ListItem>
+                <ListItemText
+                  primary={
+                    <Typography sx={{ fontWeight: 'bold' }}>{year}</Typography>
+                  }
+                />
+              </ListItem>
+
+              {events.map(({ id = '0', name, key }) => {
+                const item = (
+                  <ListItemButton
+                    key={id}
+                    hidden={id == '0'}
+                    dense
+                    onClick={handleContextSelect(id)}
                   >
-                    <Typography fontSize={15}>
-                      {abrivContextName(name)}
-                    </Typography>{' '}
-                  </Avatar>
-                }
-              </ListItemAvatar>
-              <ListItemText primary={name} />
-            </ListItemButton>
+                    <ListItemAvatar>
+                      {
+                        <Avatar
+                          sx={{
+                            width: 35,
+                            height: 35,
+                            bgcolor: (t) =>
+                              lighten(t.palette.primary.main, 0.3),
+                          }}
+                        >
+                          <Typography fontSize={15}>
+                            {abrivContextName(name)}
+                          </Typography>{' '}
+                        </Avatar>
+                      }
+                    </ListItemAvatar>
+                    <ListItemText primary={name} />
+                  </ListItemButton>
+                );
+                return id ? item : null;
+              })}
+            </Fragment>
           );
-          return id ? item : null;
         })}
+
         {!events?.[0]?.id && (
           <ListItemButton key={-2}>
             <ListItem>
