@@ -28,7 +28,8 @@ const getKey = (name?: string) =>
     .toLocaleLowerCase()
     .replaceAll(' ', '_')
     .replaceAll('?', '')
-    .replaceAll(':', '');
+    .replaceAll(':', '')
+    .replaceAll('/', '');
 
 type Param = {
   refetch:
