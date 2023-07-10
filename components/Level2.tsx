@@ -1,11 +1,11 @@
 import { Level3 } from 'comps';
-import { useNode } from 'hooks';
+import { useQuery } from 'gql';
 
 const Level2 = ({ id }: { id: string }) => {
-  const node = useNode({ id });
-  if (!node?.mimeId) return null;
+  const node = useQuery().node({ id });
+  node?.mimeId
 
-  return <Level3 node={node} />;
+  return <Level3 id={id} />;
 };
 
 export default Level2;

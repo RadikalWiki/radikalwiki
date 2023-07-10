@@ -1,10 +1,10 @@
 import { Level4 } from 'comps';
-import { Node } from 'hooks';
+import { useQuery } from 'gql';
 
-const Level3 = ({ node }: { node: Node }) => {
-  const query = node.useQuery();
-  query?.mutable || query?.name;
-  return <Level4 node={node} />;
+const Level3 = ({ id }: { id: string }) => {
+  const query = useQuery().node({ id });
+  query?.mutable;
+  return <Level4 id={id} />;
 };
 
 export default Level3;

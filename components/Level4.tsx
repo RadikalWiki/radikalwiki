@@ -1,9 +1,8 @@
-import { Node } from 'hooks';
+import { useQuery } from 'gql';
 
-const Level4 = ({ node }: { node: Node }) => {
-  const query = node.useQuery();
+const Level4 = ({ id }: { id: string }) => {
+  const query = useQuery().node({ id });
   query?.id;
-
   return null;
 };
 
