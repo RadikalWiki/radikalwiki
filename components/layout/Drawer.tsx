@@ -229,9 +229,7 @@ const DrawerList = ({
     },
   });
 
-  console.log(children);
   const number = children?.filter((child) => child?.mime?.icon == 'number');
-  return null;
   const letter = children?.filter((child) => child?.mime?.icon == 'letter');
   const findIndex = (id?: string) => {
     const numberIndex = number?.findIndex((elem) => elem.id === id);
