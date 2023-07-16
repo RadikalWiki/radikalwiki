@@ -19,7 +19,7 @@ const FileUploader = ({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const res = (await nhost.storage.upload({ file })) as any;
       console.log(res)
-      onNewFile({ fileId: res.fileMetadata?.processedFiles?.[0]?.id, file });
+      onNewFile({ fileId: res.fileMetadata?.processedFiles?.[0]?.id ?? res.fileMetadata?.id, file });
     }
     setLoading(false);
   };
