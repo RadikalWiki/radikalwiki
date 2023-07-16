@@ -10,6 +10,22 @@ import M3ThemeProvider from 'core/theme/M3ThemeProvider';
 import ThemeModeProvider from 'core/theme/ThemeModeContext';
 import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
 import { Analytics } from '@vercel/analytics/react';
+import { ErrorBoundary } from 'react-error-boundary';
+
+const fallbackRender = ({ error }: { error: { stack: string } }) => {
+  return (
+    <div role="alert">
+      <h3>Noget gik galt! 😔</h3>
+      <p>
+        Send venligst følgende besked til{' '}
+        <a href="mailto:niclas@overby.me">niclas@overby.me</a>:
+      </p>
+      <pre style={{ background: '#EDEDED', padding: '20px' }}>
+        {error.stack}
+      </pre>
+    </div>
+  );
+};
 
 const App = ({
   Component,
@@ -34,22 +50,24 @@ const App = ({
         />
       </Head>
 
-      <NhostProvider nhost={nhost}>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <SessionProvider>
-            <ThemeModeProvider>
-              <ThemeSchemeProvider>
-                <M3ThemeProvider>
-                  <Layout>
-                    <Component {...pageProps} />
-                  </Layout>
-                </M3ThemeProvider>
-              </ThemeSchemeProvider>
-            </ThemeModeProvider>
-          </SessionProvider>
-        </LocalizationProvider>
-      </NhostProvider>
-      <Analytics />
+      <ErrorBoundary fallbackRender={fallbackRender}>
+        <NhostProvider nhost={nhost}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <SessionProvider>
+              <ThemeModeProvider>
+                <ThemeSchemeProvider>
+                  <M3ThemeProvider>
+                    <Layout>
+                      <Component {...pageProps} />
+                    </Layout>
+                  </M3ThemeProvider>
+                </ThemeSchemeProvider>
+              </ThemeModeProvider>
+            </SessionProvider>
+          </LocalizationProvider>
+        </NhostProvider>
+        <Analytics />
+      </ErrorBoundary>
     </>
   );
 };
