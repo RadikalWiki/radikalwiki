@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, startTransition, useContext, useState } from 'react';
+import React, { MouseEventHandler, useContext, useState } from 'react';
 import {
   IconButton,
   ListItemButton,
