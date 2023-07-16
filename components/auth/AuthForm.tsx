@@ -16,6 +16,7 @@ import { Email, HowToReg, LockReset, Login } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { FormEvent } from 'react';
 import { ChangeEventHandler } from 'react';
+import { client } from 'gql';
 
 type Mode = 'login' | 'register' | 'reset-password' | 'set-password';
 
@@ -125,6 +126,10 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
     setSession({
       timeDiff: undefined,
     });
+
+    // Delete cache
+    // eslint-disable-next-line functional/immutable-data
+    client.cache.query = {};
 
     await router.back();
   };

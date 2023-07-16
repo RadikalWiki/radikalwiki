@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useContext, useState } from 'react';
+import React, { MouseEventHandler, startTransition, useContext, useState } from 'react';
 import {
   IconButton,
   ListItemButton,
@@ -21,6 +21,7 @@ import { useRouter } from 'next/router';
 import { nhost } from 'nhost';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { ThemeModeContext } from 'core/theme/ThemeModeContext';
+import { client } from 'gql';
 
 const UserMenu = ({ list }: { list?: boolean }) => {
   const router = useRouter();
@@ -43,6 +44,9 @@ const UserMenu = ({ list }: { list?: boolean }) => {
 
   const handleLogout = async () => {
     await nhost.auth.signOut();
+    // Delete cache
+    // eslint-disable-next-line functional/immutable-data
+    client.cache.query = {};
     setAnchorEl(null);
   };
 
