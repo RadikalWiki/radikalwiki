@@ -165,6 +165,7 @@ const AddContentDialog = ({
   mutable?: boolean;
 }) => {
   const link = useLink();
+  const [error, setError] = useState('');
   const [titel, setTitel] = useState<string>(initTitel ?? '');
   const [text, setText] = useState<string>('');
   const [mimeId, setMimeId] = useState(mimes?.[0] ?? '');
@@ -177,59 +178,63 @@ const AddContentDialog = ({
   const [_, setSession] = useSession();
 
   const handleSubmit = async () => {
-    const { id, key } = await insert({
-      name: titel,
-      key: mimeId == 'vote/question' ? uuid() : undefined,
-      mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
-      mutable,
-      data:
-        mimeId == 'wiki/file'
-          ? { fileId, type }
-          : mimeId == 'vote/question'
-          ? { text }
-          : undefined,
-    });
-    if (!key) return;
-
-    if (await resolved(() => query.mime({ id: mimeId })?.context)) {
-      await update({ id: id!, set: { contextId: id, mutable: false } });
-      const perms = contextPerm.map((perm) => ({
-        ...perm,
-        contextId: id,
-        nodeId: id,
-        parents: JSON.stringify(perm.parents)
-          .replace('[', '{')
-          .replace(']', '}'),
-      }));
-      await permInsert(perms);
-
-      const prefix = await resolved(() => {
-        const node = query.node({ id: id! });
-        return {
-          id: node?.id,
-          name: node?.name ?? '',
-          mime: node?.mimeId!,
-          key: node?.key,
-        };
+    try {
+      const { id, key } = await insert({
+        name: titel,
+        key: mimeId == 'vote/question' ? uuid() : undefined,
+        mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
+        mutable,
+        data:
+          mimeId == 'wiki/file'
+            ? { fileId, type }
+            : mimeId == 'vote/question'
+            ? { text }
+            : undefined,
       });
+      if (!key) return;
 
-      const path = await fromId(id);
-      setSession({
-        prefix: {
-          ...prefix,
-          path,
-        },
-      });
+      if (await resolved(() => query.mime({ id: mimeId })?.context)) {
+        await update({ id: id!, set: { contextId: id, mutable: false } });
+        const perms = contextPerm.map((perm) => ({
+          ...perm,
+          contextId: id,
+          nodeId: id,
+          parents: JSON.stringify(perm.parents)
+            .replace('[', '{')
+            .replace(']', '}'),
+        }));
+        await permInsert(perms);
+
+        const prefix = await resolved(() => {
+          const node = query.node({ id: id! });
+          return {
+            id: node?.id,
+            name: node?.name ?? '',
+            mime: node?.mimeId!,
+            key: node?.key,
+          };
+        });
+
+        const path = await fromId(id);
+        setSession({
+          prefix: {
+            ...prefix,
+            path,
+          },
+        });
+      }
+
+      // Reset fields
+      setOpen(false);
+      setTitel(initTitel ?? '');
+      setText('');
+      setFileId(undefined);
+      setFileName(undefined);
+
+      if (redirect) link.push([key], app);
+    } catch (e) {
+      setError('Indhold med dette navn eksisterer allerede');
     }
-
-    // Reset fields
-    setOpen(false);
-    setTitel(initTitel ?? '');
-    setText('');
-    setFileId(undefined);
-    setFileName(undefined);
-
-    if (redirect) link.push([key], app);
   };
 
   return (
@@ -241,13 +246,18 @@ const AddContentDialog = ({
         <Stack spacing={2}>
           {mimeId !== 'vote/question' && (
             <TextField
+              error={!!error}
+              helperText={error}
               sx={{ mt: 1 }}
               autoFocus
               required
               label="Titel"
               fullWidth
               value={titel}
-              onChange={(e) => setTitel(e.target.value)}
+              onChange={(e) => {
+                setTitel(e.target.value);
+                setError('');
+              }}
               inputProps={{ maxLength: 100 }}
             />
           )}
@@ -328,7 +338,8 @@ const AddContentDialog = ({
             (mimeId != 'vote/question' && !titel) ||
             (mimes.length !== 1 && !mimeId) ||
             (mimeId == 'wiki/file' && !fileId) ||
-            (mimeId == 'vote/question' && !text)
+            (mimeId == 'vote/question' && !text) ||
+            !!error
           }
           onClick={handleSubmit}
           color="secondary"
