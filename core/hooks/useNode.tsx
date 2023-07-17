@@ -32,10 +32,10 @@ const getKey = (name?: string) =>
     .replaceAll('/', '');
 
 type Param = {
-  refetch:
+  refetch?:
     | ((query: UseQueryReturnValue<GeneratedSchema>, node?: nodes) => any[])
-    | boolean
-    | undefined;
+    | boolean;
+  onError?: Function
 };
 
 export type Node = {
@@ -146,6 +146,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
         ? []
         : refetchQueries,
     awaitRefetchQueries: true,
+    onError: () => param?.onError?.()
   });
 
   const useGet = () => (name: string) =>
