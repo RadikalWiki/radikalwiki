@@ -21,12 +21,14 @@ const prefetch = async (
   });
 
   await resolved(() => {
-    const node = query.node({ id: id! });
-    node?.name;
-    node?.data?.({ path: 'type' });
-    node?.mimeId;
-    node?.getIndex;
-    return node?.id;
+    if (id) {
+      const node = query.node({ id: id });
+      node?.name;
+      node?.data?.({ path: 'type' });
+      node?.mimeId;
+      node?.getIndex;
+      node?.id;
+    }
   });
 
   return path.length > 1

@@ -1,7 +1,6 @@
-import {
-  Drawer,
-} from '@mui/material';
+import { Drawer } from '@mui/material';
 import { AppList } from 'comps';
+import { Suspense } from 'react';
 
 const AppDrawer = ({
   openDrawer,
@@ -10,10 +9,11 @@ const AppDrawer = ({
   openDrawer: boolean;
   setOpenDrawer: (val: boolean) => void;
 }) => {
-
   return (
     <Drawer variant="permanent" open={openDrawer} sx={{ border: '1px' }}>
-      <AppList />
+      <Suspense>
+        <AppList />
+      </Suspense>
     </Drawer>
   );
 };

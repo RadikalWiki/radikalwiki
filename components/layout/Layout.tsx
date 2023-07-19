@@ -1,4 +1,4 @@
-import React, { startTransition, useEffect, useState } from 'react';
+import React, { Suspense, startTransition, useEffect, useState } from 'react';
 import {
   Scroll,
   BottomBar,
@@ -71,7 +71,9 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         />
 
         {!largeScreen && (
-          <MobileMenu openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+          <Suspense>
+            <MobileMenu openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+          </Suspense>
         )}
       </Box>
     </>

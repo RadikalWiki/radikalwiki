@@ -1,7 +1,4 @@
-import {
-  Box,
-  IconButton,
-} from '@mui/material';
+import { Badge, Box, IconButton } from '@mui/material';
 import { useApps } from 'hooks';
 import { IconId } from 'mime';
 import { UserMenu } from 'comps';
@@ -18,7 +15,9 @@ const AppList = () => {
           color={app.active ? 'primary' : undefined}
           onClick={app.onClick}
         >
-          <IconId mimeId={app.mimeId} />
+          <Badge invisible={!app.notifications} color="primary" variant="dot">
+            <IconId mimeId={app.mimeId} />
+          </Badge>
         </IconButton>
       ))}
       <Box sx={{ height: '100%' }} />

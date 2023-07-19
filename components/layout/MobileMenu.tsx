@@ -1,4 +1,4 @@
-import { IconButton, Paper, Slide, Stack } from '@mui/material';
+import { Badge, IconButton, Paper, Slide, Stack } from '@mui/material';
 import { useApps } from 'hooks';
 import { IconId } from 'mime';
 import { useEffect, useState } from 'react';
@@ -48,7 +48,13 @@ const MobileMenu = ({
               color={app.active ? 'primary' : undefined}
               onClick={app.onClick}
             >
-              <IconId mimeId={app.mimeId} />
+              <Badge
+                invisible={!app.notifications}
+                color="primary"
+                variant="dot"
+              >
+                <IconId mimeId={app.mimeId} />
+              </Badge>
             </IconButton>
           ))}
           <UserMenu />

@@ -2,9 +2,9 @@ import {
   useQuery,
   useMutation,
   members_set_input,
-  useRefetch,
   client,
   order_by,
+  resolved,
 } from 'gql';
 import {
   Avatar,
@@ -19,7 +19,6 @@ import { HeaderCard, MimeAvatarId } from 'comps';
 import { useUserEmail, useUserId } from '@nhost/nextjs';
 
 const ListSuspense = () => {
-  const refetch = useRefetch();
   const query = useQuery();
   const userId = useUserId();
   const email = useUserEmail();
@@ -92,16 +91,49 @@ const ListSuspense = () => {
     },
     {
       refetchQueries: [invites, events, groups],
+      awaitRefetchQueries: true,
+    }
+  );
+
+  const [deleteMember] = useMutation(
+    (mutation, args: { id?: string }) => {
+      if (args.id === undefined) return;
+      mutation.deleteMember({ id: args.id })?.id;
+    },
+    {
+      refetchQueries: [invites, events, groups],
+      awaitRefetchQueries: true,
     }
   );
 
   const handleAcceptInvite = (id?: string) => async () => {
-    await updateMember({
-      args: { id, set: { accepted: true, nodeId: userId } },
-    });
+    try {
+      await updateMember({
+        args: { id, set: { accepted: true, nodeId: userId } },
+      });
+    } catch (e) {
+      await deleteMember({ args: { id } });
+    }
+
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
     client.cache.query = {};
+    await resolved(
+      () =>
+        query
+          .membersAggregate({
+            where: {
+              _and: [
+                { accepted: { _eq: false } },
+                {
+                  _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
+                },
+              ],
+            },
+          })
+          .aggregate?.count(),
+      { noCache: true }
+    );
   };
 
   return (
