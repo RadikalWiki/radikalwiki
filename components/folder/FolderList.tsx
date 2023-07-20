@@ -2,7 +2,6 @@ import React, { MouseEventHandler } from 'react';
 import {
   Avatar,
   Collapse,
-  ListItem,
   ListItemAvatar,
   ListItemButton,
   ListItemText,
@@ -106,7 +105,7 @@ const FolderList = ({ node }: { node: Node }) => {
       })}
       {children.length == 0 && (
         <Collapse key={-1}>
-          <ListItem button>
+          <ListItemButton>
             <ListItemAvatar>
               <Avatar
                 sx={{
@@ -117,7 +116,7 @@ const FolderList = ({ node }: { node: Node }) => {
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary="Intet indhold" />
-          </ListItem>
+          </ListItemButton>
         </Collapse>
       )}
     </TransitionGroup>

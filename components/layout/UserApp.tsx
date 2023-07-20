@@ -77,7 +77,7 @@ const UserApp = ({ node }: { node: Node }) => {
       <HeaderCard title="Indhold" avatar={<Subject />}>
         <List>
           {nodes?.map(({ id, name, mimeId, parent }) => (
-            <ListItem key={id} button component={Link} href={id ?? ''}>
+            <ListItemButton key={id} component={Link} href={id ?? ''}>
               <ListItemAvatar>
                 <Avatar
                   sx={{
@@ -88,7 +88,7 @@ const UserApp = ({ node }: { node: Node }) => {
                 </Avatar>
               </ListItemAvatar>
               <ListItemText primary={name} secondary={parent?.name} />
-            </ListItem>
+            </ListItemButton>
           )) ?? (
             <ListItem>
               <ListItemText primary="Intet indhold" />

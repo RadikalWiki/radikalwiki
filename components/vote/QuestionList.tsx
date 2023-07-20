@@ -15,6 +15,7 @@ import {
   CardActions,
   Typography,
   Chip,
+  ListItemButton,
 } from '@mui/material';
 import { order_by } from 'gql';
 import { IconId } from 'mime';
@@ -111,7 +112,7 @@ const QuestionList = ({ node }: { node: Node }) => {
           })}
           {!children?.[0]?.id && (
             <Collapse key={-1}>
-              <ListItem button>
+              <ListItemButton>
                 <ListItemAvatar>
                   <Avatar
                     sx={{
@@ -122,7 +123,7 @@ const QuestionList = ({ node }: { node: Node }) => {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary="Ingen spørgsmål" />
-              </ListItem>
+              </ListItemButton>
             </Collapse>
           )}
         </TransitionGroup>

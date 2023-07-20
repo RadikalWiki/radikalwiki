@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemSecondaryAction,
   ListItemText,
   Paper,
@@ -123,7 +124,7 @@ const SpeakCard = ({ node, time }: { node: Node; time: number }) => {
           })}
           {speakers?.length == 0 && (
             <Collapse key={-1}>
-              <ListItem button>
+              <ListItemButton>
                 <ListItemAvatar>
                   <Avatar
                     sx={{
@@ -134,7 +135,7 @@ const SpeakCard = ({ node, time }: { node: Node; time: number }) => {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText primary="Talerlisten er tom" />
-              </ListItem>
+              </ListItemButton>
             </Collapse>
           )}
         </TransitionGroup>

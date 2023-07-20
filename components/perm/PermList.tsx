@@ -123,9 +123,9 @@ function ChildList({ id }: { id?: string }) {
         );
       })}
       {mimes?.length == 0 && (
-        <ListItem button>
+        <ListItemButton>
           <ListItemText primary="Ingen mimes" />
-        </ListItem>
+        </ListItemButton>
       )}
     </List>
   );
