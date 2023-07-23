@@ -1,4 +1,5 @@
 import { UseQueryReturnValue } from '@gqty/react';
+import assert from 'assert';
 import {
   GeneratedSchema,
   Maybe,
@@ -110,11 +111,10 @@ export type Node = {
 };
 
 const useNode = ({ id }: { id: string }): Node => {
-
-  const query = useQueryGqty({ });
+  assert(id, "id should always be defined")
+  const query = useQueryGqty();
   const node = query.node({ id })!;
   const useQuery = () => {
-    //const query = useQueryGqty();
     return node;
   };
 
