@@ -1,3 +1,4 @@
+export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as Loader } from './Loader';
 export { default as AppLoader } from './AppLoader';
 export { default as MimeLoader } from './MimeLoader';

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, ComponentType } from 'react';
 import Head from 'next/head';
-import { Layout, SessionProvider, SnackbarProvider } from 'comps';
+import { Layout, SessionProvider, ErrorBoundary, SnackbarProvider } from 'comps';
 import { nhost } from 'nhost';
 import { NhostProvider } from '@nhost/nextjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -10,24 +10,6 @@ import M3ThemeProvider from 'core/theme/M3ThemeProvider';
 import ThemeModeProvider from 'core/theme/ThemeModeContext';
 import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
 import { Analytics } from '@vercel/analytics/react';
-import { ErrorBoundary } from 'react-error-boundary';
-
-const fallbackRender = ({ error }: { error: { message: string, stack: string } }) => {
-  return (
-    <div role="alert">
-      <h3>Noget gik helt galt! 😔</h3>
-      <p>
-        Det vil være en kæmpe hjælp,
-        hvis du vil sende følgende fejlbesked til{' '}
-        <a href="mailto:niclas@overby.me">niclas@overby.me</a>:
-      </p>
-      <pre style={{ background: '#EDEDED', padding: '20px' }}>
-        {error.message + '\n'}
-        {error.stack}
-      </pre>
-    </div>
-  );
-};
 
 const App = ({
   Component,
@@ -52,7 +34,7 @@ const App = ({
         />
       </Head>
 
-      <ErrorBoundary fallbackRender={fallbackRender}>
+      <ErrorBoundary>
         <NhostProvider nhost={nhost}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <SessionProvider>
