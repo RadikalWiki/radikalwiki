@@ -12,15 +12,17 @@ import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
 import { Analytics } from '@vercel/analytics/react';
 import { ErrorBoundary } from 'react-error-boundary';
 
-const fallbackRender = ({ error }: { error: { stack: string } }) => {
+const fallbackRender = ({ error }: { error: { message: string, stack: string } }) => {
   return (
     <div role="alert">
-      <h3>Noget gik galt! 😔</h3>
+      <h3>Noget gik helt galt! 😔</h3>
       <p>
-        Send venligst følgende besked til{' '}
+        Det vil være en kæmpe hjælp,
+        hvis du vil sende følgende fejlbesked til{' '}
         <a href="mailto:niclas@overby.me">niclas@overby.me</a>:
       </p>
       <pre style={{ background: '#EDEDED', padding: '20px' }}>
+        {error.message + '\n'}
         {error.stack}
       </pre>
     </div>
