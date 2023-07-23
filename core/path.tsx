@@ -7,7 +7,6 @@ const toId = async (
   parentId?: string
 ): Promise<string | undefined> => {
   if (path.length == 0) return parentId
-  console.log(path)
   const where = parentId
     ? { parentId: { _eq: parentId }, key: { _eq: path.at(0) } }
     : { parentId: { _is_null: true } };
