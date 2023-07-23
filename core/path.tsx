@@ -1,22 +1,24 @@
-import { query, resolved } from 'gql';
+import { resolve } from 'gql';
+import { useEffect, useState } from 'react';
+import usePath from './hooks/usePath';
 
-const toId = async (path: string[], parentId?: string): Promise<string | undefined> => {
-  const where = {
-    _and: [
-      { key: { _eq: path.at(-1) } },
-      parentId
-        ? { parentId: { _eq: parentId } }
-        : { parentId: { _is_null: true } },
-    ],
-  };
-  const id = await resolved(() => query.nodes({ where }).at(0)?.id);
+const toId = async (
+  path: string[],
+  parentId?: string
+): Promise<string | undefined> => {
+  if (path.length == 0) return parentId
+  console.log(path)
+  const where = parentId
+    ? { parentId: { _eq: parentId }, key: { _eq: path.at(0) } }
+    : { parentId: { _is_null: true } };
+  const id = await resolve(({ query }) => query.nodes({ where }).at(0)?.id);
 
-  return path.length > 0 ? toId(path.slice(1), id) : id;
+  return toId(parentId ? path.slice(1) : path, id);
 };
 
 const fromId = async (id?: string | null): Promise<string[]> => {
   if (!id) return [];
-  return await resolved(async () => {
+  return await resolve(async ({ query }) => {
     const node = query.node({ id });
     const parentId = node?.parentId;
     const key = node?.key;
@@ -25,4 +27,15 @@ const fromId = async (id?: string | null): Promise<string[]> => {
   });
 };
 
-export { toId, fromId };
+const useId = () => {
+  const [id, setId] = useState<string | undefined>()
+  const path = usePath();
+
+  useEffect(() => {
+    if (path.length)
+      toId(path).then(setId)
+  }, [path])
+  return id
+}
+
+export { toId, fromId, useId };

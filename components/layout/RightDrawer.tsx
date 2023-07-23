@@ -10,12 +10,12 @@ import {
   Close,
 } from '@mui/icons-material';
 import { useSession, usePath, useNode, useLink } from 'hooks';
-import { fromId } from 'core/path';
+import { fromId, useId } from 'core/path';
 import {
   ContentToolbar,
   MimeAvatarId,
 } from 'comps';
-import { resolved } from 'gql';
+import { resolve } from 'gql';
 import { useState, startTransition, useEffect } from 'react';
 import { drawerWidth } from 'core/constants';
 import { Box } from '@mui/system';
@@ -32,7 +32,7 @@ const Drawer = ({
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const path = usePath();
   const home = path.length === 0;
-  const id = session?.nodeId ?? session?.prefix?.id;
+  const id = useId()!;
   const node = useNode({
     id,
   });
@@ -43,14 +43,14 @@ const Drawer = ({
   const contextId = session?.prefix?.id ?? node?.contextId;
 
   const handleCurrent = async () => {
-    const id = await resolved(
-      () =>
-        query?.context?.relations({
+    const activeId = await resolve(
+      ({ query }) =>
+        query.node({ id })?.context?.relations({
           where: { name: { _eq: 'active' } },
         })?.[0]?.nodeId,
-      { noCache: true }
+      { cachePolicy: 'no-cache' }
     );
-    link.id(id ?? contextId!);
+    link.id(activeId ?? contextId!);
     setOpen(false);
   };
 
@@ -58,8 +58,8 @@ const Drawer = ({
     if (session?.prefix === undefined && !home) {
       Promise.all([
         fromId(contextId),
-        resolved(() => {
-          const node = query?.context;
+        resolve(({ query }) => {
+          const node = query.node({ id })?.context;
           return {
             id: node?.id,
             name: node?.name ?? '',

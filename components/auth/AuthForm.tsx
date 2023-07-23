@@ -16,7 +16,7 @@ import { Email, HowToReg, LockReset, Login } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { FormEvent } from 'react';
 import { ChangeEventHandler } from 'react';
-import { client } from 'gql';
+import { useQuery } from 'gql';
 
 type Mode = 'login' | 'register' | 'reset-password' | 'set-password';
 
@@ -24,6 +24,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
   const [_, setSession] = useSession();
+  const query = useQuery();
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -129,9 +130,9 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
 
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
-    client.cache.query = {};
+    Object.assign(query, {})
 
-    await router.back();
+    router.back();
   };
 
   const onRegister = async () => {

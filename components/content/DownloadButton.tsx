@@ -1,7 +1,7 @@
 import { GetApp } from '@mui/icons-material';
 import { AutoButton } from 'comps';
 import { toHtml } from 'core/document';
-import { order_by, resolved, query as q } from 'gql';
+import { order_by, resolve } from 'gql';
 import { Node } from 'hooks';
 import HTMLtoDOCX from 'html-to-docx';
 import { getLetter } from 'mime';
@@ -16,8 +16,8 @@ const DownloadButton = ({ node }: { node: Node }) => {
     if (!id) return '';
     const index =
       (
-        await resolved(() =>
-          q
+        await resolve(({ query }) =>
+          query
             .node({ id })
             ?.parent?.children({
               where: {
@@ -32,8 +32,8 @@ const DownloadButton = ({ node }: { node: Node }) => {
         )
       )?.findIndex((e) => e.id === id) ?? 0;
 
-    const children = await resolved(() =>
-      q
+    const children = await resolve(({ query }) =>
+      query
         .node({ id })
         ?.children({
           order_by: [{ index: order_by.asc }],
@@ -52,15 +52,15 @@ const DownloadButton = ({ node }: { node: Node }) => {
     );
     const members = ['wiki/event', 'wiki/group'].includes(mimeId!)
       ? []
-      : await resolved(() =>
-          q
+      : await resolve(({ query }) =>
+          query
             .node({ id })
             ?.members()
             ?.map((m) => m.name ?? m.user?.displayName)
             .join(', ')
         );
-    const node = await resolved(() => {
-      const node = q.node({ id });
+    const node = await resolve(({ query }) => {
+      const node = query.node({ id });
       if (node)
         return {
           name: node.name,
@@ -98,7 +98,7 @@ const DownloadButton = ({ node }: { node: Node }) => {
     if (!id) return;
 
     if (mimeId == 'wiki/file') {
-      const data = await resolved(() => q.node({ id })?.data());
+      const data = await resolve(({ query }) => query.node({ id })?.data());
       const { presignedUrl } = await nhost.storage.getPresignedUrl({
         fileId: data?.fileId,
       });

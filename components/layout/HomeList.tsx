@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { useUserId } from '@nhost/nextjs';
 import { fromId } from 'core/path';
-import { order_by, resolved, useQuery } from 'gql';
+import { order_by, resolve, useQuery } from 'gql';
 import { useLink, useSession } from 'hooks';
 import { Fragment, startTransition } from 'react';
 
@@ -127,7 +127,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
       });
 
   const handleContextSelect = (id: string) => async () => {
-    const prefix = await resolved(() => {
+    const prefix = await resolve(({ query }) => {
       const node = query.node({ id });
       return {
         id: node?.id,

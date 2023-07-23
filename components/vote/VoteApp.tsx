@@ -183,7 +183,7 @@ const VoteApp = ({ node }: { node: Node }) => {
   const pollComp = (
     <Stack spacing={1}>
       {status}
-      <MimeLoader id={poll?.id} mimeId={poll?.mimeId!} />
+      {poll?.id && <MimeLoader id={poll?.id} mimeId={poll?.mimeId!} />}
     </Stack>
   );
 

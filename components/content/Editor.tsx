@@ -8,7 +8,7 @@ import {
   DeleteButton,
   PublishButton,
 } from 'comps';
-import { resolved } from 'gql';
+import { resolve } from 'gql';
 import { Card, CardContent, TextField, Grid, ButtonGroup } from '@mui/material';
 import { Save } from '@mui/icons-material';
 import { Node, useLink, useFile } from 'hooks';
@@ -37,7 +37,7 @@ const Editor = ({ node }: { node: Node }) => {
       startTransition(() => {
         if (!['wiki/group', 'wiki/event'].includes(query?.mimeId!)) {
           const fetchMembers = async () => {
-            const members = await resolved(() =>
+            const members = await resolve(({ query }) =>
               query?.members().map(({ nodeId, name, email, node }) => ({
                 nodeId: nodeId!,
                 name: name!,

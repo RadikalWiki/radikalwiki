@@ -44,12 +44,12 @@ const SelectApp = ({ mimeId, node }: { mimeId: string; node: Node }) => {
   }
 };
 
-const MimeLoader = (param?: { id?: string; mimeId?: string }) => {
-  const node = useNode({ id: param?.id });
+const MimeLoader = ({ id, mimeId }: { id: string; mimeId?: string }) => {
+  const node = useNode({ id });
   const router = useRouter();
-  if ((!node?.mimeId && !param?.mimeId) || !router.query.path) return null;
+  if ((!node?.mimeId && !mimeId) || !router.query.path) return null;
 
-  return <SelectApp mimeId={param?.mimeId ?? node.mimeId ?? ''} node={node} />;
+  return <SelectApp mimeId={mimeId ?? node.mimeId ?? ''} node={node} />;
 };
 
 export default MimeLoader;

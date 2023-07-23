@@ -8,7 +8,7 @@ import {
 } from 'comps';
 import { useNode } from 'hooks';
 
-const AppLoader = ({ app, id }: { app?: string; id?: string }) => {
+const AppLoader = ({ app, id }: { app?: string; id: string }) => {
   const node = useNode({ id });
 
   if (app) {

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Avatar, Box, Fab } from '@mui/material';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Save, Public } from '@mui/icons-material';
-import { resolved, query as q } from 'gql';
+import { resolve } from 'gql';
 import { Node, useLink, useScreen, useSession } from 'hooks';
 
 const checkIfSuperParent = async (
@@ -10,7 +10,7 @@ const checkIfSuperParent = async (
   superParentId?: string
 ): Promise<boolean> => {
   if (!(id && superParentId)) return false;
-  const parentId = await resolved(() => q.node({ id })?.parentId);
+  const parentId = await resolve(({ query }) => query.node({ id })?.parentId);
 
   return id == superParentId || parentId === superParentId
     ? true

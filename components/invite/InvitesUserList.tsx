@@ -2,9 +2,8 @@ import {
   useQuery,
   useMutation,
   members_set_input,
-  client,
   order_by,
-  resolved,
+  resolve,
 } from 'gql';
 import {
   Avatar,
@@ -117,9 +116,9 @@ const ListSuspense = () => {
 
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
-    client.cache.query = {};
-    await resolved(
-      () =>
+    Object.assign(query, {})
+    await resolve(
+      ({ query }) =>
         query
           .membersAggregate({
             where: {
@@ -132,7 +131,7 @@ const ListSuspense = () => {
             },
           })
           .aggregate?.count(),
-      { noCache: true }
+      { cachePolicy: 'no-cache' }
     );
   };
 

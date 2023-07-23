@@ -41,8 +41,7 @@ export type Node = {
   contextId?: Maybe<string | undefined>;
   parentId?: Maybe<string | undefined>;
   key: Maybe<string | undefined>;
-  useQuery: () => Maybe<nodes> | undefined;
-  useQuery2: () => Maybe<nodes> | undefined;
+  useQuery: () => nodes;
   useSubs: () => Maybe<nodes>;
   useInsert: (
     param?: Param
@@ -110,22 +109,15 @@ export type Node = {
   };
 };
 
-const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
-  const where = {
-    where: param?.where ?? { parentId: { _is_null: true } },
-  };
-  const query = useQueryGqty();
+const useNode = ({ id }: { id: string }): Node => {
+
+  const query = useQueryGqty({ });
+  const node = query.node({ id })!;
   const useQuery = () => {
-    const query = useQueryGqty();
-    return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
-  };
-  const useQuery2 = () => {
     //const query = useQueryGqty();
-    return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
+    return node;
   };
-  const node = param?.id
-    ? query.node({ id: param?.id })
-    : query.nodes(where)?.[0];
+
   const nodeId = node?.id;
   const name = node?.name;
   const parentId = node?.parentId;
@@ -150,7 +142,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
 
   const useSubs = () => {
     const subs = useSubscription();
-    return param?.id ? subs.node({ id: param?.id }) : subs.nodes(where)?.[0];
+    return subs.node({ id });
   };
 
   const useSubsGet = () => {
@@ -174,7 +166,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     );
     return (name: string, nodeId: string | null) =>
       insertRelation({
-        args: { parentId: param?.id ?? node?.id, name, nodeId },
+        args: { parentId: node?.id, name, nodeId },
       });
   };
 
@@ -363,7 +355,6 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     mimeId,
     key,
     useQuery,
-    useQuery2,
     useSubs,
     useInsert,
     useDelete,

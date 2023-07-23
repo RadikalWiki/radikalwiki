@@ -4,9 +4,10 @@ import { AddContentFab, HeaderCard, InvitesUserList } from 'comps';
 import { useNode } from 'hooks';
 import { Hail } from '@mui/icons-material';
 import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
+import { useId } from 'core/path';
 
-const AddContentFabSuspense = () => {
-  const node = useNode();
+const AddContentFabSuspense = ({ id } : { id: string }) => {
+  const node = useNode({ id });
   return <AddContentFab node={node} />;
 };
 
@@ -14,6 +15,7 @@ const HomeApp = () => {
   const { isAuthenticated } = useAuthenticationStatus();
   const displayName = useUserDisplayName();
 
+  const id = useId();
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md>
@@ -60,7 +62,7 @@ const HomeApp = () => {
         <Grid item xs={12} md={4}>
           <InvitesUserList />
           <Suspense fallback={null}>
-            <AddContentFabSuspense />
+            {id && <AddContentFabSuspense id={id} />}
           </Suspense>
         </Grid>
       )}

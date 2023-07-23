@@ -7,7 +7,7 @@ import { Descendant } from 'slate';
 
 const Content = ({ node, fontSize }: { node: Node; fontSize: string }) => {
   const query = node.useQuery();
-  const data = query?.data();
+  const data = query.data();
   const image = useFile({ fileId: data?.image, image: true });
   const [content, setContent] = useState<Descendant[]>(
     structuredClone(data?.content)

@@ -1,10 +1,10 @@
 import { createReactClient } from '@gqty/react';
+import { createClient as createSubscriptionsClient } from 'graphql-ws';
 import type { QueryFetcher } from 'gqty';
 import { Cache, createClient } from 'gqty';
 import type { GeneratedSchema } from './schema.generated';
 import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 import { nhost } from 'nhost';
-import { createSubscriptionsClient } from '@gqty/subscriptions';
 
 const getHeaders = (): Record<string, string> =>
   process.env.HASURA_GRAPHQL_ADMIN_SECRET
@@ -46,18 +46,17 @@ const queryFetcher: QueryFetcher = async (
   return json;
 };
 
-const cache = new Cache(
-  undefined,
-  {
-    maxAge: Infinity,
-    staleWhileRevalidate: 5 * 60 * 1000,
-    normalization: false,
-  }
-);
+const cache = new Cache(undefined, {
+  maxAge: Infinity,
+  staleWhileRevalidate: 5 * 60 * 1000,
+  normalization: true,
+});
 
 const subscriptionsClient = createSubscriptionsClient({
-
-  wsEndpoint: () => {
+  connectionParams: () => ({
+    headers: getHeaders(),
+  }),
+  url: () => {
     const url = new URL(`${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`);
     // eslint-disable-next-line functional/immutable-data
     url.protocol = url.protocol.replace('http', 'ws');
@@ -69,25 +68,14 @@ export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
   scalars: scalarsEnumsHash,
   cache,
-  subscriptionsClient,
   fetchOptions: {
     fetcher: queryFetcher,
+    subscriber: subscriptionsClient,
   },
 });
 
 // Core functions
 export const { resolve, subscribe, schema } = client;
-
-// Legacy functions
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
 
 export const {
   graphql,
@@ -104,11 +92,10 @@ export const {
   useSubscription,
 } = createReactClient<GeneratedSchema>(client, {
   defaults: {
-    // Enable Suspense, you can override this option at hooks.
     suspense: true,
     mutationSuspense: true,
     transactionQuerySuspense: true,
-    //staleWhileRevalidate: true,
+    staleWhileRevalidate: true,
   },
 });
 

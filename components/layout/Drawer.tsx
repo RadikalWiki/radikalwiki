@@ -24,7 +24,7 @@ import {
 import { useSession, usePath, useNode, useLink } from 'hooks';
 import { fromId } from 'core/path';
 import { Link as NextLink, MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
-import { order_by, resolved } from 'gql';
+import { order_by, resolve } from 'gql';
 import {
   useState,
   startTransition,
@@ -269,7 +269,7 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
   const [session, setSession] = useSession();
   const path = usePath();
   const node = useNode({
-    id: session?.prefix?.id,
+    id: session?.prefix?.id!,
   });
   const query = node.useQuery();
 
@@ -279,8 +279,9 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
     if (session?.prefix === undefined) {
       Promise.all([
         fromId(contextId),
-        resolved(() => {
-          const node = query?.context;
+        resolve(({ query }) => {
+          if (!contextId) return;
+          const node = query?.node({ id: contextId });
           return {
             id: node?.id,
             name: node?.name ?? '',
@@ -302,12 +303,12 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
   }, [session, setSession]);
 
   const handleCurrent = async () => {
-    const id = await resolved(
+    const id = await resolve(
       () =>
         query?.context?.relations({
           where: { name: { _eq: 'active' } },
         })?.[0]?.nodeId,
-      { noCache: true }
+      { cachePolicy: 'no-cache' }
     );
     startTransition(() => {
       link.id(id ?? contextId!);
@@ -358,7 +359,7 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
 const Title = () => {
   const [session] = useSession();
   const node = useNode({
-    id: session?.prefix?.id,
+    id: session?.prefix?.id!,
   });
   const query = node.useQuery();
 
@@ -386,9 +387,7 @@ const Drawer = ({
   const home = path.length === 0;
 
   const list = home ? (
-    <Suspense>
-      <HomeList setOpen={setOpen} />
-    </Suspense>
+    <HomeList setOpen={setOpen} />
   ) : (
     <Suspense>
       <MenuList setOpen={setOpen} />
@@ -434,7 +433,7 @@ const Drawer = ({
           pb: 8,
         }}
       >
-        {list}
+        <Suspense>{list}</Suspense>
       </Box>
       <AppBar
         elevation={0}

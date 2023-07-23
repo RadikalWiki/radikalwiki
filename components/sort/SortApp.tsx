@@ -8,7 +8,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from '@mui/material';
-import { nodes, order_by, resolved } from 'gql';
+import { nodes, order_by, resolve } from 'gql';
 import {
   DragDropContext,
   Droppable,
@@ -22,11 +22,11 @@ const SortApp = ({ node }: { node: Node }) => {
   const query = node.useQuery();
 
   useEffect(() => {
-    if (query) {
+    if (node.id !== undefined) {
       const fetch = async () => {
-        const children = await resolved(
-          () =>
-            query
+        const children = await resolve(
+          ({ query }) =>
+            query.node({ id: node.id! })
               ?.children({
                 order_by: [{ index: order_by.asc }],
                 where: { mime: { hidden: { _eq: false } } },
@@ -39,7 +39,7 @@ const SortApp = ({ node }: { node: Node }) => {
                 mimeId,
                 data,
               })) ?? [],
-          { noCache: true }
+          { cachePolicy: 'no-cache' }
         );
         setList(children);
       };

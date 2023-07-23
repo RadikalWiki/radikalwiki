@@ -1,5 +1,5 @@
 import { fromId } from 'core/path';
-import { query, resolved } from 'gql';
+import { resolve } from 'gql';
 import { useRouter } from 'next/router';
 
 const prefetch = async (
@@ -8,19 +8,21 @@ const prefetch = async (
 ): Promise<string | undefined> => {
   const where = {
     _and: parentId
-      ? [{ key: { _eq: path.at(0) } }, { parentId: { _eq: parentId } }]
+      ? [
+          { key: { _eq: decodeURIComponent(path.at(0) ?? '') } },
+          { parentId: { _eq: parentId } },
+        ]
       : [{ parentId: { _is_null: true } }],
   };
-  const id = await resolved(() => {
+  const id = await resolve(({ query }) => {
     const node = query.nodes({ where }).at(0);
     node?.__typename;
-    const id = node?.id;
     node?.name;
 
-    return id;
+    return node?.id;
   });
 
-  await resolved(() => {
+  await resolve(({ query }) => {
     if (id) {
       const node = query.node({ id: id });
       node?.name;

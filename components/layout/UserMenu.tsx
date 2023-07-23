@@ -21,7 +21,7 @@ import { useRouter } from 'next/router';
 import { nhost } from 'nhost';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { ThemeModeContext } from 'core/theme/ThemeModeContext';
-import { client } from 'gql';
+import { useQuery } from 'gql';
 
 const UserMenu = ({ list }: { list?: boolean }) => {
   const router = useRouter();
@@ -31,6 +31,7 @@ const UserMenu = ({ list }: { list?: boolean }) => {
   const { isAuthenticated } = useAuthenticationStatus();
   const { toggleThemeMode } = useContext(ThemeModeContext);
   const { palette } = useTheme();
+  const query = useQuery();
 
   const handleClick: MouseEventHandler<HTMLButtonElement | HTMLDivElement> = (
     event
@@ -46,7 +47,8 @@ const UserMenu = ({ list }: { list?: boolean }) => {
     await nhost.auth.signOut();
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
-    client.cache.query = {};
+    Object.assign(query, {});
+
     setAnchorEl(null);
   };
 
