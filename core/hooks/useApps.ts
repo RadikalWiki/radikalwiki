@@ -38,18 +38,23 @@ const useApps = () => {
       mimeId: 'app/home',
       active: ['home'].includes(currentApp),
       onClick: handleClick([]),
-      notifications: sub
-        .membersAggregate({
-          where: {
-            _and: [
-              { accepted: { _eq: false } },
-              {
-                _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
+      notifications: isAuthenticated
+        ? sub
+            .membersAggregate({
+              where: {
+                _and: [
+                  { accepted: { _eq: false } },
+                  {
+                    _or: [
+                      { nodeId: { _eq: userId } },
+                      { email: { _eq: email } },
+                    ],
+                  },
+                ],
               },
-            ],
-          },
-        })
-        .aggregate?.count(),
+            })
+            .aggregate?.count()
+        : 0,
     },
     {
       name: 'Mappe',
