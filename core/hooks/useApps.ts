@@ -17,28 +17,30 @@ const useApps = () => {
     (router.query.app as string) ??
     (router.pathname == '/' ? 'home' : 'folder');
 
-  const handleClick = ({ path, app }: { path?: string[], app?: string }) => async () => {
-    const scroll = document.querySelector('#scroll');
-    localStorage.setItem(
-      `scroll/${currentApp}`,
-      scroll?.scrollTop?.toString() ?? '0'
-    );
-    if (currentApp == 'folder') {
-      localStorage.setItem('path', router.asPath ?? '');
-    }
-    await link.path(path ?? ctxPath, app);
-    scroll?.scrollTo(
-      0,
-      JSON.parse(localStorage[`scroll/${app ?? 'folder'}`] ?? 0)
-    );
-  };
+  const handleClick =
+    ({ path, app }: { path?: string[]; app?: string }) =>
+    async () => {
+      const scroll = document.querySelector('#scroll');
+      localStorage.setItem(
+        `scroll/${currentApp}`,
+        scroll?.scrollTop?.toString() ?? '0'
+      );
+      if (currentApp == 'folder') {
+        localStorage.setItem('path', router.asPath ?? '');
+      }
+      await link.path(path ?? ctxPath, app);
+      scroll?.scrollTo(
+        0,
+        JSON.parse(localStorage[`scroll/${app ?? 'folder'}`] ?? 0)
+      );
+    };
 
   return [
     {
       name: 'Hjem',
       mimeId: 'app/home',
       active: ['home'].includes(currentApp),
-      onClick: handleClick({ path: [], app: undefined }),
+      onClick: handleClick({ path: [] }),
       notifications: isAuthenticated
         ? sub
             .membersAggregate({
@@ -61,9 +63,9 @@ const useApps = () => {
       name: 'Mappe',
       mimeId: 'app/folder',
       active: ['folder', 'editor'].includes(currentApp),
-      onClick: handleClick(
-        localStorage?.path?.slice(1)?.split('/')
-      ),
+      onClick: handleClick({
+        path: localStorage?.path?.slice(1)?.split('/'),
+      }),
       notifications: 0,
     },
     ...(isAuthenticated
