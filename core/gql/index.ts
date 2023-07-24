@@ -26,11 +26,12 @@ const queryFetcher: QueryFetcher = async (
   { query, variables, operationName },
   fetchOptions
 ) => {
+  const headers = getHeaders();
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
     {
       method: 'POST',
-      headers: getHeaders(),
+      headers,
       body: JSON.stringify({
         query,
         variables,

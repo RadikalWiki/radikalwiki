@@ -10,13 +10,13 @@ import {
   Close,
 } from '@mui/icons-material';
 import { useSession, usePath, useNode, useLink } from 'hooks';
-import { fromId, useId } from 'core/path';
+import { useId } from 'core/path';
 import {
   ContentToolbar,
   MimeAvatarId,
 } from 'comps';
 import { resolve } from 'gql';
-import { useState, startTransition, useEffect } from 'react';
+import { useState } from 'react';
 import { drawerWidth } from 'core/constants';
 import { Box } from '@mui/system';
 
@@ -40,7 +40,7 @@ const Drawer = ({
 
   const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
-  const contextId = session?.prefix?.id ?? node?.contextId;
+  const contextId = node?.contextId;
 
   const handleCurrent = async () => {
     const activeId = await resolve(
@@ -53,32 +53,6 @@ const Drawer = ({
     link.id(activeId ?? contextId!);
     setOpen(false);
   };
-
-  useEffect(() => {
-    if (session?.prefix === undefined && !home) {
-      Promise.all([
-        fromId(contextId),
-        resolve(({ query }) => {
-          const node = query.node({ id })?.context;
-          return {
-            id: node?.id,
-            name: node?.name ?? '',
-            mime: node?.mimeId!,
-            key: node?.key,
-          };
-        }),
-      ]).then(([path, prefix]) => {
-        startTransition(() => {
-          setSession({
-            prefix: {
-              ...prefix,
-              path,
-            },
-          });
-        });
-      });
-    }
-  }, [session, setSession]);
 
   return (
     <MuiDrawer

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useLink, useSession } from 'hooks';
+import { useContextPath, useLink, useSession } from 'hooks';
 import { useAuthenticated, useUserEmail, useUserId } from '@nhost/nextjs';
 import { useSubscription } from 'gql';
 
@@ -10,13 +10,14 @@ const useApps = () => {
   const isAuthenticated = useAuthenticated();
   const userId = useUserId();
   const email = useUserEmail();
+  const ctxPath = useContextPath();
   const sub = useSubscription();
 
   const currentApp =
     (router.query.app as string) ??
     (router.pathname == '/' ? 'home' : 'folder');
 
-  const handleClick = (path?: string[], app?: string) => async () => {
+  const handleClick = ({ path, app }: { path?: string[], app?: string }) => async () => {
     const scroll = document.querySelector('#scroll');
     localStorage.setItem(
       `scroll/${currentApp}`,
@@ -25,7 +26,7 @@ const useApps = () => {
     if (currentApp == 'folder') {
       localStorage.setItem('path', router.asPath ?? '');
     }
-    await link.path(path ?? [], app);
+    await link.path(path ?? ctxPath, app);
     scroll?.scrollTo(
       0,
       JSON.parse(localStorage[`scroll/${app ?? 'folder'}`] ?? 0)
@@ -37,7 +38,7 @@ const useApps = () => {
       name: 'Hjem',
       mimeId: 'app/home',
       active: ['home'].includes(currentApp),
-      onClick: handleClick([]),
+      onClick: handleClick({ path: [] }),
       notifications: isAuthenticated
         ? sub
             .membersAggregate({
@@ -61,7 +62,7 @@ const useApps = () => {
       mimeId: 'app/folder',
       active: ['folder', 'editor'].includes(currentApp),
       onClick: handleClick(
-        localStorage?.path?.slice(1)?.split('/') ?? session?.prefix?.path
+        localStorage?.path?.slice(1)?.split('/')
       ),
       notifications: 0,
     },
@@ -71,14 +72,14 @@ const useApps = () => {
             name: 'Tal',
             mimeId: 'app/speak',
             active: ['speak'].includes(currentApp),
-            onClick: handleClick(session?.prefix?.path, 'speak'),
+            onClick: handleClick({ app: 'speak' }),
             notifications: 0,
           },
           {
             name: 'Stem',
             mimeId: 'app/vote',
             active: ['vote', 'poll'].includes(currentApp),
-            onClick: handleClick(session?.prefix?.path, 'vote'),
+            onClick: handleClick({ app: 'vote' }),
             notifications: 0,
           },
         ]

@@ -14,6 +14,7 @@ import { checkVersion } from 'core/util';
 import { useSession } from 'hooks';
 import { Refresh } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
+import { useId } from 'core/path';
 
 const Layout = ({ children }: { children: JSX.Element }) => {
   const [outdated, setOutdated] = useState(false);
@@ -25,6 +26,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   const { isLoading } = useAuthenticationStatus();
   const largeScreen = useMediaQuery('(min-width:1200px)');
   const { enqueueSnackbar } = useSnackbar();
+  const id = useId();
 
   useEffect(() => {
     startTransition(() => {
@@ -95,10 +97,11 @@ const Layout = ({ children }: { children: JSX.Element }) => {
           <AppDrawer openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         )}
 
-        <Drawer
+        {id && <Drawer
+          id={id}
           open={openDrawer}
           setOpen={() => startTransition(() => setOpenDrawer(false))}
-        />
+        />}
 
         {!largeScreen && (
           <Suspense>

@@ -2,7 +2,6 @@ import { useEffect, createContext, useContext, startTransition } from 'react';
 
 export type Session = {
   path?: string;
-  prefix?: { id?: string; name?: string; mime?: string; path: string[] };
   user?: { id: string; displayName: string; email: string };
   timeDiff?: number;
   theme?: string;

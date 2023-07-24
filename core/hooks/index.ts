@@ -7,6 +7,7 @@ export { default as useTheme } from './useTheme';
 export { default as useNode } from './useNode';
 export type { Node } from './useNode';
 export { default as usePath } from './usePath';
+export { default as useContextPath } from './useContextPath';
 export { default as useLink } from './useLink';
 export { default as useApps } from './useApps';
 export { default as useFile } from './useFile';

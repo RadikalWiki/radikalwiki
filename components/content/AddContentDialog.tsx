@@ -20,7 +20,6 @@ import { Node, useLink, useSession } from 'hooks';
 import { FileUploader } from 'comps';
 import { v4 as uuid } from 'uuid';
 import { resolve } from 'gql';
-import { fromId } from 'core/path';
 
 const contextPerm = [
   {
@@ -206,25 +205,6 @@ const AddContentDialog = ({
             .replace(']', '}'),
         }));
         await permInsert(perms);
-
-        const prefix = await resolve(({ query }) => {
-          const node = query.node({ id: id! });
-          return {
-            id: node?.id,
-            name: node?.name ?? '',
-            mime: node?.mimeId!,
-            key: node?.key,
-          };
-        });
-        if (!key) return;
-
-        const path = await fromId(id);
-        setSession({
-          prefix: {
-            ...prefix,
-            path,
-          },
-        });
       }
 
       // Reset fields

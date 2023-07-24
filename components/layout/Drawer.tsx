@@ -21,17 +21,10 @@ import {
   ExpandMore,
   FileOpen,
 } from '@mui/icons-material';
-import { useSession, usePath, useNode, useLink } from 'hooks';
-import { fromId } from 'core/path';
+import { useSession, usePath, useNode, useLink, useContextPath } from 'hooks';
 import { Link as NextLink, MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
 import { order_by, resolve } from 'gql';
-import {
-  useState,
-  startTransition,
-  useEffect,
-  Suspense,
-  useDeferredValue,
-} from 'react';
+import { useState, startTransition, Suspense, useDeferredValue } from 'react';
 import { drawerWidth } from 'core/constants';
 import { Box } from '@mui/system';
 import { useUserId } from '@nhost/nextjs';
@@ -262,45 +255,19 @@ const DrawerList = ({
   );
 };
 
-const MenuList = ({ setOpen }: { setOpen: Function }) => {
+const MenuList = ({ id, setOpen }: { id: string; setOpen: Function }) => {
   const link = useLink();
   const [listOpenValue, setListOpen] = useState<boolean[][]>([]);
   const listOpen = useDeferredValue(listOpenValue);
   const [session, setSession] = useSession();
   const path = usePath();
   const node = useNode({
-    id: session?.prefix?.id!,
+    id,
   });
   const query = node.useQuery();
+  const ctxPath = useContextPath();
 
-  const contextId = session?.prefix?.id ?? node?.contextId;
-
-  useEffect(() => {
-    if (session?.prefix === undefined) {
-      Promise.all([
-        fromId(contextId),
-        resolve(({ query }) => {
-          if (!contextId) return;
-          const node = query?.node({ id: contextId });
-          return {
-            id: node?.id,
-            name: node?.name ?? '',
-            mime: node?.mimeId!,
-            key: node?.key,
-          };
-        }),
-      ]).then(([path, prefix]) => {
-        startTransition(() => {
-          setSession({
-            prefix: {
-              ...prefix,
-              path,
-            },
-          });
-        });
-      });
-    }
-  }, [session, setSession]);
+  const contextId = node?.contextId;
 
   const handleCurrent = async () => {
     const id = await resolve(
@@ -326,7 +293,7 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
     >
       <ListItemButton
         component={NextLink}
-        href={`/${session?.prefix?.path?.join('/')}?app=screen`}
+        href={`/${ctxPath?.join('/')}?app=screen`}
         target="_blank"
       >
         <ListItemIcon>
@@ -340,10 +307,10 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
         </ListItemIcon>
         <ListItemText primary="Aktuelle Punkt" />
       </ListItemButton>
-      {node.id && (
+      {node.contextId && (
         <DrawerList
-          id={node.id}
-          path={session?.prefix?.path ?? []}
+          id={node.contextId}
+          path={ctxPath}
           fullpath={path}
           open={listOpen}
           setOpen={setListOpen}
@@ -356,27 +323,33 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
   );
 };
 
-const Title = () => {
-  const [session] = useSession();
+const Title = ({ id }: { id: string }) => {
   const node = useNode({
-    id: session?.prefix?.id!,
+    id,
   });
   const query = node.useQuery();
 
   return (
     <>
       <IconButton>
-        <MimeAvatar name={query?.name} mimeId={query?.mimeId} />
+        <MimeAvatar
+          name={query?.context?.name}
+          mimeId={query?.context?.mimeId}
+        />
       </IconButton>
-      <Typography sx={{ m: 2, color: 'common.white' }}>{node?.name}</Typography>
+      <Typography sx={{ m: 2, color: 'common.white' }}>
+        {query?.context?.name}
+      </Typography>
     </>
   );
 };
 
 const Drawer = ({
+  id,
   open,
   setOpen,
 }: {
+  id: string;
   open: boolean;
   setOpen: (val: boolean) => void;
 }) => {
@@ -385,13 +358,12 @@ const Drawer = ({
   const path = usePath();
   const [session] = useSession();
   const home = path.length === 0;
+  const ctxPath = useContextPath();
 
   const list = home ? (
     <HomeList setOpen={setOpen} />
   ) : (
-    <Suspense>
-      <MenuList setOpen={setOpen} />
-    </Suspense>
+    <MenuList id={id} setOpen={setOpen} />
   );
 
   return (
@@ -447,7 +419,7 @@ const Drawer = ({
         <Toolbar
           onClick={() => {
             if (!home) {
-              link.path(session?.prefix?.path ?? path);
+              link.path(ctxPath);
               setOpen(false);
             }
           }}
@@ -477,7 +449,7 @@ const Drawer = ({
                 </>
               ) : (
                 <Suspense>
-                  <Title />
+                  <Title id={id} />
                 </Suspense>
               )}
               <Box sx={{ flexGrow: 1 }} />

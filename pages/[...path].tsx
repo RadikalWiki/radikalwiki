@@ -27,7 +27,7 @@ const Path = () => {
   // Load node from path
   return (
     <Suspense fallback={null}>
-      <PathLoader keys={[]} fullpath={fullpath} />
+      <PathLoader />
     </Suspense>
   );
 };

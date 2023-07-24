@@ -3,7 +3,7 @@ import { Avatar, Box, Fab } from '@mui/material';
 import { SpeedDial, SpeedDialAction } from '@mui/material';
 import { Save, Public } from '@mui/icons-material';
 import { resolve } from 'gql';
-import { Node, useLink, useScreen, useSession } from 'hooks';
+import { Node, useLink, useScreen } from 'hooks';
 
 const checkIfSuperParent = async (
   id?: string,
@@ -27,7 +27,6 @@ const EditorDial = ({
   handleSave: Function;
 }) => {
   const screen = useScreen();
-  const [session, setSession] = useSession();
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const link = useLink();

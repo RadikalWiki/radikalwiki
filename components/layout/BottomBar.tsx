@@ -2,6 +2,7 @@ import React from 'react';
 import { AppBar, Toolbar, useMediaQuery, Box, Container } from '@mui/material';
 import { HideOnScroll, SearchField } from 'comps';
 import { drawerWidth } from 'core/constants';
+import { useId } from 'core/path';
 
 const BottomBar = ({
   openDrawer,
@@ -11,6 +12,7 @@ const BottomBar = ({
   setOpenDrawer: (val: boolean) => void;
 }) => {
   const largeScreen = useMediaQuery('(min-width:1200px)');
+  const id = useId();
 
   return (
     <>
@@ -50,10 +52,11 @@ const BottomBar = ({
                 }}
                 disableGutters
               >
-                <SearchField
+                {id && <SearchField
+                  id={id}
                   openDrawer={openDrawer}
                   setOpenDrawer={setOpenDrawer}
-                />
+                />}
               </Container>
             </Box>
             <Box sx={{ flexGrow: 1 }} />

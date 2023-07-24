@@ -10,8 +10,7 @@ import {
   lighten,
 } from '@mui/material';
 import { useUserId } from '@nhost/nextjs';
-import { fromId } from 'core/path';
-import { order_by, resolve, useQuery } from 'gql';
+import { order_by, useQuery } from 'gql';
 import { useLink, useSession } from 'hooks';
 import { Fragment, startTransition } from 'react';
 
@@ -127,24 +126,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
       });
 
   const handleContextSelect = (id: string) => async () => {
-    const prefix = await resolve(({ query }) => {
-      const node = query.node({ id });
-      return {
-        id: node?.id,
-        name: node?.name ?? '',
-        mime: node?.mimeId!,
-        key: node?.key,
-      };
-    });
-
-    const path = await fromId(id);
     startTransition(() => {
-      setSession({
-        prefix: {
-          ...prefix,
-          path,
-        },
-      });
       setOpen(false);
       link.id(id);
     });

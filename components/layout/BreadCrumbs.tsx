@@ -1,7 +1,7 @@
 import { Typography, Collapse, useMediaQuery } from '@mui/material';
 import { Box } from '@mui/system';
 import { useQuery } from 'gql';
-import { useSession, usePath } from 'hooks';
+import { useSession, usePath, useContextPath } from 'hooks';
 import { Suspense, startTransition, useEffect, useRef, useState } from 'react';
 import { MimeAvatar, MimeAvatarId } from 'comps';
 import { getName } from 'mime';
@@ -200,6 +200,7 @@ const Breadcrumbs = () => {
   const path = usePath();
   const [open, setOpen] = useState<boolean[]>([]);
   const largeScreen = useMediaQuery('(min-width:1200px)');
+  const ctxPath = useContextPath();
 
   const initOpen = [
     ...new Array(path.length + (router.query.app === undefined ? 0 : 1)).fill(
@@ -214,14 +215,12 @@ const Breadcrumbs = () => {
     });
   }, [path]);
 
-  const prefix = session?.prefix?.path ?? [];
-
-  const sliced = path.slice(0, prefix.length);
+  const sliced = path.slice(0, ctxPath.length);
   const start =
-    prefix.length !== 0 &&
-    sliced.length === prefix.length &&
-    sliced.every((v, i) => v === prefix[i])
-      ? prefix.length
+    ctxPath.length !== 0 &&
+    sliced.length === ctxPath.length &&
+    sliced.every((v, i) => v === ctxPath[i])
+      ? ctxPath.length
       : 1;
 
   return (
