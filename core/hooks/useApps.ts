@@ -38,7 +38,7 @@ const useApps = () => {
       name: 'Hjem',
       mimeId: 'app/home',
       active: ['home'].includes(currentApp),
-      onClick: handleClick({ path: [] }),
+      onClick: handleClick({ path: [], app: undefined }),
       notifications: isAuthenticated
         ? sub
             .membersAggregate({
