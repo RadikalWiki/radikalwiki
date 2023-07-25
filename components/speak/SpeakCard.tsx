@@ -86,7 +86,7 @@ const SpeakCard = ({ node, time }: { node: Node; time: number }) => {
       />
       <List>
         <TransitionGroup>
-          {speakers?.map(({ id = '0', name, data, ownerId }) => {
+          {speakers?.map(({ id = '0', name, data, isOwner }) => {
             const avatarData = data();
             const item = (
               <Collapse key={id}>
@@ -104,7 +104,7 @@ const SpeakCard = ({ node, time }: { node: Node; time: number }) => {
                     }
                   />
                   {!screen &&
-                    (userId === ownerId || speakerlist?.isContextOwner) && (
+                    (isOwner || speakerlist?.isContextOwner) && (
                       <ListItemSecondaryAction>
                         <IconButton
                           onClick={handleRemoveSpeak(id)}

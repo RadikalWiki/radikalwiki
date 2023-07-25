@@ -24,7 +24,7 @@ const CandidateList = ({ node }: { node: Node }) => {
         {
           _or: [
             { mutable: { _eq: false } },
-            { ownerId: { _eq: userId } },
+            { isOwner: { _eq: true } },
             { members: { nodeId: { _eq: userId } } },
           ],
         },

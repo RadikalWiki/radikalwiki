@@ -17,7 +17,7 @@ const UserApp = ({ node }: { node: Node }) => {
   const query = useQuery();
   const nodes = query.nodes({
     where: {
-      _or: [{ ownerId: { _eq: node?.id } }],
+      isOwner: { _eq: true } 
     },
   });
   return (

@@ -42,7 +42,7 @@ const ListSuspense = () => {
             { mimeId: { _eq: 'wiki/event' } },
             {
               _or: [
-                { ownerId: { _eq: userId } },
+                { isOwner: { _eq: true } },
                 {
                   members: {
                     _and: [
@@ -65,7 +65,7 @@ const ListSuspense = () => {
             { mimeId: { _eq: 'wiki/group' } },
             {
               _or: [
-                { ownerId: { _eq: userId } },
+                { isOwner: { _eq: true } },
                 {
                   members: {
                     _and: [

@@ -92,7 +92,7 @@ const QuestionList = ({ node }: { node: Node }) => {
                     }
                   />
                   {!screen &&
-                    (child.ownerId == userId || query?.isContextOwner) && (
+                    (child.isOwner || query?.isContextOwner) && (
                       <ListItemSecondaryAction>
                         <IconButton
                           color="primary"

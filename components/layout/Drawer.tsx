@@ -71,7 +71,7 @@ const DrawerElement = ({
             {
               _or: [
                 { mutable: { _eq: false } },
-                { ownerId: { _eq: userId } },
+                { isOwner: { _eq: true } },
                 { members: { nodeId: { _eq: userId } } },
               ],
             },
@@ -209,7 +209,7 @@ const DrawerList = ({
         {
           _or: [
             { mutable: { _eq: false } },
-            { ownerId: { _eq: userId } },
+            { isOwner: { _eq: true } },
             { members: { nodeId: { _eq: userId } } },
           ],
         },
