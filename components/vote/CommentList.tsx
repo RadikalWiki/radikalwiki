@@ -30,7 +30,7 @@ const CommentList = ({ node }: { node: Node }) => {
   const $delete = node.useDelete();
   const userId = useUserId();
   const children = query?.children({
-    where: { mimeId: { _eq: 'vote/question' } },
+    where: { mimeId: { _eq: 'vote/comment' } },
     order_by: [{ index: order_by.asc }],
   });
 
@@ -64,7 +64,7 @@ const CommentList = ({ node }: { node: Node }) => {
       />
       <List>
         <TransitionGroup>
-          {children?.map(({ id, data, owner, ownerId }, index) => {
+          {children?.map(({ id, data, owner, isOwner }, index) => {
             const item = (
               <Collapse key={id ?? 0}>
                 <ListItem>
@@ -92,22 +92,22 @@ const CommentList = ({ node }: { node: Node }) => {
                     }
                   />
                   {!screen && (
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          color="primary"
-                          onClick={() => {
-                            $delete({ id });
-                          }}
-                          size="large"
-                        >
-                          <Delete />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          $delete({ id });
+                        }}
+                        size="large"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
                 </ListItem>
               </Collapse>
             );
-            return (ownerId == userId || query?.isContextOwner) && id  ? item : null;
+            return (isOwner || query?.isContextOwner) && id ? item : null;
           })}
           {!children?.[0]?.id && (
             <Collapse key={-1}>

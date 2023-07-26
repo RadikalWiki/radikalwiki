@@ -226,6 +226,8 @@ const getName = (mimeId?: string): string => {
       return 'Kandidatur';
     case 'vote/question':
       return 'Spørgsmål';
+    case 'vote/comment':
+      return 'Kommentar';
     case 'speak/list':
       return 'Talerliste';
     case 'app/editor':

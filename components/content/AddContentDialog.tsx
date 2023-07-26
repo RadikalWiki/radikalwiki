@@ -181,13 +181,15 @@ const AddContentDialog = ({
     try {
       const { id, key } = await insert({
         name: titel,
-        key: mimeId == 'vote/question' ? uuid() : undefined,
+        key: ['vote/question', 'vote/comment'].includes(mimeId)
+          ? uuid()
+          : undefined,
         mimeId: mimes.length == 1 ? mimes[0] : mimeId!,
         mutable,
         data:
           mimeId == 'wiki/file'
             ? { fileId, type }
-            : mimeId == 'vote/question'
+            : ['vote/question', 'vote/comment'].includes(mimeId)
             ? { text }
             : undefined,
       });
@@ -244,7 +246,7 @@ const AddContentDialog = ({
       </DialogTitle>
       <DialogContent>
         <Stack spacing={2}>
-          {mimeId !== 'vote/question' && (
+          {!['vote/question', 'vote/comment'].includes(mimeId) && (
             <TextField
               error={!!error}
               helperText={error}
@@ -293,7 +295,7 @@ const AddContentDialog = ({
               </Select>
             </FormControl>
           )}
-          {mimeId == 'vote/question' && (
+          {['vote/question', 'vote/comment'].includes(mimeId) && (
             <TextField
               sx={{ mt: 1 }}
               autoFocus
@@ -335,10 +337,10 @@ const AddContentDialog = ({
         </Button>
         <Button
           disabled={
-            (mimeId != 'vote/question' && !titel) ||
+            (!['vote/question', 'vote/comment'].includes(mimeId) && !titel) ||
             (mimes.length !== 1 && !mimeId) ||
             (mimeId == 'wiki/file' && !fileId) ||
-            (mimeId == 'vote/question' && !text) ||
+            (['vote/question', 'vote/comment'].includes(mimeId) && !text) ||
             !!error
           }
           onClick={handleSubmit}
