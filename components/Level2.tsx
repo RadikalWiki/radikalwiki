@@ -3,7 +3,7 @@ import { useQuery } from 'gql';
 
 const Level2 = ({ id }: { id: string }) => {
   const node = useQuery().node({ id });
-  node?.mimeId
+  if (!node?.mimeId) return null;
 
   return <Level3 id={id} />;
 };
