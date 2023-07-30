@@ -9,9 +9,11 @@ import {
 } from 'comps';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { useRouter } from 'next/router';
-import { Container, Box, useMediaQuery } from '@mui/material';
+import { Container, Box, useMediaQuery, IconButton } from '@mui/material';
 import { checkVersion } from 'core/util';
 import { useSession } from 'hooks';
+import { Refresh } from '@mui/icons-material';
+import { useSnackbar } from 'notistack';
 
 const Layout = ({ children }: { children: JSX.Element }) => {
   const [outdated, setOutdated] = useState(false);
@@ -19,8 +21,10 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [session, setSession] = useSession();
   const router = useRouter();
+  const [version, setVersion] = useState<string | undefined>();
   const { isLoading } = useAuthenticationStatus();
   const largeScreen = useMediaQuery('(min-width:1200px)');
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     startTransition(() => {
@@ -40,6 +44,30 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         })
       );
     }
+    const checkVersion = () => {
+      fetch('/api/version').then((res) => {
+        res.json().then(({ commit }) => {
+          if (version == undefined) {
+            setVersion(commit);
+          } else if (version != commit) {
+            enqueueSnackbar('Ny version tilgængelig', {
+              variant: 'info',
+              autoHideDuration: null,
+              action: () => {
+                return (
+                  <IconButton onClick={() => router.reload()}>
+                    <Refresh />
+                  </IconButton>
+                );
+              },
+            });
+          }
+        });
+      });
+    };
+    checkVersion();
+    window.addEventListener('focus', checkVersion);
+    return () => window.removeEventListener('focus', checkVersion);
   }, [session, setSession]);
 
   if (outdated) return <OldBrowser />;
@@ -49,7 +77,6 @@ const Layout = ({ children }: { children: JSX.Element }) => {
     return children;
 
   return (
-    <>
       <Box sx={{ display: 'flex' }}>
         <Scroll>
           <>
@@ -76,7 +103,6 @@ const Layout = ({ children }: { children: JSX.Element }) => {
           </Suspense>
         )}
       </Box>
-    </>
   );
 };
 

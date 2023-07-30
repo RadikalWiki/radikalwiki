@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, ComponentType } from 'react';
 import Head from 'next/head';
-import { Layout, SessionProvider } from 'comps';
+import { Layout, SessionProvider, SnackbarProvider } from 'comps';
 import { nhost } from 'nhost';
 import { NhostProvider } from '@nhost/nextjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -57,9 +57,11 @@ const App = ({
               <ThemeModeProvider>
                 <ThemeSchemeProvider>
                   <M3ThemeProvider>
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
+                    <SnackbarProvider>
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                    </SnackbarProvider>
                   </M3ThemeProvider>
                 </ThemeSchemeProvider>
               </ThemeModeProvider>

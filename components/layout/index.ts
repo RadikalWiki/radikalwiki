@@ -7,6 +7,7 @@ export { default as HideOnScroll } from './HideOnScroll';
 export { default as Layout } from './Layout';
 export { default as Scroll } from './Scroll';
 export { default as SessionProvider } from './SessionProvider';
+export { default as SnackbarProvider } from './SnackbarProvider';
 export { default as BottomBar } from './BottomBar';
 export { default as UserApp } from './UserApp';
 export { default as UserMenu } from './UserMenu';
