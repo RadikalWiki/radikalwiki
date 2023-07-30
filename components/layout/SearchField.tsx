@@ -149,6 +149,7 @@ const SearchField = ({
                 ? {}
                 : { contextId: { _eq: session?.prefix?.id } },
               { name: { _ilike: `%${name}%` } },
+              { parent: { id: { _is_null: false } }}
             ],
           },
           limit: name ? 10 : 0,
