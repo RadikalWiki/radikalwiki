@@ -28,12 +28,14 @@ const BreadcrumbsLink = ({
   const router = useRouter();
   const query = useQuery();
   const where = {
-    _and: parentId
-      ? [
-          { key: { _eq: keys.at(-1) } },
-          { parentId: { _eq: parentId } },
-        ]
-      : [{ parentId: { _is_null: true } }],
+    _and:
+      fullpath?.[0]?.match(
+        /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i
+      ) && index == 1
+        ? [{ id: { _eq: fullpath[0] } }]
+        : parentId
+        ? [{ key: { _eq: keys.at(-1) } }, { parentId: { _eq: parentId } }]
+        : [{ parentId: { _is_null: true } }],
   };
   const node = query.nodes({ where }).at(0);
 
@@ -71,9 +73,9 @@ const BreadcrumbsLink = ({
             const newOpen = [
               ...open.slice(0, index),
               true,
-              ...new Array(
-                keys.length - index ? keys.length - index : 0
-              ).fill(false),
+              ...new Array(keys.length - index ? keys.length - index : 0).fill(
+                false
+              ),
             ];
             setOpen(newOpen);
           }}
@@ -134,51 +136,48 @@ const BreadcrumbsLink = ({
           </>
         </Box>
       )}
-      {keys.length === fullpath.length &&
-        router.query.app !== undefined && (
-          <Box
-            key={`${node?.id}${router.query.app}`}
-            sx={{
-              alignItems: 'center',
-              display: 'flex',
-              ml: -1,
-              cursor: 'pointer',
-            }}
-            color="secondary"
-            onClick={handleClick}
-            onMouseEnter={() => {
-              const newOpen = [
-                ...open.slice(0, index + 1),
-                true,
-                ...new Array(
-                  keys.length - index + 1
-                    ? keys.length - index + 1
-                    : 0
-                ).fill(false),
-              ];
-              setOpen(newOpen);
-            }}
-          >
-            <>
-              <MimeAvatar mimeId={`app/${router.query.app}`} />
-              <Collapse orientation="horizontal" in={open[index + 1]}>
-                <Typography
-                  ref={divRef}
-                  sx={{
-                    overflowY: 'hidden',
-                    ml: 0.5,
-                    maxHeight: 48,
-                    maxWidth: 300,
-                    hyphens: 'auto',
-                    color: 'common.white',
-                  }}
-                >
-                  {getName(`app/${router.query.app}`) ?? 'Ukendt'}
-                </Typography>
-              </Collapse>
-            </>
-          </Box>
-        )}
+      {keys.length === fullpath.length && router.query.app !== undefined && (
+        <Box
+          key={`${node?.id}${router.query.app}`}
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            ml: -1,
+            cursor: 'pointer',
+          }}
+          color="secondary"
+          onClick={handleClick}
+          onMouseEnter={() => {
+            const newOpen = [
+              ...open.slice(0, index + 1),
+              true,
+              ...new Array(
+                keys.length - index + 1 ? keys.length - index + 1 : 0
+              ).fill(false),
+            ];
+            setOpen(newOpen);
+          }}
+        >
+          <>
+            <MimeAvatar mimeId={`app/${router.query.app}`} />
+            <Collapse orientation="horizontal" in={open[index + 1]}>
+              <Typography
+                ref={divRef}
+                sx={{
+                  overflowY: 'hidden',
+                  ml: 0.5,
+                  maxHeight: 48,
+                  maxWidth: 300,
+                  hyphens: 'auto',
+                  color: 'common.white',
+                }}
+              >
+                {getName(`app/${router.query.app}`) ?? 'Ukendt'}
+              </Typography>
+            </Collapse>
+          </>
+        </Box>
+      )}
       {keys.length !== fullpath.length && node?.id && (
         <BreadcrumbsLink
           key={index + 1}
