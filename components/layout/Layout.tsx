@@ -44,6 +44,9 @@ const Layout = ({ children }: { children: JSX.Element }) => {
         })
       );
     }
+  }, [session, setSession]);
+
+  useEffect(() => {
     const checkVersion = () => {
       fetch('/api/version').then((res) => {
         res.json().then(({ commit }) => {
@@ -68,7 +71,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
     checkVersion();
     window.addEventListener('focus', checkVersion);
     return () => window.removeEventListener('focus', checkVersion);
-  }, [session, setSession]);
+  }, []);
 
   if (outdated) return <OldBrowser />;
   if (!showing || isLoading) return null;
