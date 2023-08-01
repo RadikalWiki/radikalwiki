@@ -1,4 +1,5 @@
 import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
+import platform from 'platform';
 
 const fallbackRender = ({
   error,
@@ -13,8 +14,9 @@ const fallbackRender = ({
         <a href="mailto:niclas@overby.me">niclas@overby.me</a>:
       </p>
       <pre style={{ background: '#EDEDED', padding: '20px' }}>
-        {error.message + '\n'}
-        {error.stack}
+        {`platform: ${platform}\n`}
+        {`error: ${error.message}\n`}
+        {`stack:\n${error.stack}`}
       </pre>
     </div>
   );
