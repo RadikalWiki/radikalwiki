@@ -12,6 +12,7 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
 } from '@mui/material';
 import { Add, ContactMail, DoNotDisturb } from '@mui/icons-material';
@@ -140,24 +141,20 @@ const ListSuspense = () => {
     <List>
       {invites.map(({ id, parent }) => {
         const item = (
-          <ListItem
-            key={id ?? 0}
-            secondaryAction={
-              <IconButton onClick={handleAcceptInvite(id)}>
-                <Add />
-              </IconButton>
-            }
-          >
+          <ListItemButton key={id ?? 0}>
             {parent?.id && (
               <ListItemAvatar>
                 <MimeAvatarId id={parent?.id} />
               </ListItemAvatar>
             )}
             <ListItemText primary={parent?.name} />
-          </ListItem>
+            <IconButton onClick={handleAcceptInvite(id)}>
+              <Add />
+            </IconButton>
+          </ListItemButton>
         );
 
-        return parent?.id ? item : null;
+        return id ? item : null;
       })}
       {!invites?.[0]?.id && (
         <ListItem>
