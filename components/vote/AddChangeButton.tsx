@@ -20,7 +20,7 @@ const AddChangeButton = ({ node }: { node: Node }) => {
   return (
     <>
       <AutoButton
-        text="Ændringsforslag"
+        text="Nyt Ændringsforslag"
         icon={<PlusOne />}
         onClick={handleSubmit}
       />

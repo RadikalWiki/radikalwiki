@@ -16,7 +16,7 @@ const AddQuestionButton = ({ node }: { node: Node }) => {
 
   return (
     <>
-      <AutoButton text="Kommentar" icon={<PlusOne />} onClick={handleSubmit} />
+      <AutoButton text="Ny Kommentar" icon={<PlusOne />} onClick={handleSubmit} />
       <AddContentDialog
         mutable={false}
         node={node}
