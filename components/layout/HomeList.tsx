@@ -70,7 +70,7 @@ const stringToRgb = (str: string) => {
   return '#00000'.substring(1, 6 - hash.length) + hash;
 };
 
-const HomeList = ({ setOpen }: { setOpen: Function }) => {
+const HomeList = ({ setOpen }: { setOpen?: Function }) => {
   const link = useLink();
   const userId = useUserId();
   const query = useQuery();
@@ -145,7 +145,7 @@ const HomeList = ({ setOpen }: { setOpen: Function }) => {
           path,
         },
       });
-      setOpen(false);
+      setOpen?.(false);
       link.id(id);
     });
   };
