@@ -22,7 +22,11 @@ const useApps = () => {
       `scroll/${currentApp}`,
       scroll?.scrollTop?.toString() ?? '0'
     );
-    if (currentApp == 'folder') {
+    localStorage.setItem('app', currentApp);
+    if ((localStorage['app'] ?? 'folder') === 'folder' && app == undefined) {
+      return;
+    }
+    if (currentApp === 'folder') {
       localStorage.setItem('path', router.asPath ?? '');
     }
     await link.path(path ?? [], app);
@@ -58,7 +62,7 @@ const useApps = () => {
             mimeId: 'app/folder',
             active: ['folder', 'editor'].includes(currentApp),
             onClick: handleClick(
-              localStorage?.path?.slice(1)?.split('/') ?? session?.prefix?.path
+              localStorage?.path?.split('/')?.slice(1) ?? session?.prefix?.path
             ),
             notifications: 0,
           },
