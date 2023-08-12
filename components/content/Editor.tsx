@@ -112,7 +112,7 @@ const Editor = ({ node }: { node: Node }) => {
                     icon={<Save />}
                     onClick={handleSave()}
                   />
-                  <PublishButton node={node} />
+                  <PublishButton node={node} handlePublish={handleSave(false)} />
                 </ButtonGroup>
               </Stack>
             </Grid>
