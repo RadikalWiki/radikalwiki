@@ -23,7 +23,7 @@ const useApps = () => {
       scroll?.scrollTop?.toString() ?? '0'
     );
     localStorage.setItem('app', currentApp);
-    if ((localStorage['app'] ?? 'folder') === 'folder' && app == undefined) {
+    if ((localStorage['app'] ?? 'folder') === 'folder' && app == undefined && path?.length != 0) {
       return;
     }
     if (currentApp === 'folder') {
