@@ -8,7 +8,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { AddContentFab, HeaderCard, HomeList, InvitesUserList } from 'comps';
-import { useNode, usePath } from 'hooks';
+import { useNode } from 'hooks';
 import { Hail } from '@mui/icons-material';
 import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
 
