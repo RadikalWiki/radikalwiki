@@ -6,11 +6,15 @@ import {
   Avatar,
   Card,
   useMediaQuery,
+  Button,
+  Stack,
+  Box,
 } from '@mui/material';
 import { AddContentFab, HeaderCard, HomeList, InvitesUserList } from 'comps';
 import { useNode } from 'hooks';
-import { Hail } from '@mui/icons-material';
+import { Hail, HowToReg, Login } from '@mui/icons-material';
 import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
+import { useRouter } from 'next/router';
 
 const AddContentFabSuspense = () => {
   const node = useNode();
@@ -18,6 +22,7 @@ const AddContentFabSuspense = () => {
 };
 
 const HomeApp = () => {
+  const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
   const displayName = useUserDisplayName();
   const largeScreen = useMediaQuery('(min-width:1200px)');
@@ -53,12 +58,29 @@ const HomeApp = () => {
             <CardContent>
               {(!isAuthenticated && (
                 <>
-                  <Typography>
-                    Log ind eller registrer dig til venstre.
-                  </Typography>
+                  <Typography>Log ind eller registrer dig.</Typography>
                   <Typography>
                     Husk at bruge den email, som du registrerede dig med hos RU.
                   </Typography>
+                  <Stack direction="row">
+                    <Button
+                      startIcon={<Login />}
+                      sx={{ mt: 1 }}
+                      variant="outlined"
+                      onClick={() => router.push('/user/login')}
+                    >
+                      Log ind
+                    </Button>
+                    <Box sx={{ p: 1 }} />
+                    <Button
+                      startIcon={<HowToReg />}
+                      sx={{ mt: 1 }}
+                      variant="outlined"
+                      onClick={() => router.push('/user/register')}
+                    >
+                      Registrer
+                    </Button>
+                  </Stack>
                 </>
               )) || (
                 <>

@@ -2,7 +2,6 @@ import { Badge, IconButton, Paper, Slide, Stack } from '@mui/material';
 import { useApps } from 'hooks';
 import { IconId } from 'mime';
 import { useEffect, useState } from 'react';
-import UserMenu from './UserMenu';
 
 const MobileMenu = ({
   openDrawer,
@@ -57,7 +56,6 @@ const MobileMenu = ({
               </Badge>
             </IconButton>
           ))}
-          <UserMenu />
         </Stack>
       </Paper>
     </Slide>

@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { order_by, query, resolved } from 'gql';
 import { useLink, usePath, useSession } from 'hooks';
-import { MimeIconId, Breadcrumbs, Bar } from 'comps';
+import { MimeIconId, Breadcrumbs, Bar, UserMenu } from 'comps';
 import {
   ForwardedRef,
   forwardRef,
@@ -255,7 +255,7 @@ const SearchField = ({
       )}
       renderInput={(params) => (
         <Bar ref={params.InputProps.ref}>
-          <Stack direction="row">
+          <Stack direction="row" spacing={-1}>
             {!largeScreen && (
               <MenuAvatar
                 openDrawer={openDrawer}
@@ -285,6 +285,7 @@ const SearchField = ({
                 <SearchOff />
               </Avatar>
             </IconButton>
+            <UserMenu avatar />
           </Stack>
         </Bar>
       )}
@@ -295,7 +296,7 @@ const SearchField = ({
     autocomplete
   ) : (
     <Bar>
-      <Stack direction="row">
+      <Stack direction="row" spacing={-1}>
         {!largeScreen && (
           <MenuAvatar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         )}
@@ -305,6 +306,7 @@ const SearchField = ({
             <Search />
           </Avatar>
         </IconButton>
+        <UserMenu avatar />
       </Stack>
     </Bar>
   );

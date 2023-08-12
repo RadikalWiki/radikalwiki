@@ -1,11 +1,12 @@
 import React, { MouseEventHandler, useContext, useState } from 'react';
 import {
+  Avatar,
   IconButton,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import {
@@ -23,7 +24,7 @@ import { useAuthenticationStatus } from '@nhost/nextjs';
 import { ThemeModeContext } from 'core/theme/ThemeModeContext';
 import { client } from 'gql';
 
-const UserMenu = ({ list }: { list?: boolean }) => {
+const UserMenu = ({ avatar }: { avatar?: boolean }) => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<
     HTMLButtonElement | HTMLDivElement | null
@@ -31,6 +32,7 @@ const UserMenu = ({ list }: { list?: boolean }) => {
   const { isAuthenticated } = useAuthenticationStatus();
   const { toggleThemeMode } = useContext(ThemeModeContext);
   const { palette } = useTheme();
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const handleClick: MouseEventHandler<HTMLButtonElement | HTMLDivElement> = (
     event
@@ -57,24 +59,12 @@ const UserMenu = ({ list }: { list?: boolean }) => {
 
   return (
     <>
-      {list ? (
-        <ListItemButton
-          onClick={handleClick}
-          sx={{
-            minHeight: 48,
-            justifyContent: 'center',
-            px: 2.5,
-          }}
-        >
-          <ListItemIcon
-            sx={{
-              mr: 'auto',
-              justifyContent: 'center',
-            }}
-          >
+      {avatar ? (
+        <IconButton onClick={handleClick}>
+          <Avatar sx={{ bgcolor: 'primary.main' }}>
             <ManageAccounts />
-          </ListItemIcon>
-        </ListItemButton>
+          </Avatar>
+        </IconButton>
       ) : (
         <IconButton onClick={handleClick}>
           <ManageAccounts />
@@ -82,11 +72,11 @@ const UserMenu = ({ list }: { list?: boolean }) => {
       )}
       <Menu
         anchorOrigin={{
-          vertical: 'top',
+          vertical: largeScreen ? 'bottom' : 'top',
           horizontal: 'center',
         }}
         transformOrigin={{
-          vertical: 'bottom',
+          vertical: largeScreen ? 'top' : 'bottom',
           horizontal: 'center',
         }}
         anchorEl={anchorEl}

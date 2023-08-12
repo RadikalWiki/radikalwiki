@@ -1,14 +1,13 @@
 import React from 'react';
 import { Avatar, Button, CardContent, Grid, Typography } from '@mui/material';
 import { HeaderCard } from 'comps';
-import { QuestionMark } from '@mui/icons-material';
+import { Login, QuestionMark } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 import { useRouter } from 'next/router';
 
 const UnknownApp = () => {
   const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
-
 
   return (
     <Grid container spacing={1}>
@@ -38,7 +37,14 @@ const UnknownApp = () => {
                 <Typography>
                   Du kan måske få adgang til dokumentet ved at logge ind:
                 </Typography>
-                <Button sx={{ mt: 1 }} variant='outlined' onClick={() => router.push('/user/login')}>Log ind</Button>
+                <Button
+                  startIcon={<Login />}
+                  sx={{ mt: 1 }}
+                  variant="outlined"
+                  onClick={() => router.push('/user/login')}
+                >
+                  Log ind
+                </Button>
               </>
             )}
           </CardContent>

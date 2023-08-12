@@ -1,7 +1,6 @@
 import { Badge, Box, IconButton } from '@mui/material';
 import { useApps } from 'hooks';
 import { IconId } from 'mime';
-import { UserMenu } from 'comps';
 import { Stack } from '@mui/system';
 
 const AppList = () => {
@@ -21,7 +20,6 @@ const AppList = () => {
         </IconButton>
       ))}
       <Box sx={{ height: '100%' }} />
-      <UserMenu />
     </Stack>
   );
 };
