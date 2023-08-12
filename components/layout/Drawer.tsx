@@ -13,6 +13,7 @@ import {
   Skeleton,
   Stack,
   Avatar,
+  Divider,
 } from '@mui/material';
 import {
   Close,
@@ -339,6 +340,7 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
         </ListItemIcon>
         <ListItemText primary="Aktuelle Punkt" />
       </ListItemButton>
+      <Divider />
       {node.id && (
         <DrawerList
           id={node.id}
@@ -434,16 +436,26 @@ const Drawer = ({
           pb: 8,
         }}
       >
+        {largeScreen && <Box sx={{ p: 4 }} />}
         {list}
       </Box>
       <AppBar
         elevation={0}
-        sx={{
-          top: 'auto',
-          bottom: 0,
-          background: 'transparent',
-          boxShadow: 'none',
-        }}
+        sx={
+          largeScreen
+            ? {
+                top: 'auto',
+                background: 'transparent',
+                boxShadow: 'none',
+                position: 'fixed',
+              }
+            : {
+                top: 'auto',
+                bottom: 0,
+                background: 'transparent',
+                boxShadow: 'none',
+              }
+        }
       >
         <Toolbar
           onClick={() => {
@@ -458,9 +470,8 @@ const Drawer = ({
             cursor: 'pointer',
             borderRadius: '20px',
             width: largeScreen ? `${drawerWidth}px` : '100%',
-
-            bottom: 0,
-            position: 'absolute',
+            position: largeScreen ? 'fixed' : 'absolute',
+            bottom: largeScreen ? undefined : 9,
             ml: largeScreen ? 5 : 0,
           }}
           disableGutters

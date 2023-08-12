@@ -1,9 +1,10 @@
-import { Slide } from '@mui/material';
+import { Slide, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 
 const HideOnScroll = ({ children }: { children: JSX.Element }) => {
   const [scrollPosition, setScrollPosition] = useState(0);
   const [show, setShow] = useState(true);
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   useEffect(() => {
     const scroll = document.querySelector('#scroll');
@@ -20,7 +21,7 @@ const HideOnScroll = ({ children }: { children: JSX.Element }) => {
   };
 
   return (
-    <Slide direction="up" in={show}>
+    <Slide direction={largeScreen ? "down" : "up"} in={show}>
       {children}
     </Slide>
   );

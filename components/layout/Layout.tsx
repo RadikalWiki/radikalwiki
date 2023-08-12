@@ -83,6 +83,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
       <Box sx={{ display: 'flex' }}>
         <Scroll>
           <>
+            {largeScreen && <Box sx={{ p: 4 }} />}
             {typeof window !== 'undefined' && (
               <Container sx={{ pl: 1, pr: 1, pt: 1 }} disableGutters>
                 {children}

@@ -22,8 +22,7 @@ const BottomBar = ({
               ? {
                   width: `calc(100% - ${drawerWidth + 40}px)`,
                   ml: `${drawerWidth}px`,
-                  top: 'auto',
-                  bottom: 0,
+                  top: 0,
                   background: 'transparent',
                   boxShadow: 'none',
                 }
@@ -60,7 +59,6 @@ const BottomBar = ({
           </Toolbar>
         </AppBar>
       </HideOnScroll>
-
       <Box sx={{ p: 4 }} />
     </>
   );
