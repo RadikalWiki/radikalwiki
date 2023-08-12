@@ -51,16 +51,20 @@ const useApps = () => {
         })
         .aggregate?.count(),
     },
-    {
-      name: 'Mappe',
-      mimeId: 'app/folder',
-      active: ['folder', 'editor'].includes(currentApp),
-      onClick: handleClick(
-        localStorage?.path?.slice(1)?.split('/') ?? session?.prefix?.path
-      ),
-      notifications: 0,
-    },
-    ...(isAuthenticated
+    ...(currentApp !== 'home'
+      ? [
+          {
+            name: 'Mappe',
+            mimeId: 'app/folder',
+            active: ['folder', 'editor'].includes(currentApp),
+            onClick: handleClick(
+              localStorage?.path?.slice(1)?.split('/') ?? session?.prefix?.path
+            ),
+            notifications: 0,
+          },
+        ]
+      : []),
+    ...(isAuthenticated && currentApp !== 'home'
       ? [
           {
             name: 'Tal',
