@@ -245,12 +245,11 @@ const AddContentDialog = ({
         Tilføj {mimes.length > 1 ? 'indhold' : getName(mimes[0])}
       </DialogTitle>
       <DialogContent>
-        <Stack spacing={2}>
+        <Stack sx={{ mt: 1 }} spacing={2}>
           {!['vote/question', 'vote/comment'].includes(mimeId) && (
             <TextField
               error={!!error}
               helperText={error}
-              sx={{ mt: 1 }}
               autoFocus
               required
               label="Titel"
