@@ -26,10 +26,11 @@ const abrivContextName = (name?: string) => {
     .split(' ')
     .filter(
       (name) =>
-        name[0] === name[0].toUpperCase() &&
-        !(/[0-9]/.test(name) && name.length > 1)
+        (name[0] === name[0].toUpperCase() &&
+          !(/[0-9]/.test(name) && name.length > 1)) ||
+        (name.match(/[A-Z]/g)?.length ?? 1) > 1
     )
-    .map((name) => (abriv[name] ? abriv[name] : name[0]));
+    .map((name) => (abriv[name] ? abriv[name] : (name.match(/[A-Z]/g)?.length ?? 1) > 1 ? name : name[0]));
 
   switch (split?.length) {
     case 1:
@@ -78,26 +79,26 @@ const HomeList = ({ setOpen }: { setOpen?: Function }) => {
   const events = !userId
     ? []
     : query.nodes({
-        order_by: [{ createdAt: order_by.desc }],
-        where: {
-          _and: [
-            { mimeId: { _eq: 'wiki/event' } },
-            {
-              _or: [
-                { ownerId: { _eq: userId } },
-                {
-                  members: {
-                    _and: [
-                      { accepted: { _eq: true } },
-                      { nodeId: { _eq: userId } },
-                    ],
-                  },
+      order_by: [{ createdAt: order_by.desc }],
+      where: {
+        _and: [
+          { mimeId: { _eq: 'wiki/event' } },
+          {
+            _or: [
+              { ownerId: { _eq: userId } },
+              {
+                members: {
+                  _and: [
+                    { accepted: { _eq: true } },
+                    { nodeId: { _eq: userId } },
+                  ],
                 },
-              ],
-            },
-          ],
-        },
-      });
+              },
+            ],
+          },
+        ],
+      },
+    });
   const eventByYears = groupBy(
     events,
     (event) => event.createdAt?.substring(0, 4)!
@@ -105,26 +106,26 @@ const HomeList = ({ setOpen }: { setOpen?: Function }) => {
   const groups = !userId
     ? []
     : query.nodes({
-        order_by: [{ createdAt: order_by.desc }],
-        where: {
-          _and: [
-            { mimeId: { _eq: 'wiki/group' } },
-            {
-              _or: [
-                { ownerId: { _eq: userId } },
-                {
-                  members: {
-                    _and: [
-                      { accepted: { _eq: true } },
-                      { nodeId: { _eq: userId } },
-                    ],
-                  },
+      order_by: [{ createdAt: order_by.desc }],
+      where: {
+        _and: [
+          { mimeId: { _eq: 'wiki/group' } },
+          {
+            _or: [
+              { ownerId: { _eq: userId } },
+              {
+                members: {
+                  _and: [
+                    { accepted: { _eq: true } },
+                    { nodeId: { _eq: userId } },
+                  ],
                 },
-              ],
-            },
-          ],
-        },
-      });
+              },
+            ],
+          },
+        ],
+      },
+    });
 
   const handleContextSelect = (id: string) => async () => {
     const prefix = await resolved(() => {
