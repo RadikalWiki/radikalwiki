@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, ComponentType } from 'react';
 import Head from 'next/head';
-import { Layout, SessionProvider, ErrorBoundary, SnackbarProvider } from 'comps';
 import { nhost } from 'nhost';
 import { NhostProvider } from '@nhost/nextjs';
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -34,26 +33,18 @@ const App = ({
         />
       </Head>
 
-      <ErrorBoundary>
-        <NhostProvider nhost={nhost}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <SessionProvider>
-              <ThemeModeProvider>
-                <ThemeSchemeProvider>
-                  <M3ThemeProvider>
-                    <SnackbarProvider>
-                      <Layout>
-                        <Component {...pageProps} />
-                      </Layout>
-                    </SnackbarProvider>
-                  </M3ThemeProvider>
-                </ThemeSchemeProvider>
-              </ThemeModeProvider>
-            </SessionProvider>
-          </LocalizationProvider>
-        </NhostProvider>
-        <Analytics />
-      </ErrorBoundary>
+      <NhostProvider nhost={nhost}>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <ThemeModeProvider>
+            <ThemeSchemeProvider>
+              <M3ThemeProvider>
+                <Component {...pageProps} />
+              </M3ThemeProvider>
+            </ThemeSchemeProvider>
+          </ThemeModeProvider>
+        </LocalizationProvider>
+      </NhostProvider>
+      <Analytics />
     </>
   );
 };
