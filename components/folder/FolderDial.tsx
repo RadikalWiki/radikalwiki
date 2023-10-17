@@ -157,7 +157,7 @@ const FolderDial = ({ node }: { node: Node }) => {
   const copy = async (copyId?: string | null, parentId?: string | null) => {
     if (!copyId) return;
     const node = await resolved(() => {
-      const { name, key, mimeId, data, mutable, attachable, index } = q.node({
+      const { name, key, mimeId, data, mutable, attachable, index, createdAt } = q.node({
         id: copyId,
       })!;
       return {
@@ -169,6 +169,7 @@ const FolderDial = ({ node }: { node: Node }) => {
         index,
         data: data(),
         parentId: parentId!,
+        createdAt: createdAt!,
       };
     });
     const children = await resolved(() =>

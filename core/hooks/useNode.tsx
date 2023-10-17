@@ -70,6 +70,7 @@ export type Node = {
     mutable?: boolean;
     attachable?: boolean;
     index?: number;
+    createdAt?: string;
   }) => Promise<{ id: Maybe<string | undefined>; key?: string }>;
   useDelete: (
     param?: Param
@@ -198,6 +199,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       mutable,
       attachable,
       index,
+      createdAt,
     }: {
       name?: string;
       key?: string;
@@ -208,6 +210,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
       mutable?: boolean;
       attachable?: boolean;
       index?: number;
+      createdAt?: string
     }) => {
       const childId = await insertNode({
         args: {
@@ -220,6 +223,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
           mutable,
           attachable,
           index,
+          createdAt,
         },
       });
       return { id: childId, key: getKey(key ?? name) };
