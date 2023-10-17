@@ -1,8 +1,10 @@
-import { CardHeader, Skeleton, Typography } from '@mui/material';
+import { CardHeader, Skeleton, Tooltip, Typography } from '@mui/material';
 import { MimeAvatarNode, MemberChips, ContentToolbar, MimeAvatar } from 'comps';
 import { Suspense } from 'react';
 import { Node, useScreen } from 'hooks';
 import { Stack } from '@mui/system';
+import formatDistance from 'date-fns/formatDistance';
+import { da } from 'date-fns/locale';
 
 const Title = ({ node }: { node: Node }) => {
   const query = node.useQuery();
@@ -27,6 +29,7 @@ const ContentHeader = ({
   child?: boolean;
   add?: boolean;
 }) => {
+  const query = node.useQuery();
   return (
     <>
       <CardHeader
@@ -38,6 +41,25 @@ const ContentHeader = ({
               <Title node={node} />
             </Suspense>
           )
+        }
+        subheader={
+          child ? undefined :
+          <Tooltip
+            title={
+              query?.createdAt && new Date(query?.createdAt).toLocaleString()
+            }
+          >
+            <Typography component='span' variant="caption">
+              {query?.createdAt ?`
+                Oprettet
+                ${
+                  formatDistance(new Date(), new Date(query?.createdAt), {
+                    locale: da,
+                  })
+                } siden
+            ` : ""}
+            </Typography>
+          </Tooltip>
         }
         avatar={
           child ? (
