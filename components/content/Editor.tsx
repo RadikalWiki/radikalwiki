@@ -15,6 +15,8 @@ import { Node, useLink, useFile } from 'hooks';
 import { Stack } from '@mui/system';
 import { Descendant } from 'slate';
 import { CustomElement } from 'core/types/slate';
+import { DatePicker } from '@mui/x-date-pickers';
+import { parseISO } from 'date-fns';
 
 const Editor = ({ node }: { node: Node }) => {
   const link = useLink();
@@ -26,6 +28,7 @@ const Editor = ({ node }: { node: Node }) => {
   const image = useFile({ fileId: fileId ?? data?.image, image: true });
 
   const [name, setName] = useState('');
+  const [date, setDate] = useState<Date | null>(null);
   const [members, setMembers] = useState<
     { nodeId: string; name?: string; email?: string }[]
   >([]);
@@ -56,18 +59,24 @@ const Editor = ({ node }: { node: Node }) => {
         }
         const fetch = async () => {
           setName(query.name ?? '');
+          console.log(query.createdAt);
+          setDate(parseISO(query?.createdAt ?? ''));
           setContent(structuredClone(data?.content));
         };
         fetch();
       });
     }
-  }, [query, JSON.stringify(data?.content)]);
+  }, [query, query?.createdAt, JSON.stringify(data?.content)]);
 
   const handleSave = (mutable?: boolean) => async () => {
     if (
-      !['wiki/group', 'wiki/event', 'vote/position', 'vote/candidate', 'wiki/folder'].includes(
-        query?.mimeId!
-      )
+      ![
+        'wiki/group',
+        'wiki/event',
+        'vote/position',
+        'vote/candidate',
+        'wiki/folder',
+      ].includes(query?.mimeId!)
     ) {
       if (members.length === 0) {
         setAuthorError('Tilføj mindst 1 forfatter');
@@ -85,7 +94,12 @@ const Editor = ({ node }: { node: Node }) => {
         : content;
 
     await update({
-      set: { name, data: { content: newContent, image: fileId }, mutable },
+      set: {
+        name,
+        data: { content: newContent, image: fileId },
+        mutable,
+        createdAt: date?.toISOString(),
+      },
     });
     link.push([]);
   };
@@ -112,25 +126,32 @@ const Editor = ({ node }: { node: Node }) => {
                     icon={<Save />}
                     onClick={handleSave()}
                   />
-                  <PublishButton node={node} handlePublish={handleSave(false)} />
+                  <PublishButton
+                    node={node}
+                    handlePublish={handleSave(false)}
+                  />
                 </ButtonGroup>
               </Stack>
             </Grid>
-            {![
-              'wiki/group',
-              'wiki/event',
-              'vote/position',
-              'vote/candidate',
-            ].includes(query?.mimeId!) && (
-              <Grid item xs={12}>
-                <AuthorTextField
-                  value={members}
-                  onChange={setMembers}
-                  setAuthorError={setAuthorError}
-                  authorError={authorError}
-                />
-              </Grid>
-            )}
+            <Grid item xs={12}>
+              <Stack spacing={2} direction={'row'} alignItems="center">
+                {![
+                  'wiki/group',
+                  'wiki/event',
+                  'vote/position',
+                  'vote/candidate',
+                ].includes(query?.mimeId!) && (
+                  <AuthorTextField
+                    value={members}
+                    onChange={setMembers}
+                    setAuthorError={setAuthorError}
+                    authorError={authorError}
+                  />
+                )}
+
+                {query?.isContextOwner && <DatePicker value={date} onChange={setDate} />}
+              </Stack>
+            </Grid>
             <Grid item>
               <FileUploader
                 text="Upload Billede"

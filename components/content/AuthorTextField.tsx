@@ -78,6 +78,7 @@ const AuthorTextField = ({
       includeInputInList
       autoComplete
       autoHighlight
+      fullWidth
       onChange={(_, newValue) => {
         setOptions(newValue.concat(options));
         onChange(newValue);
