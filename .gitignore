@@ -31,9 +31,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# yarn
-yarn.lock
-
 # gql
 schema.generated.ts
 
