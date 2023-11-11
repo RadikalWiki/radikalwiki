@@ -112,7 +112,7 @@ export type Node = {
 
 const useNode = ({ id }: { id: string }): Node => {
   assert(id, "id should always be defined")
-  const query = useQueryGqty();
+  const query = useQueryGqty({ __experimentalGreedyFetch: true  });
   const node = query.node({ id })!;
   const useQuery = () => {
     return node;

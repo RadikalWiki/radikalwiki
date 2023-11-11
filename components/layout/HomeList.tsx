@@ -72,7 +72,7 @@ const stringToRgb = (str: string) => {
 const HomeList = ({ setOpen }: { setOpen: Function }) => {
   const link = useLink();
   const userId = useUserId();
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const [_, setSession] = useSession();
   const events = !userId
     ? []

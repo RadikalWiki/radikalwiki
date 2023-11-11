@@ -31,7 +31,7 @@ const UserMenu = ({ list }: { list?: boolean }) => {
   const { isAuthenticated } = useAuthenticationStatus();
   const { toggleThemeMode } = useContext(ThemeModeContext);
   const { palette } = useTheme();
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
 
   const handleClick: MouseEventHandler<HTMLButtonElement | HTMLDivElement> = (
     event

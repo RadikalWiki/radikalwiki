@@ -26,7 +26,7 @@ const BreadcrumbsLink = ({
 }) => {
   const divRef = useRef<HTMLSpanElement>(null);
   const router = useRouter();
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const where = {
     _and:
       fullpath?.[0]?.match(

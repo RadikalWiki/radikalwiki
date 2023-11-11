@@ -14,7 +14,7 @@ import { IconId } from 'mime';
 import { Node } from 'hooks';
 
 const UserApp = ({ node }: { node: Node }) => {
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const nodes = query.nodes({
     where: {
       isOwner: { _eq: true } 

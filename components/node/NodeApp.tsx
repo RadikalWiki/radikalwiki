@@ -37,7 +37,7 @@ const uniqBy = <T,>(a: T[], key: (v: T) => string) => {
 export default NodeApp;
 const NodeApp = ({ node }: { node: Node }) => {
   const router = useRouter();
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const [dim, setDim] = useState({
     width: window.innerWidth,
     height: window.innerHeight,

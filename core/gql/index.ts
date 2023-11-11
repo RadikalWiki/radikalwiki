@@ -66,6 +66,7 @@ const subscriptionsClient = createSubscriptionsClient({
 });
 
 export const client = createClient<GeneratedSchema>({
+  aliasLength: 10,
   schema: generatedSchema,
   scalars: scalarsEnumsHash,
   cache,

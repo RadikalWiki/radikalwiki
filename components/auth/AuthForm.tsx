@@ -24,7 +24,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
   const router = useRouter();
   const { isAuthenticated } = useAuthenticationStatus();
   const [_, setSession] = useSession();
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');

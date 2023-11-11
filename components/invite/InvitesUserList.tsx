@@ -18,7 +18,7 @@ import { HeaderCard, MimeAvatarId } from 'comps';
 import { useUserEmail, useUserId } from '@nhost/nextjs';
 
 const ListSuspense = () => {
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const userId = useUserId();
   const email = useUserEmail();
   const invites = query

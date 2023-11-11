@@ -111,7 +111,7 @@ function MimeListElement({ mime, index }: { mime: mimes; index: number }) {
 }
 
 function ChildList({ id }: { id?: string }) {
-  const query = useQuery();
+  const query = useQuery({ __experimentalGreedyFetch: true });
   const node = query.node({ id });
   const mimes = node?.mimes();
 
