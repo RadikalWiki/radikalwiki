@@ -2,7 +2,6 @@ import React from 'react';
 import { PollAdmin } from 'comps';
 import { Node, useScreen } from 'hooks';
 import { Stack } from '@mui/material';
-import PollChartSub from './PollChartSub';
 
 const PollApp = ({ node }: { node: Node }) => {
   const screen = useScreen();
@@ -10,7 +9,7 @@ const PollApp = ({ node }: { node: Node }) => {
   return (
     <Stack spacing={1}>
       {!screen && <PollAdmin node={node} />}
-      <PollChartSub node={node} />
+      {/* <PollChartSub node={node} /> */}
     </Stack>
   );
 }
