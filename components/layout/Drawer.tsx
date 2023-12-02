@@ -14,6 +14,8 @@ import {
   Stack,
   Avatar,
   Divider,
+  Badge,
+  Tooltip,
 } from '@mui/material';
 import {
   Close,
@@ -21,6 +23,7 @@ import {
   ExpandLess,
   ExpandMore,
   FileOpen,
+  LockOpen,
 } from '@mui/icons-material';
 import { useSession, usePath, useNode, useLink } from 'hooks';
 import { fromId } from 'core/path';
@@ -108,11 +111,38 @@ const DrawerElement = ({
         }}
       >
         <ListItemIcon>
-          <MimeIcon
-            mimeId={query?.data({ path: 'type' }) ?? query?.mimeId}
-            index={iconIndex}
-            name={query?.name}
-          />
+          <Badge
+            badgeContent={query?.mutable ?
+              <Tooltip title="Ikke indsendt">
+                <Avatar
+                  sx={{
+                    width: 15,
+                    height: 15,
+                    bgcolor: 'primary.main',
+                  }}
+                >
+                  <LockOpen
+                    sx={{
+                      width: 13,
+                      height: 13,
+                      color: '#fff',
+                    }}
+                  />
+                </Avatar>
+              </Tooltip>
+            : null}
+            overlap="circular"
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <MimeIcon
+              mimeId={query?.data({ path: 'type' }) ?? query?.mimeId}
+              index={iconIndex}
+              name={query?.name}
+            />
+          </Badge>
         </ListItemIcon>
         <ListItemText>
           <Typography sx={{ hyphens: 'auto' }}>{query?.name}</Typography>

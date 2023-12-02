@@ -59,7 +59,7 @@ const IconId = ({
       return <Event />;
     case 'wiki/folder':
       return name?.[0] ? (
-        <Box sx={{ color: 'inherit' }}>
+        <Box sx={{ color: 'inherit', minWidth: '25px' }}>
           <Folder
             sx={{
               fontSize: 32,
