@@ -12,6 +12,8 @@ import type {
 } from './schema.generated';
 import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
+const url = `https://${process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN}.hasura.${process.env.NEXT_PUBLIC_NHOST_REGION}.nhost.run/v1/graphql`;
+
 const getHeaders = (): Record<string, string> =>
   process.env.HASURA_GRAPHQL_ADMIN_SECRET
     ? {
@@ -38,7 +40,7 @@ const queryFetcher: QueryFetcher = async (query, variables) => {
   //  }
   //}
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
+    url,
     {
       method: 'POST',
       headers: getHeaders(),
@@ -63,10 +65,10 @@ const subscriptionsClient = createSubscriptionsClient({
   //  });
   //},
   wsEndpoint: () => {
-    const url = new URL(`${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`);
+    const urlClass = new URL(url);
     // eslint-disable-next-line functional/immutable-data
-    url.protocol = url.protocol.replace('http', 'ws');
-    return url.href;
+    urlClass.protocol = urlClass.protocol.replace('http', 'ws');
+    return urlClass.href;
   },
   reconnect: true,
   lazy: false,
