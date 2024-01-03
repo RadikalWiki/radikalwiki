@@ -1,4 +1,10 @@
 type Element = {
+  text: string;
+  link: string;
+  bold: boolean;
+  code: boolean;
+  underline: boolean;
+  italic: boolean;
   type:
     | 'block-quote'
     | 'bulleted-list'
@@ -10,37 +16,31 @@ type Element = {
     | 'heading-four'
     | 'heading-five'
     | 'heading-six';
-  children: Leaf[];
+  children: Element[];
 };
 
-type Leaf = {
-  text: string;
-  link: string;
-  bold: boolean;
-  code: boolean;
-  underline: boolean;
-  italic: boolean;
-};
-
-const format = (leaf: Leaf) => {
-  const bold = leaf.bold ? `<strong>${leaf.text}</strong>` : leaf.text;
-  const code = leaf.code ? `<em>${bold}</em>` : bold;
-  const underline = leaf.underline ? `<u>${code}</u>` : code;
-  const italic = leaf.italic ? `<i>${underline}</i>` : underline;
-  const link = leaf.link ? `<a href=${leaf.link}>${italic}</a>` : italic;
+const format = (elem: Element) => {
+  const bold = elem.bold ? `<strong>${elem.text}</strong>` : elem.text;
+  const code = elem.code ? `<em>${bold}</em>` : bold;
+  const underline = elem.underline ? `<u>${code}</u>` : code;
+  const italic = elem.italic ? `<i>${underline}</i>` : underline;
+  const link = elem.link ? `<a href=${elem.link}>${italic}</a>` : italic;
 
   return link;
 };
 
-const toHtml = (doc: Element[]) =>
+const toHtml = (doc: Element[]): string =>
   doc
     ?.map((element: Element) => {
+      console.log(element)
       const formatted = element.children.map(format).join('');
       switch (element.type) {
         case 'block-quote':
           return `<blockquote>${formatted}</blockquote>`;
         case 'bulleted-list':
-          return `<ul>${formatted}</ul>`;
+          return `<ul>${toHtml(element.children)}</ul>`;
+        case 'numbered-list':
+          return `<ol>${toHtml(element.children)}</ol>`;
         case 'heading-one':
           return `<h1>${formatted}</h1>`;
         case 'heading-two':
@@ -55,8 +55,6 @@ const toHtml = (doc: Element[]) =>
           return `<h6>${formatted}</h6>`;
         case 'list-item':
           return `<li>${formatted}</li>`;
-        case 'numbered-list':
-          return `<ol>${formatted}</ol>`;
         default:
           return `<p>${formatted}</p>`;
       }
