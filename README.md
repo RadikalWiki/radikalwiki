@@ -6,5 +6,4 @@ Built with [Next.js](https://nextjs.org), [Hasura](https://hasura.io) and [NHost
 
 ## Showcase
 
-![](doc/radikalwiki1.png)
-![](doc/radikalwiki2.png)
+![](doc/radikalwiki.png)
