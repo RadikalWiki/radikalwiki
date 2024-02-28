@@ -22,13 +22,16 @@ const getHeaders = (): Record<string, string> =>
         'x-hasura-role': 'public',
       };
 
+const url = `https://${process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN}.hasura.${process.env.NEXT_PUBLIC_NHOST_REGION}.nhost.run/v1/graphql`;
+
+
 const queryFetcher: QueryFetcher = async (
   { query, variables, operationName },
   fetchOptions
 ) => {
   const headers = getHeaders();
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`,
+    url,
     {
       method: 'POST',
       headers,
@@ -58,10 +61,10 @@ const subscriptionsClient = createSubscriptionsClient({
     headers: getHeaders(),
   }),
   url: () => {
-    const url = new URL(`${process.env.NEXT_PUBLIC_NHOST_BACKEND}/v1/graphql`);
+    const urlClass = new URL(url);
     // eslint-disable-next-line functional/immutable-data
-    url.protocol = url.protocol.replace('http', 'ws');
-    return url.href;
+    urlClass.protocol = urlClass.protocol.replace('http', 'ws');
+    return urlClass.href;
   },
 });
 
