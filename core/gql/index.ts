@@ -53,7 +53,7 @@ const queryFetcher: QueryFetcher = async (
 const cache = new Cache(undefined, {
   maxAge: Infinity,
   staleWhileRevalidate: 5 * 60 * 1000,
-  normalization: true,
+  normalization: false,
 });
 
 const subscriptionsClient = createSubscriptionsClient({
