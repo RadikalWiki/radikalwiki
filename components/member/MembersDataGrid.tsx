@@ -1,7 +1,6 @@
 import { order_by } from 'gql';
-import { DataGrid, GridActionsCellItem, GridColumns } from '@mui/x-data-grid';
+import { DataGrid, GridColumns } from '@mui/x-data-grid';
 import { Box } from '@mui/system';
-import { Delete } from '@mui/icons-material';
 import { Node } from 'hooks';
 
 const MembersDataGrid = ({ node }: { node: Node }) => {
@@ -50,15 +49,6 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
       headerName: 'Actions',
       width: 100,
       cellClassName: 'actions',
-      getActions: ({ id }) => [
-        <GridActionsCellItem
-          icon={<Delete />}
-          label="Delete"
-          key="delete"
-          onClick={() => member.delete(id.toString())}
-          color="inherit"
-        />,
-      ],
     },
   ];
 

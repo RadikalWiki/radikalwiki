@@ -1,14 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, ComponentType } from 'react';
 import Head from 'next/head';
-import { Layout, SessionProvider, ErrorBoundary, SnackbarProvider } from 'comps';
+import { ErrorBoundary, Level1 } from 'comps';
 import { nhost } from 'nhost';
 import { NhostProvider } from '@nhost/nextjs';
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import M3ThemeProvider from 'core/theme/M3ThemeProvider';
-import ThemeModeProvider from 'core/theme/ThemeModeContext';
-import ThemeSchemeProvider from 'core/theme/ThemeSchemeContext';
 import { Analytics } from '@vercel/analytics/react';
 
 const App = ({
@@ -36,21 +31,7 @@ const App = ({
 
       <ErrorBoundary>
         <NhostProvider nhost={nhost}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <SessionProvider>
-              <ThemeModeProvider>
-                <ThemeSchemeProvider>
-                  <M3ThemeProvider>
-                    <SnackbarProvider>
-                      <Layout>
-                        <Component {...pageProps} />
-                      </Layout>
-                    </SnackbarProvider>
-                  </M3ThemeProvider>
-                </ThemeSchemeProvider>
-              </ThemeModeProvider>
-            </SessionProvider>
-          </LocalizationProvider>
+           <Level1 />
         </NhostProvider>
         <Analytics />
       </ErrorBoundary>
