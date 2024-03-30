@@ -18,3 +18,4 @@ export * from './sort';
 export * from './perm';
 export * from './node';
 export * from './mime';
+export * from './map';

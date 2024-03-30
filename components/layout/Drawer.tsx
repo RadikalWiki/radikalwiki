@@ -112,25 +112,27 @@ const DrawerElement = ({
       >
         <ListItemIcon>
           <Badge
-            badgeContent={query?.mutable ?
-              <Tooltip title="Ikke indsendt">
-                <Avatar
-                  sx={{
-                    width: 15,
-                    height: 15,
-                    bgcolor: 'primary.main',
-                  }}
-                >
-                  <LockOpen
+            badgeContent={
+              query?.mutable ? (
+                <Tooltip title="Ikke indsendt">
+                  <Avatar
                     sx={{
-                      width: 13,
-                      height: 13,
-                      color: '#fff',
+                      width: 15,
+                      height: 15,
+                      bgcolor: 'primary.main',
                     }}
-                  />
-                </Avatar>
-              </Tooltip>
-            : null}
+                  >
+                    <LockOpen
+                      sx={{
+                        width: 13,
+                        height: 13,
+                        color: '#fff',
+                      }}
+                    />
+                  </Avatar>
+                </Tooltip>
+              ) : null
+            }
             overlap="circular"
             anchorOrigin={{
               vertical: 'bottom',
@@ -354,23 +356,27 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
         width: '100%',
       }}
     >
-      <ListItemButton
-        component={NextLink}
-        href={`/${session?.prefix?.path?.join('/')}?app=screen`}
-        target="_blank"
-      >
-        <ListItemIcon>
-          <ConnectedTv />
-        </ListItemIcon>
-        <ListItemText primary="Skærm" />
-      </ListItemButton>
-      <ListItemButton onClick={handleCurrent}>
-        <ListItemIcon>
-          <FileOpen />
-        </ListItemIcon>
-        <ListItemText primary="Aktuelle Punkt" />
-      </ListItemButton>
-      <Divider />
+      {node.mimeId == 'wiki/event' && (
+        <>
+          <ListItemButton
+            component={NextLink}
+            href={`/${session?.prefix?.path?.join('/')}?app=screen`}
+            target="_blank"
+          >
+            <ListItemIcon>
+              <ConnectedTv />
+            </ListItemIcon>
+            <ListItemText primary="Skærm" />
+          </ListItemButton>
+          <ListItemButton onClick={handleCurrent}>
+            <ListItemIcon>
+              <FileOpen />
+            </ListItemIcon>
+            <ListItemText primary="Aktuelle Punkt" />
+          </ListItemButton>
+          <Divider />
+        </>
+      )}
       {node.id && (
         <DrawerList
           id={node.id}

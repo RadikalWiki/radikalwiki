@@ -22,6 +22,7 @@ import {
   HowToVote,
   RecordVoiceOver,
   AddComment,
+  Map,
 } from '@mui/icons-material';
 import MicrosoftExcelIcon from './svg/microsoft-excel.svg';
 import MicrosoftWordIcon from './svg/microsoft-word.svg';
@@ -178,6 +179,9 @@ const IconId = ({
       return <Folder />;
     case 'app/screen':
       return <Folder />;
+    case 'app/map':
+    case 'map/map':
+      return <Map />;
     case undefined:
       return <Skeleton variant="circular" width={24} height={24} />;
     default:
@@ -240,6 +244,9 @@ const getName = (mimeId?: string): string => {
       return 'Stem';
     case 'app/member':
       return 'Medlemmer';
+    case 'app/map':
+    case 'map/map':
+      return 'Kort';
     default:
       return 'Ukendt';
   }

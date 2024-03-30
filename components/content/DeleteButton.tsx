@@ -25,7 +25,7 @@ const DeleteButton = ({ node }: { node: Node }) => {
         onClick={() => setOpen(true)}
       />
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Bekræft Slettelsen</DialogTitle>
+        <DialogTitle>Bekræft Sletning</DialogTitle>
         <DialogActions>
           <Button
             endIcon={<Delete />}

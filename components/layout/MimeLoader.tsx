@@ -11,6 +11,7 @@ import {
   HomeApp,
   CandidateApp,
   FileApp,
+  MapApp,
 } from 'comps';
 import { useRouter } from 'next/router';
 
@@ -37,6 +38,8 @@ const SelectApp = ({ mimeId, node }: { mimeId: string; node: Node }) => {
       return <CandidateApp node={node} />;
     case 'vote/poll':
       return <PollApp node={node} />;
+    case 'map/map':
+      return <MapApp node={node} />;
     case 'wiki/home':
       return <HomeApp />;
     default:
