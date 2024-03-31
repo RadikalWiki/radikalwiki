@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { AuthForm, HeaderCard } from 'comps';
 import { useAuthenticationStatus } from '@nhost/nextjs';

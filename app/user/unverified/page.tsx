@@ -1,3 +1,4 @@
+"use client"
 import React, { startTransition, useEffect } from 'react';
 import { Typography, CardContent, Avatar, Container } from '@mui/material';
 import { HeaderCard } from 'comps';
