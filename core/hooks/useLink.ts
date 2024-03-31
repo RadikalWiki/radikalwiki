@@ -55,19 +55,14 @@ const useLink = () => {
   };
 
   const push = async (path: string[], app?: string) => {
-    const pushPath = pathname
-      .split('/')
-      .concat(path)
+    const pushPath = pathname.split('/').concat(path);
     await prefetch(pushPath);
     const query = app ? `?app=${app}` : '';
     return router.push(`/${pushPath.join('/')}${query}`);
   };
 
   const pop = async () => {
-    const pushPath = pathname
-      .split('/')
-      .slice(0, -1)
-      .map(decodeURI);
+    const pushPath = pathname.split('/').slice(0, -1).map(decodeURI);
     return router.push(`/${pushPath.join('/')}`);
   };
 

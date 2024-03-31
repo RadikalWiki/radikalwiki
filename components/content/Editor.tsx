@@ -59,7 +59,6 @@ const Editor = ({ node }: { node: Node }) => {
         }
         const fetch = async () => {
           setName(query.name ?? '');
-          console.log(query.createdAt);
           setDate(parseISO(query?.createdAt ?? ''));
           setContent(structuredClone(data?.content));
         };
