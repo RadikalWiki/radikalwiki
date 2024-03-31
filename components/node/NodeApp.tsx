@@ -6,7 +6,7 @@ import { resolved, useQuery } from "gql";
 import { getIcon } from "mime";
 import { useEffect, useState } from "react";
 import { fromId, toWhere } from "core/path";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 //import { ForceGraph2D } from "react-force-graph";
 const { ForceGraph2D } =
   typeof window !== "undefined"

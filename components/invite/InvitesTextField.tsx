@@ -54,7 +54,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
     startTransition(() => {
       fetch();
     });
-  }, [users, inputValue, query]);
+  }, [JSON.stringify(users), inputValue, query]);
 
   return (
     <Grid style={{ margin: 1 }} container spacing={2}>

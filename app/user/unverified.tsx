@@ -2,7 +2,7 @@ import React, { startTransition, useEffect } from 'react';
 import { Typography, CardContent, Avatar, Container } from '@mui/material';
 import { HeaderCard } from 'comps';
 import { MarkEmailRead } from '@mui/icons-material';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 
 const Unverified = () => {

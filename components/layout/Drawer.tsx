@@ -25,7 +25,7 @@ import {
   FileOpen,
   LockOpen,
 } from '@mui/icons-material';
-import { useSession, usePath, useNode, useLink } from 'hooks';
+import { useSession, useNode, useLink, usePathList } from 'hooks';
 import { fromId } from 'core/path';
 import { Link as NextLink, MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
 import { order_by, resolved } from 'gql';
@@ -300,7 +300,7 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
   const [listOpenValue, setListOpen] = useState<boolean[][]>([]);
   const listOpen = useDeferredValue(listOpenValue);
   const [session, setSession] = useSession();
-  const path = usePath();
+  const path = usePathList();
   const node = useNode({
     id: session?.prefix?.id,
   });
@@ -419,7 +419,7 @@ const Drawer = ({
 }) => {
   const link = useLink();
   const largeScreen = useMediaQuery('(min-width:1200px)');
-  const path = usePath();
+  const path = usePathList();
   const [session] = useSession();
   const home = path.length === 0;
 

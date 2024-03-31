@@ -1,7 +1,7 @@
-import { FC, ReactNode, createContext, useState, useEffect } from 'react';
+import { FC, createContext, useState, useEffect } from 'react';
 import { M3ThemeMode } from './M3Theme';
 
-export interface ThemeModeContextType {
+export type ThemeModeContextType = {
     themeMode: M3ThemeMode,
     toggleThemeMode: () => void,
     resetThemeMode: () => void
@@ -18,7 +18,7 @@ export const ThemeModeContext = createContext<ThemeModeContextType>({
 
 
 
-const ThemeModeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const ThemeModeProvider: FC<{ children: JSX.Element }> = ({ children }) => {
 
     const [themeMode, setThemeMode] = useState<M3ThemeMode>(DEFAULT_MODE);
 

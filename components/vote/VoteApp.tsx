@@ -20,7 +20,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { useSession } from 'hooks';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Node } from 'hooks';
 import { HeaderCard, MimeAvatarId, MimeLoader } from 'comps';
 import {
@@ -79,7 +79,7 @@ const VoteApp = ({ node }: { node: Node }) => {
   useEffect(() => {
     if (options?.length !== vote?.length)
       setVote(new Array(options?.length).fill(false));
-  }, [options]);
+  }, [JSON.stringify(options)]);
 
   const validate = (vote: Vote, submit: boolean) => {
     const selected = vote.filter((o) => o).length;
@@ -166,7 +166,7 @@ const VoteApp = ({ node }: { node: Node }) => {
       avatar={
         <Tooltip title="Opdater status">
           <Avatar
-            onClick={() => router.reload()}
+            onClick={() => router.refresh()}
             onMouseEnter={() => setRefresh(true)}
             onMouseLeave={() => setRefresh(false)}
             sx={{

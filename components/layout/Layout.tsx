@@ -8,10 +8,10 @@ import {
   AppDrawer,
 } from 'comps';
 import { useAuthenticationStatus } from '@nhost/nextjs';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Container, Box, useMediaQuery, IconButton } from '@mui/material';
 import { checkVersion } from 'core/util';
-import { useSession } from 'hooks';
+import { usePath, useSession } from 'hooks';
 import { Refresh } from '@mui/icons-material';
 import { useSnackbar } from 'notistack';
 
@@ -21,6 +21,8 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [session, setSession] = useSession();
   const router = useRouter();
+  const params = useSearchParams();
+  const path = usePath();
   const [version, setVersion] = useState<string | undefined>();
   const { isLoading } = useAuthenticationStatus();
   const largeScreen = useMediaQuery('(min-width:1200px)');
@@ -58,7 +60,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
               autoHideDuration: null,
               action: () => {
                 return (
-                  <IconButton onClick={() => router.reload()}>
+                  <IconButton onClick={() => router.refresh()}>
                     <Refresh />
                   </IconButton>
                 );
@@ -76,7 +78,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   if (outdated) return <OldBrowser />;
   if (!showing || isLoading) return null;
 
-  if (router.query.app === 'screen' || router.asPath.startsWith('/user'))
+  if (params.get("app") === 'screen' || path.startsWith('/user'))
     return children;
 
   return (

@@ -1,10 +1,11 @@
+"use client"
 import React, { Suspense } from 'react';
 import { Loader, PathLoader } from 'comps';
-import { usePath } from 'hooks';
+import { usePathList } from 'hooks';
 import { useAuthenticationStatus } from '@nhost/nextjs';
 
 const Path = () => {
-  const fullpath = usePath();
+  const fullpath = usePathList();
   const { isLoading } = useAuthenticationStatus();
 
   if (isLoading || fullpath.length === 0) return null;

@@ -14,7 +14,7 @@ import { AddContentFab, HeaderCard, HomeList, InvitesUserList } from 'comps';
 import { useNode } from 'hooks';
 import { Hail, HowToReg, Login } from '@mui/icons-material';
 import { useAuthenticationStatus, useUserDisplayName } from '@nhost/nextjs';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const AddContentFabSuspense = () => {
   const node = useNode();

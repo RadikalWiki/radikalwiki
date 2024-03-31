@@ -171,7 +171,7 @@ const SearchField = ({
     startTransition(() => {
       setSelected(options?.[selectIndex]?.id);
     });
-  }, [options, selectIndex]);
+  }, [JSON.stringify(options), selectIndex]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {

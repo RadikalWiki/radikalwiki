@@ -1,6 +1,7 @@
 import { fromId } from 'core/path';
 import { query, resolved } from 'gql';
-import { useRouter } from 'next/router';
+import { usePath } from 'hooks';
+import { useRouter } from 'next/navigation';
 
 const prefetch = async (
   path: string[],
@@ -38,6 +39,7 @@ const prefetch = async (
 
 const useLink = () => {
   const router = useRouter();
+  const pathname = usePath();
 
   const path = async (path: string[], app?: string) => {
     await prefetch(path);
@@ -53,21 +55,16 @@ const useLink = () => {
   };
 
   const push = async (path: string[], app?: string) => {
-    const pushPath = router.asPath
-      .split('?')[0]
-      .slice(1)
+    const pushPath = pathname
       .split('/')
       .concat(path)
-      .map(decodeURI);
     await prefetch(pushPath);
     const query = app ? `?app=${app}` : '';
     return router.push(`/${pushPath.join('/')}${query}`);
   };
 
   const pop = async () => {
-    const pushPath = router.asPath
-      .split('?')[0]
-      .slice(1)
+    const pushPath = pathname
       .split('/')
       .slice(0, -1)
       .map(decodeURI);

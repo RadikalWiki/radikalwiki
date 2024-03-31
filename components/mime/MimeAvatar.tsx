@@ -1,10 +1,9 @@
 import { LockOpen } from '@mui/icons-material';
-import { Badge, Tooltip, Avatar as MuiAvatar } from '@mui/material';
+import { Badge, Tooltip, Avatar as MuiAvatar, Skeleton } from '@mui/material';
 import { Maybe } from 'gql';
 import { withSuspense } from 'hoc';
 import { Node, useNode, useScreen } from 'hooks';
 import { IconId } from 'mime';
-import { MimeSkeleton } from 'comps';
 
 const MimeAvatar = ({
   mimeId,
@@ -90,10 +89,10 @@ const Avatar = ({ node }: { node: Node }) => {
   );
 };
 
-const MimeAvatarNode = withSuspense(Avatar, MimeSkeleton);
+const MimeAvatarNode = withSuspense(Avatar, <Skeleton variant="circular" width={24} height={24} /> );
 const MimeAvatarId = withSuspense(({ id, ...props }: { id: string }) => {
   const node = useNode({ id });
   return <Avatar node={node} {...props} />;
-}, MimeSkeleton);
+}, <Skeleton variant="circular" width={24} height={24} />  );
 
 export { MimeAvatar, MimeAvatarNode, MimeAvatarId };

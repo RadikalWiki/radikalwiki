@@ -13,7 +13,6 @@ import {
   FileApp,
   MapApp,
 } from 'comps';
-import { useRouter } from 'next/router';
 
 const SelectApp = ({ mimeId, node }: { mimeId: string; node: Node }) => {
   switch (mimeId) {
@@ -49,8 +48,8 @@ const SelectApp = ({ mimeId, node }: { mimeId: string; node: Node }) => {
 
 const MimeLoader = (param?: { id?: string; mimeId?: string }) => {
   const node = useNode({ id: param?.id });
-  const router = useRouter();
-  if ((!node?.mimeId && !param?.mimeId) || !router.query.path) return null;
+  
+  if (!node?.mimeId && !param?.mimeId) return null;
 
   return <SelectApp mimeId={param?.mimeId ?? node.mimeId ?? ''} node={node} />;
 };

@@ -2,7 +2,7 @@ import { Maybe } from 'gql';
 import { withSuspense } from 'hoc';
 import { Node, useNode } from 'hooks';
 import { IconId } from 'mime';
-import { MimeSkeleton } from 'comps';
+import { Skeleton } from '@mui/material';
 
 const MimeIcon = ({
   mimeId,
@@ -24,10 +24,10 @@ const Icon = ({ node }: { node: Node }) => {
   return <IconId name={name} mimeId={id} index={index - 1} />;
 };
 
-const MimeIconNode = withSuspense(Icon, MimeSkeleton);
+const MimeIconNode = withSuspense(Icon, <Skeleton variant="circular" width={24} height={24} /> );
 const MimeIconId = withSuspense(({ id }: { id: string }) => {
   const node = useNode({ id });
   return <Icon node={node} />;
-}, MimeSkeleton);
+}, <Skeleton variant="circular" width={24} height={24} /> );
 
 export { MimeIcon, MimeIconNode, MimeIconId };

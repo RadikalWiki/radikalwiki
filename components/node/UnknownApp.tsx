@@ -3,7 +3,7 @@ import { Avatar, Button, CardContent, Grid, Typography } from '@mui/material';
 import { HeaderCard } from 'comps';
 import { Login, QuestionMark } from '@mui/icons-material';
 import { useAuthenticationStatus } from '@nhost/nextjs';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const UnknownApp = () => {
   const router = useRouter();

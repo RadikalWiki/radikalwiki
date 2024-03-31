@@ -1,8 +1,8 @@
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 
 const useScreen = () => {
-  const router = useRouter();
-  return router.query.app === 'screen';
+  const params = useSearchParams();
+  return params.get("app") === 'screen';
 };
 
 export default useScreen;

@@ -1,13 +1,12 @@
-import { createContext, FC, ReactNode, useEffect, useState } from 'react';
+import { createContext, FC, useEffect, useState } from 'react';
 import { M3ThemeScheme, DEFAULT_M3_THEME_SCHEME } from './M3Theme';
 import {
   argbFromHex,
   hexFromArgb,
-  themeFromImage,
   themeFromSourceColor,
 } from '@material/material-color-utilities';
 
-export interface ThemeSchemeContextType {
+export type ThemeSchemeContextType = {
   themeScheme: M3ThemeScheme;
   generateThemeScheme: (base: string) => void;
   resetThemeScheme: () => void;
@@ -21,7 +20,7 @@ export const ThemeSchemeContext = createContext<ThemeSchemeContextType>({
 
 const THEME_SCHEME_KEY = 'ThemeScheme';
 
-const ThemeSchemeProvider: FC<{ children: ReactNode }> = ({ children }) => {
+const ThemeSchemeProvider: FC<{ children: JSX.Element }> = ({ children }) => {
   const [themeScheme, setThemeScheme] = useState<M3ThemeScheme>(
     DEFAULT_M3_THEME_SCHEME
   );

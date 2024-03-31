@@ -1,17 +1,19 @@
+"use client"
 import { Loader } from 'comps';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { startTransition, useEffect } from 'react';
 
 const Index = () => {
   const router = useRouter();
+  const params = useSearchParams();
 
   useEffect(() => {
-    if (router.query.type === 'passwordReset') {
+    if (params.get("type") === 'passwordReset') {
       startTransition(() => {
         router.push('/user/set-password');
       });
     }
-  }, [router.query]);
+  }, [params.get("type")]);
 
   return <Loader app="home" />;
 };

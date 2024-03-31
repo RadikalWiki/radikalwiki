@@ -1,14 +1,14 @@
-import React, { FC, useContext, useEffect, useMemo } from 'react';
+import React, { FC, useContext, useMemo } from 'react';
 
-import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { getDesignTokens, getThemedComponents } from './M3Theme';
 import { deepmerge } from '@mui/utils';
 import { ThemeModeContext } from './ThemeModeContext';
 import { ThemeSchemeContext } from './ThemeSchemeContext';
 import { CssBaseline } from '@mui/material';
 
-interface M3ThemeProps {
-  children: React.ReactNode;
+type M3ThemeProps = {
+  children: JSX.Element;
 }
 
 const M3ThemeProvider: FC<M3ThemeProps> = ({ children }) => {

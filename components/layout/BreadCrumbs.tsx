@@ -1,11 +1,11 @@
 import { Typography, Collapse, useMediaQuery } from '@mui/material';
 import { Box } from '@mui/system';
 import { useQuery } from 'gql';
-import { useSession, usePath } from 'hooks';
+import { useSession, usePathList } from 'hooks';
 import { Suspense, startTransition, useEffect, useRef, useState } from 'react';
 import { MimeAvatar, MimeAvatarId } from 'comps';
 import { getName } from 'mime';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const BreadcrumbsLink = ({
   parentId,
@@ -26,6 +26,7 @@ const BreadcrumbsLink = ({
 }) => {
   const divRef = useRef<HTMLSpanElement>(null);
   const router = useRouter();
+  const params = useSearchParams();
   const query = useQuery();
   const where = {
     _and:
@@ -47,7 +48,7 @@ const BreadcrumbsLink = ({
 
   const handleClick = () => {
     if (open[index]) {
-      if (keys.length === fullpath.length && !router.query.app) {
+      if (keys.length === fullpath.length && !params.get("app")) {
         const scroll = document.querySelector('#scroll');
         scroll?.scrollTo({ behavior: 'smooth', top: 0 });
       } else {
@@ -136,9 +137,9 @@ const BreadcrumbsLink = ({
           </>
         </Box>
       )}
-      {keys.length === fullpath.length && router.query.app !== undefined && (
+      {keys.length === fullpath.length && params.get("app") !== null && (
         <Box
-          key={`${node?.id}${router.query.app}`}
+          key={`${node?.id}${params.get("app")}`}
           sx={{
             alignItems: 'center',
             display: 'flex',
@@ -159,7 +160,7 @@ const BreadcrumbsLink = ({
           }}
         >
           <>
-            <MimeAvatar mimeId={`app/${router.query.app}`} />
+            <MimeAvatar mimeId={`app/${params.get("app")}`} />
             <Collapse orientation="horizontal" in={open[index + 1]}>
               <Typography
                 ref={divRef}
@@ -172,7 +173,7 @@ const BreadcrumbsLink = ({
                   color: 'common.white',
                 }}
               >
-                {getName(`app/${router.query.app}`) ?? 'Ukendt'}
+                {getName(`app/${params.get("app")}`)}
               </Typography>
             </Collapse>
           </>
@@ -196,13 +197,13 @@ const BreadcrumbsLink = ({
 
 const Breadcrumbs = () => {
   const [session] = useSession();
-  const router = useRouter();
-  const path = usePath();
+  const params = useSearchParams();
+  const path = usePathList();
   const [open, setOpen] = useState<boolean[]>([]);
   const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const initOpen = [
-    ...new Array(path.length + (router.query.app === undefined ? 0 : 1)).fill(
+    ...new Array(path.length + (params.get("app") === null ? 0 : 1)).fill(
       false
     ),
     true,
@@ -212,7 +213,7 @@ const Breadcrumbs = () => {
     startTransition(() => {
       if (path.length > 0) setOpen(initOpen);
     });
-  }, [path]);
+  }, [JSON.stringify(path)]);
 
   const prefix = session?.prefix?.path ?? [];
 

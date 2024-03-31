@@ -1,6 +1,6 @@
 /*
 import React, { Suspense, useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { ExpandMore, ExpandLess, Policy } from '@mui/icons-material';
 import {
   Avatar,

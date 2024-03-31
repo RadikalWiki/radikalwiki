@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router';
-import { useLink, useSession } from 'hooks';
+import { useSearchParams } from 'next/navigation';
+import { useLink, usePath, useSession } from 'hooks';
 import { useAuthenticated, useUserEmail, useUserId } from '@nhost/nextjs';
 import { useSubscription } from 'gql';
 
 const useApps = () => {
-  const router = useRouter();
+  const pathname = usePath();
+  const params = useSearchParams();
   const link = useLink();
   const [session] = useSession();
   const isAuthenticated = useAuthenticated();
@@ -13,8 +14,8 @@ const useApps = () => {
   const sub = useSubscription();
 
   const currentApp =
-    (router.query.app as string) ??
-    (router.pathname == '/' ? 'home' : 'folder');
+    params.get("app") ??
+    (pathname == '/' ? 'home' : 'folder');
 
   const handleClick = (path?: string[], app?: string) => async () => {
     const scroll = document.querySelector('#scroll');
@@ -27,7 +28,7 @@ const useApps = () => {
       return;
     }
     if (currentApp === 'folder') {
-      localStorage.setItem('path', router.asPath ?? '');
+      localStorage.setItem('path', pathname);
     }
     await link.path(path ?? [], app);
     scroll?.scrollTo(
