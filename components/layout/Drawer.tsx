@@ -164,10 +164,10 @@ const DrawerElement = ({
                   const newOpen =
                     open.length > 0
                       ? [
-                          ...open.slice(0, index),
-                          newChildOpen,
-                          ...open.slice(index + 1),
-                        ]
+                        ...open.slice(0, index),
+                        newChildOpen,
+                        ...open.slice(index + 1),
+                      ]
                       : [...new Array(index).fill([]), newChildOpen];
 
                   setOpen(newOpen);
@@ -428,9 +428,7 @@ const Drawer = ({
       <HomeList setOpen={setOpen} />
     </Suspense>
   ) : (
-    <Suspense>
-      <MenuList setOpen={setOpen} />
-    </Suspense>
+    <MenuList setOpen={setOpen} />
   );
 
   return (
@@ -438,22 +436,22 @@ const Drawer = ({
       sx={
         largeScreen
           ? {
+            width: drawerWidth,
+            flexShrink: 0,
+            '& .MuiDrawer-paper': {
+              ml: '40px',
               width: drawerWidth,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                ml: '40px',
-                width: drawerWidth,
-                boxSizing: 'border-box',
-                borderRadius: '0px 20px 20px 0px',
-              },
-            }
+              boxSizing: 'border-box',
+              borderRadius: '0px 20px 20px 0px',
+            },
+          }
           : {
-              position: 'absolute',
+            position: 'absolute',
+            width: '100%',
+            '& .MuiDrawer-paper': {
               width: '100%',
-              '& .MuiDrawer-paper': {
-                width: '100%',
-              },
-            }
+            },
+          }
       }
       variant={largeScreen ? 'permanent' : 'persistent'}
       open={open || largeScreen}
@@ -480,17 +478,17 @@ const Drawer = ({
         sx={
           largeScreen
             ? {
-                top: 'auto',
-                background: 'transparent',
-                boxShadow: 'none',
-                position: 'fixed',
-              }
+              top: 'auto',
+              background: 'transparent',
+              boxShadow: 'none',
+              position: 'fixed',
+            }
             : {
-                top: 'auto',
-                bottom: 0,
-                background: 'transparent',
-                boxShadow: 'none',
-              }
+              top: 'auto',
+              bottom: 0,
+              background: 'transparent',
+              boxShadow: 'none',
+            }
         }
       >
         <Toolbar

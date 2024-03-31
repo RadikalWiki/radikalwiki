@@ -18,6 +18,26 @@ const Title = ({ node }: { node: Node }) => {
   ) : null;
 };
 
+const Subtitle = ({ node }: { node: Node }) => {
+  const query = node.useQuery();
+
+  return <Tooltip
+    title={
+      query?.createdAt && new Date(query?.createdAt).toLocaleString()
+    }
+  >
+    <Typography component='span' variant="caption">
+      {query?.createdAt ? `
+                Oprettet
+                ${formatDistance(new Date(), new Date(query?.createdAt), {
+        locale: da,
+      })
+        } siden
+            ` : ""}
+    </Typography>
+  </Tooltip>
+};
+
 const ContentHeader = ({
   node,
   hideMembers,
@@ -29,7 +49,6 @@ const ContentHeader = ({
   child?: boolean;
   add?: boolean;
 }) => {
-  const query = node.useQuery();
   return (
     <>
       <CardHeader
@@ -43,23 +62,7 @@ const ContentHeader = ({
           )
         }
         subheader={
-          child ? undefined :
-          <Tooltip
-            title={
-              query?.createdAt && new Date(query?.createdAt).toLocaleString()
-            }
-          >
-            <Typography component='span' variant="caption">
-              {query?.createdAt ?`
-                Oprettet
-                ${
-                  formatDistance(new Date(), new Date(query?.createdAt), {
-                    locale: da,
-                  })
-                } siden
-            ` : ""}
-            </Typography>
-          </Tooltip>
+          child ? undefined : <Suspense fallback={null} ><Subtitle node={node} /></Suspense>
         }
         avatar={
           child ? (
@@ -71,9 +74,9 @@ const ContentHeader = ({
         sx={{
           borderRadius: '4px 4px 0px 0px',
         }}
-        action={<ContentToolbar child={child} add={add} node={node} />}
+        action={<Suspense fallback={null}><ContentToolbar child={child} add={add} node={node} /></Suspense>}
       />
-      {!hideMembers && <MemberChips node={node} />}
+      {!hideMembers && <Suspense fallback={null}><MemberChips node={node} /></Suspense>}
     </>
   );
 };
