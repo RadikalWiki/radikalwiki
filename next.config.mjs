@@ -1,7 +1,10 @@
+import million from "million/compiler";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // ...
   webpack: (config) => {
+    // eslint-disable-next-line functional/immutable-data
     config.resolve.fallback = {
       ...config.resolve.fallback,
       fs: false,
@@ -18,4 +21,8 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+const millionConfig = {
+  auto: true,
+};
+
+export default million.next(nextConfig, millionConfig);
