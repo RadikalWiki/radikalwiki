@@ -14,6 +14,7 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
+  Tooltip,
 } from '@mui/material';
 import { Add, ContactMail, DoNotDisturb } from '@mui/icons-material';
 import { HeaderCard, MimeAvatarId } from 'comps';
@@ -141,17 +142,19 @@ const ListSuspense = () => {
     <List>
       {invites.map(({ id, parent }) => {
         const item = (
-          <ListItemButton key={id ?? 0}>
+          <ListItem key={id ?? 0}>
             {parent?.id && (
               <ListItemAvatar>
                 <MimeAvatarId id={parent?.id} />
               </ListItemAvatar>
             )}
             <ListItemText primary={parent?.name} />
-            <IconButton onClick={handleAcceptInvite(id)}>
+            <Tooltip title={`Accepter invitation til ${parent?.name}`}>
+            <IconButton  onClick={handleAcceptInvite(id)}>
               <Add />
             </IconButton>
-          </ListItemButton>
+            </Tooltip>
+          </ListItem>
         );
 
         return id ? item : null;
