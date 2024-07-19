@@ -1465,7 +1465,7 @@
   resolved "https://registry.yarnpkg.com/@gqty/utils/-/utils-1.0.0.tgz#5f954c95721244aa1e59534695a1c1e8d3877225"
   integrity sha512-QJMlzts//d0H5mlekOZgx1a4KsTYXfxmRhhx8g/8mvzdaNVPxhFzCsv3+ljTOzbW3A08qy4jXQPWAMoTefSJDQ==
 
-"@graphql-typed-document-node/core@^3.1.1":
+"@graphql-typed-document-node/core@^3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-3.2.0.tgz#5f3d96ec6b2354ad6d8a28bf216a1d97b5426861"
   integrity sha512-mB9oAsNCm9aM3/SOv4YtBMqZbYj10R7dkq8byBqxGY/ncFwhf2oQzMV+LCRlWoDSEBJ3COiR1yeDvMtsoOsuFQ==
@@ -1827,63 +1827,68 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.4.19.tgz#648f79c4e09279212ac90d871646ae12d80cdfce"
   integrity sha512-YzA78jBDXMYiINdPdJJwGgPNT3YqBNNGhsthsDoWHL9p24tEJn9ViQf/ZqTbwSpX/RrkPupLfuuTH2sf73JBAw==
 
-"@nhost/graphql-js@0.1.4":
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/@nhost/graphql-js/-/graphql-js-0.1.4.tgz#268d5cc5955144903fc0333ccb937768d9b79ba4"
-  integrity sha512-IPHuGOf4iQrFsxG7Rh5jCCZzPCN9JkvldFww4Fz1lCVi9ZQNEaGaawIP5gBuBHeYIuALeaK1wVYKPc7vJ/euCA==
+"@nhost/graphql-js@0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@nhost/graphql-js/-/graphql-js-0.3.0.tgz#0db0c81f851b6cbb09d292a89eeca02fefaa3076"
+  integrity sha512-CVYq6wx0VbaYdpUBmfNO/6mZatHB5+YBCqFjWyxhpN1nzHCHEO6rgdL7j0qk31OFE6XAX0z7AQZSXg1Pn63GUw==
   dependencies:
-    "@graphql-typed-document-node/core" "^3.1.1"
+    "@graphql-typed-document-node/core" "^3.2.0"
+    base-64 "^1.0.0"
     isomorphic-unfetch "^3.1.0"
+    jwt-decode "^4.0.0"
 
-"@nhost/hasura-auth-js@2.1.8":
-  version "2.1.8"
-  resolved "https://registry.yarnpkg.com/@nhost/hasura-auth-js/-/hasura-auth-js-2.1.8.tgz#e064ede2713b097087f9a680c3d4c51946f29635"
-  integrity sha512-iM6mE2E4oUDcXgtLzwXVd+1oOpuJnW7yS5Ld+rz5T7IRZybGKeuAjr3XFPujdj4t/9ASS6F2pi4uE/0iaLPlUg==
+"@nhost/hasura-auth-js@2.5.3":
+  version "2.5.3"
+  resolved "https://registry.yarnpkg.com/@nhost/hasura-auth-js/-/hasura-auth-js-2.5.3.tgz#e9a4d0b726117080dc810a6afdc39c54dde7f204"
+  integrity sha512-WPDmF7vMU32I/G4Ytlo+ZUE+INzcjp1Av5KNLH/iBWDw/0HB6Vj5/+AWq+IjxQm0+HmKE+hvnc5Hc5rn0oPreg==
   dependencies:
-    "@simplewebauthn/browser" "^6.0.0"
+    "@simplewebauthn/browser" "^9.0.1"
     fetch-ponyfill "^7.1.0"
-    js-cookie "^3.0.1"
-    jwt-decode "^3.1.2"
-    xstate "^4.33.5"
+    js-cookie "^3.0.5"
+    jwt-decode "^4.0.0"
+    xstate "^4.38.3"
 
-"@nhost/hasura-storage-js@2.2.4":
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@nhost/hasura-storage-js/-/hasura-storage-js-2.2.4.tgz#142d9a1677943519dedc8e9151c86fa976531fc2"
-  integrity sha512-nx/BvxkYQITDel/DM+gLFojkF07AAzQD/h4+1pjflT/Bd3pdDGLO2tVkPKQItVlRFZokfJZnHCt0Zi/umiIvow==
+"@nhost/hasura-storage-js@2.5.1":
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/@nhost/hasura-storage-js/-/hasura-storage-js-2.5.1.tgz#56415cb993b6d662f4e7df3768d21a473f402954"
+  integrity sha512-I3rOSa095lcR9BUmNw7dOoXLPWL39WOcrb0paUBFX4h3ltR92ILEHTZ38hN6bZSv157ZdqkIFNL/M2G45SSf7g==
   dependencies:
     fetch-ponyfill "^7.1.0"
     form-data "^4.0.0"
-    xstate "^4.33.5"
+    graphql "16.8.1"
+    xstate "^4.38.3"
 
-"@nhost/nextjs@^1.13.24":
-  version "1.13.37"
-  resolved "https://registry.yarnpkg.com/@nhost/nextjs/-/nextjs-1.13.37.tgz#19326a1af5841ea86cd7503301f6c8dbdd74c83e"
-  integrity sha512-OArAs4ySqF6ej5fBIFMTkqMF4x16G5f8Ny0mtg62mTaRw4+F2ljG4mXGcDmStvLBCsXJVYofuYlBy3jF4yje2w==
+"@nhost/nextjs@^2.1.17":
+  version "2.1.17"
+  resolved "https://registry.yarnpkg.com/@nhost/nextjs/-/nextjs-2.1.17.tgz#8d90e96b4c684b7e03410a6a58f969b2291afaf0"
+  integrity sha512-mbqX1AhnI0fHYgRtEClOmxZehbHllZN8LYvdN7lGtAXgT3A1a5ThXEIivCwcBKG1aF7ZSWA12jiebksSuOvKvA==
   dependencies:
-    "@nhost/react" "2.0.31"
+    "@nhost/react" "3.5.3"
+    graphql "16.8.1"
     isomorphic-unfetch "^3.1.0"
-    js-cookie "^3.0.1"
-    xstate "^4.33.5"
+    js-cookie "^3.0.5"
+    xstate "^4.38.3"
 
-"@nhost/nhost-js@2.2.16":
-  version "2.2.16"
-  resolved "https://registry.yarnpkg.com/@nhost/nhost-js/-/nhost-js-2.2.16.tgz#8f372099646aa08b800ad2e188debb1851198a53"
-  integrity sha512-4XYF6Db9R5uZd6SQO+2Eg7gbAUC7SrgkHVeJoIZwPX4m6x6rDX847830h+9VmkQ5F/F1KunYSxWz7Hb4WBcLZA==
+"@nhost/nhost-js@3.1.6":
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@nhost/nhost-js/-/nhost-js-3.1.6.tgz#c64fbfab8fcd5a3c9a5e3d9661d7b98c7c47e135"
+  integrity sha512-5DPm3vvsiMzJxYzMSxHwqIsn1GfDsZ1LHq5vndHILL8OH5LHPh3tVlUc4EcElbkqN81yzZ++umcDxxH+w8pkAg==
   dependencies:
-    "@nhost/graphql-js" "0.1.4"
-    "@nhost/hasura-auth-js" "2.1.8"
-    "@nhost/hasura-storage-js" "2.2.4"
+    "@nhost/graphql-js" "0.3.0"
+    "@nhost/hasura-auth-js" "2.5.3"
+    "@nhost/hasura-storage-js" "2.5.1"
     isomorphic-unfetch "^3.1.0"
 
-"@nhost/react@2.0.31":
-  version "2.0.31"
-  resolved "https://registry.yarnpkg.com/@nhost/react/-/react-2.0.31.tgz#51303331d66d89ca272ca9236ec204c95b063da7"
-  integrity sha512-3Oj4lcgAddMPo5MEFhNZYYZr/usC3nd+f/Kq8bMVJr3UZStUnfjkw6DySnmk2TMX2R2G0KLx1AjG6bJpN3E5zg==
+"@nhost/react@3.5.3":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/@nhost/react/-/react-3.5.3.tgz#4190f4555f41b629446f6305d4526105f87ee89e"
+  integrity sha512-oBV87puHdGGFb9sv9jIk7DsqQKxc+LWoISDRBdx433eMJMXJuN4nYB3fL6LiCc8vqX4lCLb6kuo6hj9mfMk3/Q==
   dependencies:
-    "@nhost/nhost-js" "2.2.16"
-    "@xstate/react" "^3.0.1"
-    jwt-decode "^3.1.2"
-    xstate "^4.33.5"
+    "@nhost/nhost-js" "3.1.6"
+    "@xstate/react" "^3.2.2"
+    jwt-decode "^4.0.0"
+    react-dom "^18.2.0"
+    xstate "^4.38.3"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1990,10 +1995,17 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.3.3.tgz#16ab6c727d8c2020a5b6e4a176a243ecd88d8d69"
   integrity sha512-0xd7qez0AQ+MbHatZTlI1gu5vkG8r7MYRUJAHPAHJBmGLs16zpkrpAVLvjQKQOqaXPDUBwOiJzNc00znHSCVBw==
 
-"@simplewebauthn/browser@^6.0.0":
-  version "6.2.2"
-  resolved "https://registry.yarnpkg.com/@simplewebauthn/browser/-/browser-6.2.2.tgz#3cd773a9887734331251d1b8dec043547a7bbd57"
-  integrity sha512-VUtne7+s6BmW4usnbitjZEI1VNT/PNh6bYg+AI4OMdfpo5z+yAq+6iVAWBJlIUGVk5InetEQvTUp6OefBam8qg==
+"@simplewebauthn/browser@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@simplewebauthn/browser/-/browser-9.0.1.tgz#46a12c2bcefcb199f7fcb6a7e883531cd6efde17"
+  integrity sha512-wD2WpbkaEP4170s13/HUxPcAV5y4ZXaKo1TfNklS5zDefPinIgXOpgz1kpEvobAsaLPa2KeH7AKKX/od1mrBJw==
+  dependencies:
+    "@simplewebauthn/types" "^9.0.1"
+
+"@simplewebauthn/types@^9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@simplewebauthn/types/-/types-9.0.1.tgz#3a68d50e63d8821cf2067de3324c68d5e8120d0c"
+  integrity sha512-tGSRP1QvsAvsJmnOlRQyw/mvK9gnPtjEc5fg2+m8n+QUa+D7rvrKkOYyfpy42GTs90X3RDOnqJgfHt+qO67/+w==
 
 "@svgr/babel-plugin-add-jsx-attribute@^6.5.1":
   version "6.5.1"
@@ -2391,7 +2403,7 @@
   resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.0.2.tgz#7af719a1bf33734840aee6f04eb548d2cedab9ec"
   integrity sha512-BZFxVrv24VbNNl5xMxqUojQIegEeXMI6rX3rg1uVLYUEXsuKNBSAEQf4BWEcjQDp/8aYJOj6m8V4PUA3x/cxgg==
 
-"@xstate/react@^3.0.1":
+"@xstate/react@^3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@xstate/react/-/react-3.2.2.tgz#ddf0f9d75e2c19375b1e1b7335e72cb99762aed8"
   integrity sha512-feghXWLedyq8JeL13yda3XnHPZKwYDN5HPBLykpLeuNpr9178tQd2/3d0NrH6gSd0sG5mLuLeuD+ck830fgzLQ==
@@ -2632,6 +2644,11 @@ balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
+
+base-64@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-1.0.0.tgz#09d0f2084e32a3fd08c2475b973788eee6ae8f4a"
+  integrity sha512-kwDPIFCGx0NZHog36dj+tHiwP4QMzsZ3AgMViUBKI0+V5n4U0ufTCUMhnQ04diaRI8EX/QcPfql7zlhZ7j4zgg==
 
 binary-extensions@^2.0.0:
   version "2.3.0"
@@ -3922,6 +3939,11 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
+graphql@16.8.1:
+  version "16.8.1"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.1.tgz#1930a965bef1170603702acdb68aedd3f3cf6f07"
+  integrity sha512-59LZHPdGZVh695Ud9lRzPBVTtlX9ZCV150Er2W43ro37wVof0ctenSaskPPjN7lVTIN8mSZt8PHUNKZuNQUuxw==
+
 graphql@^16.5.0:
   version "16.8.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-16.8.0.tgz#374478b7f27b2dc6153c8f42c1b80157f79d79d4"
@@ -4367,7 +4389,7 @@ iterator.prototype@^1.1.0:
     has-symbols "^1.0.3"
     reflect.getprototypeof "^1.0.3"
 
-js-cookie@^3.0.1:
+js-cookie@^3.0.1, js-cookie@^3.0.5:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
   integrity sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==
@@ -4460,6 +4482,11 @@ jwt-decode@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
   integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
+
+jwt-decode@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-4.0.0.tgz#2270352425fd413785b2faf11f6e755c5151bd4b"
+  integrity sha512-+KJGIyHgkGuIq3IEBNftfhW/LfWhXUIY6OmyVWjliu5KH1y0fw7VQ8YndE2O4qZdMSd9SqbnC8GOcZEy0Om7sA==
 
 kdbush@^4.0.2:
   version "4.0.2"
@@ -6026,10 +6053,10 @@ xmlbuilder2@2.1.2:
     "@oozcitak/infra" "1.0.5"
     "@oozcitak/util" "8.3.3"
 
-xstate@^4.33.5:
-  version "4.38.2"
-  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.38.2.tgz#1b74544fc9c8c6c713ba77f81c6017e65aa89804"
-  integrity sha512-Fba/DwEPDLneHT3tbJ9F3zafbQXszOlyCJyQqqdzmtlY/cwE2th462KK48yaANf98jHlP6lJvxfNtN0LFKXPQg==
+xstate@^4.38.3:
+  version "4.38.3"
+  resolved "https://registry.yarnpkg.com/xstate/-/xstate-4.38.3.tgz#4e15e7ad3aa0ca1eea2010548a5379966d8f1075"
+  integrity sha512-SH7nAaaPQx57dx6qvfcIgqKRXIh4L0A1iYEqim4s1u7c9VoCgzZc+63FY90AKU4ZzOC2cfJzTnpO4zK7fCUzzw==
 
 xtend@~4.0.0:
   version "4.0.2"
