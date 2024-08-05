@@ -9,7 +9,7 @@ import {
   LockOpen,
   ContentPaste,
 } from '@mui/icons-material';
-import { resolved, query as q, order_by } from 'gql';
+import { resolve, order_by } from 'gql';
 import { Node, useLink, useScreen, useSession } from 'hooks';
 import HTMLtoDOCX from 'html-to-docx';
 import { toHtml } from 'core/document';
@@ -20,7 +20,7 @@ const checkIfSuperParent = async (
   superParentId?: string
 ): Promise<boolean> => {
   if (!(id && superParentId)) return false;
-  const parentId = await resolved(() => q.node({ id })?.parentId);
+  const parentId = await resolve(({ query }) => query.node({ id })?.parentId);
 
   return id == superParentId || parentId === superParentId
     ? true
@@ -46,8 +46,8 @@ const FolderDial = ({ node }: { node: Node }) => {
     if (!id) return '';
     const index =
       (
-        await resolved(() =>
-          q
+        await resolve(({ query }) =>
+          query
             .node({ id })
             ?.parent?.children({
               where: {
@@ -62,8 +62,8 @@ const FolderDial = ({ node }: { node: Node }) => {
         )
       )?.findIndex((e) => e.id === id) ?? 0;
 
-    const children = await resolved(() =>
-      q
+    const children = await resolve(({ query }) =>
+      query
         .node({ id })
         ?.children({
           order_by: [{ index: order_by.asc }],
@@ -81,8 +81,8 @@ const FolderDial = ({ node }: { node: Node }) => {
         .map(({ id }) => id)
     );
 
-    const node = await resolved(() => {
-      const node = q.node({ id });
+    const node = await resolve(({ query }) => {
+      const node = query.node({ id });
       if (node)
         return {
           name: node.name,
@@ -94,8 +94,8 @@ const FolderDial = ({ node }: { node: Node }) => {
 
     const members = node?.context
       ? []
-      : await resolved(() =>
-          q
+      : await resolve(({ query }) =>
+          query
             .node({ id })
             ?.members()
             ?.map((m) => m.name ?? m.user?.displayName)
@@ -156,8 +156,8 @@ const FolderDial = ({ node }: { node: Node }) => {
 
   const copy = async (copyId?: string | null, parentId?: string | null) => {
     if (!copyId) return;
-    const node = await resolved(() => {
-      const { name, key, mimeId, data, mutable, attachable, index, createdAt } = q.node({
+    const node = await resolve(({ query }) => {
+      const { name, key, mimeId, data, mutable, attachable, index, createdAt } = query.node({
         id: copyId,
       })!;
       return {
@@ -172,14 +172,14 @@ const FolderDial = ({ node }: { node: Node }) => {
         createdAt: createdAt!,
       };
     });
-    const children = await resolved(() =>
-      q
+    const children = await resolve(({ query }) =>
+      query
         .node({ id: copyId })
         ?.children()
         .map((child) => child.id)
     );
-    const members = await resolved(() =>
-      q
+    const members = await resolve(({ query }) =>
+      query
         .members({ where: { parentId: { _eq: copyId } } })
         .map(({ name, nodeId, email }) => ({ name, nodeId, email, parentId }))
     );

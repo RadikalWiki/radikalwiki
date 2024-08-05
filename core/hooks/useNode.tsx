@@ -1,26 +1,23 @@
 import { UseQueryReturnValue } from '@gqty/react';
+import { UseQueryPrepareHelpers } from '@gqty/react/dist/query/useQuery';
 import {
   GeneratedSchema,
   Maybe,
   members_constraint,
   members_insert_input,
   members_set_input,
-  mutation,
   nodes,
   nodes_bool_exp,
   nodes_insert_input,
   nodes_set_input,
-  permissions,
   permissions_insert_input,
   relations_constraint,
   relations_insert_input,
   relations_update_column,
-  resolved,
   useMutation,
   useQuery as useQueryGqty,
   useSubscription,
 } from 'gql';
-import { usePath } from 'hooks';
 
 const getKey = (name?: string) =>
   name
@@ -47,6 +44,7 @@ export type Node = {
   key: Maybe<string | undefined>;
   useQuery: () => Maybe<nodes> | undefined;
   useQuery2: () => Maybe<nodes> | undefined;
+  useQuery3: (prepare?: (helpers: UseQueryPrepareHelpers<GeneratedSchema>) => void) => Maybe<nodes> | undefined;
   useSubs: () => Maybe<nodes>;
   useInsert: (
     param?: Param
@@ -126,6 +124,10 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
   };
   const useQuery2 = () => {
     //const query = useQueryGqty();
+    return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
+  };
+  const useQuery3 = (prepare?: (helpers: UseQueryPrepareHelpers<GeneratedSchema>) => void) => {
+    const query = useQueryGqty({ prepare });
     return param?.id ? query.node({ id: param?.id }) : query.nodes(where)?.[0];
   };
   const node = param?.id
@@ -372,6 +374,7 @@ const useNode = (param?: { id?: string; where?: nodes_bool_exp }): Node => {
     key,
     useQuery,
     useQuery2,
+    useQuery3,
     useSubs,
     useInsert,
     useDelete,

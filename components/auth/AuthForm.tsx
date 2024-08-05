@@ -129,7 +129,7 @@ const LoginForm = ({ mode }: { mode: Mode }) => {
 
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
-    client.cache.query = {};
+    client.cache.clear();
 
     await router.back();
   };

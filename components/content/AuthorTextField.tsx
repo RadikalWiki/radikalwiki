@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Chip, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
-import { query, resolved, order_by } from 'gql';
+import { resolve, order_by } from 'gql';
 import { IconId } from 'mime';
 import { Face } from '@mui/icons-material';
 
@@ -28,7 +28,7 @@ const AuthorTextField = ({
     const fetch = async () => {
       const like = `%${inputValue}%`;
 
-      const nodes = await resolved(() =>
+      const nodes = await resolve(({ query }) =>
         query
           .nodes({
             limit: 10,
@@ -42,21 +42,23 @@ const AuthorTextField = ({
           })
           .map(({ id, name }) => ({ name, nodeId: id, mimeId: 'wiki/group' }))
       );
-      const users = await resolved(() =>
+      const users = await resolve(({ query }) =>
         query
           .users({
             limit: 10,
             order_by: [{ displayName: order_by.asc }],
+            where: { displayName: { _ilike: like } }
           })
           .map(({ id, displayName }) => ({
             name: displayName,
             nodeId: id,
           }))
       );
+      
 
       const newOptions = ([] as Option[]).concat(
-        users ? users : [],
-        nodes ? nodes : [],
+        users && inputValue.length > 0 ? users : [],
+        nodes && inputValue.length > 0 ? nodes : [],
         value ? value : [],
         inputValue ? [{ name: capitalize(inputValue) }] : []
       );
@@ -70,6 +72,7 @@ const AuthorTextField = ({
     <Autocomplete
       multiple
       color="primary"
+      noOptionsText="Ingen match"
       options={options}
       getOptionLabel={(option) => option?.name ?? ''}
       //defaultValue={options}

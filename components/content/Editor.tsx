@@ -8,7 +8,7 @@ import {
   DeleteButton,
   PublishButton,
 } from 'comps';
-import { resolved } from 'gql';
+import { resolve } from 'gql';
 import { Card, CardContent, TextField, Grid, ButtonGroup } from '@mui/material';
 import { Save } from '@mui/icons-material';
 import { Node, useLink, useFile } from 'hooks';
@@ -36,17 +36,18 @@ const Editor = ({ node }: { node: Node }) => {
   const [authorError, setAuthorError] = useState<string | undefined>();
 
   useEffect(() => {
-    if (query) {
       startTransition(() => {
         if (!['wiki/group', 'wiki/event'].includes(query?.mimeId!)) {
-          const fetchMembers = async () => {
-            const members = await resolved(() =>
-              query?.members().map(({ nodeId, name, email, node }) => ({
-                nodeId: nodeId!,
-                name: name!,
-                email: email!,
-                mimeId: node?.mimeId,
-              }))
+          const fetchMembers = async (id: string) => {
+            const members = await resolve(({ query }) =>
+              query?.node({ id })?.members().map((member) => {
+                return ({
+                  nodeId: member.nodeId!,
+                  name: member.name!,
+                  email: member.email!,
+                  //mimeId: member.node?.mimeId,
+                })
+              })
             );
             if (
               members?.[0]?.nodeId ||
@@ -55,17 +56,18 @@ const Editor = ({ node }: { node: Node }) => {
             )
               setMembers(members);
           };
-          fetchMembers();
+          if (node.id) {
+            fetchMembers(node.id);
+          }
         }
         const fetch = async () => {
-          setName(query.name ?? '');
+          setName(query?.name ?? '');
           setDate(parseISO(query?.createdAt ?? ''));
           setContent(structuredClone(data?.content));
         };
         fetch();
       });
-    }
-  }, [query, query?.createdAt, JSON.stringify(data?.content)]);
+  }, [query?.name, query?.createdAt, JSON.stringify(data?.content)]);
 
   const handleSave = (mutable?: boolean) => async () => {
     if (
@@ -88,7 +90,7 @@ const Editor = ({ node }: { node: Node }) => {
     }
     const newContent =
       content?.length >= 1 &&
-      (content[0] as CustomElement).children?.[0].text === ''
+        (content[0] as CustomElement).children?.[0].text === ''
         ? content.slice(1)
         : content;
 
@@ -140,13 +142,13 @@ const Editor = ({ node }: { node: Node }) => {
                   'vote/position',
                   'vote/candidate',
                 ].includes(query?.mimeId!) && (
-                  <AuthorTextField
-                    value={members}
-                    onChange={setMembers}
-                    setAuthorError={setAuthorError}
-                    authorError={authorError}
-                  />
-                )}
+                    <AuthorTextField
+                      value={members}
+                      onChange={setMembers}
+                      setAuthorError={setAuthorError}
+                      authorError={authorError}
+                    />
+                  )}
 
                 {query?.isContextOwner && <DatePicker value={date} onChange={setDate} />}
               </Stack>

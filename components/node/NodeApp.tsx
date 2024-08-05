@@ -2,7 +2,7 @@
 export {};
 /*
 import { renderToString } from "react-dom/server";
-import { resolved, useQuery } from "gql";
+import { resolve, useQuery } from "gql";
 import { getIcon } from "mime";
 import { useEffect, useState } from "react";
 import { fromId, toWhere } from "core/path";
@@ -97,7 +97,7 @@ const NodeApp = ({ node }: { node: Node }) => {
 
   const handleOnClick = async (node: Node) => {
     const path = await fromId(node?.id);
-    await resolved(() => {
+    await resolve(({ query }) => {
       const { id, name, mimeId } = query.nodes(toWhere(path))?.[0];
     })
 

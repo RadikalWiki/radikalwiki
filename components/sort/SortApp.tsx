@@ -8,7 +8,7 @@ import {
   ListItemAvatar,
   ListItemText,
 } from '@mui/material';
-import { nodes, order_by, resolved } from 'gql';
+import { nodes, order_by, resolve } from 'gql';
 import {
   DragDropContext,
   Droppable,
@@ -19,35 +19,32 @@ import { Node } from 'hooks';
 
 const SortApp = ({ node }: { node: Node }) => {
   const [list, setList] = useState<Partial<nodes>[]>([]);
-  const query = node.useQuery();
 
   useEffect(() => {
-    if (query) {
-      const fetch = async () => {
-        const children = await resolved(
-          () =>
-            query
-              ?.children({
-                order_by: [{ index: order_by.asc }],
-                where: { mime: { hidden: { _eq: false } } },
-              })
-              .map(({ id, name, index, mutable, mimeId, data }) => ({
-                id,
-                name,
-                index,
-                mutable,
-                mimeId,
-                data,
-              })) ?? [],
-          { noCache: true }
-        );
-        setList(children);
-      };
-      startTransition(() => {
-        fetch();
-      });
-    }
-  }, [query]);
+    const fetch = async () => {
+      const children = await resolve(
+        ({ query }) =>
+          query.node({ id: node.id! })
+            ?.children({
+              order_by: [{ index: order_by.asc }],
+              where: { mime: { hidden: { _eq: false } } },
+            })
+            .map(({ id, name, index, mutable, mimeId, data }) => ({
+              id,
+              name,
+              index,
+              mutable,
+              mimeId,
+              data,
+            })) ?? [],
+        { cachePolicy: "no-cache" }
+      );
+      setList(children);
+    };
+    startTransition(() => {
+      fetch();
+    });
+  }, []);
 
   const handleDragEnd: OnDragEndResponder = ({ source, destination }) => {
     if (destination === undefined || destination === null) return;

@@ -48,7 +48,7 @@ const UserMenu = ({ avatar }: { avatar?: boolean }) => {
     await nhost.auth.signOut();
     // Delete cache
     // eslint-disable-next-line functional/immutable-data
-    client.cache.query = {};
+    client.cache.clear();
     setAnchorEl(null);
   };
 

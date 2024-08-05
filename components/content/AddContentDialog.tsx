@@ -19,7 +19,7 @@ import { IconId, getName } from 'mime';
 import { Node, useLink, useSession } from 'hooks';
 import { FileUploader } from 'comps';
 import { v4 as uuid } from 'uuid';
-import { query, resolved } from 'gql';
+import { resolve } from 'gql';
 import { fromId } from 'core/path';
 
 const contextPerm = [
@@ -195,7 +195,7 @@ const AddContentDialog = ({
       });
       if (!key) return;
 
-      if (await resolved(() => query.mime({ id: mimeId })?.context)) {
+      if (await resolve(({ query }) => query.mime({ id: mimeId })?.context)) {
         await update({ id: id!, set: { contextId: id, mutable: false } });
         const perms = contextPerm.map((perm) => ({
           ...perm,
@@ -207,7 +207,7 @@ const AddContentDialog = ({
         }));
         await permInsert(perms);
 
-        const prefix = await resolved(() => {
+        const prefix = await resolve(({ query }) => {
           const node = query.node({ id: id! });
           return {
             id: node?.id,

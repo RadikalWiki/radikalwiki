@@ -15,7 +15,7 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
-import { order_by, query, resolved } from 'gql';
+import { order_by, resolve } from 'gql';
 import { useLink, usePath, useSession } from 'hooks';
 import { MimeIconId, Breadcrumbs, Bar, UserMenu } from 'comps';
 import {
@@ -100,7 +100,7 @@ const SearchField = ({
   const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const handleContextSelect = async (id: string) => {
-    const prefix = await resolved(() => {
+    const prefix = await resolve(({ query }) => {
       const node = query.node({ id });
       return {
         id: node?.id,
@@ -135,7 +135,7 @@ const SearchField = ({
 
   const search = async (name: string) => {
     setIsLoading(true);
-    const nodes = await resolved(() =>
+    const nodes = await resolve(({ query }) =>
       query
         .nodes({
           where: {

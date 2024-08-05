@@ -15,7 +15,7 @@ import {
   ContentToolbar,
   MimeAvatarId,
 } from 'comps';
-import { resolved } from 'gql';
+import { resolve } from 'gql';
 import { useState, startTransition, useEffect } from 'react';
 import { drawerWidth } from 'core/constants';
 import { Box } from '@mui/system';
@@ -36,21 +36,20 @@ const Drawer = ({
   const node = useNode({
     id,
   });
-  const query = node.useQuery();
 
   const [listOpen, setListOpen] = useState<boolean[][]>([]);
 
   const contextId = session?.prefix?.id ?? node?.contextId;
 
   const handleCurrent = async () => {
-    const id = await resolved(
-      () =>
-        query?.context?.relations({
+    const resId = await resolve(
+      ({ query }) =>
+        query?.node({ id: id! })?.context?.relations({
           where: { name: { _eq: 'active' } },
         })?.[0]?.nodeId,
-      { noCache: true }
+      { cachePolicy: "no-cache" }
     );
-    link.id(id ?? contextId!);
+    link.id(resId ?? contextId!);
     setOpen(false);
   };
 
@@ -58,8 +57,8 @@ const Drawer = ({
     if (session?.prefix === undefined && !home) {
       Promise.all([
         fromId(contextId),
-        resolved(() => {
-          const node = query?.context;
+        resolve(({ query }) => {
+          const node = query?.node({ id: id! })?.context;
           return {
             id: node?.id,
             name: node?.name ?? '',

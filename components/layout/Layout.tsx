@@ -60,7 +60,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
               autoHideDuration: null,
               action: () => {
                 return (
-                  <IconButton onClick={() => router.refresh()}>
+                  <IconButton onClick={() => startTransition(() => router.refresh() )}>
                     <Refresh />
                   </IconButton>
                 );
@@ -78,7 +78,7 @@ const Layout = ({ children }: { children: JSX.Element }) => {
   if (outdated) return <OldBrowser />;
   if (!showing || isLoading) return null;
 
-  if (params.get("app") === 'screen' || path.startsWith('/user'))
+  if (params.get("app") === 'screen' || path.startsWith('user'))
     return children;
 
   return (

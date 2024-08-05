@@ -28,7 +28,7 @@ import {
 import { useSession, useNode, useLink, usePathList } from 'hooks';
 import { fromId } from 'core/path';
 import { Link as NextLink, MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
-import { order_by, resolved } from 'gql';
+import { order_by, resolve } from 'gql';
 import {
   useState,
   startTransition,
@@ -304,16 +304,14 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
   const node = useNode({
     id: session?.prefix?.id,
   });
-  const query = node.useQuery();
-
   const contextId = session?.prefix?.id ?? node?.contextId;
 
   useEffect(() => {
     if (session?.prefix === undefined) {
       Promise.all([
         fromId(contextId),
-        resolved(() => {
-          const node = query?.context;
+        resolve(({ query }) => {
+          const node = query?.node({ id: session?.prefix?.id! })?.context;
           return {
             id: node?.id,
             name: node?.name ?? '',
@@ -335,15 +333,15 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
   }, [session, setSession]);
 
   const handleCurrent = async () => {
-    const id = await resolved(
-      () =>
-        query?.context?.relations({
+    const resId = await resolve(
+      ({ query }) =>
+        query?.node({ id: session?.prefix?.id! })?.context?.relations({
           where: { name: { _eq: 'active' } },
         })?.[0]?.nodeId,
-      { noCache: true }
+      { cachePolicy: "no-cache" }
     );
     startTransition(() => {
-      link.id(id ?? contextId!);
+      link.id(resId ?? contextId!);
       setOpen(false);
     });
   };

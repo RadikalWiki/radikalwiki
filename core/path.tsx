@@ -1,4 +1,4 @@
-import { query, resolved } from 'gql';
+import { resolve } from 'gql';
 
 const toId = async (path: string[], parentId?: string): Promise<string | undefined> => {
   const where = {
@@ -9,14 +9,14 @@ const toId = async (path: string[], parentId?: string): Promise<string | undefin
         : { parentId: { _is_null: true } },
     ],
   };
-  const id = await resolved(() => query.nodes({ where }).at(0)?.id);
+  const id = await resolve(({ query }) => query.nodes({ where }).at(0)?.id);
 
   return path.length > 0 ? toId(path.slice(1), id) : id;
 };
 
 const fromId = async (id?: string | null): Promise<string[]> => {
   if (!id) return [];
-  return await resolved(async () => {
+  return await resolve(async ({ query }) => {
     const node = query.node({ id });
     const parentId = node?.parentId;
     const key = node?.key;

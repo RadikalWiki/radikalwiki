@@ -1,7 +1,7 @@
 import React, { startTransition, useEffect, useState } from 'react';
 import { Button, Grid, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
-import { resolved, query, order_by } from 'gql';
+import { resolve, order_by } from 'gql';
 import { Node } from 'hooks';
 
 type Option = {
@@ -31,7 +31,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
   useEffect(() => {
     const fetch = async () => {
       const like = `%${inputValue}%`;
-      const res = await resolved(() =>
+      const res = await resolve(({ query }) =>
         query
           .users({
             limit: 10,
@@ -54,7 +54,7 @@ const InvitesTextField = ({ node }: { node: Node }) => {
     startTransition(() => {
       fetch();
     });
-  }, [JSON.stringify(users), inputValue, query]);
+  }, [JSON.stringify(users), inputValue]);
 
   return (
     <Grid style={{ margin: 1 }} container spacing={2}>

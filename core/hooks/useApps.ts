@@ -15,7 +15,7 @@ const useApps = () => {
 
   const currentApp =
     params.get("app") ??
-    (pathname == '/' ? 'home' : 'folder');
+    (pathname == '' ? 'home' : 'folder');
 
   const handleClick = (path?: string[], app?: string) => async () => {
     const scroll = document.querySelector('#scroll');
@@ -43,7 +43,7 @@ const useApps = () => {
       mimeId: 'app/home',
       active: ['home'].includes(currentApp),
       onClick: handleClick([]),
-      notifications: sub
+      notifications: isAuthenticated ? sub
         .membersAggregate({
           where: {
             _and: [
@@ -54,7 +54,7 @@ const useApps = () => {
             ],
           },
         })
-        .aggregate?.count(),
+        .aggregate?.count() : 0,
     },
     ...(currentApp !== 'home'
       ? [

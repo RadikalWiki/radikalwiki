@@ -32,7 +32,7 @@ const Avatar = ({ node }: { node: Node }) => {
   const mimeId = query?.mimeId;
   const id = type ?? mimeId;
   const name = query?.name;
-  const index = query?.getIndex!;
+  const index = query?.getIndex;
 
   if (id === undefined) {
     return (
@@ -52,7 +52,7 @@ const Avatar = ({ node }: { node: Node }) => {
         bgcolor: 'secondary.main',
       }}
     >
-      <IconId name={name} mimeId={id} index={index - 1} avatar />
+      <IconId name={name} mimeId={id} index={index ? index - 1 : undefined} avatar />
     </MuiAvatar>
   );
   return query?.mutable ? (
