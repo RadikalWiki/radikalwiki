@@ -13,9 +13,7 @@ const useApps = () => {
   const email = useUserEmail();
   const sub = useSubscription();
 
-  const currentApp =
-    params.get("app") ??
-    (pathname == '' ? 'home' : 'folder');
+  const currentApp = params.get('app') ?? (pathname == '' ? 'home' : 'folder');
 
   const handleClick = (path?: string[], app?: string) => async () => {
     const scroll = document.querySelector('#scroll');
@@ -24,7 +22,11 @@ const useApps = () => {
       scroll?.scrollTop?.toString() ?? '0'
     );
     localStorage.setItem('app', currentApp);
-    if ((localStorage['app'] ?? 'folder') === 'folder' && app == undefined && path?.length != 0) {
+    if (
+      (localStorage['app'] ?? 'folder') === 'folder' &&
+      app == undefined &&
+      path?.length != 0
+    ) {
       return;
     }
     if (currentApp === 'folder') {
@@ -43,18 +45,25 @@ const useApps = () => {
       mimeId: 'app/home',
       active: ['home'].includes(currentApp),
       onClick: handleClick([]),
-      notifications: isAuthenticated ? sub
-        .membersAggregate({
-          where: {
-            _and: [
-              { accepted: { _eq: false } },
-              {
-                _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
+      notifications: isAuthenticated
+        ? sub
+            .membersAggregate({
+              where: {
+                _and: [
+                  { accepted: { _eq: false } },
+                  {
+                    _or: [
+                      { nodeId: { _eq: userId } },
+                      { email: { _eq: email } },
+                    ],
+                  },
+
+                  { parent: { mimeId: { _in: ['wiki/group', 'wiki/event'] } } },
+                ],
               },
-            ],
-          },
-        })
-        .aggregate?.count() : 0,
+            })
+            .aggregate?.count()
+        : 0,
     },
     ...(currentApp !== 'home'
       ? [

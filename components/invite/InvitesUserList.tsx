@@ -31,6 +31,7 @@ const ListSuspense = () => {
           {
             _or: [{ nodeId: { _eq: userId } }, { email: { _eq: email } }],
           },
+          { parent: { mimeId: { _in: ['wiki/group', 'wiki/event'] } } },
         ],
       },
     })
@@ -133,7 +134,7 @@ const ListSuspense = () => {
             },
           })
           .aggregate?.count(),
-      { cachePolicy: "no-cache" }
+      { cachePolicy: 'no-cache' }
     );
   };
 
@@ -149,9 +150,9 @@ const ListSuspense = () => {
             )}
             <ListItemText primary={parent?.name} />
             <Tooltip title={`Accepter invitation til ${parent?.name}`}>
-            <IconButton  onClick={handleAcceptInvite(id)}>
-              <Add />
-            </IconButton>
+              <IconButton onClick={handleAcceptInvite(id)}>
+                <Add />
+              </IconButton>
             </Tooltip>
           </ListItem>
         );
