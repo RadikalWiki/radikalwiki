@@ -5,6 +5,7 @@ import {
   client,
   order_by,
   resolve,
+  useSubscription,
 } from 'gql';
 import {
   Avatar,
@@ -20,10 +21,10 @@ import { HeaderCard, MimeAvatarId } from 'comps';
 import { useUserEmail, useUserId } from '@nhost/nextjs';
 
 const ListSuspense = () => {
-  const query = useQuery();
+  const sub = useSubscription();
   const userId = useUserId();
   const email = useUserEmail();
-  const invites = query
+  const invites = sub
     .members({
       where: {
         _and: [
@@ -38,7 +39,7 @@ const ListSuspense = () => {
     .filter((invite) => invite.parent?.id);
   const events = !userId
     ? []
-    : query.nodes({
+    : sub.nodes({
         order_by: [{ createdAt: order_by.desc }],
         where: {
           _and: [
@@ -61,7 +62,7 @@ const ListSuspense = () => {
       });
   const groups = !userId
     ? []
-    : query.nodes({
+    : sub.nodes({
         order_by: [{ createdAt: order_by.desc }],
         where: {
           _and: [
