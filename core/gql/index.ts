@@ -59,6 +59,7 @@ const subscriptionsClient = createSubscriptionsClient({
   connectionParams: () => ({
     headers: getHeaders(),
   }),
+  shouldRetry: (errOrCloseEvent) => true,
   url: () => {
     const urlClass = new URL(url);
     // eslint-disable-next-line functional/immutable-data
