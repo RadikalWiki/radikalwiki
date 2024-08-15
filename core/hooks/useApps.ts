@@ -72,7 +72,7 @@ const useApps = () => {
             mimeId: 'app/folder',
             active: ['folder', 'editor'].includes(currentApp),
             onClick: handleClick(
-              localStorage?.path?.split('/')?.slice(1) ?? session?.prefix?.path
+              localStorage?.path?.split('/') ?? session?.prefix?.path
             ),
             notifications: 0,
           },

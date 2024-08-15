@@ -20,8 +20,7 @@ const BottomBar = ({
           sx={
             largeScreen
               ? {
-                  width: `calc(100% - ${drawerWidth + 40}px)`,
-                  ml: `${drawerWidth}px`,
+                  width: `calc(100% - ${drawerWidth + 72}px)`,
                   top: 0,
                   background: 'transparent',
                   boxShadow: 'none',
@@ -39,7 +38,7 @@ const BottomBar = ({
               sx={{
                 position: 'absolute',
                 width: largeScreen ? 'calc(100vw - 400px)' : '100%',
-                pr: largeScreen ? 8 : 0,
+                pr: largeScreen ? 10 : 0,
               }}
             >
               <Container

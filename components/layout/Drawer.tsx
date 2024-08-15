@@ -437,7 +437,7 @@ const Drawer = ({
             width: drawerWidth,
             flexShrink: 0,
             '& .MuiDrawer-paper': {
-              ml: '40px',
+              ml: '72px',
               width: drawerWidth,
               boxSizing: 'border-box',
               borderRadius: '0px 20px 20px 0px',
@@ -504,7 +504,7 @@ const Drawer = ({
             width: largeScreen ? `${drawerWidth}px` : '100%',
             position: largeScreen ? 'fixed' : 'absolute',
             bottom: largeScreen ? undefined : 9,
-            ml: largeScreen ? 5 : 0,
+            ml: largeScreen ? 9 : 0,
           }}
           disableGutters
         >

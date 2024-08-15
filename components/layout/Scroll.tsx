@@ -17,8 +17,8 @@ const Scroll = ({ children }: { children: JSX.Element }) => {
         WebkitOverflowScrolling: 'touch',
         height: '100%',
         position: 'fixed',
-        width: largeScreen ? 'calc(100vw - 400px)' : '100%',
-        left: largeScreen ? '440px' : '0px',
+        width: largeScreen ? 'calc(100vw - 416px)' : '100%',
+        left: largeScreen ? '472px' : '0px',
         pr: largeScreen ? 8 : 0,
       }}
     >
