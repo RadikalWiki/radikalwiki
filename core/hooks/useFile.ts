@@ -20,7 +20,7 @@ const useFile = ({
     setFile(undefined);
     const fetch = async () => {
       if (fileId) {
-        const { presignedUrl } = await nhost.storage.getPresignedUrl({
+        const url = await nhost.storage.getPublicUrl({
           fileId,
           ...(image
             ? {
@@ -30,7 +30,7 @@ const useFile = ({
               }
             : {}),
         });
-        setFile(presignedUrl?.url);
+        setFile(url);
       }
     };
     startTransition(() => {

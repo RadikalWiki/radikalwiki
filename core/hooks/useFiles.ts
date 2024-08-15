@@ -23,7 +23,7 @@ const useFiles = ({
         const preUrls = await Promise.all(
           fileIds.map((fileId) =>
             fileId
-              ? nhost.storage.getPresignedUrl({
+              ? nhost.storage.getPublicUrl({
                   fileId,
                   ...(image
                     ? {
@@ -36,7 +36,7 @@ const useFiles = ({
               : Promise.resolve(null)
           )
         );
-        setFiles(preUrls.map((preUrl) => preUrl?.presignedUrl?.url ?? ''));
+        setFiles(preUrls.map((preUrl) => preUrl ?? ''));
       }
     };
     startTransition(() => {
