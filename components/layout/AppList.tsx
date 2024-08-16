@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Badge,
   BottomNavigation,
   BottomNavigationAction,
@@ -16,12 +15,12 @@ const RailNagivation = ({
   children: JSX.Element[];
 }) => {
   return (
-    <AppBar >
 
       <BottomNavigation
         showLabels
         value={value}
         sx={{
+
           flexDirection: 'column',
           justifyContent: 'flex-start',
           height: 'unset',
@@ -36,7 +35,6 @@ const RailNagivation = ({
       >
         {children}
       </BottomNavigation>
-    </AppBar>
   );
 };
 
