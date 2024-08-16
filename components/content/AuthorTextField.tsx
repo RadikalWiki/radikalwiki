@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { startTransition, useEffect, useState } from 'react';
 import { Box, Chip, TextField } from '@mui/material';
 import { Autocomplete } from '@mui/material';
 import { resolve, order_by } from 'gql';
@@ -65,8 +65,10 @@ const AuthorTextField = ({
 
       setOptions(newOptions);
     };
-    fetch();
-  }, [value, inputValue]);
+    startTransition(() => {
+      fetch();
+    })
+  }, [JSON.stringify(value), inputValue]);
 
   return (
     <Autocomplete
