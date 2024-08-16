@@ -43,6 +43,7 @@ const MobileMenu = ({
         <Stack direction="row">
           {apps.map((app) => (
             <IconButton
+              aria-label={app.name}
               key={app.mimeId}
               color={app.active ? 'primary' : undefined}
               onClick={app.onClick}

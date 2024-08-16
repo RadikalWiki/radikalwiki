@@ -301,7 +301,7 @@ const SearchField = ({
           <MenuAvatar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         )}
         <Breadcrumbs />
-        <IconButton onClick={() => startTransition(() => setSearchMode(true))}>
+        <IconButton aria-label='Søg' onClick={() => startTransition(() => setSearchMode(true))}>
           <Avatar sx={{ bgcolor: 'primary.main' }}>
             <Search />
           </Avatar>
