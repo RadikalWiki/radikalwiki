@@ -102,7 +102,14 @@ const DownloadButton = ({ node }: { node: Node }) => {
       const { presignedUrl } = await nhost.storage.getPresignedUrl({
         fileId: data?.fileId,
       });
-      window.open(presignedUrl?.url);
+      
+      const anchor = document.createElement('a');
+      // eslint-disable-next-line functional/immutable-data
+      anchor.href = presignedUrl?.url as string;
+      document.body.appendChild(anchor);
+      anchor.click();
+      document.body.removeChild(anchor);
+
       return;
     }
 
