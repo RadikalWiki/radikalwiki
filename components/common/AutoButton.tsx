@@ -22,7 +22,7 @@ const AutoButton = ({
       {text}
     </Button>
   ) : (
-    <IconButton color="secondary" onClick={onClick} size="large">
+    <IconButton aria-label={text} color="secondary" onClick={onClick} size="large">
       <Tooltip title={text}>{icon}</Tooltip>
     </IconButton>
   );
