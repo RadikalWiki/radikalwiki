@@ -5,7 +5,7 @@ import { Delete } from '@mui/icons-material';
 import { Node } from 'hooks';
 
 const MembersDataGrid = ({ node }: { node: Node }) => {
-  const subs = node.useSubs();
+  const query = node.useQuery();
   const member = node.useMember();
 
   const columns: GridColumns = [
@@ -65,7 +65,7 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
   const handleCellEditCommit = ({
     id,
     field,
-    value,
+    value
   }: {
     id: string | number;
     field: string;
@@ -76,8 +76,8 @@ const MembersDataGrid = ({ node }: { node: Node }) => {
     member.update(String(id), set);
   };
 
-  const rows = subs
-    ?.members({ order_by: [{ user: { displayName: order_by.asc } }] })
+  const rows = query
+    ?.members({  order_by: [{ user: { displayName: order_by.asc } }] })
     .map(({ id, name, email, user, owner, hidden, active, accepted }) => ({
       id,
       email: user?.email ?? email,
