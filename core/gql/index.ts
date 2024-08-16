@@ -60,6 +60,7 @@ const subscriptionsClient = createSubscriptionsClient({
     headers: getHeaders(),
   }),
   shouldRetry: (errOrCloseEvent) => true,
+  on: { error: (error) => console.error(error) },
   url: () => {
     const urlClass = new URL(url);
     // eslint-disable-next-line functional/immutable-data
@@ -102,6 +103,7 @@ export const {
     transactionQuerySuspense: true,
     staleWhileRevalidate: true,
   },
+
 });
 
 export * from './schema.generated';
