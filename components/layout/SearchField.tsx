@@ -279,6 +279,7 @@ const SearchField = ({
               }}
             />
             <IconButton
+              aria-label='Afslut Søgefelt'
               onClick={() => startTransition(() => setSearchMode(false))}
             >
               <Avatar sx={{ bgcolor: 'primary.main' }}>
