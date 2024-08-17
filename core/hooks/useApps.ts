@@ -97,7 +97,7 @@ const useApps = () => {
             notifications: 0,
           },
         ]
-      : largeScreen ? [{ name: "Skærm", mimeId: "app/screen", active: [], onClick: async () =>  {
+      : currentApp !== 'home' && largeScreen ? [{ name: "Skærm", mimeId: "app/screen", active: [], onClick: async () =>  {
           window.open(`/${session?.prefix?.path?.join('/')}?app=screen`, '_blank')
 
       }, notification: 0 }] : []),
