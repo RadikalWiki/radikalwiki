@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import {
   Close,
-  ConnectedTv,
   ExpandLess,
   ExpandMore,
   FileOpen,
@@ -27,7 +26,7 @@ import {
 } from '@mui/icons-material';
 import { useSession, useNode, useLink, usePathList } from 'hooks';
 import { fromId } from 'core/path';
-import { Link as NextLink, MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
+import { MimeAvatar, MimeIcon, HomeList, Bar } from 'comps';
 import { order_by, resolve } from 'gql';
 import {
   useState,
@@ -356,16 +355,6 @@ const MenuList = ({ setOpen }: { setOpen: Function }) => {
     >
       {node.mimeId == 'wiki/event' && (
         <>
-          <ListItemButton
-            component={NextLink}
-            href={`/${session?.prefix?.path?.join('/')}?app=screen`}
-            target="_blank"
-          >
-            <ListItemIcon>
-              <ConnectedTv />
-            </ListItemIcon>
-            <ListItemText primary="Skærm" />
-          </ListItemButton>
           <ListItemButton onClick={handleCurrent}>
             <ListItemIcon>
               <FileOpen />

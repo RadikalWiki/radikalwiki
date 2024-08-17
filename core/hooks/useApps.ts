@@ -2,6 +2,7 @@ import { useSearchParams } from 'next/navigation';
 import { useLink, usePath, useSession } from 'hooks';
 import { useAuthenticated, useUserEmail, useUserId } from '@nhost/nextjs';
 import { useSubscription } from 'gql';
+import { useMediaQuery } from '@mui/material';
 
 const useApps = () => {
   const pathname = usePath();
@@ -12,6 +13,7 @@ const useApps = () => {
   const userId = useUserId();
   const email = useUserEmail();
   const sub = useSubscription();
+  const largeScreen = useMediaQuery('(min-width:1200px)');
 
   const currentApp = params.get('app') ?? (pathname == '' ? 'home' : 'folder');
 
@@ -95,7 +97,10 @@ const useApps = () => {
             notifications: 0,
           },
         ]
-      : []),
+      : largeScreen ? [{ name: "Skærm", mimeId: "app/screen", active: [], onClick: async () =>  {
+          window.open(`/${session?.prefix?.path?.join('/')}?app=screen`, '_blank')
+
+      }, notification: 0 }] : []),
   ];
 };
 

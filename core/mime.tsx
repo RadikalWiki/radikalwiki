@@ -23,6 +23,7 @@ import {
   RecordVoiceOver,
   AddComment,
   Map,
+  ConnectedTv,
 } from '@mui/icons-material';
 import MicrosoftExcelIcon from './svg/microsoft-excel.svg';
 import MicrosoftWordIcon from './svg/microsoft-word.svg';
@@ -178,7 +179,7 @@ const IconId = ({
     case 'app/folder':
       return <Folder />;
     case 'app/screen':
-      return <Folder />;
+      return <ConnectedTv />;
     case 'app/map':
     case 'map/map':
       return <Map />;
