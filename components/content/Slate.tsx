@@ -1,9 +1,5 @@
 /* eslint-disable functional/immutable-data */
-import React, {
-  ChangeEventHandler,
-  useCallback,
-  useRef,
-} from 'react';
+import React, { ChangeEventHandler, useCallback, useRef } from 'react';
 import isHotkey from 'is-hotkey';
 import { jsx } from 'slate-hyperscript';
 import {
@@ -223,8 +219,20 @@ const Slate = ({
   return (
     <SlateEditor editor={editor!} value={validated} onChange={onChange}>
       {!readOnly && (
-        <>
-          <Stack direction="row" spacing={1} sx={{ mb: 1, ml: 2 }}>
+        <Box
+          sx={{
+            // Disable scroll (Firefox)
+            scrollbarWidth: 'none',
+            // Disable scroll (Webkit)
+            '::-webkit-scrollbar': {
+              display: 'none',
+            },
+            overflowX: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            width: '100%',
+          }}
+        >
+          <Stack direction="row" spacing={1} sx={{ mt: 1, mb: 1, ml: 2 }}>
             <BlockSelect />
             <HistoryButtons />
             <MarkButtons />
@@ -232,7 +240,7 @@ const Slate = ({
             <AlignButtons />
             <LinkButton />
           </Stack>
-        </>
+        </Box>
       )}
       {(!readOnly ||
         (validated.length !== 0 &&
@@ -420,7 +428,7 @@ const Leaf = ({ attributes, children, leaf }: RenderLeafProps) => {
 const BlockSelect = () => {
   const editor = useSlate();
   return (
-    <FormControl>
+    <FormControl title='Stil' sx={{ minWidth: "140px" }}>
       <InputLabel>Stil</InputLabel>
       <Select
         label="Stil"

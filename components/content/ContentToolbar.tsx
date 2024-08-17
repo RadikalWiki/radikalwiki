@@ -23,14 +23,16 @@ const ContentToolbar = ({
 
   return (
     <Stack spacing={1} direction="row">
-      {!child && ['wiki/event', 'wiki/group'].includes(query?.mimeId ?? '') && query?.isContextOwner && (
-        <AutoButton
-          key="member"
-          text="Medlemmer"
-          icon={<People />}
-          onClick={() => link.push([], 'member')}
-        />
-      )}
+      {!child &&
+        ['wiki/event', 'wiki/group'].includes(query?.mimeId ?? '') &&
+        query?.isContextOwner && (
+          <AutoButton
+            key="member"
+            text="Medlemmer"
+            icon={<People />}
+            onClick={() => link.push([], 'member')}
+          />
+        )}
       {!child && <DownloadButton node={node} />}
       {!child && (
         <ButtonGroup>
@@ -47,7 +49,6 @@ const ContentToolbar = ({
         </ButtonGroup>
       )}
       {add && <AddContentButton node={node} />}
-
     </Stack>
   );
 };
