@@ -20,7 +20,10 @@ const checkIfSuperParent = async (
   superParentId?: string
 ): Promise<boolean> => {
   if (!(id && superParentId)) return false;
-  const parentId = await resolve(({ query }) => query.node({ id })?.parentId);
+  const { parentId } = await resolve(({ query }) => ({
+    parentId: query.node({ id })?.parentId,
+  }));
+  if (typeof parentId === 'object') console.trace(JSON.stringify(parentId));
 
   return id == superParentId || parentId === superParentId
     ? true
@@ -157,9 +160,10 @@ const FolderDial = ({ node }: { node: Node }) => {
   const copy = async (copyId?: string | null, parentId?: string | null) => {
     if (!copyId) return;
     const node = await resolve(({ query }) => {
-      const { name, key, mimeId, data, mutable, attachable, index, createdAt } = query.node({
-        id: copyId,
-      })!;
+      const { name, key, mimeId, data, mutable, attachable, index, createdAt } =
+        query.node({
+          id: copyId,
+        }) ?? {};
       return {
         name,
         key,
@@ -167,7 +171,7 @@ const FolderDial = ({ node }: { node: Node }) => {
         mutable,
         attachable,
         index,
-        data: data(),
+        data: data?.(),
         parentId: parentId!,
         createdAt: createdAt!,
       };
